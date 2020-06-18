@@ -1,0 +1,19 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml:1:1-3:12
+INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml:1:1-3:12
+INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml:1:1-3:12
+	package
+		ADDED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml:2:3-39
+		INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml
+		INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml:1:11-69
+uses-sdk
+INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml
+INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml
+		ADDED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml
+		INJECTED from C:\development\flutter\.pub-cache\hosted\pub.dartlang.org\sensors-0.4.2+2\android\src\main\AndroidManifest.xml

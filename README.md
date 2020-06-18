@@ -1,16 +1,24 @@
-# BWO
+# Borderless World Online (BWO)
 
-A new Flutter project.
+An infinity procedural online game using Flutter with Firebase and flames.
 
-## Getting Started
+![gameplay](https://user-images.githubusercontent.com/7622553/85038127-9a2d7780-b15c-11ea-8bbe-6ec587d3d8ee.gif)
 
-This project is a starting point for a Flutter application.
+### On the Table
+The world isn't stored in anywhere, it uses some conecpts and rules to generate it equaly in all devices only the changes made by player are actually stored on the firebase.
 
-A few resources to get you started if this is your first Flutter project:
+The players will be able to build theirs houses anywhere on the infinity world. That's why i call it borderless world in first place. :)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+This project is still in development and right now it only has some fews features:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- A map generator for a real infinity Map with a mix of `Perlin Noise` and `Simplex Noise` without losing the performance.
+- Trees generation
+- Map Viewport and Map Follow Object Moviment
+- Temporaraly Saving generated data for best perfomance
+
+## Dev Log
+
+Right now i'm focusing on the performance improviments in order to bring it the best fps as i can.
+Next steps will be the player design it self and collision detection with the enviroment.
+
+This project doesn't have imagens and i want to keep it in this way, making my own sprites by code.

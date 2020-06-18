@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Entity/Frame.dart';
-import 'package:BWO/game_controller.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
