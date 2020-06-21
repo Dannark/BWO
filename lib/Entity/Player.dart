@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:BWO/Entity/Entity.dart';
+import 'package:BWO/Entity/Player/PlayerActions.dart';
+import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/Frame.dart';
 import 'package:BWO/Utils/SpriteController.dart';
+import 'package:BWO/game_controller.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite_batch.dart';
@@ -32,9 +35,13 @@ class Player extends Entity {
 
   int worldSize;
 
+  PlayerActions _playerActions;
+
   Player(int posX, int posY, this.worldSize) : super(posX, posY) {
+    _playerActions = PlayerActions(this);
+
     accelerometerEvents.listen((AccelerometerEvent event) {
-      //defaultY = defaultY == 0? event.y: defaultY;
+      //defaultY = defaultY == 0 ? event.y : defaultY;
 
       xSpeed =
           (event.x * accelerationSpeed).clamp(-maxAngle, maxAngle).toDouble() *
@@ -44,7 +51,8 @@ class Player extends Entity {
               .toDouble() *
           speedMultiplier;
 
-      if (ySpeed.abs() + xSpeed.abs() < 0.6) {
+      if (ySpeed.abs() + xSpeed.abs() < 0.6 ||
+          _playerActions.isDoingAction) {
         xSpeed = 0;
         ySpeed = 0;
       }
@@ -74,6 +82,14 @@ class Player extends Entity {
 
     posX = x ~/ worldSize;
     posY = y ~/ worldSize;
+  }
+
+  void update(MapController map) {
+    _playerActions.interactWithTrees(map, posX, posY);
+  }
+
+  void setDirection(Offset target){
+    spriteController.setDirection(target, Offset(posX.toDouble(), posY.toDouble()));
   }
 
   void loadSprites() async {
@@ -112,5 +128,6 @@ class Player extends Entity {
         _scale,
         _gradeSize,
         framesCount);
+    
   }
 }

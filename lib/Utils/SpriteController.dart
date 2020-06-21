@@ -118,4 +118,11 @@ class SpriteController {
       scale: _scale,
     );
   }
+
+  void setDirection(Offset targetPos, Offset playerPos){
+    var direction = (playerPos - targetPos).direction;
+    var walkAngle = 180 * direction / pi;
+    _dir = walkAngle ~/ 22.5;
+    print("${targetPos} ${playerPos}");
+  }
 }

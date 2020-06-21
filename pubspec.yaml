@@ -58,7 +58,6 @@ flutter:
       - assets/images/human/walk_right_down.png
       - assets/images/human/walk_top_left.png
       - assets/images/human/walk_top_right.png
-
       - assets/images/trees/tree01.png
       - assets/images/trees/tree02.png
       - assets/images/trees/tree03.png

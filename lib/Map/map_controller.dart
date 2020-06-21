@@ -21,6 +21,7 @@ class MapController {
   List<Entity> entity = [];
   int treesGenerated = 0;
   int tilesGenerated = 0;
+  int _lastTreePosX = 0;
 
   double cameraSpeed = 5;
 
@@ -44,7 +45,7 @@ class MapController {
   MapController(this.widthViewPort, this.heightViewPort);
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {int tileSize = 15, border = 4, int movimentType = MovimentType.MOVE}) {
+      {int tileSize = 15, border = 5, int movimentType = MovimentType.MOVE}) {
     var borderSize = (border * tileSize);
 
     this.widthViewPort =
@@ -112,17 +113,30 @@ class MapController {
           //TREE
           if (tileHeight > 130 &&
               tileHeight < 180 &&
-              ((y % 3 == 0 && x % 4 == 1) ||
-                  (y % 7 == 0 && x % 15 == 1) ||
+              ((y % 3 == 0 && x % 3 == 1) ||
+                  (y % 7 == 0 && x % 9 == 1) ||
                   (y % 12 == 0 && x % 15 == 0))) {
             var treeHeight =
                 ((treeNoise.getPerlin2(x.toDouble(), y.toDouble()) * 128) + 127)
                     .toInt();
 
-            if (treeHeight > 180) {//170
+            if (treeHeight > 170 && (_lastTreePosX-x).abs() > 7) {//170
               treesGenerated++;
+              _lastTreePosX = x;
 
-              entity.add(Tree(x, y, tileSize));
+              if(y % 5 == 0){
+                entity.add(Tree(x, y, tileSize, "tree04"));
+              }
+              else if(y % 6 == 0){
+                entity.add(Tree(x, y, tileSize, "tree02"));
+              }
+              else if(y % 7 == 0){
+                entity.add(Tree(x, y, tileSize, "tree03"));
+              }
+              else{
+                entity.add(Tree(x, y, tileSize, "tree01"));
+              }
+              
               //var zSize = map[y][x].length;
               //map[y][x][zSize] = Tree(x, y, tileHeight, tileSize, null);
             }

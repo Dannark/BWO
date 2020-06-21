@@ -3,11 +3,12 @@ import 'package:BWO/Entity/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
+import 'package:flame/gestures.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
-class GameController extends Game {
+class GameController extends Game with TapDetector {
   Size screenSize;
   double fps;
   TextConfig config = TextConfig(fontSize: 12.0, color: Colors.white);
@@ -15,6 +16,7 @@ class GameController extends Game {
   static const int worldSize = 14;
   static double deltaTime;
   static double time = 0;
+  static int tapState = TapState.UP;
   MapController mapController = new MapController(27, 47); // (27, 47)=15
   Player player = new Player(0, 0, worldSize);
 
@@ -38,7 +40,7 @@ class GameController extends Game {
         anchor: Anchor.topLeft);
     config.render(c, "Tiles: ${mapController.tilesGenerated}", Position(10, 30),
         anchor: Anchor.topLeft);
-    config.render(c, "Location: ${player.posX},${player.posY}", Position(10, 40),
+    config.render(c, "Location: ${player.posX}, ${player.posY}", Position(10, 40),
         anchor: Anchor.topLeft);
   }
 
@@ -46,10 +48,34 @@ class GameController extends Game {
     fps = 1.0 / dt;
     deltaTime = dt;
     time += dt;
+
+    player.update(mapController);
   }
 
   void resize(Size size) {
     screenSize = size;
     super.resize(size);
   }
+
+  @override
+  void onTapUp(TapUpDetails details) {
+    tapState = TapState.UP;
+  }
+
+  @override
+  void onTapDown(TapDownDetails details) {
+    tapState = TapState.DOWN;
+  }
+
+  @override
+  void onTapCancel() {
+    tapState = TapState.CANCEL;
+  }
+
+}
+
+class TapState{
+  static const int UP = 0;
+  static const int DOWN = 1;
+  static const int CANCEL = 2;
 }
