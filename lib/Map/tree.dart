@@ -1,55 +1,31 @@
+import 'dart:math';
 import 'dart:ui';
+import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Map/tile.dart';
+import 'package:flame/sprite.dart';
+import 'package:flame/sprite_batch.dart';
 import 'package:flutter/material.dart';
 
-class Tree extends Tile{
+class Tree extends Entity{
+  int _tileSize;
+  SpriteBatch _tree;
 
-  List<Tile> tiles = new List();
-
-  Tree(int posX, int posY, int height, int size, Color color) : super(posX, posY, height, size, color){
-
-    boxPaint.color = color != null ? color : Colors.brown[800];
-
-    tiles.add( Tile(posX + 2, posY - 1, height, size, Colors.green[900]) );
-    tiles.add( Tile(posX -1, posY, height, size, Colors.brown[900]));
-
-    tiles.add( Tile(posX + 2, posY - 1, height, size, Colors.green[900]));
-    tiles.add( Tile(posX + 1, posY - 1, height, size, Colors.green[900]));
-    tiles.add( Tile(posX + 0, posY - 1, height, size, Colors.green[900]));
-    tiles.add( Tile(posX - 1, posY - 1, height, size, Colors.green[900]));
-    tiles.add( Tile(posX - 2, posY - 1, height, size, Colors.green[800]));
-    tiles.add( Tile(posX - 3, posY - 1, height, size, Colors.green[700]));
-    
-    tiles.add( Tile(posX + 1, posY - 2, height, size, Colors.green[900]));
-    tiles.add( Tile(posX, posY - 2, height, size, Colors.green[900]));
-    tiles.add( Tile(posX - 1, posY - 2, height, size, Colors.green[900]));
-    tiles.add( Tile(posX - 2, posY - 2, height, size, Colors.green[800]));
-    tiles.add( Tile(posX - 3, posY - 2, height, size, Colors.green[700]));
-
-    tiles.add( Tile(posX+1, posY - 3, height, size, Colors.green[900]));
-    tiles.add( Tile(posX, posY - 3, height, size, Colors.green[900]));
-    tiles.add( Tile(posX-1, posY - 3, height, size, Colors.green[800]));
-    tiles.add( Tile(posX-2, posY - 3, height, size, Colors.green[700]));
-
-    tiles.add( Tile(posX, posY - 4, height, size, Colors.green[900]));
-    tiles.add( Tile(posX-1, posY - 4, height, size, Colors.green[800]));
-    tiles.add( Tile(posX-2, posY - 4, height, size, Colors.green[800]));
-
-    tiles.add( Tile(posX, posY - 5, height, size, Colors.green[900]));
-    tiles.add( Tile(posX-1, posY - 5, height, size, Colors.green[800]));
-
-    tiles.add( Tile(posX-1, posY - 6, height, size, Colors.green[800]));
-
-    tiles.add( Tile(posX-1, posY - 7, height, size, Colors.green[800]));
+  Tree(int posX, int posY, this._tileSize) : super(posX, posY){
+     loadSprite();
+  }
+  void loadSprite() async{
+    _tree = await SpriteBatch.withAsset('trees/tree01.png');
+    _tree.add(
+      rect: Rect.fromLTWH(0, 0, 16, 16),
+      offset: Offset(posX.toDouble() * _tileSize, posY.toDouble() * _tileSize),
+      anchor: Offset(8,14),
+      scale: _tileSize.toDouble(),
+    );
   }
 
-  @override
-  void draw(Canvas c) {
-
-    c.drawRect(boxRect, boxPaint);
-
-    for (var tile in tiles) {
-      tile.draw(c);
+  void draw(Canvas c){
+    if(_tree != null){
+      _tree.render(c);
     }
   }
 }

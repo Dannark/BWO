@@ -14,6 +14,7 @@ class GameController extends Game {
 
   static const int worldSize = 14;
   static double deltaTime;
+  static double time = 0;
   MapController mapController = new MapController(27, 47); // (27, 47)=15
   Player player = new Player(0, 0, worldSize);
 
@@ -37,11 +38,14 @@ class GameController extends Game {
         anchor: Anchor.topLeft);
     config.render(c, "Tiles: ${mapController.tilesGenerated}", Position(10, 30),
         anchor: Anchor.topLeft);
+    config.render(c, "Location: ${player.posX},${player.posY}", Position(10, 40),
+        anchor: Anchor.topLeft);
   }
 
   void update(double dt) {
     fps = 1.0 / dt;
     deltaTime = dt;
+    time += dt;
   }
 
   void resize(Size size) {

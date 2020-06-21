@@ -44,13 +44,13 @@ class MapController {
   MapController(this.widthViewPort, this.heightViewPort);
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {tileSize = 15, border = 3, int movimentType = MovimentType.MOVE}) {
+      {int tileSize = 15, border = 4, int movimentType = MovimentType.MOVE}) {
     var borderSize = (border * tileSize);
 
     this.widthViewPort =
         (screenSize.width / tileSize).roundToDouble() + (border * 2);
     this.heightViewPort =
-        (screenSize.height / tileSize).roundToDouble() + (border * 2);
+        (screenSize.height / tileSize).roundToDouble() + (border+5 * 2);
 
     // move camera
     if (movimentType == MovimentType.MOVE) {
@@ -119,10 +119,10 @@ class MapController {
                 ((treeNoise.getPerlin2(x.toDouble(), y.toDouble()) * 128) + 127)
                     .toInt();
 
-            if (treeHeight > 170) {
+            if (treeHeight > 180) {//170
               treesGenerated++;
 
-              entity.add(Tree(x, y, tileHeight, tileSize, null));
+              entity.add(Tree(x, y, tileSize));
               //var zSize = map[y][x].length;
               //map[y][x][zSize] = Tree(x, y, tileHeight, tileSize, null);
             }
