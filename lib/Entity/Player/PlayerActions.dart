@@ -11,17 +11,17 @@ class PlayerActions {
 
   bool isDoingAction = false;
 
-  void interactWithTrees(MapController map, int posX, int posY) {
+  void interactWithTrees(MapController map) {
     isDoingAction = false;
 
     if (GameController.tapState == TapState.DOWN) {
-      for (var entity in map.entity) {
-        Offset target =
-            Offset(entity.posX.toDouble(), entity.posY.toDouble() + 1);
-        double distance =
-            (Offset(posX.toDouble(), posY.toDouble()) - target).distance;
 
-        if (distance <= 3) {
+      for (var entity in map.entitysOnViewport) {
+        Offset target = Offset(entity.x, entity.y);
+        double distance = (Offset(player.x, player.y) - target).distance;
+        
+        if (distance <= 3 * player.worldSize) {
+          
           if (entity is Tree) {
             isDoingAction = true;
             entity.playAnimation();

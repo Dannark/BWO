@@ -5,7 +5,7 @@ import 'package:flame/sprite_batch.dart';
 import 'package:flutter/material.dart';
 
 class SpriteController {
-  int _dir = 0;
+  int _dir = -3;
 
   SpriteBatch _forward;
   SpriteBatch _backward;
@@ -47,11 +47,11 @@ class SpriteController {
   }
 
   void draw(Canvas c, double moveX, double moveY, double xSpeed, double ySpeed,
-      double delay, bool playAnim) {
+      double delay, bool playAnim, int height) {
     if (playAnim) {
       var walkAngle = 180 * Offset(xSpeed, ySpeed).direction / pi;
       
-      _dir = (walkAngle / 22.5).toInt();
+      _dir = walkAngle ~/ 22.5;
       
     } else {
       delay = 0;
@@ -70,41 +70,43 @@ class SpriteController {
     if (delay <= 0.01) {
       _currentFrameId = 0;
     }
-
+    
     if (_dir >= -1 && _dir <= 0) {
-      updateFrame(_left, Offset(moveX, moveY));
+      updateFrame(_left, Offset(moveX, moveY), height);
     } else if (_dir == -7 || _dir == 7) {
-      updateFrame(_right, Offset(moveX, moveY));
+      updateFrame(_right, Offset(moveX, moveY), height);
     } else if (_dir >= 3 && _dir <= 4) {
-      updateFrame(_backward, Offset(moveX, moveY));
+      updateFrame(_backward, Offset(moveX, moveY), height);
     } else if (_dir >= 5 && _dir <= 6) {
-      updateFrame(_backward_right, Offset(moveX, moveY));
+      updateFrame(_backward_right, Offset(moveX, moveY), height);
     } else if (_dir >= 1 && _dir <= 2) {
-      updateFrame(_backward_left, Offset(moveX, moveY));
+      updateFrame(_backward_left, Offset(moveX, moveY), height);
     } else if (_dir >= -4 && _dir <= -3) {
-      updateFrame(_forward, Offset(moveX, moveY));
+      updateFrame(_forward, Offset(moveX, moveY), height);
     }else if (_dir == -2) {
-      updateFrame(_forward_left, Offset(moveX, moveY));
+      updateFrame(_forward_left, Offset(moveX, moveY), height);
     }else if (_dir >= -6 && _dir <= -5) {
-      updateFrame(_forward_right, Offset(moveX, moveY));
+      updateFrame(_forward_right, Offset(moveX, moveY), height);
     }
 
     _currentFrame.render(c);
   }
 
-  void updateFrame(SpriteBatch newFrame, Offset newPosition) {
+  void updateFrame(SpriteBatch newFrame, Offset newPosition, int height) {
     var maxImageHeight = _gradeSize.dy * _viewPort.height;
-
+    
     var x = (_currentFrameId % _gradeSize.dx) * _viewPort.width;
     var y = ((_currentFrameId * _viewPort.height) / maxImageHeight)
             .floorToDouble() *
         _viewPort.height;
 
+    var sink = ((115-height)*0.2).clamp(0, 4)+1;
+    
     Rect frame = Rect.fromLTWH(
       x,
       y,
-      x + _viewPort.width,
-      y + _viewPort.height,
+      _viewPort.width,
+      _viewPort.height - sink,
     );
 
     //print( ((_viewPort.width * _currentFrameId) % _frameSize.dx + 1) );
@@ -123,6 +125,5 @@ class SpriteController {
     var direction = (playerPos - targetPos).direction;
     var walkAngle = 180 * direction / pi;
     _dir = walkAngle ~/ 22.5;
-    print("${targetPos} ${playerPos}");
   }
 }

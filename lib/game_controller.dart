@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:BWO/Entity/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
+import 'package:BWO/Utils/PhysicsController.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
@@ -18,9 +19,12 @@ class GameController extends Game with TapDetector {
   static double time = 0;
   static int tapState = TapState.UP;
   MapController mapController = new MapController(27, 47); // (27, 47)=15
-  Player player = new Player(0, 0, worldSize);
+  PhysicsController physicsController;
+  Player player;
 
   GameController() {
+    physicsController = new PhysicsController(mapController);
+    player = new Player(0, 0, mapController);
     mapController.addEntity(player);
   }
 
@@ -42,6 +46,7 @@ class GameController extends Game with TapDetector {
         anchor: Anchor.topLeft);
     config.render(c, "Location: ${player.posX}, ${player.posY}", Position(10, 40),
         anchor: Anchor.topLeft);
+        physicsController.update();
   }
 
   void update(double dt) {
@@ -49,7 +54,8 @@ class GameController extends Game with TapDetector {
     deltaTime = dt;
     time += dt;
 
-    player.update(mapController);
+    player.update();
+    physicsController.update();
   }
 
   void resize(Size size) {

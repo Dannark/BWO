@@ -18,7 +18,9 @@ This project is still in development and right now it only has some fews feature
 
 ## Dev Log
 
-Right now i'm focusing on the performance improviments in order to bring it the best fps as i can.[done]
-Next steps will be the player design it self and collision detection with the enviroment.[done]
+- 21/06
+* Right now i'm focusing on the performance improviments in order to bring it the best fps as i can.
+* Next steps will be the player design it self and collision detection with the enviroment.
 
-Next step will be making the player swim, or at least looks like it is floating on the water.
+- 23/06
+* Added player sink into the water and Trees collision detection.

@@ -1,7 +1,7 @@
 import 'package:BWO/Entity/Entity.dart';
 import 'package:flutter/material.dart';
 
-class Tile extends Entity{
+class Tile{
   int posX;
   int posY;
   int size = 15;
@@ -11,7 +11,7 @@ class Tile extends Entity{
   Paint boxPaint = Paint();
   Rect boxRect;
 
-  Tile(this.posX, this.posY, this.height, this.size, this.color) : super(posX, posY){
+  Tile(this.posX, this.posY, this.height, this.size, this.color){
     boxRect = Rect.fromLTWH(
       posX.toDouble() * size.toDouble(),
       posY.toDouble() * size.toDouble(),

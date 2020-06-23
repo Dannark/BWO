@@ -62,6 +62,9 @@ flutter:
       - assets/images/trees/tree02.png
       - assets/images/trees/tree03.png
       - assets/images/trees/tree04.png
+      - assets/images/enviroment/brush.png
+      - assets/images/enviroment/brush_2.png
+      - assets/images/enviroment/stone.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

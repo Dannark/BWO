@@ -19,10 +19,11 @@ class Player extends Entity {
 
   double xSpeed = 0;
   double ySpeed = 0;
+  var mapHeight = 1;
 
   int accelerationSpeed = 3;
   double maxAngle = 5;
-  double speedMultiplier = .7;
+  double speedMultiplier = .6;
 
   double defaultY = 6.9; //angle standing up
 
@@ -31,13 +32,12 @@ class Player extends Entity {
 
   SpriteController spriteController;
 
-  double x = 0, y = 0;
-
-  int worldSize;
+  //double x = 0, y = 0;
 
   PlayerActions _playerActions;
+  MapController map;
 
-  Player(int posX, int posY, this.worldSize) : super(posX, posY) {
+  Player(double x, double y, this.map) : super(x, y) {
     _playerActions = PlayerActions(this);
 
     accelerometerEvents.listen((AccelerometerEvent event) {
@@ -58,41 +58,46 @@ class Player extends Entity {
       }
     });
 
-    loadSprites();
+    _loadSprites();
   }
 
   void draw(Canvas c) {
-    x -= xSpeed;
-    y -= ySpeed;
+    mapHeight = map.map[posY][posX][0].height;
 
     var maxWalkSpeed = (maxAngle * speedMultiplier);
     var walkSpeed = max(xSpeed.abs(), ySpeed.abs());
     var deltaSpeed = (walkSpeed / maxWalkSpeed);
     var animSpeed = 0.07 + (0.1 - (deltaSpeed * 0.1));
     var playAnim = animSpeed < .17;
-    //print(animSpeed);
 
     if (spriteController != null) {
       spriteController.draw(
-          c, x, y, xSpeed, ySpeed, animSpeed, playAnim); //0.125 = 12fps
+          c, x, y, xSpeed, ySpeed, animSpeed, playAnim, mapHeight); //0.125 = 12fps
     }
 
     config.render(c, "Player", Position(x + 4, y - 45),
         anchor: Anchor.bottomCenter);
-
-    posX = x ~/ worldSize;
-    posY = y ~/ worldSize;
+    debugDraw(c);
   }
 
-  void update(MapController map) {
-    _playerActions.interactWithTrees(map, posX, posY);
+  void update() {
+    moveWithPhysics(xSpeed, ySpeed);
+    slowSpeedWhenItSinks(mapHeight);
+    _playerActions.interactWithTrees(map);
   }
 
   void setDirection(Offset target){
-    spriteController.setDirection(target, Offset(posX.toDouble(), posY.toDouble()));
+    spriteController.setDirection(target, Offset(x, y));
   }
 
-  void loadSprites() async {
+  void slowSpeedWhenItSinks(int mapHeight, {double slowSpeedFactor = 0.7}){
+    var sink = ((105-mapHeight)*0.2).clamp(0, 4);
+    double slowFactor = 1-((sink * 0.25)*slowSpeedFactor);
+    
+    xSpeed *= slowFactor;
+    ySpeed *= slowFactor;
+  }
+  void _loadSprites() async {
     SpriteBatch _forward =
         await SpriteBatch.withAsset('human/walk_forward.png');
     SpriteBatch _backward =
@@ -109,10 +114,13 @@ class Player extends Entity {
         await SpriteBatch.withAsset('human/walk_top_right.png');
 
     Rect _viewPort = Rect.fromLTWH(0, 0, 10, 10);
-    Offset _pivot = Offset(4, 7);
+    Offset _pivot = Offset(4, 8);
     double _scale = 7;
     Offset _gradeSize = Offset(2, 2);
     int framesCount = 0;
+
+    width = 7 * _scale;
+    height = 3 * _scale;
 
     spriteController = new SpriteController(
         _forward,
