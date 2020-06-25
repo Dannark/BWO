@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:BWO/Effects/EffectsController.dart';
 import 'package:BWO/Entity/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/PhysicsController.dart';
@@ -12,9 +13,9 @@ import 'package:flutter/material.dart';
 class GameController extends Game with TapDetector {
   Size screenSize;
   double fps;
-  TextConfig config = TextConfig(fontSize: 12.0, color: Colors.white);
+  TextConfig config = TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Minecraft" );
 
-  static const int worldSize = 14;
+  static const int worldSize = 12;
   static double deltaTime;
   static double time = 0;
   static int tapState = TapState.UP;
@@ -47,6 +48,8 @@ class GameController extends Game with TapDetector {
     config.render(c, "Location: ${player.posX}, ${player.posY}", Position(10, 40),
         anchor: Anchor.topLeft);
         physicsController.update();
+    
+    EffectsController.draw(c);
   }
 
   void update(double dt) {

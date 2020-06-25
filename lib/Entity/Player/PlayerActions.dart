@@ -20,7 +20,7 @@ class PlayerActions {
         Offset target = Offset(entity.x, entity.y);
         double distance = (Offset(player.x, player.y) - target).distance;
         
-        if (distance <= 3 * player.worldSize) {
+        if (distance <= 3.5 * player.worldSize) {
           
           if (entity is Tree) {
             isDoingAction = true;

@@ -100,13 +100,13 @@ class SpriteController {
             .floorToDouble() *
         _viewPort.height;
 
-    var sink = ((115-height)*0.2).clamp(0, 4)+1;
-    
+    var sink = ((105-height)*0.15).clamp(0, 4);
+    var offsetToPlayerFeet = 2;
     Rect frame = Rect.fromLTWH(
       x,
       y,
       _viewPort.width,
-      _viewPort.height - sink,
+      _viewPort.height - sink - offsetToPlayerFeet,
     );
 
     //print( ((_viewPort.width * _currentFrameId) % _frameSize.dx + 1) );
@@ -116,7 +116,7 @@ class SpriteController {
     _currentFrame.add(
       rect: frame,
       offset: newPosition, //Offset(moveX, moveY),
-      anchor: _pivot, //Offset(4, 7),
+      anchor: Offset(_pivot.dx, _pivot.dy - sink),
       scale: _scale,
     );
   }

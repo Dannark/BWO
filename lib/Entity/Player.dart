@@ -15,11 +15,10 @@ import 'package:sensors/sensors.dart';
 import 'dart:math';
 
 class Player extends Entity {
-  TextConfig config = TextConfig(fontSize: 12.0, color: Colors.white);
+  TextConfig config = TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Minecraft");
 
   double xSpeed = 0;
   double ySpeed = 0;
-  var mapHeight = 1;
 
   int accelerationSpeed = 3;
   double maxAngle = 5;
@@ -52,7 +51,8 @@ class Player extends Entity {
           speedMultiplier;
 
       if (ySpeed.abs() + xSpeed.abs() < 0.6 ||
-          _playerActions.isDoingAction) {
+          _playerActions.isDoingAction
+          || event.y < 3/*Device is laying down*/ ) {
         xSpeed = 0;
         ySpeed = 0;
       }
@@ -75,14 +75,14 @@ class Player extends Entity {
           c, x, y, xSpeed, ySpeed, animSpeed, playAnim, mapHeight); //0.125 = 12fps
     }
 
-    config.render(c, "Player", Position(x + 4, y - 45),
+    config.render(c, "Player", Position(x, y - 45),
         anchor: Anchor.bottomCenter);
     debugDraw(c);
   }
 
   void update() {
-    moveWithPhysics(xSpeed, ySpeed);
     slowSpeedWhenItSinks(mapHeight);
+    moveWithPhysics(xSpeed, ySpeed);
     _playerActions.interactWithTrees(map);
   }
 
@@ -90,7 +90,7 @@ class Player extends Entity {
     spriteController.setDirection(target, Offset(x, y));
   }
 
-  void slowSpeedWhenItSinks(int mapHeight, {double slowSpeedFactor = 0.7}){
+  void slowSpeedWhenItSinks(int mapHeight, {double slowSpeedFactor = 0.6}){
     var sink = ((105-mapHeight)*0.2).clamp(0, 4);
     double slowFactor = 1-((sink * 0.25)*slowSpeedFactor);
     
@@ -113,8 +113,8 @@ class Player extends Entity {
     SpriteBatch _backward_right =
         await SpriteBatch.withAsset('human/walk_top_right.png');
 
-    Rect _viewPort = Rect.fromLTWH(0, 0, 10, 10);
-    Offset _pivot = Offset(4, 8);
+    Rect _viewPort = Rect.fromLTWH(0, 0, 9, 9);
+    Offset _pivot = Offset(4.5, 7);
     double _scale = 7;
     Offset _gradeSize = Offset(2, 2);
     int framesCount = 0;

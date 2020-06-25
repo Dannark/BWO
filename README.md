@@ -24,3 +24,27 @@ This project is still in development and right now it only has some fews feature
 
 - 23/06
 * Added player sink into the water and Trees collision detection.
+
+- 24/06
+* Added walk/Swim and water effects + animations
+
+Next updates:
+* [ ] Optimze render and map Generator
+* [x] Fix player animation Position
+* [x] Add shadow and envoriment
+* [x] Stop player walk when device is totally lying down
+* [-] Especial Effects 
+    - [x] walk smoke 
+    - [x] water ripple
+    - [x] water foam
+    - [x] water stars blink
+    - [ ] sound effects on walk
+* [ ] Add Cut Tree Animation do player
+* [ ] Tree Cut Logic and Animation
+* [ ] Add fruits fell when hiting trees
+* [ ] Add pickup items and inventory
+* [ ] Add enemys
+* [ ] Add player Attack animation
+* [ ] Add combat System
+* [ ] Add UI and HUD
+* [ ] Add Firebase connectivity to sync the game

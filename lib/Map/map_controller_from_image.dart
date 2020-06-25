@@ -1,9 +1,12 @@
+import 'dart:math';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Entity/Player.dart';
 import 'package:BWO/Map/ground.dart';
 import 'package:BWO/Map/tree.dart';
+import 'package:BWO/Utils/ImagePainter.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,10 @@ import 'package:BWO/Map/tile.dart';
 
 class MapController {
   final Map<int, Map<int, Map<int, Tile>>> map = {};
+  ImagePainter _imgPainter = ImagePainter();
+  ui.Image _img;
+  Rect dest;
+  Offset lastViewportBounds;
 
   double widthViewPort;
   double heightViewPort;
@@ -50,7 +57,7 @@ class MapController {
   MapController(this.widthViewPort, this.heightViewPort);
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {int tileSize = 15, border = 5, int movimentType = MovimentType.MOVE}) {
+      {int tileSize = 15, border = 6, int movimentType = MovimentType.MOVE}) {
     var borderSize = (border * tileSize);
 
     this.widthViewPort =
@@ -90,9 +97,19 @@ class MapController {
     );
 
     safeY = (viewPort.top).ceil();
-    safeYmax = (viewPort.bottom).ceil()+5;
+    safeYmax = (viewPort.bottom).ceil();
     safeX = (viewPort.left).ceil();
     safeXmax = (viewPort.right).ceil();
+
+    
+    if (_img != null) {
+      c.drawImageRect(_img, Rect.fromLTWH(1, 0, widthViewPort, heightViewPort),
+          dest, Paint());
+    }
+
+    Int32List pixels =
+        Int32List(widthViewPort.toInt() * heightViewPort.toInt());
+    int pixelIndex = 0;
 
     for (int y = safeY; y < safeYmax; y++) {
       for (int x = safeX; x < safeXmax; x++) {
@@ -102,7 +119,13 @@ class MapController {
           //check if tile already exist, if yes, draw, otherwise create it
           int safeZmax = map[y][x].length;
           for (int z = 0; z < safeZmax; z++) {
-            map[y][x][z].draw(c);
+            //map[y][x][z].draw(c);
+          }
+          if (pixelIndex < pixels.length) {
+            Color c = map[y][x][0].boxPaint.color;
+            pixels[pixelIndex] =
+                Color.fromRGBO(c.blue, c.green, c.red, 1).value;
+            pixelIndex++;
           }
         } else {
           var tileHeight =
@@ -118,6 +141,9 @@ class MapController {
             map[y][x] = {0: null}; //initialize line
           }
           map[y][x][0] = Ground(x, y, tileHeight, tileSize, null);
+
+          pixels[pixelIndex] = map[y][x][0].boxPaint.color.value;
+          pixelIndex++;
           tilesGenerated++;
 
           //TREE
@@ -150,14 +176,26 @@ class MapController {
       }
     }
 
+    dest = Rect.fromLTWH(
+      (lastViewportBounds.dx.toInt() != safeXmax.toInt()) ? -posX.ceilToDouble() : dest.left,
+      (lastViewportBounds.dy.toInt() != safeYmax.toInt()) ? -posY.ceilToDouble() : dest.top,
+      widthViewPort * tileSize,
+      heightViewPort * tileSize,
+    );
+    lastViewportBounds = Offset(safeXmax.toDouble(), safeYmax.toDouble());
+
+    _imgPainter
+        .generateImage(widthViewPort.toInt(), heightViewPort.toInt(), pixels)
+        .then((value) {
+      if (value != null) {
+        _img = value;
+      }
+    });
+
     //Organize List to show Entity elements (Players, Trees) on correct Y-Index order
     _findEntitysOnViewport();
     entitysOnViewport.sort((a, b) => a.y.compareTo(b.y));
 
-    //drawShadowns
-    for (var entity in entitysOnViewport) {
-      entity.drawEffects(c);
-    }
     for (var entity in entitysOnViewport) {
       entity.draw(c);
     }
