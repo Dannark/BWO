@@ -4,6 +4,7 @@ import 'package:BWO/Entity/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/PhysicsController.dart';
 import 'package:flame/anchor.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flame/position.dart';
@@ -13,20 +14,24 @@ import 'package:flutter/material.dart';
 class GameController extends Game with TapDetector {
   Size screenSize;
   double fps;
-  TextConfig config = TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Minecraft" );
+  TextConfig config = TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia" );
 
-  static const int worldSize = 12;
+  static const int worldSize = 16;
   static double deltaTime;
   static double time = 0;
   static int tapState = TapState.UP;
-  MapController mapController = new MapController(27, 47); // (27, 47)=15
+  MapController mapController = new MapController(); // (27, 47)=15
   PhysicsController physicsController;
   Player player;
-
+  
   GameController() {
     physicsController = new PhysicsController(mapController);
     player = new Player(0, 0, mapController);
     mapController.addEntity(player);
+
+    Flame.bgm.initialize();
+    Flame.bgm.play('recovery.mp3', volume: .5);
+    Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }
 
   void render(Canvas c) {

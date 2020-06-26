@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:BWO/Entity/Entity.dart';
@@ -7,7 +8,7 @@ import 'package:BWO/Map/tree.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
-import 'package:BWO/Map/tile.dart';
+import 'package:BWO/Map/Tile.dart';
 
 class MapController {
   final Map<int, Map<int, Map<int, Tile>>> map = {};
@@ -47,10 +48,10 @@ class MapController {
     fractalType: FractalType.FBM,
   );
 
-  MapController(this.widthViewPort, this.heightViewPort);
+  MapController();
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {int tileSize = 15, border = 5, int movimentType = MovimentType.MOVE}) {
+      {int tileSize = 15, border = 6, int movimentType = MovimentType.MOVE}) {
     var borderSize = (border * tileSize);
 
     this.widthViewPort =
@@ -90,7 +91,7 @@ class MapController {
     );
 
     safeY = (viewPort.top).ceil();
-    safeYmax = (viewPort.bottom).ceil()+5;
+    safeYmax = (viewPort.bottom).ceil()+6;
     safeX = (viewPort.left).ceil();
     safeXmax = (viewPort.right).ceil();
 

@@ -3,12 +3,15 @@ import 'dart:ui';
 
 import 'package:BWO/Effects/Effect.dart';
 import 'package:BWO/game_controller.dart';
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
 class WalkEffect {
   double animSpeed = 1;
   double timeInFuture = 0;
   List<Smoke> smokeEffects = List();
+
+  double timeInFutureForSoundSteps = 0;
 
   WalkEffect() {
     timeInFuture = GameController.time + 5;
@@ -17,14 +20,18 @@ class WalkEffect {
   void draw(Canvas c, double x, double y, int height, Offset walkSpeed) {
     var velocity = (walkSpeed.dx.abs() + walkSpeed.dy.abs()).clamp(0, 3);
 
-    if (GameController.time > timeInFuture && height > 110 && velocity > 0) {
-      var delay = .11 + ((1 - (velocity / 3)) * 0.5);
+    if (height > 110 && velocity > 0) {
+      if (GameController.time > timeInFuture) {
+        var delay = .11 + ((1 - (velocity / 3)) * 0.5);
 
-      timeInFuture = GameController.time + delay;
+        timeInFuture = GameController.time + delay;
 
-      smokeEffects.add(Smoke(x, y));
-      smokeEffects.add(Smoke(x, y));
-      smokeEffects.add(Smoke(x, y));
+        smokeEffects.add(Smoke(x, y));
+        smokeEffects.add(Smoke(x, y));
+        smokeEffects.add(Smoke(x, y));
+      }
+
+      playFootSteps(velocity);
     }
 
     for (var effect in smokeEffects) {
@@ -32,6 +39,15 @@ class WalkEffect {
     }
 
     smokeEffects.removeWhere((element) => element.isAlive() == false);
+  }
+
+  void playFootSteps(velocity) {
+    if (GameController.time > timeInFutureForSoundSteps) {
+      var delay = .2 + ((1 - (velocity / 3)) * 0.5);
+
+      timeInFutureForSoundSteps = GameController.time + delay;
+        Flame.audio.play("footstep_grass1.mp3", volume: .25);
+    }
   }
 }
 
@@ -74,7 +90,6 @@ class Smoke {
     if (GameController.time > lifeTime - .5) {
       c.drawRect(r, p);
     }
-    
   }
 
   bool isAlive() {

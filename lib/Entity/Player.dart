@@ -15,7 +15,7 @@ import 'package:sensors/sensors.dart';
 import 'dart:math';
 
 class Player extends Entity {
-  TextConfig config = TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Minecraft");
+  TextConfig config = TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
 
   double xSpeed = 0;
   double ySpeed = 0;

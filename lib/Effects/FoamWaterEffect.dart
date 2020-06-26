@@ -18,7 +18,7 @@ class FoamWaterEffect{
 
   FoamWaterEffect(){
     foamColor = Colors.blue[200];
-    normalColor = Colors.blue[400];
+    normalColor = Color.fromRGBO(83, 173, 246, 1);
     sandColor = Color.fromRGBO(231, 200, 140, 1);
     current = foamColor;
 

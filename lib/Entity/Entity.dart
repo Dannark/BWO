@@ -35,7 +35,7 @@ abstract class Entity{
   }
 
   void draw(Canvas c){
-    print("drawning wrongly");
+    print("drawning wrongly, this print should never appears.");
   }
   void debugDraw(Canvas c){
     p.color = Colors.red;

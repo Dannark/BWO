@@ -28,17 +28,24 @@ This project is still in development and right now it only has some fews feature
 - 24/06
 * Added walk/Swim and water effects + animations
 
+- 26/06
+* Added Random Grass/flowers sprites, 
+* Changing colors Pallet to get more 'look and feel' of the game.
+* Added Collision in the mountain
+* Ambient Music and footstep walk
+
 Next updates:
 * [ ] Optimze render and map Generator
 * [x] Fix player animation Position
-* [x] Add shadow and envoriment
+* [x] Add shadow to the environment
 * [x] Stop player walk when device is totally lying down
 * [-] Especial Effects 
     - [x] walk smoke 
     - [x] water ripple
     - [x] water foam
     - [x] water stars blink
-    - [ ] sound effects on walk
+    - [x] sound effects bgm, walk
+    - [ ] Add environment objects
 * [ ] Add Cut Tree Animation do player
 * [ ] Tree Cut Logic and Animation
 * [ ] Add fruits fell when hiting trees

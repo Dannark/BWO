@@ -10,7 +10,7 @@ import 'package:BWO/Utils/ImagePainter.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
-import 'package:BWO/Map/tile.dart';
+import 'package:BWO/Map/Tile.dart';
 
 class MapController {
   final Map<int, Map<int, Map<int, Tile>>> map = {};

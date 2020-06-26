@@ -6,6 +6,7 @@ class Tile{
   int posY;
   int size = 15;
   Color color;
+  ///ground height from 0 to 255
   int height = 255;
 
   Paint boxPaint = Paint();

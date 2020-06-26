@@ -63,12 +63,30 @@ flutter:
       - assets/images/trees/tree03.png
       - assets/images/trees/tree04.png
 
-      - assets/images/enviroment/brush.png
-      - assets/images/enviroment/brush_2.png
-      - assets/images/enviroment/stone.png
+      - assets/images/enviroment/floor1.png
+      - assets/images/enviroment/floor2.png
+      - assets/images/enviroment/floor3.png
+      - assets/images/enviroment/grass1.png
+      - assets/images/enviroment/grass2.png
+      - assets/images/enviroment/grass3.png
+      - assets/images/enviroment/grass4.png
+      - assets/images/enviroment/grass5.png
+      - assets/images/enviroment/grass6.png
+      - assets/images/enviroment/grass7.png
+      - assets/images/enviroment/grass8.png
+      - assets/images/enviroment/grass9.png
+      - assets/images/enviroment/grass10.png
+      - assets/images/enviroment/grass11.png
+      - assets/images/enviroment/grass12.png
+      - assets/images/enviroment/grass13.png
+      - assets/images/enviroment/grass14.png
       - assets/images/shadown.png
       - assets/images/shadown_large.png
       - assets/images/effects/ripple.png
+
+      - assets/audio/recovery.mp3
+      - assets/audio/footstep_grass1.mp3
+      - assets/audio/footstep_grass2.mp3
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -90,6 +108,9 @@ flutter:
     - family: Minecraft
       fonts:
         - asset: fonts/Minecraft.ttf
+    - family: Blocktopia
+      fonts:
+        - asset: fonts/Blocktopia.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

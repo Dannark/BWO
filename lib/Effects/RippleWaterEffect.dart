@@ -18,7 +18,7 @@ class RippleWaterEffect {
   }
 
   void draw(Canvas c, double x, double y, int height) {
-    if (GameController.time > timeinFuture && height < 106) {
+    if (GameController.time > timeinFuture && height < 107) {
       timeinFuture = GameController.time + .3;
 
       rippleEffects.add(Ripple(x, y));
