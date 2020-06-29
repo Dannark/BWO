@@ -34,6 +34,11 @@ This project is still in development and right now it only has some fews feature
 * Added Collision in the mountain
 * Ambient Music and footstep walk
 
+- 28/06
+* Player movment changed - now you need to be taping on screen to move him.
+* Player Sprite changed
+* Hit tree player animation
+
 Next updates:
 * [ ] Optimze render and map Generator
 * [x] Fix player animation Position
@@ -44,9 +49,10 @@ Next updates:
     - [x] water ripple
     - [x] water foam
     - [x] water stars blink
-    - [x] sound effects bgm, walk
+    - [x] sound effects bgm, walk and swim
     - [ ] Add environment objects
-* [ ] Add Cut Tree Animation do player
+    - [ ] Move camera around player when he is afk
+* [x] Add Cut Tree Animation do player
 * [ ] Tree Cut Logic and Animation
 * [ ] Add fruits fell when hiting trees
 * [ ] Add pickup items and inventory

@@ -50,14 +50,24 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-      - assets/images/human/walk_forward.png
-      - assets/images/human/walk_backward.png
-      - assets/images/human/walk_left.png
-      - assets/images/human/walk_right.png
-      - assets/images/human/walk_left_down.png
-      - assets/images/human/walk_right_down.png
-      - assets/images/human/walk_top_left.png
-      - assets/images/human/walk_top_right.png
+      - assets/images/human/walk/forward.png
+      - assets/images/human/walk/backward.png
+      - assets/images/human/walk/left.png
+      - assets/images/human/walk/right.png
+      - assets/images/human/walk/forward_left.png
+      - assets/images/human/walk/forward_right.png
+      - assets/images/human/walk/backward_left.png
+      - assets/images/human/walk/backward_right.png
+      
+      - assets/images/human/attack/forward.png
+      - assets/images/human/attack/backward.png
+      - assets/images/human/attack/left.png
+      - assets/images/human/attack/right.png
+      - assets/images/human/attack/forward_left.png
+      - assets/images/human/attack/forward_right.png
+      - assets/images/human/attack/backward_left.png
+      - assets/images/human/attack/backward_right.png
+
       - assets/images/trees/tree01.png
       - assets/images/trees/tree02.png
       - assets/images/trees/tree03.png
@@ -83,10 +93,15 @@ flutter:
       - assets/images/shadown.png
       - assets/images/shadown_large.png
       - assets/images/effects/ripple.png
+      - assets/images/effects/walk_grass.png
 
       - assets/audio/recovery.mp3
       - assets/audio/footstep_grass1.mp3
       - assets/audio/footstep_grass2.mp3
+      - assets/audio/footstep_sand_beech.mp3
+      - assets/audio/footstep_water_splash.mp3
+      - assets/audio/footstep_water_splash2.mp3
+      - assets/audio/swim_1.mp3
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

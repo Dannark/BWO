@@ -14,22 +14,25 @@ class PlayerActions {
   void interactWithTrees(MapController map) {
     isDoingAction = false;
 
-    if (GameController.tapState == TapState.DOWN) {
-
+    if (TapState.isTapingLeft()) {
       for (var entity in map.entitysOnViewport) {
         Offset target = Offset(entity.x, entity.y);
         double distance = (Offset(player.x, player.y) - target).distance;
-        
+
         if (distance <= 3.5 * player.worldSize) {
-          
           if (entity is Tree) {
             isDoingAction = true;
             entity.playAnimation();
 
+            player.currentSprite = player.attackSprites;
             player.setDirection(target);
           }
         }
       }
+    }
+
+    if (TapState.isTapingRight()) {
+      player.currentSprite = player.walkSprites;
     }
   }
 }

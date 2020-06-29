@@ -11,26 +11,28 @@ import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
-class GameController extends Game with TapDetector {
-  Size screenSize;
+class GameController extends Game with PanDetector {
+  static Size screenSize;
   double fps;
-  TextConfig config = TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia" );
+  TextConfig config =
+      TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
 
   static const int worldSize = 16;
   static double deltaTime;
   static double time = 0;
   static int tapState = TapState.UP;
+  static int preTapState = TapState.UP;
   MapController mapController = new MapController(); // (27, 47)=15
   PhysicsController physicsController;
   Player player;
-  
+
   GameController() {
     physicsController = new PhysicsController(mapController);
     player = new Player(0, 0, mapController);
     mapController.addEntity(player);
 
     Flame.bgm.initialize();
-    Flame.bgm.play('recovery.mp3', volume: .5);
+    Flame.bgm.play('recovery.mp3', volume: .3);
     Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }
 
@@ -50,10 +52,11 @@ class GameController extends Game with TapDetector {
         anchor: Anchor.topLeft);
     config.render(c, "Tiles: ${mapController.tilesGenerated}", Position(10, 30),
         anchor: Anchor.topLeft);
-    config.render(c, "Location: ${player.posX}, ${player.posY}", Position(10, 40),
+    config.render(
+        c, "Location: ${player.posX}, ${player.posY}", Position(10, 40),
         anchor: Anchor.topLeft);
-        physicsController.update();
-    
+    physicsController.update();
+
     EffectsController.draw(c);
   }
 
@@ -62,8 +65,17 @@ class GameController extends Game with TapDetector {
     deltaTime = dt;
     time += dt;
 
+    if (preTapState == TapState.DOWN) {
+      tapState = TapState.DOWN;
+      preTapState = TapState.UP;
+    }
+
     player.update();
     physicsController.update();
+
+    if (tapState == TapState.DOWN) {
+      tapState = TapState.PRESSING;
+    }
   }
 
   void resize(Size size) {
@@ -72,24 +84,32 @@ class GameController extends Game with TapDetector {
   }
 
   @override
-  void onTapUp(TapUpDetails details) {
+  void onPanDown(DragDownDetails details) {
+    preTapState = TapState.DOWN;
+    TapState.localPosition = details.localPosition;
+  }
+
+  @override
+  void onPanEnd(DragEndDetails details) {
     tapState = TapState.UP;
   }
-
-  @override
-  void onTapDown(TapDownDetails details) {
-    tapState = TapState.DOWN;
-  }
-
-  @override
-  void onTapCancel() {
-    tapState = TapState.CANCEL;
-  }
-
 }
 
-class TapState{
+class TapState {
   static const int UP = 0;
   static const int DOWN = 1;
-  static const int CANCEL = 2;
+  static const int PRESSING = 2;
+  static const int CANCEL = 3;
+
+  static Offset localPosition;
+
+  static bool isTapingLeft() {
+    return GameController.tapState == PRESSING &&
+        localPosition.dx < GameController.screenSize.width / 2;
+  }
+
+  static bool isTapingRight() {
+    return GameController.tapState == PRESSING &&
+        localPosition.dx > GameController.screenSize.width / 2;
+  }
 }

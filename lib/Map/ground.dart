@@ -13,6 +13,12 @@ class Ground extends Tile {
   FoamWaterEffect foamWaterEffect = new FoamWaterEffect();
   Sprite grass;
 
+  static const WATER = 95;
+  static const LOW_WATER = 110;
+  static const LOW_SAND = 112;
+  static const SAND = 118;
+  static const LOW_GRASS = 140;
+
   Ground(int posX, int posY, int height, int size, Color color)
       : super(posX, posY, height, size, color) {
     var tileColor = getTileDetailsBasedOnHight(this.height);
@@ -51,15 +57,15 @@ class Ground extends Tile {
       return Colors.blue[700];
     } else if (heightLvl < 75) {
       return Colors.blue[600];
-    } else if (heightLvl < 95) {
+    } else if (heightLvl < WATER) {
       return Colors.blue;
-    } else if (heightLvl < 110) {
+    } else if (heightLvl < LOW_WATER) {
       return Colors.blue[400];
-    } else if (heightLvl < 112) {
+    } else if (heightLvl < LOW_SAND) {
       return Color.fromRGBO(255, 224, 130, .94);
-    } else if (heightLvl < 118) {
+    } else if (heightLvl < SAND) {
       return Colors.amber[200];
-    } else if (heightLvl < 140) {
+    } else if (heightLvl < LOW_GRASS) {
       if(Random().nextInt(100) > 95){
         var id = Random().nextInt(4)+7;
         grass = Sprite("enviroment/grass${id}.png", width: size.toDouble(), height: size.toDouble());

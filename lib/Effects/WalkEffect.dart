@@ -2,52 +2,119 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:BWO/Effects/Effect.dart';
+import 'package:BWO/Map/ground.dart';
 import 'package:BWO/game_controller.dart';
+import 'package:flame/animation.dart' as anim;
 import 'package:flame/flame.dart';
+import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 
 class WalkEffect {
   double animSpeed = 1;
   double timeInFuture = 0;
+  double timeInFutureForGrass = 0;
   List<Smoke> smokeEffects = List();
 
   double timeInFutureForSoundSteps = 0;
 
+  List<GrassFX> grassAnimList = [];
+
   WalkEffect() {
     timeInFuture = GameController.time + 5;
+    timeInFutureForGrass = GameController.time + 5;
   }
 
   void draw(Canvas c, double x, double y, int height, Offset walkSpeed) {
     var velocity = (walkSpeed.dx.abs() + walkSpeed.dy.abs()).clamp(0, 3);
 
-    if (height > 110 && velocity > 0) {
-      if (GameController.time > timeInFuture) {
-        var delay = .11 + ((1 - (velocity / 3)) * 0.5);
-
-        timeInFuture = GameController.time + delay;
-
-        smokeEffects.add(Smoke(x, y));
-        smokeEffects.add(Smoke(x, y));
-        smokeEffects.add(Smoke(x, y));
-      }
-
-      playFootSteps(velocity);
+    if (velocity > 0) {
+      height < Ground.WATER
+          ? playStepSFX(velocity, "swim_1.mp3", .8, interval: .9)
+          : null;
+      height >= Ground.WATER && height <= Ground.LOW_WATER - 9
+          ? playStepSFX(velocity, "footstep_water_splash.mp3", .3)
+          : null;
+      height >= Ground.WATER + 9 && height <= Ground.LOW_WATER
+          ? playStepSFX(velocity, "footstep_water_splash2.mp3", .4)
+          : null;
+      height >= Ground.LOW_SAND && height <= Ground.SAND
+          ? addSmokeFX(velocity, x, y)
+          : null;
+      height >= Ground.LOW_SAND && height <= Ground.SAND
+          ? playStepSFX(velocity, "footstep_sand_beech.mp3", .3)
+          : null;
+      height >= Ground.SAND && height <= Ground.LOW_GRASS
+          ? playStepSFX(velocity, "footstep_grass2.mp3", .05)
+          : null;
+      height >= Ground.LOW_GRASS
+          ? playStepSFX(velocity, "footstep_grass1.mp3", .2)
+          : null;
+      height > Ground.LOW_GRASS ? addGrassFX(velocity, x, y) : null;
     }
 
     for (var effect in smokeEffects) {
       effect.draw(c, animSpeed);
     }
 
+    for (var grassAnim in grassAnimList) {
+      grassAnim.draw(c);
+    }
+
     smokeEffects.removeWhere((element) => element.isAlive() == false);
+    grassAnimList.removeWhere((element) => element.isAlive() == false);
   }
 
-  void playFootSteps(velocity) {
+  void addGrassFX(velocity, x, y) {
+    if (GameController.time > timeInFutureForGrass) {
+      var delay = .11 + ((1 - (velocity / 3)) * 0.5);
+      timeInFutureForGrass = GameController.time + delay;
+
+      grassAnimList.add(GrassFX(x, y));
+    }
+  }
+
+  void addSmokeFX(velocity, x, y) {
+    if (GameController.time > timeInFuture) {
+      var delay = .11 + ((1 - (velocity / 3)) * 0.5);
+
+      timeInFuture = GameController.time + delay;
+
+      smokeEffects.add(Smoke(x, y));
+      smokeEffects.add(Smoke(x, y));
+      smokeEffects.add(Smoke(x, y));
+    }
+  }
+
+  void playStepSFX(velocity, audioName, volume, {interval = .25}) {
     if (GameController.time > timeInFutureForSoundSteps) {
-      var delay = .2 + ((1 - (velocity / 3)) * 0.5);
+      var delay = interval + ((1 - (velocity / 3)) * 0.6);
 
       timeInFutureForSoundSteps = GameController.time + delay;
-        Flame.audio.play("footstep_grass1.mp3", volume: .25);
+      Flame.audio.play(audioName, volume: volume);
     }
+  }
+}
+
+class GrassFX {
+  double x, y;
+  anim.Animation grassAnim;
+  Paint p = Paint();
+
+  GrassFX(this.x, this.y) {
+    grassAnim = anim.Animation.sequenced('effects/walk_grass.png', 6,
+        textureWidth: 16, textureHeight: 16, loop: false, stepTime: 0.1);
+    p.color = Color.fromRGBO(255, 255, 255, .75);
+  }
+
+  void draw(Canvas c) {
+    grassAnim.update(GameController.deltaTime);
+    grassAnim
+        .getSprite()
+        .renderPosition(c, Position(x - 7, y - 8), overridePaint: p);
+  }
+
+  bool isAlive() {
+    return grassAnim.isLastFrame == false;
   }
 }
 
