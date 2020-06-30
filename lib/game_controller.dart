@@ -18,11 +18,11 @@ class GameController extends Game with PanDetector {
       TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
 
   static const int worldSize = 16;
-  static double deltaTime;
+  static double deltaTime = 0;
   static double time = 0;
   static int tapState = TapState.UP;
   static int preTapState = TapState.UP;
-  MapController mapController = new MapController(); // (27, 47)=15
+  MapController mapController = new MapController();
   PhysicsController physicsController;
   Player player;
 

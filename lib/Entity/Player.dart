@@ -21,7 +21,7 @@ class Player extends Entity {
   double xSpeed = 0;
   double ySpeed = 0;
 
-  int accelerationSpeed = 5;
+  int accelerationSpeed = 4;
   double maxAngle = 5;
   double speedMultiplier = .6;
 
@@ -42,7 +42,9 @@ class Player extends Entity {
     _playerActions = PlayerActions(this);
 
     accelerometerEvents.listen((AccelerometerEvent event) {
-      previousY = event.y;
+      if (GameController.tapState == TapState.DOWN) {
+        previousY = event.y;
+      }
 
       if (TapState.isTapingRight()) {
         xSpeed = (event.x * accelerationSpeed)
@@ -80,7 +82,7 @@ class Player extends Entity {
       bool stopAnimWhenIdle = true;
       if (currentSprite.folder == "human/attack") {
         stopAnimWhenIdle = false;
-        animSpeed = 0.09;
+        animSpeed = 0.07;
       }
 
       currentSprite.draw(c, x, y, xSpeed, ySpeed, animSpeed, stopAnimWhenIdle,
@@ -120,13 +122,13 @@ class Player extends Entity {
     Offset _gradeSize = Offset(4, 1);
     int framesCount = 0;
 
-    width = 16 * _scale;
-    height = 8 * _scale;
+    width = 12 * _scale;
+    height = 6 * _scale;
 
-    walkSprites = new SpriteController(
-        "human/walk", _viewPort, _pivot, _scale, _gradeSize, framesCount);
-    attackSprites = new SpriteController(
-        "human/attack", _viewPort, _pivot, _scale, Offset(5, 1), framesCount);
+    walkSprites = new SpriteController("human/walk", _viewPort, _pivot, _scale,
+        _gradeSize, framesCount, this, null);
+    attackSprites = new SpriteController("human/attack", _viewPort, _pivot,
+        _scale, Offset(5, 1), framesCount, this, walkSprites);
 
     currentSprite = walkSprites;
   }

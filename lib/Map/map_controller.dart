@@ -91,7 +91,7 @@ class MapController {
     );
 
     safeY = (viewPort.top).ceil();
-    safeYmax = (viewPort.bottom).ceil()+6;
+    safeYmax = (viewPort.bottom).ceil() + 6;
     safeX = (viewPort.left).ceil();
     safeXmax = (viewPort.right).ceil();
 
@@ -179,6 +179,8 @@ class MapController {
 
   void _findEntitysOnViewport() {
     entitysOnViewport.clear();
+
+    entityList.removeWhere((element) => element.marketToBeRemoved);
 
     for (int i = 0; i < entityList.length; i++) {
       if (entityList[i] is Player || _isEntityInsideViewport(entityList[i])) {

@@ -39,8 +39,12 @@ This project is still in development and right now it only has some fews feature
 * Player Sprite changed
 * Hit tree player animation
 
+- 29/06
+* Gravity friction and bouncy Physics
+* Fruit item logic
+
 Next updates:
-* [ ] Optimze render and map Generator
+* [x] Optimze render and map Generator
 * [x] Fix player animation Position
 * [x] Add shadow to the environment
 * [x] Stop player walk when device is totally lying down
@@ -53,11 +57,13 @@ Next updates:
     - [ ] Add environment objects
     - [ ] Move camera around player when he is afk
 * [x] Add Cut Tree Animation do player
+* [x] Add fruits fell when hiting trees
 * [ ] Tree Cut Logic and Animation
-* [ ] Add fruits fell when hiting trees
 * [ ] Add pickup items and inventory
 * [ ] Add enemys
 * [ ] Add player Attack animation
 * [ ] Add combat System
 * [ ] Add UI and HUD
 * [ ] Add Firebase connectivity to sync the game
+
+![gameplay_2](https://user-images.githubusercontent.com/7622553/86072224-7d941800-ba57-11ea-8d1d-9a2cab5c08b4.gif)

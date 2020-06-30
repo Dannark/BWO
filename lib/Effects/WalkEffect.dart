@@ -44,7 +44,7 @@ class WalkEffect {
           ? playStepSFX(velocity, "footstep_sand_beech.mp3", .3)
           : null;
       height >= Ground.SAND && height <= Ground.LOW_GRASS
-          ? playStepSFX(velocity, "footstep_grass2.mp3", .05)
+          ? playStepSFX(velocity, "footstep_grass2.mp3", .03)
           : null;
       height >= Ground.LOW_GRASS
           ? playStepSFX(velocity, "footstep_grass1.mp3", .2)

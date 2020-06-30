@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:BWO/Entity/Entity.dart';
+import 'package:BWO/Entity/Items.dart';
 import 'package:BWO/Map/tile.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/sprite.dart';
@@ -18,6 +19,8 @@ class Tree extends Entity {
   List<double> rotationList = [0, -0.05, 0.04, -0.02, 0.01, 0];
   double _timeInFuture = 0;
 
+  int applesLeft = 1;
+
   Tree(int posX, int posY, this._tileSize, this._spriteImage)
       : super((posX.toDouble() * GameController.worldSize),
             (posY.toDouble() * GameController.worldSize)) {
@@ -25,6 +28,8 @@ class Tree extends Entity {
     height = 2.0 * _tileSize;
     updatePhysics();
     loadSprite();
+
+    applesLeft = Random().nextInt(2);
   }
   void loadSprite() async {
     _tree = await SpriteBatch.withAsset('trees/${_spriteImage}.png');
@@ -77,4 +82,14 @@ class Tree extends Entity {
   void playAnimation() {
     _playAnimation = true;
   }
+
+  Item dropApple() {
+    if (Random().nextInt(100) < 3 && applesLeft > 0) {
+      applesLeft--;
+      return Item(x - 32, y, 100);
+    }
+    return null;
+  }
+
+  void cutTree() {}
 }
