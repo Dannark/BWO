@@ -1,6 +1,8 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:BWO/Effects/EffectsController.dart';
 import 'package:BWO/Entity/Player.dart';
+import 'package:BWO/ui/UIController.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/PhysicsController.dart';
 import 'package:flame/anchor.dart';
@@ -24,6 +26,7 @@ class GameController extends Game with PanDetector {
   static int preTapState = TapState.UP;
   MapController mapController = new MapController();
   PhysicsController physicsController;
+  static final UIController uiController = UIController();
   Player player;
 
   GameController() {
@@ -32,7 +35,8 @@ class GameController extends Game with PanDetector {
     mapController.addEntity(player);
 
     Flame.bgm.initialize();
-    Flame.bgm.play('recovery.mp3', volume: .3);
+    //Flame.bgm.play('recovery.mp3', volume: .3);
+    Flame.audio.disableLog();
     Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }
 
@@ -58,6 +62,12 @@ class GameController extends Game with PanDetector {
     physicsController.update();
 
     EffectsController.draw(c);
+
+    uiController.draw(c);
+
+    if (tapState == TapState.DOWN) {
+      tapState = TapState.PRESSING;
+    }
   }
 
   void update(double dt) {
@@ -72,10 +82,6 @@ class GameController extends Game with PanDetector {
 
     player.update();
     physicsController.update();
-
-    if (tapState == TapState.DOWN) {
-      tapState = TapState.PRESSING;
-    }
   }
 
   void resize(Size size) {
@@ -111,5 +117,15 @@ class TapState {
   static bool isTapingRight() {
     return GameController.tapState == PRESSING &&
         localPosition.dx > GameController.screenSize.width / 2;
+  }
+
+  static bool instersect(Rect r) {
+    Rectangle r1 = Rectangle(r.left, r.top, r.width, r.height);
+    Rectangle r2 = Rectangle(localPosition.dx, localPosition.dy, 2, 2);
+    return r1.intersects(r2);
+  }
+
+  static bool clickedAt(Rect r) {
+    return (instersect(r) && GameController.tapState == DOWN);
   }
 }

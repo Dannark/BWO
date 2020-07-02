@@ -23,20 +23,31 @@ class PhysicsController {
         e1.updatePhysics();
 
         entityList.forEach((e2) {
-          if (e1 != e2) {
+          if (e1 != e2 && e2.isActive) {
             int maxAmountOfTimesToPushPlayerOutPerLoop = 10;
             while (maxAmountOfTimesToPushPlayerOutPerLoop > 0) {
-              Rectangle r1 = Rectangle(e1.colisionBox.left, e1.colisionBox.top,
-                  e1.colisionBox.width, e1.colisionBox.height);
-              Rectangle r2 = Rectangle(e2.colisionBox.left, e2.colisionBox.top,
-                  e2.colisionBox.width, e2.colisionBox.height);
+              Rectangle r1 = Rectangle(
+                  e1.collisionBox.left,
+                  e1.collisionBox.top,
+                  e1.collisionBox.width,
+                  e1.collisionBox.height);
+              Rectangle r2 = Rectangle(
+                  e2.collisionBox.left,
+                  e2.collisionBox.top,
+                  e2.collisionBox.width,
+                  e2.collisionBox.height);
 
               if (r1.intersects(r2)) {
+                if (e2.isCollisionTrigger == false) {
+                  var direction = (Offset(e1.x, e1.y) - Offset(e2.x, e2.y));
+                  e1.x += direction.dx.clamp(-1, 1);
+                  e1.y += direction.dy.clamp(-1, 1);
+                  e1.updatePhysics();
+                } else {
+                  e1.onTriggerStay(e2);
+                  break;
+                }
                 //Rectangle intersection = r1.intersection(r2);
-                var direction = (Offset(e1.x, e1.y) - Offset(e2.x, e2.y));
-                e1.x += direction.dx.clamp(-1, 1);
-                e1.y += direction.dy.clamp(-1, 1);
-                e1.updatePhysics();
 
                 maxAmountOfTimesToPushPlayerOutPerLoop--;
               } else {
@@ -47,7 +58,7 @@ class PhysicsController {
         });
       }
 
-      blockWalkOnHeightAreas(e1);
+      //blockWalkOnHeightAreas(e1);
     });
   }
 

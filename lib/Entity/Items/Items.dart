@@ -1,10 +1,13 @@
 import 'package:BWO/Entity/Entity.dart';
+import 'package:BWO/Entity/Items/ItemDatabase.dart';
 import 'package:BWO/game_controller.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 class Item extends Entity {
+  ItemDB proprieties;
   Sprite sprite;
 
   double lifeTime = 0;
@@ -13,15 +16,20 @@ class Item extends Entity {
   double alphaBlink = 1;
   double blinkTimeBeforeDelete = 0;
 
-  Item(double x, double y, double z) : super(x, y) {
+  int amount = 1;
+
+  Item(double x, double y, double z, this.proprieties) : super(x, y) {
     super.z = z;
     bounciness = 0.12;
     lifeTime = GameController.time + 16;
     loadSprite();
+    shadownSize = proprieties.zoom;
+
+    isCollisionTrigger = true; //make item to be pickedUp
   }
 
   void loadSprite() async {
-    sprite = await Sprite.loadSprite("items/apple2.png");
+    sprite = await Sprite.loadSprite(proprieties.imgPath);
   }
 
   @override
@@ -35,7 +43,10 @@ class Item extends Entity {
 
       p.color = Color.fromRGBO(255, 255, 255, alphaBlink);
 
-      sprite.renderPosition(c, Position(x - 8, y - 16 - z), overridePaint: p);
+      Offset pivot =
+          Offset((proprieties.zoom * 16) / 2, (proprieties.zoom * 16));
+      sprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
+          scale: proprieties.zoom, overridePaint: p);
       updatePhysics();
 
       if (GameController.time > lifeTime) {
@@ -43,6 +54,15 @@ class Item extends Entity {
       }
 
       //debugDraw(c);
+    }
+  }
+
+  void use(Entity entity) {
+    if (proprieties.useEffects) {
+      amount--;
+      entity.status.addLife(proprieties.hp);
+      entity.status.addEnergy(proprieties.energy);
+      Flame.audio.play("items/eating_apple.mp3", volume: 0.3);
     }
   }
 

@@ -50,6 +50,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+      #player
       - assets/images/human/walk/forward.png
       - assets/images/human/walk/backward.png
       - assets/images/human/walk/left.png
@@ -68,11 +69,11 @@ flutter:
       - assets/images/human/attack/backward_left.png
       - assets/images/human/attack/backward_right.png
 
+      #enviroment
       - assets/images/trees/tree01.png
       - assets/images/trees/tree02.png
       - assets/images/trees/tree03.png
       - assets/images/trees/tree04.png
-
       - assets/images/enviroment/floor1.png
       - assets/images/enviroment/floor2.png
       - assets/images/enviroment/floor3.png
@@ -95,10 +96,16 @@ flutter:
       - assets/images/effects/ripple.png
       - assets/images/effects/walk_grass.png
 
-      - assets/images/items/apple.png
-      - assets/images/items/apple2.png
+      #items
+      - assets/images/items/apple3.png
+      - assets/images/items/apple_green.png
+      - assets/images/items/orange.png
       - assets/images/items/log.png
+      - assets/images/items/bag.png
+      - assets/images/items/bag_open.png
+      - assets/images/items/bag2.png
 
+      # sounds
       - assets/audio/recovery.mp3
       - assets/audio/footstep_grass1.mp3
       - assets/audio/footstep_grass2.mp3
@@ -108,8 +115,11 @@ flutter:
       - assets/audio/swim_1.mp3
       - assets/audio/impact_tree.mp3
       - assets/audio/impact_tree2.mp3
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+      - assets/audio/punch.mp3
+      - assets/audio/pickup_item1.mp3
+      - assets/audio/pickup_item2.mp3
+      - assets/audio/power_up.mp3
+      - assets/audio/items/eating_apple.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

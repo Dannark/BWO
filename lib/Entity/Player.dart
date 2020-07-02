@@ -1,12 +1,15 @@
 import 'dart:ui';
 
 import 'package:BWO/Entity/Entity.dart';
+import 'package:BWO/Entity/Items/Items.dart';
+import 'package:BWO/Entity/Player/Inventory.dart';
 import 'package:BWO/Entity/Player/PlayerActions.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/Frame.dart';
 import 'package:BWO/Utils/SpriteController.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/anchor.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite_batch.dart';
 import 'package:flame/text_config.dart';
@@ -38,14 +41,13 @@ class Player extends Entity {
   PlayerActions _playerActions;
   MapController map;
 
+  Inventory inventory;
+
   Player(double x, double y, this.map) : super(x, y) {
     _playerActions = PlayerActions(this);
+    inventory = Inventory(this);
 
     accelerometerEvents.listen((AccelerometerEvent event) {
-      if (GameController.tapState == TapState.DOWN) {
-        previousY = event.y;
-      }
-
       if (TapState.isTapingRight()) {
         xSpeed = (event.x * accelerationSpeed)
                 .clamp(-maxAngle, maxAngle)
@@ -56,6 +58,7 @@ class Player extends Entity {
                 .toDouble() *
             speedMultiplier;
       } else {
+        previousY = event.y;
         xSpeed = 0;
         ySpeed = 0;
       }
@@ -92,6 +95,8 @@ class Player extends Entity {
     config.render(c, "Player", Position(x, y - 45),
         anchor: Anchor.bottomCenter);
     debugDraw(c);
+
+    //inventory.drawPosition(c, x, y);
   }
 
   void update() {
@@ -113,6 +118,15 @@ class Player extends Entity {
 
     xSpeed *= slowFactor;
     ySpeed *= slowFactor;
+  }
+
+  @override
+  void onTriggerStay(Entity entity) {
+    if (entity is Item) {
+      inventory.addItem(entity) ? entity.destroy() : null;
+
+      Flame.audio.play("pickup_item1.mp3", volume: 0.9);
+    }
   }
 
   void _loadSprites() {

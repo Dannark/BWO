@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:BWO/Effects/RippleWaterEffect.dart';
 import 'package:BWO/Effects/WalkEffect.dart';
-import 'package:BWO/Entity/Items.dart';
+import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Entity/Player.dart';
 import 'package:BWO/Entity/Status.dart';
 import 'package:BWO/Map/tree.dart';
@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 abstract class Entity {
   Status status = Status();
   bool marketToBeRemoved = false;
+  bool isActive = true;
 
   int posX;
   int posY;
@@ -23,7 +24,9 @@ abstract class Entity {
   double width = 16;
   double height = 16;
 
-  Rect colisionBox;
+  Rect collisionBox;
+  bool isCollisionTrigger = false;
+
   double worldSize;
   double _gravity = 0.0;
   double _acceleraction = 0.0;
@@ -36,6 +39,7 @@ abstract class Entity {
 
   Paint p = new Paint();
 
+  double shadownSize = 2;
   Sprite shadown = new Sprite("shadown.png");
   Sprite shadown_large = new Sprite("shadown_large.png");
   RippleWaterEffect _rippleWaterEffect = RippleWaterEffect();
@@ -55,10 +59,13 @@ abstract class Entity {
     p.color = Colors.red;
     p.strokeWidth = 1;
     p.style = PaintingStyle.stroke;
-    c.drawRect(colisionBox, p);
+    c.drawRect(collisionBox, p);
   }
 
   void drawEffects(Canvas c) {
+    if (!isActive) {
+      return;
+    }
     _drawShadown(c);
     if (this is Player) {
       _rippleWaterEffect.draw(c, x, y, mapHeight);
@@ -67,25 +74,29 @@ abstract class Entity {
   }
 
   void _drawShadown(Canvas c) {
-    if (this is Tree) {
-      shadown_large.renderScaled(c, Position(x - 25, y - 20), scale: 3);
-    } else if (this is Item) {
-      var distanceToGround = 1 - (z.abs().clamp(0, 100) / 100);
-      Paint p = Paint();
-      p.color = Color.fromRGBO(255, 255, 255, distanceToGround);
-      shadown.renderScaled(
-          c, Position(x - 10 * distanceToGround, y - 15 * distanceToGround),
-          scale: 2 * distanceToGround, overridePaint: p);
-    } else {
-      shadown.renderScaled(c, Position(x - 15, y - 21), scale: 3);
-    }
+    var distanceToGround = 1 - (z.abs().clamp(0, 100) / 100);
+    Paint p = Paint();
+    p.color = Color.fromRGBO(255, 255, 255, distanceToGround);
+
+    var sizeX = 16 * shadownSize / 2;
+    var sizeY = (16 - 4) * shadownSize;
+
+    shadown_large.renderScaled(
+      c,
+      Position(
+        x - sizeX * distanceToGround,
+        y - sizeY * distanceToGround,
+      ),
+      scale: shadownSize * distanceToGround,
+      overridePaint: p,
+    );
   }
 
   void updatePhysics() {
     posX = x ~/ worldSize;
     posY = y ~/ worldSize;
 
-    colisionBox = Rect.fromLTWH(x - (width / 2), y - height, width, height);
+    collisionBox = Rect.fromLTWH(x - (width / 2), y - height, width, height);
 
     updateGravity();
     moveFriction();
@@ -134,6 +145,8 @@ abstract class Entity {
       _acceleraction = 0;
     }
   }
+
+  void onTriggerStay(Entity entity) {}
 
   void destroy() {
     marketToBeRemoved = true;

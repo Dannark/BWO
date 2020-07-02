@@ -2,7 +2,7 @@
 
 An infinity procedural online game using Flutter with Firebase and flames.
 
-![gameplay_2](https://user-images.githubusercontent.com/7622553/85237229-923f3300-b3fb-11ea-972e-bc55fad85d83.gif)
+![gameplay_2](https://user-images.githubusercontent.com/7622553/86072224-7d941800-ba57-11ea-8d1d-9a2cab5c08b4.gif)
 
 ### On the Table
 The world isn't stored in anywhere, it uses some conecpts and rules to generate it equaly in all devices only the changes made by player are actually stored on the firebase.
@@ -40,8 +40,16 @@ This project is still in development and right now it only has some fews feature
 * Hit tree player animation
 
 - 29/06
-* Gravity friction and bouncy Physics
-* Fruit item logic
+* Gravity, friction and bouncy Physics
+* Added Drop item logic
+
+- 02/07
+* Tree Cut Logic/Animation and Respawn
+* Added Log Item
+* Added Pickup Items
+* Added Inventory System
+* Added Click Detection
+* Added HUD and UI System
 
 Next updates:
 * [x] Optimze render and map Generator
@@ -58,12 +66,15 @@ Next updates:
     - [ ] Move camera around player when he is afk
 * [x] Add Cut Tree Animation do player
 * [x] Add fruits fell when hiting trees
-* [ ] Tree Cut Logic and Animation
-* [ ] Add pickup items and inventory
+* [x] Tree Cut Logic and Animation
+* [x] Add pickup items
+* [x] Inventory 
 * [ ] Add enemys
 * [ ] Add player Attack animation
 * [ ] Add combat System
-* [ ] Add UI and HUD
+* [x] Add UI and HUD
 * [ ] Add Firebase connectivity to sync the game
-
-![gameplay_2](https://user-images.githubusercontent.com/7622553/86072224-7d941800-ba57-11ea-8d1d-9a2cab5c08b4.gif)
+* [ ] Level and Progression System
+* [ ] Fix tree generation
+* [ ] Add hungriness
+* [ ] Change background music Volumn dynamic
