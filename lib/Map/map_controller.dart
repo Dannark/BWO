@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:BWO/Entity/Entity.dart';
-import 'package:BWO/Entity/Player.dart';
+import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Map/ground.dart';
 import 'package:BWO/Map/tree.dart';
 import 'package:BWO/game_controller.dart';

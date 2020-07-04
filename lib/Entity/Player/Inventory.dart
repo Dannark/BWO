@@ -1,6 +1,6 @@
 import 'package:BWO/Entity/Items/ItemDatabase.dart';
 import 'package:BWO/Entity/Items/Items.dart';
-import 'package:BWO/Entity/Player.dart';
+import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/ui/UIElement.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/position.dart';
@@ -36,7 +36,7 @@ class Inventory implements UIElement {
     _bagSpriteOpen = await Sprite.loadSprite("items/bag_open.png");
   }
 
-  bool isOpen = true;
+  bool isOpen = false;
   Paint p = Paint();
 
   int getSize() {
@@ -70,7 +70,7 @@ class Inventory implements UIElement {
       return;
     }
 
-    p.color = Colors.brown[300];
+    p.color = Colors.brown[200];
     var maxWidth = maxHorizontalSlots * 32;
     for (int i = 0; i < maxSlots; i++) {
       var xSlot = (i % maxHorizontalSlots) * (32 + spaceBetweenSlots);

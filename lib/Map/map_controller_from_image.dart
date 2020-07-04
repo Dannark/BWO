@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:BWO/Entity/Entity.dart';
-import 'package:BWO/Entity/Player.dart';
+import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Map/ground.dart';
 import 'package:BWO/Map/tree.dart';
 import 'package:BWO/Utils/ImagePainter.dart';
@@ -101,7 +101,6 @@ class MapController {
     safeX = (viewPort.left).ceil();
     safeXmax = (viewPort.right).ceil();
 
-    
     if (_img != null) {
       c.drawImageRect(_img, Rect.fromLTWH(1, 0, widthViewPort, heightViewPort),
           dest, Paint());
@@ -177,8 +176,12 @@ class MapController {
     }
 
     dest = Rect.fromLTWH(
-      (lastViewportBounds.dx.toInt() != safeXmax.toInt()) ? -posX.ceilToDouble() : dest.left,
-      (lastViewportBounds.dy.toInt() != safeYmax.toInt()) ? -posY.ceilToDouble() : dest.top,
+      (lastViewportBounds.dx.toInt() != safeXmax.toInt())
+          ? -posX.ceilToDouble()
+          : dest.left,
+      (lastViewportBounds.dy.toInt() != safeYmax.toInt())
+          ? -posY.ceilToDouble()
+          : dest.top,
       widthViewPort * tileSize,
       heightViewPort * tileSize,
     );

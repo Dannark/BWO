@@ -7,6 +7,12 @@ class Status {
   int _energy;
   int _maxEnergy;
 
+  int _force = 2;
+
+  int _level = 1;
+  int _exp = 0;
+  int _maxExp = 0;
+
   Status({int maxHP = 10, int maxEnergy = 5}) {
     this._maxHP = maxHP;
     this._maxEnergy = maxEnergy;
@@ -45,5 +51,13 @@ class Status {
   void setLife(int n) {
     _maxEnergy = n;
     _hp = _maxEnergy;
+  }
+
+  void addExp(int amount) {
+    _exp += amount;
+  }
+
+  int getMaxAttackPoint() {
+    return _force;
   }
 }

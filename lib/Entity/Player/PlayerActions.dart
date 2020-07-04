@@ -1,5 +1,5 @@
 import 'package:BWO/Entity/Items/Items.dart';
-import 'package:BWO/Entity/Player.dart';
+import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Map/tree.dart';
 import 'package:BWO/Utils/SpriteController.dart';

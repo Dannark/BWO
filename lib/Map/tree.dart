@@ -71,7 +71,7 @@ class Tree extends Entity {
       isActive ? _tree.render(c) : null;
     }
 
-    isActive ? debugDraw(c) : null;
+    //isActive ? debugDraw(c) : null;
   }
 
   void _die() {
@@ -82,7 +82,7 @@ class Tree extends Entity {
       _dropLogs();
       //destroy(); //make it inactive instead becase we want to respawn it
       isActive = false;
-      respawnTime = GameController.time + 128;
+      respawnTime = GameController.time + 164;
 
       _gravityRotation = 0;
       _deadRotation = 0;

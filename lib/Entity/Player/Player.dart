@@ -6,6 +6,7 @@ import 'package:BWO/Entity/Player/Inventory.dart';
 import 'package:BWO/Entity/Player/PlayerActions.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/Frame.dart';
+import 'package:BWO/Utils/OnAnimationEnd.dart';
 import 'package:BWO/Utils/SpriteController.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/anchor.dart';
@@ -17,12 +18,9 @@ import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:math';
 
-class Player extends Entity {
+class Player extends Entity implements OnAnimationEnd {
   TextConfig config =
       TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
-
-  double xSpeed = 0;
-  double ySpeed = 0;
 
   int accelerationSpeed = 4;
   double maxAngle = 5;
@@ -58,7 +56,7 @@ class Player extends Entity {
                 .toDouble() *
             speedMultiplier;
       } else {
-        previousY = event.y;
+        //previousY = -event.y;
         xSpeed = 0;
         ySpeed = 0;
       }
@@ -94,7 +92,6 @@ class Player extends Entity {
 
     config.render(c, "Player", Position(x, y - 45),
         anchor: Anchor.bottomCenter);
-    debugDraw(c);
 
     //inventory.drawPosition(c, x, y);
   }
@@ -104,7 +101,7 @@ class Player extends Entity {
       defaultY = previousY;
     }
     slowSpeedWhenItSinks(mapHeight);
-    moveWithPhysics(xSpeed, ySpeed);
+    moveWithPhysics();
     _playerActions.interactWithTrees(map);
   }
 
@@ -112,18 +109,17 @@ class Player extends Entity {
     currentSprite.setDirection(target, Offset(x, y));
   }
 
-  void slowSpeedWhenItSinks(int mapHeight, {double slowSpeedFactor = 0.6}) {
-    var sink = ((105 - mapHeight) * 0.2).clamp(0, 4);
-    double slowFactor = 1 - ((sink * 0.25) * slowSpeedFactor);
-
-    xSpeed *= slowFactor;
-    ySpeed *= slowFactor;
+  @override
+  void getHut(int damage) {
+    // TODO: implement getHut
+    super.getHut(damage);
   }
 
   @override
   void onTriggerStay(Entity entity) {
     if (entity is Item) {
       inventory.addItem(entity) ? entity.destroy() : null;
+      status.addExp(2);
 
       Flame.audio.play("pickup_item1.mp3", volume: 0.9);
     }
@@ -139,11 +135,19 @@ class Player extends Entity {
     width = 12 * _scale;
     height = 6 * _scale;
 
-    walkSprites = new SpriteController("human/walk", _viewPort, _pivot, _scale,
-        _gradeSize, framesCount, this, null);
+    walkSprites = new SpriteController(
+        "human/walk", _viewPort, _pivot, _scale, _gradeSize, framesCount, this);
     attackSprites = new SpriteController("human/attack", _viewPort, _pivot,
-        _scale, Offset(5, 1), framesCount, this, walkSprites);
+        _scale, Offset(5, 1), framesCount, this);
 
     currentSprite = walkSprites;
+  }
+
+  @override
+  void onAnimationEnd() {
+    print(currentSprite == attackSprites);
+    if (currentSprite == attackSprites) {
+      currentSprite = walkSprites;
+    }
   }
 }

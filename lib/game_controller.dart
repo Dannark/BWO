@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:BWO/Effects/EffectsController.dart';
-import 'package:BWO/Entity/Player.dart';
+import 'package:BWO/Entity/Enemys/Enemy.dart';
+import 'package:BWO/Entity/Enemys/Skull.dart';
+import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/ui/UIController.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/PhysicsController.dart';
@@ -28,14 +30,17 @@ class GameController extends Game with PanDetector {
   PhysicsController physicsController;
   static final UIController uiController = UIController();
   Player player;
+  Skull skull;
 
   GameController() {
     physicsController = new PhysicsController(mapController);
     player = new Player(0, 0, mapController);
+    skull = new Skull(-300, 32, mapController);
     mapController.addEntity(player);
+    mapController.addEntity(skull);
 
     Flame.bgm.initialize();
-    //Flame.bgm.play('recovery.mp3', volume: .3);
+    //Flame.bgm.play('recovery.mp3', volume: .2);
     Flame.audio.disableLog();
     Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }
@@ -81,6 +86,7 @@ class GameController extends Game with PanDetector {
     }
 
     player.update();
+    skull.update();
     physicsController.update();
   }
 
@@ -107,7 +113,7 @@ class TapState {
   static const int PRESSING = 2;
   static const int CANCEL = 3;
 
-  static Offset localPosition;
+  static Offset localPosition = Offset(0, 0);
 
   static bool isTapingLeft() {
     return GameController.tapState == PRESSING &&

@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:BWO/Entity/Player.dart';
+import 'package:BWO/Entity/Player/Player.dart';
+import 'package:BWO/Utils/OnAnimationEnd.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/sprite_batch.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,6 @@ class SpriteController {
   int _dir = -3;
   bool _spritesLoaded = false;
   String folder;
-
-  Player player;
-  SpriteController playAnimOnEnd;
 
   SpriteBatch _forward;
   SpriteBatch _backward;
@@ -33,10 +31,11 @@ class SpriteController {
   int _currentFrameId = 0;
   double _timeInFuture = 0;
 
-  SpriteController(this.folder, this._viewPort, this._pivot, this._scale,
-      this._gradeSize, this.framesCount, this.player, this.playAnimOnEnd) {
-    loadSprites(folder);
+  OnAnimationEnd onAnimEndCallback;
 
+  SpriteController(this.folder, this._viewPort, this._pivot, this._scale,
+      this._gradeSize, this.framesCount, this.onAnimEndCallback) {
+    loadSprites(folder);
     if (framesCount == 0) {
       framesCount = (_gradeSize.dx * _gradeSize.dy).toInt();
     }
@@ -77,8 +76,8 @@ class SpriteController {
 
       if (_currentFrameId >= framesCount) {
         _currentFrameId = 0;
-        if (playAnimOnEnd != null) {
-          player.currentSprite = playAnimOnEnd;
+        if (onAnimEndCallback != null) {
+          onAnimEndCallback.onAnimationEnd();
         }
       }
     }
@@ -103,6 +102,8 @@ class SpriteController {
       updateFrame(_forwardLeft, Offset(moveX, moveY), height);
     } else if (_dir >= -6 && _dir <= -5) {
       updateFrame(_forwardRight, Offset(moveX, moveY), height);
+    } else {
+      updateFrame(_right, Offset(moveX, moveY), height);
     }
 
     _currentFrame.render(c);

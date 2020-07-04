@@ -69,6 +69,16 @@ flutter:
       - assets/images/human/attack/backward_left.png
       - assets/images/human/attack/backward_right.png
 
+      #Enemy - mini-skull
+      - assets/images/enemys/miniskull/walk/forward.png
+      - assets/images/enemys/miniskull/walk/backward.png
+      - assets/images/enemys/miniskull/walk/left.png
+      - assets/images/enemys/miniskull/walk/right.png
+      - assets/images/enemys/miniskull/walk/forward_left.png
+      - assets/images/enemys/miniskull/walk/forward_right.png
+      - assets/images/enemys/miniskull/walk/backward_left.png
+      - assets/images/enemys/miniskull/walk/backward_right.png
+
       #enviroment
       - assets/images/trees/tree01.png
       - assets/images/trees/tree02.png
