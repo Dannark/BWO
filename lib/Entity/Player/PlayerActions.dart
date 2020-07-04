@@ -1,3 +1,4 @@
+import 'package:BWO/Entity/Enemys/Enemy.dart';
 import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
@@ -29,6 +30,16 @@ class PlayerActions {
               player.currentSprite = player.attackSprites;
 
               entity.doAction(map);
+            }
+            player.setDirection(target);
+          } else if (entity is Enemy) {
+            isDoingAction = true;
+
+            if (player.currentSprite != player.attackSprites &&
+                entity.status.isAlive()) {
+              player.currentSprite = player.attackSprites;
+
+              entity.getHut(player.status.getMaxAttackPoint());
             }
             player.setDirection(target);
           }

@@ -12,8 +12,13 @@ class IAController {
 
   double walkSpeed = 1;
   int patrolAreaRange = 300;
-  int seeTargetDistance = 164;
-  int attackDistance = 32;
+
+  ///when this unit see the target at this distance it will immediately attack it
+  int seeTargetDistanceMin = 96;
+
+  ///when this unit see the target at this distance it will attack only if it is running
+  int seeTargetDistanceMax = 224;
+  int attackDistance = 40;
   double attackSpeed = 1;
 
   double _followingSpeed = 0;
@@ -21,16 +26,20 @@ class IAController {
   double _newPatrolAreaDelay = 0;
   double _stopDistance = 24;
   double _attackSpeedDelay = 0;
-  double _loseTargetDistance = 500;
+  double _loseTargetDistance = 300;
 
   IAController(this.self) {
     _destPoint = Offset(self.x, self.y);
   }
 
   void update() {
+    if (self.status.isAlive() == false) {
+      return;
+    }
     patrolArea();
     searchForTargetsEntity();
     moveTo(_destPoint.dx, _destPoint.dy);
+    attackTarget();
   }
 
   void patrolArea() {
@@ -46,6 +55,10 @@ class IAController {
   }
 
   void moveTo(double targetX, double targetY) {
+    if (self.currentSprite != self.walkSprites) {
+      return;
+    }
+
     var distanceX = (self.x - targetX);
     var distanceY = (self.y - targetY);
     var dirX = distanceX.clamp(-1, 1);
@@ -72,7 +85,12 @@ class IAController {
         var distance =
             (Offset(self.x, self.y) - Offset(entity.x, entity.y)).distance;
 
-        if (distance < seeTargetDistance) {
+        if (distance < seeTargetDistanceMin) {
+          target = entity;
+        }
+        var targetSpeed = (entity.xSpeed + entity.ySpeed).abs();
+
+        if (distance < seeTargetDistanceMax && targetSpeed > 1.5) {
           target = entity;
         }
       }
@@ -89,19 +107,24 @@ class IAController {
     var distanceToTarget =
         (Offset(self.x, self.y) - Offset(target.x, target.y)).distance;
 
-    if (distanceToTarget > _loseTargetDistance) {
+    if (distanceToTarget > _loseTargetDistance ||
+        target.status.isAlive() == false) {
       target = null;
       return;
     }
 
+    var totalSpeed = self.xSpeed + self.ySpeed;
     if (GameController.time > _attackSpeedDelay &&
-        distanceToTarget < attackDistance) {
+        distanceToTarget < attackDistance &&
+        totalSpeed < 1) {
       _attackSpeedDelay = GameController.time + attackSpeed;
 
+      self.currentSprite
+          .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
       self.currentSprite = self.attackSprites;
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
-      self.getHut(self.status.getMaxAttackPoint());
+      target.getHut(self.status.getMaxAttackPoint());
     }
   }
 }

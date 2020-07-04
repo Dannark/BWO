@@ -18,43 +18,6 @@ This project is still in development and right now it only has some fews feature
 
 ## Dev Log
 
-### 21/06
-* Right now i'm focusing on the performance improviments in order to bring it the best fps as i can.
-* Next steps will be the player design it self and collision detection with the enviroment.
-
-### 23/06
-* Added player sink into the water and Trees collision detection.
-
-### 24/06
-* Added walk/Swim and water effects + animations
-
-### 26/06
-* Added Random Grass/flowers sprites, 
-* Changing colors Pallet to get more 'look and feel' of the game.
-* Added Collision in the mountain
-* Ambient Music and footstep walk
-
-### 28/06
-* Player movment changed - now you need to be taping on screen to move him.
-* Player Sprite changed
-* Hit tree player animation
-
-### 29/06
-* Gravity, friction and bouncy Physics
-* Added Drop item logic
-
-### 02/07
-* Tree Cut Logic/Animation and Respawn
-* Added Log Item
-* Added Pickup Items
-* Added Inventory System
-* Added Click Detection
-* Added HUD and UI System
-
-### 03/07
-* Added AI System
-* Added new Enemy [Skull]
-
 Next updates:
 * [x] Optimze render and map Generator
 * [x] Fix player animation Position
@@ -76,12 +39,56 @@ Next updates:
 * [x] Add enemys
     - [x] AI patrol
     - [x] AI Search, follow and lose target
-    - [ ] AI Attacking
-* [ ] Add player Attack animation
-* [ ] Add combat System
-* [x] Add UI and HUD
+    - [x] AI Attacking
+* [x] Add player Attack animation
+* [x] Add combat System
+* [x] Add UI
 * [ ] Level and Progression System
+* [ ] Player HUD
 * [ ] Add Firebase connectivity to sync the game
 * [ ] Fix tree generation
 * [ ] Add hungriness
 * [ ] Change background music Volume dynamic
+
+
+## 04/07
+* Added Combat System (Damage/Death/Respawn)
+* Added AI Attack
+* Added Damage Text Display on UI
+
+### 03/07
+* Added AI System
+* Added new Enemy [Skull]
+
+### 02/07
+* Tree Cut Logic/Animation and Respawn
+* Added Log Item
+* Added Pickup Items
+* Added Inventory System
+* Added Click Detection
+* Added HUD and UI System
+
+### 29/06
+* Gravity, friction and bouncy Physics
+* Added Drop item logic
+
+### 28/06
+* Player movment changed - now you need to be taping on screen to move him.
+* Player Sprite changed
+* Hit tree player animation
+
+### 26/06
+* Added Random Grass/flowers sprites, 
+* Changing colors Pallet to get more 'look and feel' of the game.
+* Added Collision in the mountain
+* Ambient Music and footstep walk
+
+### 24/06
+* Added walk/Swim and water effects + animations
+
+### 23/06
+* Added player sink into the water and Trees collision detection.
+
+### 21/06
+* Right now i'm focusing on the performance improviments in order to bring it the best fps as i can.
+* Next steps will be the player design it self and collision detection with the enviroment.

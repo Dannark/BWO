@@ -57,9 +57,9 @@ class GameController extends Game with PanDetector {
     config.render(c, "FPS: ${fps.isNaN || fps.isInfinite ? 0 : fps.toInt()}",
         Position(10, 10),
         anchor: Anchor.topLeft);
-    config.render(c, "Trees: ${mapController.treesGenerated}", Position(10, 20),
+    config.render(c, "HP: ${player.status.getHP()}", Position(10, 20),
         anchor: Anchor.topLeft);
-    config.render(c, "Tiles: ${mapController.tilesGenerated}", Position(10, 30),
+    config.render(c, "Energy: ${player.status.getEnergy()}", Position(10, 30),
         anchor: Anchor.topLeft);
     config.render(
         c, "Location: ${player.posX}, ${player.posY}", Position(10, 40),

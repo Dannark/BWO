@@ -20,12 +20,19 @@ class Status {
     refillStatus();
   }
 
+  int getHP() {
+    return _hp;
+  }
+
+  int getEnergy() {
+    return _energy;
+  }
+
   void takeDamage(int damage) {
     _hp -= damage;
   }
 
   void addLife(int life) {
-    print("${_hp} ${life}");
     _hp += life;
     if (_hp > _maxHP) {
       _hp = _maxHP;

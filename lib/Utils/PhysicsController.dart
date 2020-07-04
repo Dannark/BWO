@@ -23,7 +23,7 @@ class PhysicsController {
         e1.updatePhysics();
 
         entityList.forEach((e2) {
-          if (e1 != e2 && e2.isActive) {
+          if (e1 != e2 && e2.isActive && e1.isActive) {
             int maxAmountOfTimesToPushPlayerOutPerLoop = 10;
             while (maxAmountOfTimesToPushPlayerOutPerLoop > 0) {
               Rectangle r1 = Rectangle(

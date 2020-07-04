@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:BWO/Effects/DamageEffect.dart';
 import 'package:BWO/Effects/RippleWaterEffect.dart';
 import 'package:BWO/Effects/WalkEffect.dart';
 import 'package:BWO/Entity/Items/Items.dart';
@@ -34,10 +35,10 @@ abstract class Entity extends PhysicsEntity {
   Paint p = new Paint();
 
   double shadownSize = 2;
-  Sprite shadown = new Sprite("shadown.png");
   Sprite shadownLarge = new Sprite("shadown_large.png");
   RippleWaterEffect _rippleWaterEffect = RippleWaterEffect();
   WalkEffect _walkEffect = WalkEffect();
+  DamageEffect _damageEffect = DamageEffect();
 
   Entity(double x, double y) : super(x, y) {
     worldSize = GameController.worldSize.toDouble();
@@ -65,6 +66,7 @@ abstract class Entity extends PhysicsEntity {
       _rippleWaterEffect.draw(c, x, y, mapHeight);
       _walkEffect.draw(c, x, y, mapHeight, inputSpeed);
     }
+    _damageEffect.draw(c, x, y);
   }
 
   void _drawShadown(Canvas c) {
@@ -98,6 +100,7 @@ abstract class Entity extends PhysicsEntity {
 
   void getHut(int damage) {
     status.takeDamage(damage);
+    _damageEffect.addText(damage);
   }
 
   void onTriggerStay(Entity entity) {}

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Skull extends Enemy {
   Skull(double x, double y, MapController map)
-      : super(x, y, map, "enemys/miniskull/walk") {
+      : super(x, y, map, "enemys/miniskull") {
     iaController.walkSpeed = 1;
     status.setLife(10);
   }

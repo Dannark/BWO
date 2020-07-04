@@ -78,6 +78,15 @@ flutter:
       - assets/images/enemys/miniskull/walk/forward_right.png
       - assets/images/enemys/miniskull/walk/backward_left.png
       - assets/images/enemys/miniskull/walk/backward_right.png
+      
+      - assets/images/enemys/miniskull/attack/forward.png
+      - assets/images/enemys/miniskull/attack/backward.png
+      - assets/images/enemys/miniskull/attack/left.png
+      - assets/images/enemys/miniskull/attack/right.png
+      - assets/images/enemys/miniskull/attack/forward_left.png
+      - assets/images/enemys/miniskull/attack/forward_right.png
+      - assets/images/enemys/miniskull/attack/backward_left.png
+      - assets/images/enemys/miniskull/attack/backward_right.png
 
       #enviroment
       - assets/images/trees/tree01.png
@@ -105,6 +114,7 @@ flutter:
       - assets/images/shadown_large.png
       - assets/images/effects/ripple.png
       - assets/images/effects/walk_grass.png
+      - assets/images/effects/rip.png
 
       #items
       - assets/images/items/apple3.png

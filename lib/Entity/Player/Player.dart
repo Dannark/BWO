@@ -12,6 +12,7 @@ import 'package:BWO/game_controller.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
+import 'package:flame/sprite.dart';
 import 'package:flame/sprite_batch.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,8 @@ class Player extends Entity implements OnAnimationEnd {
   SpriteController walkSprites;
   SpriteController attackSprites;
   SpriteController currentSprite;
+  Sprite deathSprite = Sprite("effects/rip.png");
+  double timeToRespawn = 0;
 
   PlayerActions _playerActions;
   MapController map;
@@ -46,17 +49,23 @@ class Player extends Entity implements OnAnimationEnd {
     inventory = Inventory(this);
 
     accelerometerEvents.listen((AccelerometerEvent event) {
+      double eventX = event.x;
+      double eventY = event.y;
+      if (event.z < 0) {
+        eventX = eventX * 1;
+        eventY = eventY * -1;
+      }
+
       if (TapState.isTapingRight()) {
-        xSpeed = (event.x * accelerationSpeed)
-                .clamp(-maxAngle, maxAngle)
-                .toDouble() *
-            speedMultiplier;
-        ySpeed = ((event.y - defaultY) * -accelerationSpeed)
+        xSpeed =
+            (eventX * accelerationSpeed).clamp(-maxAngle, maxAngle).toDouble() *
+                speedMultiplier;
+        ySpeed = ((eventY - defaultY) * -accelerationSpeed)
                 .clamp(-maxAngle, maxAngle)
                 .toDouble() *
             speedMultiplier;
       } else {
-        //previousY = -event.y;
+        previousY = eventY;
         xSpeed = 0;
         ySpeed = 0;
       }
@@ -71,6 +80,10 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   void draw(Canvas c) {
+    die(c);
+    if (isActive == false) {
+      return;
+    }
     mapHeight = map.map[posY][posX][0].height;
 
     var maxWalkSpeed = (maxAngle * speedMultiplier);
@@ -97,12 +110,33 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   void update() {
+    if (isActive == false) {
+      return;
+    }
     if (GameController.tapState == TapState.DOWN) {
       defaultY = previousY;
     }
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();
     _playerActions.interactWithTrees(map);
+  }
+
+  void die(Canvas c) {
+    if (status.isAlive() == false) {
+      isActive = false;
+      deathSprite.renderScaled(c, Position(x - 16, y - 32), scale: 2);
+
+      if (timeToRespawn == 0) {
+        timeToRespawn = GameController.time + 5;
+      }
+      if (GameController.time > timeToRespawn) {
+        timeToRespawn = 0;
+        x = 0;
+        y = 0;
+        status.refillStatus();
+        isActive = true;
+      }
+    }
   }
 
   void setDirection(Offset target) {
@@ -145,7 +179,6 @@ class Player extends Entity implements OnAnimationEnd {
 
   @override
   void onAnimationEnd() {
-    print(currentSprite == attackSprites);
     if (currentSprite == attackSprites) {
       currentSprite = walkSprites;
     }
