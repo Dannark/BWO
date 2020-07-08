@@ -2,9 +2,12 @@ import 'dart:ui';
 
 import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Entity/Items/Items.dart';
+import 'package:BWO/Entity/Player/InputController.dart';
 import 'package:BWO/Entity/Player/Inventory.dart';
 import 'package:BWO/Entity/Player/PlayerActions.dart';
+import 'package:BWO/Entity/Player/PlayerNetwork.dart';
 import 'package:BWO/Map/map_controller.dart';
+import 'package:BWO/Server/NetworkServer.dart';
 import 'package:BWO/Utils/Frame.dart';
 import 'package:BWO/Utils/OnAnimationEnd.dart';
 import 'package:BWO/Utils/SpriteController.dart';
@@ -23,13 +26,6 @@ class Player extends Entity implements OnAnimationEnd {
   TextConfig config =
       TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
 
-  int accelerationSpeed = 4;
-  double maxAngle = 5;
-  double speedMultiplier = .6;
-
-  double previousY = 0;
-  double defaultY = 6.9; //angle standing up
-
   Paint boxPaint = Paint();
   Rect boxRect;
 
@@ -39,42 +35,26 @@ class Player extends Entity implements OnAnimationEnd {
   Sprite deathSprite = Sprite("effects/rip.png");
   double timeToRespawn = 0;
 
-  PlayerActions _playerActions;
+  PlayerActions playerActions;
+  InputController _inputController;
   MapController map;
 
   Inventory inventory;
+  PlayerNetwork _playerNetwork;
+  bool isMine;
 
-  Player(double x, double y, this.map) : super(x, y) {
-    _playerActions = PlayerActions(this);
+  Player(double x, double y, this.map, this.isMine, String myName)
+      : super(x, y) {
+    playerActions = PlayerActions(this);
+    _inputController = InputController(this);
     inventory = Inventory(this);
+    _playerNetwork = PlayerNetwork(this);
 
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      double eventX = event.x;
-      double eventY = event.y;
-      if (event.z < 0) {
-        eventX = eventX * 1;
-        eventY = eventY * -1;
-      }
+    name = myName;
 
-      if (TapState.isTapingRight()) {
-        xSpeed =
-            (eventX * accelerationSpeed).clamp(-maxAngle, maxAngle).toDouble() *
-                speedMultiplier;
-        ySpeed = ((eventY - defaultY) * -accelerationSpeed)
-                .clamp(-maxAngle, maxAngle)
-                .toDouble() *
-            speedMultiplier;
-      } else {
-        previousY = eventY;
-        xSpeed = 0;
-        ySpeed = 0;
-      }
-
-      if (ySpeed.abs() + xSpeed.abs() < 0.6 || _playerActions.isDoingAction) {
-        xSpeed = 0;
-        ySpeed = 0;
-      }
-    });
+    if (isMine) {
+      GameController.serverController.setPlayerInitialPos(this);
+    }
 
     _loadSprites();
   }
@@ -84,9 +64,10 @@ class Player extends Entity implements OnAnimationEnd {
     if (isActive == false) {
       return;
     }
-    mapHeight = map.map[posY][posX][0].height;
+    mapHeight = map.getHeightOnPos(posX, posY, 0);
 
-    var maxWalkSpeed = (maxAngle * speedMultiplier);
+    var maxWalkSpeed =
+        (_inputController.maxAngle * _inputController.speedMultiplier);
     var walkSpeed = max(xSpeed.abs(), ySpeed.abs());
     var deltaSpeed = (walkSpeed / maxWalkSpeed);
     var animSpeed = 0.07 + (0.1 - (deltaSpeed * 0.1));
@@ -103,22 +84,22 @@ class Player extends Entity implements OnAnimationEnd {
           mapHeight); //0.125 = 12fps
     }
 
-    config.render(c, "Player", Position(x, y - 45),
-        anchor: Anchor.bottomCenter);
+    config.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
 
     //inventory.drawPosition(c, x, y);
   }
 
+  @override
   void update() {
+    super.update();
     if (isActive == false) {
       return;
     }
-    if (GameController.tapState == TapState.DOWN) {
-      defaultY = previousY;
-    }
+    _inputController.update();
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();
-    _playerActions.interactWithTrees(map);
+    playerActions.interactWithTrees(map);
+    _playerNetwork.update();
   }
 
   void die(Canvas c) {

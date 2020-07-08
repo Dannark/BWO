@@ -7,6 +7,7 @@ import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
+import 'package:BWO/Utils/TapState.dart';
 
 class Inventory implements UIElement {
   List<Item> itemList = [];

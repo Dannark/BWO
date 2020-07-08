@@ -90,7 +90,7 @@ class WalkEffect {
       var delay = interval + ((1 - (velocity / 3)) * 0.6);
 
       timeInFutureForSoundSteps = GameController.time + delay;
-      Flame.audio.play(audioName, volume: volume);
+      //Flame.audio.play(audioName, volume: volume);
     }
   }
 }

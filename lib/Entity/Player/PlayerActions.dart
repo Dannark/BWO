@@ -7,6 +7,7 @@ import 'package:BWO/Utils/SpriteController.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:BWO/Utils/TapState.dart';
 
 class PlayerActions {
   Player player;
@@ -15,6 +16,9 @@ class PlayerActions {
   bool isDoingAction = false;
 
   void interactWithTrees(MapController map) {
+    if (!player.isMine) {
+      return;
+    }
     isDoingAction = false;
 
     if (TapState.isTapingLeft()) {

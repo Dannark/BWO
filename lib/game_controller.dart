@@ -4,9 +4,12 @@ import 'package:BWO/Effects/EffectsController.dart';
 import 'package:BWO/Entity/Enemys/Enemy.dart';
 import 'package:BWO/Entity/Enemys/Skull.dart';
 import 'package:BWO/Entity/Player/Player.dart';
+import 'package:BWO/Server/NetworkServer.dart';
+import 'package:BWO/Server/ServerController.dart';
 import 'package:BWO/ui/UIController.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/PhysicsController.dart';
+import 'package:BWO/Utils/TapState.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -15,7 +18,7 @@ import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
-class GameController extends Game with PanDetector {
+class GameController extends Game with PanDetector, WidgetsBindingObserver {
   static Size screenSize;
   double fps;
   TextConfig config =
@@ -29,12 +32,15 @@ class GameController extends Game with PanDetector {
   MapController mapController = new MapController();
   PhysicsController physicsController;
   static final UIController uiController = UIController();
+  static ServerController serverController;
   Player player;
   Skull skull;
 
   GameController() {
+    serverController = ServerController(mapController);
+
     physicsController = new PhysicsController(mapController);
-    player = new Player(0, 0, mapController);
+    player = new Player(0, 0, mapController, true, "Emulator");
     skull = new Skull(-300, 32, mapController);
     mapController.addEntity(player);
     mapController.addEntity(skull);
@@ -85,9 +91,14 @@ class GameController extends Game with PanDetector {
       preTapState = TapState.UP;
     }
 
-    player.update();
-    skull.update();
+    for (var entity in mapController.entitysOnViewport) {
+      if (entity is Player || entity is Enemy) {
+        entity.update();
+      }
+    }
+
     physicsController.update();
+    serverController.update();
   }
 
   void resize(Size size) {
@@ -105,33 +116,26 @@ class GameController extends Game with PanDetector {
   void onPanEnd(DragEndDetails details) {
     tapState = TapState.UP;
   }
-}
 
-class TapState {
-  static const int UP = 0;
-  static const int DOWN = 1;
-  static const int PRESSING = 2;
-  static const int CANCEL = 3;
-
-  static Offset localPosition = Offset(0, 0);
-
-  static bool isTapingLeft() {
-    return GameController.tapState == PRESSING &&
-        localPosition.dx < GameController.screenSize.width / 2;
-  }
-
-  static bool isTapingRight() {
-    return GameController.tapState == PRESSING &&
-        localPosition.dx > GameController.screenSize.width / 2;
-  }
-
-  static bool instersect(Rect r) {
-    Rectangle r1 = Rectangle(r.left, r.top, r.width, r.height);
-    Rectangle r2 = Rectangle(localPosition.dx, localPosition.dy, 2, 2);
-    return r1.intersects(r2);
-  }
-
-  static bool clickedAt(Rect r) {
-    return (instersect(r) && GameController.tapState == DOWN);
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    // TODO: implement lifecycleStateChange
+    super.lifecycleStateChange(state);
+    print("state = ${state}");
+    if (state == AppLifecycleState.detached ||
+        state == AppLifecycleState.paused) {
+      print("desconecting player ${player.name}");
+      NetworkServer.saveData({
+        'status': 'offline',
+        'x': player.x.roundToDouble(),
+        'y': player.y.roundToDouble()
+      }, player.name);
+    } else if (state == AppLifecycleState.resumed) {
+      NetworkServer.saveData({
+        'status': 'online',
+        'x': player.x.roundToDouble(),
+        'y': player.y.roundToDouble()
+      }, player.name);
+    }
   }
 }

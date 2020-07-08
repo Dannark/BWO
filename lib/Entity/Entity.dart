@@ -19,6 +19,8 @@ abstract class Entity extends PhysicsEntity {
   bool marketToBeRemoved = false;
   bool isActive = true;
 
+  String name;
+
   ///tiled position
   int posX;
   int posY;
@@ -49,6 +51,8 @@ abstract class Entity extends PhysicsEntity {
   void draw(Canvas c) {
     print("drawning wrongly, this draw method should be overwritten.");
   }
+
+  void update() {}
 
   void debugDraw(Canvas c) {
     p.color = Colors.red;

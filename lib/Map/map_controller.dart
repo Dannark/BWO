@@ -166,6 +166,16 @@ class MapController {
     c.restore();
   }
 
+  int getHeightOnPos(int x, int y, int z) {
+    int defaultHeight = 255;
+    if (map[y] != null) {
+      if (map[y][x] != null) {
+        defaultHeight = map[y][x][0].height;
+      }
+    }
+    return defaultHeight;
+  }
+
   void addEntity(Entity obj) {
     entityList.add(obj);
   }

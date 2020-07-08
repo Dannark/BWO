@@ -18,7 +18,7 @@ This project is still in development and right now it only has some fews feature
 
 ## Dev Log
 
-Next updates:
+Next updates: (21/29)
 * [x] Optimze render and map Generator
 * [x] Fix player animation Position
 * [x] Add shadow to the environment
@@ -50,8 +50,10 @@ Next updates:
 * [ ] Add hungriness
 * [ ] Change background music Volume dynamic
 
+### 07/07
+* Added Realtime connection to Google Firebase.
 
-## 04/07
+### 04/07
 * Added Combat System (Damage/Death/Respawn)
 * Added AI Attack
 * Added Damage Text Display on UI
