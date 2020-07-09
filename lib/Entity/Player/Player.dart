@@ -7,7 +7,6 @@ import 'package:BWO/Entity/Player/Inventory.dart';
 import 'package:BWO/Entity/Player/PlayerActions.dart';
 import 'package:BWO/Entity/Player/PlayerNetwork.dart';
 import 'package:BWO/Map/map_controller.dart';
-import 'package:BWO/Server/NetworkServer.dart';
 import 'package:BWO/Utils/Frame.dart';
 import 'package:BWO/Utils/OnAnimationEnd.dart';
 import 'package:BWO/Utils/SpriteController.dart';
@@ -51,10 +50,6 @@ class Player extends Entity implements OnAnimationEnd {
     _playerNetwork = PlayerNetwork(this);
 
     name = myName;
-
-    if (isMine) {
-      GameController.serverController.setPlayerInitialPos(this);
-    }
 
     _loadSprites();
   }
@@ -122,6 +117,10 @@ class Player extends Entity implements OnAnimationEnd {
 
   void setDirection(Offset target) {
     currentSprite.setDirection(target, Offset(x, y));
+  }
+
+  void setTargetPosition(double newX, double newY) {
+    _playerNetwork.setTargetPosition(newX, newY);
   }
 
   @override

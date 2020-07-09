@@ -1,87 +1,56 @@
-import 'dart:async';
+import 'package:flutter_socket_io/flutter_socket_io.dart';
+import 'package:flutter_socket_io/socket_io_manager.dart';
 
-import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/game_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
+abstract class NetworkServer {
+  final String _SERVER =
+      "https://3000-e92204fd-e411-4285-8fd3-cf3515d1c358.ws-us02.gitpod.io";
 
-class NetworkServer {
-  // FireStore
-  CollectionReference usersRef;
-  StreamSubscription<QuerySnapshot> _messagesSubscription;
+  SocketIO socketIO;
+  String id;
+  String playerName;
 
-  List<UsersData> usersOnScreen = [];
+  NetworkServer() {}
 
-  NetworkServer() {
-    usersRef = Firestore.instance.collection('users');
+  void initializeServer(String playerName) {
+    this.playerName = playerName;
+    socketIO = SocketIOManager().createSocketIO(_SERVER, "/",
+        query: "", socketStatusCallback: _socketStatus);
+
+    socketIO.init();
+    socketIO.subscribe("socket_info", _onSocketInfo);
+    socketIO.subscribe("setup", onSetup);
+    socketIO.subscribe("add-player", onAddPlayer);
+    socketIO.subscribe("remove-player", onRemovePlayer);
+    socketIO.subscribe("onMove", onMove);
+    socketIO.connect();
   }
 
-  void updateStoreListener(Rect bounds) {
-    if (_messagesSubscription != null) {
-      _messagesSubscription.cancel();
+  void _socketStatus(dynamic data) {
+    print("## Socket status: " + data);
+  }
+
+  void _destoryConnection() {
+    if (socketIO != null) {
+      SocketIOManager().destroySocket(socketIO);
     }
-    print("buscando... ${bounds.left} ${bounds.right}");
-    _messagesSubscription = usersRef
-        .where("status", isEqualTo: "online")
-        .where("x",
-            isGreaterThanOrEqualTo: bounds.left,
-            isLessThanOrEqualTo: bounds.right)
-        /*.where("y",
-            isGreaterThanOrEqualTo: bounds.top,
-            isLessThanOrEqualTo: bounds.bottom)*/
-        .snapshots()
-        .listen((data) {
-      usersOnScreen.clear();
-      data.documents.forEach((doc) {
-        usersOnScreen
-            .add(UsersData(doc.documentID, doc['status'], doc['x'], doc['y']));
-      });
-
-      onRecivedPlayersUpdate();
-    });
   }
 
-  static saveData(Map<String, dynamic> data, String documentID,
-      {String collection = 'users'}) {
-    Firestore.instance
-        .collection(collection)
-        .document(documentID)
-        .setData(data);
+  _onSocketInfo(dynamic data) {
+    print("## Player ID: " + data);
+    id = data;
+    if (socketIO != null) {
+      String jsonData = '{"name":"${playerName}", "x":50, "y": 0}';
+      socketIO.sendMessage("log-player", jsonData, _onLogMsgSent);
+    }
   }
 
-  setPlayerInitialPos(Player player) {
-    Firestore.instance
-        .collection('users')
-        .document(player.name)
-        .get()
-        .then((value) {
-      if (value.exists == false) {
-        NetworkServer.saveData(
-            {'status': 'online', 'x': player.x, 'y': player.y}, player.name);
-      } else {
-        player.x = value["x"];
-        player.y = value["y"];
+  onSetup(dynamic data) {}
 
-        onRevicedMainPlayerInfo(player);
-        updateStoreListener(
-            Rect.fromLTWH(player.x - 300, player.y - 300, 600, 600));
-      }
-    });
-  }
+  onAddPlayer(dynamic data) {}
 
-  void onRevicedMainPlayerInfo(Player player) {}
-  void onRecivedPlayersUpdate() {}
-}
+  onRemovePlayer(dynamic data) {}
 
-class UsersData {
-  String name;
-  String status;
-  double x;
-  double y;
+  void onMove(dynamic data) {}
 
-  UsersData(this.name, this.status, var x, var y) {
-    this.x = x.toDouble();
-    this.y = y.toDouble();
-  }
+  void _onLogMsgSent(dynamic data) {}
 }

@@ -48,6 +48,9 @@ class InputController {
   }
 
   void update() {
+    if (!player.isMine) {
+      return;
+    }
     if (GameController.tapState == TapState.DOWN) {
       defaultY = previousY;
     }

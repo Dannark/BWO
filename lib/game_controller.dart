@@ -4,7 +4,6 @@ import 'package:BWO/Effects/EffectsController.dart';
 import 'package:BWO/Entity/Enemys/Enemy.dart';
 import 'package:BWO/Entity/Enemys/Skull.dart';
 import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/Server/NetworkServer.dart';
 import 'package:BWO/Server/ServerController.dart';
 import 'package:BWO/ui/UIController.dart';
 import 'package:BWO/Map/map_controller.dart';
@@ -40,7 +39,9 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
     serverController = ServerController(mapController);
 
     physicsController = new PhysicsController(mapController);
-    player = new Player(0, 0, mapController, true, "Emulator");
+    player = new Player(0, 0, mapController, true, "Sansung");
+    serverController.setPlayer(player);
+
     skull = new Skull(-300, 32, mapController);
     mapController.addEntity(player);
     mapController.addEntity(skull);
@@ -122,20 +123,5 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
     // TODO: implement lifecycleStateChange
     super.lifecycleStateChange(state);
     print("state = ${state}");
-    if (state == AppLifecycleState.detached ||
-        state == AppLifecycleState.paused) {
-      print("desconecting player ${player.name}");
-      NetworkServer.saveData({
-        'status': 'offline',
-        'x': player.x.roundToDouble(),
-        'y': player.y.roundToDouble()
-      }, player.name);
-    } else if (state == AppLifecycleState.resumed) {
-      NetworkServer.saveData({
-        'status': 'online',
-        'x': player.x.roundToDouble(),
-        'y': player.y.roundToDouble()
-      }, player.name);
-    }
   }
 }
