@@ -20,6 +20,7 @@ class HUD {
   }
 
   void addElement(UIElement newUi) {
+    print("addElement");
     _uiElelements.add(newUi);
   }
 }

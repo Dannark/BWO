@@ -42,13 +42,28 @@ Next updates: (21/29)
     - [x] AI Attacking
 * [x] Add player Attack animation
 * [x] Add combat System
-* [x] Add UI
+* [x] Add UI System
+* [x] Added Scene Manager (Switch between Scenes like Menus, Game etc)
+* [-] Add UI - player creation
+~~ * [ ] Add Firebase connectivity to sync the game (Canceled) ~~
+* [ ] Create Node Server
+    - [x] Synchronize Players position
+    - [x] Smooth player animation
+    - [x] Optimze Synchronization player's data only to players in view range
+    - [x] Sync hit tree animation
+    - [ ] Sync attack other Players damage/animation
+    - [ ] Sync tree/items spawn
+    - [ ] Sync enemies
 * [ ] Level and Progression System
 * [ ] Player HUD
-* [ ] Add Firebase connectivity to sync the game
 * [ ] Fix tree generation
 * [ ] Add hungriness
 * [ ] Change background music Volume dynamic
+
+### 10/07
+* Solved problem not updating players when entering on my screen
+* Removed Google Firebase, using Node.js Server instead
+* Sync players position to camera view only
 
 ### 07/07
 * Added Realtime connection to Google Firebase.

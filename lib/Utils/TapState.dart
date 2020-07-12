@@ -24,7 +24,7 @@ class TapState {
 
   static bool instersect(Rect r) {
     Rectangle r1 = Rectangle(r.left, r.top, r.width, r.height);
-    Rectangle r2 = Rectangle(localPosition.dx, localPosition.dy, 2, 2);
+    Rectangle r2 = Rectangle(localPosition.dx, localPosition.dy, 1, 1);
     return r1.intersects(r2);
   }
 

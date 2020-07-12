@@ -14,23 +14,25 @@ abstract class NetworkServer {
   void initializeServer(String playerName) {
     this.playerName = playerName;
     socketIO = SocketIOManager().createSocketIO(_SERVER, "/",
-        query: "", socketStatusCallback: _socketStatus);
+        query: "", socketStatusCallback: socketStatus);
 
     socketIO.init();
     socketIO.subscribe("socket_info", _onSocketInfo);
-    socketIO.subscribe("setup", onSetup);
+    socketIO.subscribe("getPlayers", getPlayers);
     socketIO.subscribe("add-player", onAddPlayer);
     socketIO.subscribe("remove-player", onRemovePlayer);
     socketIO.subscribe("onMove", onMove);
+    socketIO.subscribe("onActionAll", onActionAll);
     socketIO.connect();
   }
 
-  void _socketStatus(dynamic data) {
-    print("## Socket status: " + data);
+  void socketStatus(dynamic data) {
+    //print("## Socket status: " + data);
   }
 
   void _destoryConnection() {
     if (socketIO != null) {
+      print("## Login out ");
       SocketIOManager().destroySocket(socketIO);
     }
   }
@@ -44,13 +46,15 @@ abstract class NetworkServer {
     }
   }
 
-  onSetup(dynamic data) {}
+  getPlayers(dynamic data) {}
 
   onAddPlayer(dynamic data) {}
 
   onRemovePlayer(dynamic data) {}
 
   void onMove(dynamic data) {}
+
+  void onActionAll(dynamic data) {}
 
   void _onLogMsgSent(dynamic data) {}
 }

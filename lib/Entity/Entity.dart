@@ -7,6 +7,7 @@ import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Entity/Status.dart';
 import 'package:BWO/Map/tree.dart';
+import 'package:BWO/Scene/GameScene.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
@@ -43,7 +44,7 @@ abstract class Entity extends PhysicsEntity {
   DamageEffect _damageEffect = DamageEffect();
 
   Entity(double x, double y) : super(x, y) {
-    worldSize = GameController.worldSize.toDouble();
+    worldSize = GameScene.worldSize.toDouble();
 
     updatePhysics();
   }

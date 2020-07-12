@@ -1,6 +1,7 @@
 import 'package:BWO/Entity/Items/ItemDatabase.dart';
 import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Entity/Player/Player.dart';
+import 'package:BWO/Scene/GameScene.dart';
 import 'package:BWO/ui/UIElement.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/position.dart';
@@ -26,7 +27,7 @@ class Inventory implements UIElement {
   Sprite _bagSpriteOpen;
 
   Inventory(this._player) {
-    GameController.uiController.hud.addElement(this);
+    GameScene.hud.addElement(this);
     addItem(Item(0, 0, 0, ItemDatabase.itemList[2]));
     // addItem(Item(0, 0, 0, ItemDatabase.itemList[3]));
     loadSprite();

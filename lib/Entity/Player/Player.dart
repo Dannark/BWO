@@ -39,7 +39,7 @@ class Player extends Entity implements OnAnimationEnd {
   MapController map;
 
   Inventory inventory;
-  PlayerNetwork _playerNetwork;
+  PlayerNetwork playerNetwork;
   bool isMine;
 
   Player(double x, double y, this.map, this.isMine, String myName)
@@ -47,7 +47,7 @@ class Player extends Entity implements OnAnimationEnd {
     playerActions = PlayerActions(this);
     _inputController = InputController(this);
     inventory = Inventory(this);
-    _playerNetwork = PlayerNetwork(this);
+    playerNetwork = PlayerNetwork(this);
 
     name = myName;
 
@@ -94,7 +94,7 @@ class Player extends Entity implements OnAnimationEnd {
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();
     playerActions.interactWithTrees(map);
-    _playerNetwork.update();
+    playerNetwork.update();
   }
 
   void die(Canvas c) {
@@ -120,7 +120,7 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   void setTargetPosition(double newX, double newY) {
-    _playerNetwork.setTargetPosition(newX, newY);
+    playerNetwork.setTargetPosition(newX, newY);
   }
 
   @override

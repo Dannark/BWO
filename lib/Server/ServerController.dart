@@ -12,8 +12,7 @@ import 'package:flutter/material.dart';
 class ServerController extends NetworkServer {
   MapController map;
   Player player;
-  int lastX = 0;
-  int lastY = 0;
+  bool firstMove = true;
 
   ServerController(this.map) {
     //initFirebase();
@@ -28,29 +27,35 @@ class ServerController extends NetworkServer {
 
   void movePlayer() async {
     String jsonData =
-        '{"name":"${player.name}", "x":${player.x.toInt()}, "y":${player.y.toInt()}, "xSpeed":"${player.xSpeed}", "ySpeed":"${player.ySpeed}"}';
+        '{"name":"${player.name}", "x":${player.x.toInt()}, "y":${player.y.toInt()}, "xSpeed":"${player.xSpeed.round()}", "ySpeed":"${player.ySpeed.round()}"}';
     socketIO.sendMessage("onMove", jsonData);
   }
 
+  void hitTree(int targetX, int targetY, int damage) async {
+    String jsonData =
+        '{"name":"${player.name}", "action":"hitTree", targetX:$targetX, targetY:$targetY, "damage":$damage }';
+    socketIO.sendMessage("onAction", jsonData);
+  }
+
   @override
-  onSetup(data) {
-    super.onSetup(data);
-    print("onSetup");
+  getPlayers(data) {
+    super.getPlayers(data);
+    print("getPlayers");
     Map<String, dynamic> user = jsonDecode(data);
 
     user.forEach((key, value) {
-      print("$key $value");
       String name = value["name"].toString();
       double newX = double.parse(value['x'].toString());
       double newY = double.parse(value['y'].toString());
 
-      print("$name $newX $newY");
-
       if (name == player.name) {
-        player.x = newX;
-        player.y = newY;
+        if (firstMove == true) {
+          firstMove = false;
+          player.x = newX;
+          player.y = newY;
+        }
       } else {
-        map.addEntity(Player(newX, newY, map, false, name));
+        _addEntityIfNotExist(Player(newX, newY, map, false, name));
       }
     });
   }
@@ -65,16 +70,8 @@ class ServerController extends NetworkServer {
     double newY = double.parse(user['y'].toString());
 
     String pName = user['name'].toString();
-
-    Entity foundEntity = map.entitysOnViewport
-        .firstWhere((element) => element.name == pName, orElse: () => null);
-
-    print(foundEntity);
-    if (foundEntity == null) {
-      map.addEntity(Player(newX, newY, map, false, pName));
-    } else {
-      print("skipping to Add new player, already exist: ${pName}");
-    }
+    print("## ${newX} ${newY}");
+    _addEntityIfNotExist(Player(newX, newY, map, false, pName));
   }
 
   @override
@@ -116,7 +113,42 @@ class ServerController extends NetworkServer {
         }
       }
     } else {
-      print("cant move: ${pName}");
+      _addEntityIfNotExist(Player(newX, newY, map, false, pName));
+    }
+  }
+
+  void _addEntityIfNotExist(Entity newEntity) {
+    Entity foundEntity = map.entitysOnViewport.firstWhere(
+        (element) => element.name == newEntity.name,
+        orElse: () => null);
+
+    if (foundEntity == null) {
+      print(
+          "> Adding new player ${newEntity.name} at position ${newEntity.x} ${newEntity.y}");
+      map.addEntity(newEntity);
+    } else {
+      print("> player already exists ${newEntity.name}. Ignoring...");
+    }
+  }
+
+  @override
+  void onActionAll(data) {
+    super.onActionAll(data);
+    print("onActionAll ${data}");
+
+    Map<String, dynamic> user = jsonDecode(data);
+    double targetX = double.parse(user['targetX'].toString());
+    double targetY = double.parse(user['targetY'].toString());
+
+    String pName = user['name'].toString();
+    if (pName == player.name) {
+      return;
+    }
+    Entity foundEntity = map.entityList
+        .firstWhere((element) => element.name == pName, orElse: () => null);
+
+    if (foundEntity != null && foundEntity is Player) {
+      foundEntity.playerNetwork.hitTreeAnimation(targetX, targetY);
     }
   }
 }

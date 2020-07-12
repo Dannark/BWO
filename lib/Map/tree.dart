@@ -5,6 +5,7 @@ import 'package:BWO/Entity/Items/ItemDatabase.dart';
 import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Map/tile.dart';
+import 'package:BWO/Scene/GameScene.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/flame_audio.dart';
@@ -34,8 +35,8 @@ class Tree extends Entity {
   double respawnTime = double.infinity;
 
   Tree(int posX, int posY, this._tileSize, this._spriteImage)
-      : super((posX.toDouble() * GameController.worldSize),
-            (posY.toDouble() * GameController.worldSize)) {
+      : super((posX.toDouble() * GameScene.worldSize),
+            (posY.toDouble() * GameScene.worldSize)) {
     width = 2.0 * _tileSize;
     height = 2.0 * _tileSize;
     updatePhysics();

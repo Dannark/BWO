@@ -33,6 +33,8 @@ class PlayerActions {
             if (player.currentSprite != player.attackSprites) {
               player.currentSprite = player.attackSprites;
 
+              player.playerNetwork
+                  .sendHitTree(entity.x.round(), entity.y.round(), 1);
               entity.doAction(map);
             }
             player.setDirection(target);

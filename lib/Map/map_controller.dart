@@ -12,6 +12,7 @@ import 'package:BWO/Map/Tile.dart';
 
 class MapController {
   final Map<int, Map<int, Map<int, Tile>>> map = {};
+  Player player;
 
   double widthViewPort;
   double heightViewPort;
@@ -180,6 +181,11 @@ class MapController {
     entityList.add(obj);
   }
 
+  void addPlayerRef(Player player) {
+    this.player = player;
+    entityList.add(player);
+  }
+
   bool _isEntityInsideViewport(Entity entity) {
     return (entity.posX > safeX &&
         entity.posY > safeY &&
@@ -195,6 +201,14 @@ class MapController {
     for (int i = 0; i < entityList.length; i++) {
       if (entityList[i] is Player || _isEntityInsideViewport(entityList[i])) {
         entitysOnViewport.add(entityList[i]);
+      }
+
+      if (_isEntityInsideViewport(entityList[i]) == false &&
+          entityList[i] is Player &&
+          entityList[i] != player) {
+        //remove players outside view
+        print("removing player ${entityList[i].name}");
+        entityList.remove(entityList[i]);
       }
     }
   }

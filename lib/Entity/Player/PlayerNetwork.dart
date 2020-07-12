@@ -1,7 +1,10 @@
 import 'dart:ui';
 
 import 'package:BWO/Entity/Player/Player.dart';
+import 'package:BWO/Scene/GameScene.dart';
+import 'package:BWO/Utils/SpriteController.dart';
 import 'package:BWO/game_controller.dart';
+import 'package:flame/flame.dart';
 
 class PlayerNetwork {
   Player player;
@@ -16,12 +19,9 @@ class PlayerNetwork {
   double _nextSendUpdate = 0;
   double updateFrequency = 0.25;
 
-  int amountOfMsgSent = 0;
   PlayerNetwork(this.player) {
     lastX = player.posX;
     lastY = player.posY;
-    newX = player.posX.toDouble();
-    newY = player.posY.toDouble();
   }
 
   void update() {
@@ -39,9 +39,8 @@ class PlayerNetwork {
         lastX = player.x.toInt();
         lastY = player.y.toInt();
         //SEND POSITION TO SERVER
-        amountOfMsgSent++;
-        print(amountOfMsgSent);
-        GameController.serverController.movePlayer();
+
+        GameScene.serverController.movePlayer();
       }
     }
   }
@@ -54,21 +53,30 @@ class PlayerNetwork {
       player.x = targetPos.dx;
       player.y = targetPos.dy;
     }
-    player.xSpeed =
-        lerpDouble(player.xSpeed, 0, GameController.deltaTime * lerpSpeed);
-    player.ySpeed =
-        lerpDouble(player.ySpeed, 0, GameController.deltaTime * lerpSpeed);
 
-    player.x = lerpDouble(
-        player.x, newX - player.xSpeed, GameController.deltaTime * lerpSpeed);
-    player.y = lerpDouble(
-        player.y, newY - player.ySpeed, GameController.deltaTime * lerpSpeed);
+    if (newX == 0 && newY == 0) {
+      return;
+    }
+    player.x = lerpDouble(player.x, newX, GameController.deltaTime * lerpSpeed);
+    player.y = lerpDouble(player.y, newY, GameController.deltaTime * lerpSpeed);
     player.setDirection(targetPos);
   }
 
   void setTargetPosition(double newX, double newY) {
     this.newX = newX;
     this.newY = newY;
+  }
+
+  void sendHitTree(int targetX, int targetY, int damage) {
+    GameScene.serverController.hitTree(targetX, targetY, damage);
+  }
+
+  void hitTreeAnimation(double targetX, double targetY) {
+    player.currentSprite = player.attackSprites;
+    Flame.audio.play("punch.mp3", volume: 0.5);
+
+    var targetPos = Offset(targetX, targetY);
+    player.setDirection(targetPos);
   }
 
   void controllAnimation() {}
