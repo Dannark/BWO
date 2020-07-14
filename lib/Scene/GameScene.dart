@@ -19,17 +19,19 @@ class GameScene extends SceneObject {
       TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
 
   Player player;
-  MapController mapController = new MapController();
+  MapController mapController;
   PhysicsController physicsController;
   static ServerController serverController;
 
   static HUD hud = HUD();
 
-  GameScene() {
+  GameScene(String playerName, Offset startPosition) {
+    mapController = new MapController(startPosition);
     serverController = ServerController(mapController);
 
     physicsController = new PhysicsController(mapController);
-    player = new Player(0, 0, mapController, true, "Dannark");
+    player = new Player(
+        startPosition.dx, startPosition.dy, mapController, true, playerName);
     serverController.setPlayer(player);
     mapController.addPlayerRef(player);
 

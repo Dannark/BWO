@@ -61,13 +61,12 @@ class KeyboardUI {
       KeyModel(',', 1, color: Colors.blueGrey[200]),
       KeyModel('_', 5),
       KeyModel('.', 1, color: Colors.blueGrey[200]),
-      KeyModel('⤴', 1.5, color: Colors.blue, txtColor: Colors.white) //⏎ ↵ ⤴
+      KeyModel('➢', 1.5, color: Colors.blue, txtColor: Colors.white) //⏎ ↵ ⤴
     ]
   };
 
   List<KeyButton> buttons = [];
 
-  String text = "";
   KeyUIListener _keyUIListener;
 
   Rect bounds;
@@ -125,21 +124,28 @@ class KeyboardUI {
       }
     });
 
-    var notAllowed = ['⊼', '⌫', '123', '⤴'];
+    var notAllowed = ['⊼', '⌫', '123', '⤴', '➢'];
     if (notAllowed.contains(keyName) == false) {
-      text += keyName;
+      _keyUIListener.onKeyPressed(keyName);
     }
 
     if (keyName == '⌫') {
-      if (text.length > 0) {
-        text = text.substring(0, text.length - 1);
-      }
+      _keyUIListener.onBackspacePressed();
     }
 
-    _keyUIListener.onKeyPressed(text);
-
-    if (keyName == '⤴') {
-      _keyUIListener.onConfirmPressed(text);
+    if (keyName == '➢') {
+      _keyUIListener.onConfirmPressed();
     }
+  }
+
+  Rect getOutbounds() {
+    return Rect.fromLTWH(0, 0, bounds.width, bounds.top);
+  }
+
+  void resetAnimation() {
+    //resets animation with default open animation
+    buttons.forEach((element) {
+      element.initializeAnimation(AnimationType.roll3dCenter);
+    });
   }
 }

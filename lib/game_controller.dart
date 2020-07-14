@@ -8,7 +8,6 @@ import 'package:BWO/Scene/GameScene.dart';
 import 'package:BWO/Scene/HomeScene.dart';
 import 'package:BWO/Scene/SceneObject.dart';
 import 'package:BWO/Server/ServerController.dart';
-import 'package:BWO/ui/UIController2.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/PhysicsController.dart';
 import 'package:BWO/Utils/TapState.dart';
@@ -21,7 +20,7 @@ import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 class GameController extends Game with PanDetector, WidgetsBindingObserver {
-  static Size screenSize;
+  static Rect screenSize;
   static double fps;
 
   static double deltaTime = 0;
@@ -34,18 +33,24 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
   // Skull skull;
 
   GameController() {
-    currentScene = HomeScene();
     //_gameScene = GameScene(); //init Game;
 
     // skull = new Skull(-300, 32, mapController);
     // mapController.addEntity(skull);
   }
 
+  void SafeStart() {
+    if (currentScene == null) {
+      currentScene = HomeScene();
+    }
+  }
+
   void render(Canvas c) {
-    Rect bgRect = Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
+    if (screenSize == null) return;
+
     Paint bgPaint = Paint();
     bgPaint.color = Color(0xff000000);
-    c.drawRect(bgRect, bgPaint);
+    c.drawRect(screenSize, bgPaint);
 
     currentScene.draw(c);
     EffectsController.draw(c);
@@ -56,6 +61,8 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
   }
 
   void update(double dt) {
+    if (screenSize == null) return;
+
     fps = 1.0 / dt;
     deltaTime = dt;
     time += dt;
@@ -69,14 +76,26 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
   }
 
   void resize(Size size) {
-    screenSize = size;
     super.resize(size);
+    screenSize = Rect.fromLTWH(0, 0, size.width, size.height);
+
+    SafeStart();
   }
 
   @override
   void onPanDown(DragDownDetails details) {
     preTapState = TapState.DOWN;
-    TapState.localPosition = details.localPosition;
+    TapState.pressedPosition = details.localPosition;
+    TapState.currentPosition = details.localPosition;
+    TapState.lastPosition = details.localPosition;
+  }
+
+  @override
+  void onPanUpdate(DragUpdateDetails details) {
+    if (tapState == TapState.PRESSING) {
+      TapState.lastPosition = TapState.currentPosition;
+      TapState.currentPosition = details.localPosition;
+    }
   }
 
   @override

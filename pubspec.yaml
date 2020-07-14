@@ -126,6 +126,10 @@ flutter:
       - assets/images/items/bag_open.png
       - assets/images/items/bag2.png
 
+      # ui
+      - assets/images/ui/backpaper.png
+      - assets/images/ui/backpaper1.png
+
       # sounds
       - assets/audio/recovery.mp3
       - assets/audio/footstep_grass1.mp3

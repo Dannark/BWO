@@ -1,4 +1,5 @@
 abstract class KeyUIListener {
-  void onConfirmPressed(String text) {}
-  void onKeyPressed(String text) {}
+  void onConfirmPressed() {}
+  void onKeyPressed(String keyName) {}
+  void onBackspacePressed() {}
 }

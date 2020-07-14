@@ -49,7 +49,10 @@ class MapController {
     fractalType: FractalType.FBM,
   );
 
-  MapController();
+  MapController(Offset startPosition) {
+    posX = startPosition.dx;
+    posY = startPosition.dy;
+  }
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
       {int tileSize = 15, border = 6, int movimentType = MovimentType.MOVE}) {

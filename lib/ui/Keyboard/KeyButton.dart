@@ -28,7 +28,7 @@ class KeyButton {
 
   Offset animatePos = Offset(0, 0);
   double animationZoom = 0;
-  double animSpeed = 4;
+  double animSpeed = 8;
 
   KeyButton(this._keyboard, Position gridPos, KeyModel keyVal) {
     p.color = _keyboard.keyBGColor;
@@ -119,7 +119,7 @@ class KeyButton {
       double distanceY = (_keyboard.bounds.center.dy - pos.y);
       animatePos = Offset(distanceX, distanceY);
     } else if (animType == AnimationType.explosion) {
-      Offset diff = (TapState.localPosition -
+      Offset diff = (TapState.pressedPosition -
           Offset(pos.x + width / 2, pos.y + height / 2));
 
       double x = (diff.dx * GameController.screenSize.width / diff.distance);

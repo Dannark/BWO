@@ -44,8 +44,7 @@ Next updates: (21/29)
 * [x] Add combat System
 * [x] Add UI System
 * [x] Added Scene Manager (Switch between Scenes like Menus, Game etc)
-* [-] Add UI - player creation
-~~ * [ ] Add Firebase connectivity to sync the game (Canceled) ~~
+* [x] Add UI - player creation
 * [ ] Create Node Server
     - [x] Synchronize Players position
     - [x] Smooth player animation

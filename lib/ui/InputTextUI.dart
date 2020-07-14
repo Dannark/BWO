@@ -1,60 +1,164 @@
+import 'dart:ui';
+
+import 'package:BWO/Utils/TapState.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:BWO/ui/Keyboard/KeyUIListener.dart';
 import 'package:BWO/ui/Keyboard/KeyboardUI.dart';
 import 'package:BWO/ui/UIElement.dart';
 import 'package:flame/anchor.dart';
+import 'package:flame/components/text_box_component.dart';
+import 'package:flame/components/text_component.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class InputTextUI extends UIElement implements KeyUIListener {
   Position pos;
-  String inputText = "Player1";
+  String _inputText = "";
   String placeHolder = "Text Example";
+  int maxLength = 16;
 
   double width = 200;
   double height = 40;
   Rect bounds;
-  double padding = 5;
+  double padding = 8;
 
   Paint p = Paint();
 
   KeyboardUI _keyboardUI;
 
-  InputTextUI(this.pos, this.inputText, this.placeHolder) {
+  var onConfirmCallback;
+  var onPressedCallback;
+
+  bool hasFocus = false;
+
+  TextConfig normalText;
+  TextConfig placeHolderText;
+
+  double rotation = 0;
+
+  InputTextUI(this.pos, this.placeHolder,
+      {maxLength: 16,
+      Color backGroundColor,
+      Color normalColor,
+      Color placeholderColor,
+      double fontSize = 18.0,
+      double rotation = 0}) {
+    this.maxLength = maxLength;
     _keyboardUI = KeyboardUI(this);
+
+    p.color = backGroundColor != null ? backGroundColor : Colors.blueGrey[50];
+
+    normalText = TextConfig(
+      fontSize: fontSize,
+      color: normalColor != null ? normalColor : Colors.grey[800],
+      fontFamily: "Blocktopia",
+    );
+
+    placeHolderText = TextConfig(
+      fontSize: fontSize,
+      color: placeholderColor != null ? placeholderColor : Colors.grey[600],
+      fontFamily: "Blocktopia",
+    );
+
+    this.rotation = rotation;
   }
 
-  TextConfig smallText = TextConfig(
-      fontSize: 18.0, color: Colors.grey[500], fontFamily: "Blocktopia");
-
   void draw(Canvas c) {
-    p.color = Colors.blueGrey[50];
-
+    c.save();
+    c.rotate(rotation);
     bounds =
         Rect.fromLTWH(pos.x - width / 2, pos.y - height / 2, width, height);
     c.drawRRect(RRect.fromRectAndRadius(bounds, Radius.circular(5)), p);
 
-    smallText.render(
-      c,
-      inputText,
-      Position(bounds.left + padding, bounds.center.dy),
-      anchor: Anchor.centerLeft,
+    var textOffsetX = ((width - padding - getTextWidth(_inputText)) * -1)
+        .clamp(0, double.infinity);
+
+    c.clipRect(bounds);
+
+    if (_inputText.length == 0) {
+      placeHolderText.render(
+        c,
+        placeHolder,
+        Position(bounds.left + padding, bounds.center.dy),
+        anchor: Anchor.centerLeft,
+      );
+    } else {
+      normalText.render(
+        c,
+        _inputText,
+        Position(bounds.left + padding - textOffsetX, bounds.center.dy),
+        anchor: Anchor.centerLeft,
+      );
+    }
+
+    if (TapState.clickedAt(_keyboardUI.getOutbounds())) {
+      hasFocus = false;
+    }
+
+    if (TapState.clickedAt(bounds)) {
+      hasFocus = true;
+      _keyboardUI.resetAnimation();
+    }
+    c.restore();
+
+    hasFocus ? _keyboardUI.draw(c) : null;
+  }
+
+  double getTextWidth(String text) {
+    final constraints = BoxConstraints(
+      maxWidth: 800.0, // maxwidth calculated
+      minHeight: 0.0,
+      minWidth: 0.0,
     );
 
-    _keyboardUI.draw(c);
+    RenderParagraph renderParagraph = RenderParagraph(
+      TextSpan(
+        text: _inputText,
+        style: TextStyle(fontSize: 18, fontFamily: 'Blocktopia'),
+      ),
+      textDirection: TextDirection.ltr,
+      maxLines: 1,
+    );
+    renderParagraph.layout(constraints);
+    double textlen = renderParagraph.getMinIntrinsicWidth(18).ceilToDouble();
+
+    return textlen;
+  }
+
+  String getText() {
+    return _inputText;
   }
 
   @override
-  void onConfirmPressed(String text) {
-    inputText = text;
-    print("Confirm Pressed");
+  void onConfirmPressed() {
+    hasFocus = false;
+    if (onConfirmCallback != null) onConfirmCallback(_inputText);
   }
 
   @override
-  void onKeyPressed(String text) {
-    inputText = text;
-    smallText = TextConfig(
-        fontSize: 18.0, color: Colors.grey[800], fontFamily: "Blocktopia");
+  void onKeyPressed(String keyName) {
+    if (_inputText.length < maxLength) {
+      _inputText += keyName;
+    }
+
+    if (onPressedCallback != null) onPressedCallback(_inputText);
+  }
+
+  @override
+  void onBackspacePressed() {
+    if (_inputText.length > 0) {
+      _inputText = _inputText.substring(0, _inputText.length - 1);
+    }
+  }
+
+  // CALL BACKS
+  void onPressedListener({Function(String) callback}) {
+    this.onPressedCallback = callback;
+  }
+
+  void onConfirmListener({Function(String) callback}) {
+    this.onConfirmCallback = callback;
   }
 }
