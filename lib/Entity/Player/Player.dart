@@ -70,7 +70,7 @@ class Player extends Entity implements OnAnimationEnd {
 
     if (currentSprite != null) {
       bool stopAnimWhenIdle = true;
-      if (currentSprite.folder == "human/attack") {
+      if (currentSprite.folder.contains("/attack")) {
         stopAnimWhenIdle = false;
         animSpeed = 0.07;
       }
@@ -149,10 +149,10 @@ class Player extends Entity implements OnAnimationEnd {
     width = 12 * _scale;
     height = 6 * _scale;
 
-    walkSprites = new SpriteController(
-        "human/walk", _viewPort, _pivot, _scale, _gradeSize, framesCount, this);
-    attackSprites = new SpriteController("human/attack", _viewPort, _pivot,
-        _scale, Offset(5, 1), framesCount, this);
+    walkSprites = new SpriteController("human/male1/walk", _viewPort, _pivot,
+        _scale, _gradeSize, framesCount, this);
+    attackSprites = new SpriteController("human/male1/attack", _viewPort,
+        _pivot, _scale, Offset(5, 1), framesCount, this);
 
     currentSprite = walkSprites;
   }

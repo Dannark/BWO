@@ -1,3 +1,4 @@
+import 'package:BWO/Utils/TapState.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:BWO/ui/Keyboard/KeyButton.dart';
 import 'package:BWO/ui/Keyboard/KeyModel.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class KeyboardUI {
-  Map<int, List<KeyModel>> keyList = {
+  static Map<int, List<KeyModel>> _keyList = {
     0: [
       KeyModel('1', 1),
       KeyModel('2', 1),
@@ -65,22 +66,28 @@ class KeyboardUI {
     ]
   };
 
-  List<KeyButton> buttons = [];
+  static List<KeyButton> _buttons = [];
 
-  KeyUIListener _keyUIListener;
+  static KeyUIListener _keyUIListener;
 
-  Rect bounds;
-  double paddingX = 10;
-  double paddingY = 10;
-  double keyHeight = 40;
-  double height = 0;
-  Paint p = Paint();
+  static Rect bounds;
+  static double paddingX = 10;
+  static double paddingY = 10;
+  static double keyHeight = 40;
+  static double height = 0;
+  static Paint _p = Paint();
 
-  Color keyBGColor = Colors.white70;
-  Color keyTxtColor = Colors.grey[800];
+  static Color keyBGColor = Colors.white70;
+  static Color keyTxtColor = Colors.grey[800];
 
-  KeyboardUI(this._keyUIListener) {
-    height = keyList.length * keyHeight + paddingY;
+  static bool isEnable = false;
+  static bool _isOpening = false;
+  static bool _isCapitalized = true;
+
+  KeyboardUI() {}
+
+  static void build() {
+    height = _keyList.length * keyHeight + paddingY;
 
     bounds = Rect.fromLTWH(
       0,
@@ -89,15 +96,14 @@ class KeyboardUI {
       height,
     );
 
-    keyList.forEach((lineIndex, lineKeys) {
+    _keyList.forEach((lineIndex, lineKeys) {
       double xItem = 0;
 
       for (int i = 0; i < lineKeys.length; i++) {
         KeyModel obj = lineKeys[i];
         xItem += obj.margin;
 
-        buttons
-            .add(KeyButton(this, Position(xItem, lineIndex.toDouble()), obj));
+        _buttons.add(KeyButton(Position(xItem, lineIndex.toDouble()), obj));
 
         if (obj is KeyModel) {
           xItem += obj.widthOnGrid;
@@ -108,17 +114,27 @@ class KeyboardUI {
     });
   }
 
-  void draw(Canvas c) {
-    p.color = Colors.blueGrey[100];
-    c.drawRect(bounds, p);
+  static void draw(Canvas c) {
+    if (isEnable == false) {
+      return;
+    }
 
-    buttons.forEach((element) {
+    if (TapState.clickedAt(KeyboardUI.getOutbounds()) && _isOpening == false) {
+      KeyboardUI.closeKeyboard();
+    }
+
+    _p.color = Colors.blueGrey[100];
+    c.drawRect(bounds, _p);
+
+    _buttons.forEach((element) {
       element.draw(c);
     });
+
+    _isOpening = false;
   }
 
-  void onPressed(String keyName) {
-    buttons.forEach((element) {
+  static void onPressed(String keyName) {
+    _buttons.forEach((element) {
       if (element.keyText != keyName) {
         element.initializeAnimation(AnimationType.explosion);
       }
@@ -133,19 +149,48 @@ class KeyboardUI {
       _keyUIListener.onBackspacePressed();
     }
 
+    if (keyName == '⊼') {
+      _isCapitalized = !_isCapitalized;
+
+      for (var button in _buttons) {
+        if (_isCapitalized) {
+          button.keyText = button.keyText.toUpperCase();
+        } else {
+          button.keyText = button.keyText.toLowerCase();
+        }
+      }
+    }
+
     if (keyName == '➢') {
       _keyUIListener.onConfirmPressed();
+      closeKeyboard();
     }
   }
 
-  Rect getOutbounds() {
+  static Rect getOutbounds() {
     return Rect.fromLTWH(0, 0, bounds.width, bounds.top);
   }
 
-  void resetAnimation() {
+  static void _resetAnimation() {
     //resets animation with default open animation
-    buttons.forEach((element) {
+    _buttons.forEach((element) {
       element.initializeAnimation(AnimationType.roll3dCenter);
     });
+  }
+
+  static void openKeyboard(KeyUIListener keyUIListener) {
+    isEnable = true;
+    _isOpening = true;
+    _resetAnimation();
+    setListener(keyUIListener);
+  }
+
+  static void closeKeyboard() {
+    isEnable = false;
+    setListener(null);
+  }
+
+  static void setListener(KeyUIListener keyUIListener) {
+    _keyUIListener = keyUIListener;
   }
 }

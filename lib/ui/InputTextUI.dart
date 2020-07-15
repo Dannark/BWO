@@ -26,12 +26,8 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
   Paint p = Paint();
 
-  KeyboardUI _keyboardUI;
-
   var onConfirmCallback;
   var onPressedCallback;
-
-  bool hasFocus = false;
 
   TextConfig normalText;
   TextConfig placeHolderText;
@@ -46,7 +42,6 @@ class InputTextUI extends UIElement implements KeyUIListener {
       double fontSize = 18.0,
       double rotation = 0}) {
     this.maxLength = maxLength;
-    _keyboardUI = KeyboardUI(this);
 
     p.color = backGroundColor != null ? backGroundColor : Colors.blueGrey[50];
 
@@ -93,17 +88,10 @@ class InputTextUI extends UIElement implements KeyUIListener {
       );
     }
 
-    if (TapState.clickedAt(_keyboardUI.getOutbounds())) {
-      hasFocus = false;
-    }
-
     if (TapState.clickedAt(bounds)) {
-      hasFocus = true;
-      _keyboardUI.resetAnimation();
+      KeyboardUI.openKeyboard(this);
     }
     c.restore();
-
-    hasFocus ? _keyboardUI.draw(c) : null;
   }
 
   double getTextWidth(String text) {
@@ -133,7 +121,6 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
   @override
   void onConfirmPressed() {
-    hasFocus = false;
     if (onConfirmCallback != null) onConfirmCallback(_inputText);
   }
 

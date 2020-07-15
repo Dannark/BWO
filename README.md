@@ -45,6 +45,7 @@ Next updates: (21/29)
 * [x] Add UI System
 * [x] Added Scene Manager (Switch between Scenes like Menus, Game etc)
 * [x] Add UI - player creation
+* [x] Added New Character Sprites to the game
 * [ ] Create Node Server
     - [x] Synchronize Players position
     - [x] Smooth player animation
@@ -58,6 +59,12 @@ Next updates: (21/29)
 * [ ] Fix tree generation
 * [ ] Add hungriness
 * [ ] Change background music Volume dynamic
+
+### 15/07
+* Added 3 New Playable Sprites to play with
+* Added Start Location Selection
+* Character Creation UI
+* Added new UI Buttons and Keyboards
 
 ### 10/07
 * Solved problem not updating players when entering on my screen

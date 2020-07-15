@@ -17,13 +17,16 @@ class ButtonUI {
 
   var onPressedCallback;
 
-  ButtonUI(
-    Rect bounds,
-    this.text, {
-    Color normalColor,
-    Color pressedColor,
-    Color fontColor,
-  }) {
+  bool canBeSelected = false;
+  bool isSelected = false;
+
+  ButtonUI(Rect bounds, this.text,
+      {Color normalColor,
+      Color pressedColor,
+      Color fontColor,
+      double fontSize = 15,
+      bool canBeSelected = false,
+      bool isSelected = false}) {
     this.bounds = Rect.fromLTWH(bounds.left - bounds.width / 2, bounds.top,
         bounds.width, bounds.height);
     this.normalColor =
@@ -32,16 +35,24 @@ class ButtonUI {
         pressedColor != null ? pressedColor : Color.fromRGBO(50, 143, 249, 1);
 
     normalText = TextConfig(
-      fontSize: 15,
+      fontSize: fontSize,
       color: fontColor != null ? fontColor : Color.fromRGBO(224, 223, 168, 1),
       fontFamily: "Blocktopia",
     );
+
+    this.canBeSelected = canBeSelected;
+    this.isSelected = isSelected;
   }
 
   void draw(Canvas c) {
-    p.color = normalColor;
+    if (canBeSelected) {
+      p.color = isSelected ? pressedColor : normalColor;
+    } else {
+      p.color = normalColor;
+    }
 
     if (TapState.clickedAt(bounds)) {
+      isSelected = canBeSelected ? !isSelected : isSelected;
       if (onPressedCallback != null) onPressedCallback();
     }
 
@@ -57,5 +68,9 @@ class ButtonUI {
 
   void onPressedListener({Function() callback}) {
     this.onPressedCallback = callback;
+  }
+
+  void setBounds(Rect r) {
+    bounds = r;
   }
 }

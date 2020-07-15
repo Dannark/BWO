@@ -52,23 +52,43 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       #player
-      - assets/images/human/walk/forward.png
-      - assets/images/human/walk/backward.png
-      - assets/images/human/walk/left.png
-      - assets/images/human/walk/right.png
-      - assets/images/human/walk/forward_left.png
-      - assets/images/human/walk/forward_right.png
-      - assets/images/human/walk/backward_left.png
-      - assets/images/human/walk/backward_right.png
+      - assets/images/human/male1/walk/forward.png
+      - assets/images/human/male1/walk/backward.png
+      - assets/images/human/male1/walk/left.png
+      - assets/images/human/male1/walk/right.png
+      - assets/images/human/male1/walk/forward_left.png
+      - assets/images/human/male1/walk/forward_right.png
+      - assets/images/human/male1/walk/backward_left.png
+      - assets/images/human/male1/walk/backward_right.png
       
-      - assets/images/human/attack/forward.png
-      - assets/images/human/attack/backward.png
-      - assets/images/human/attack/left.png
-      - assets/images/human/attack/right.png
-      - assets/images/human/attack/forward_left.png
-      - assets/images/human/attack/forward_right.png
-      - assets/images/human/attack/backward_left.png
-      - assets/images/human/attack/backward_right.png
+      - assets/images/human/male1/attack/forward.png
+      - assets/images/human/male1/attack/backward.png
+      - assets/images/human/male1/attack/left.png
+      - assets/images/human/male1/attack/right.png
+      - assets/images/human/male1/attack/forward_left.png
+      - assets/images/human/male1/attack/forward_right.png
+      - assets/images/human/male1/attack/backward_left.png
+      - assets/images/human/male1/attack/backward_right.png
+
+      # male2
+      - assets/images/human/male2/walk/forward.png
+      - assets/images/human/male2/walk/backward.png
+      - assets/images/human/male2/walk/left.png
+      - assets/images/human/male2/walk/right.png
+      - assets/images/human/male2/walk/forward_left.png
+      - assets/images/human/male2/walk/forward_right.png
+      - assets/images/human/male2/walk/backward_left.png
+      - assets/images/human/male2/walk/backward_right.png
+      
+      # female1
+      - assets/images/human/female1/walk/forward.png
+      - assets/images/human/female1/walk/backward.png
+      - assets/images/human/female1/walk/left.png
+      - assets/images/human/female1/walk/right.png
+      - assets/images/human/female1/walk/forward_left.png
+      - assets/images/human/female1/walk/forward_right.png
+      - assets/images/human/female1/walk/backward_left.png
+      - assets/images/human/female1/walk/backward_right.png
 
       #Enemy - mini-skull
       - assets/images/enemys/miniskull/walk/forward.png

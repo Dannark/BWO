@@ -5,12 +5,13 @@ import 'package:BWO/Entity/Enemys/Enemy.dart';
 import 'package:BWO/Entity/Enemys/Skull.dart';
 import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Scene/GameScene.dart';
-import 'package:BWO/Scene/HomeScene.dart';
+import 'package:BWO/Scene/CharacterCreation/CharacterCreation.dart';
 import 'package:BWO/Scene/SceneObject.dart';
 import 'package:BWO/Server/ServerController.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/PhysicsController.dart';
 import 'package:BWO/Utils/TapState.dart';
+import 'package:BWO/ui/Keyboard/KeyboardUI.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -41,7 +42,8 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
 
   void SafeStart() {
     if (currentScene == null) {
-      currentScene = HomeScene();
+      KeyboardUI.build();
+      currentScene = CharacterCreation();
     }
   }
 
@@ -54,6 +56,7 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
 
     currentScene.draw(c);
     EffectsController.draw(c);
+    KeyboardUI.draw(c);
 
     if (tapState == TapState.DOWN) {
       tapState = TapState.PRESSING;
