@@ -6,6 +6,7 @@ import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Map/tile.dart';
 import 'package:BWO/Scene/GameScene.dart';
+import 'package:BWO/Utils/PreloadAssets.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/flame_audio.dart';
@@ -49,7 +50,8 @@ class Tree extends Entity {
   }
 
   void loadSprite() async {
-    _tree = await SpriteBatch.withAsset('trees/${_spriteImage}.png');
+    //_tree = await SpriteBatch.withAsset('trees/${_spriteImage}.png');
+    _tree = PreloadAssets.getTreeSprite(_spriteImage);
     _tree.add(
         rect: Rect.fromLTWH(0, 0, 16, 16),
         offset: Offset(

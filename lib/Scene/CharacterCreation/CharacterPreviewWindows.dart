@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:BWO/Utils/TapState.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
@@ -22,8 +23,10 @@ class CharacterPreviewWindows {
     sprites[0] = (loadSprite("human/male1"));
     sprites[1] = (loadSprite("human/male2"));
     sprites[2] = (loadSprite("human/female1"));
-    sprites[3] = (loadSprite("human/male1"));
-    sprites[4] = (loadSprite("human/male1"));
+    sprites[3] = (loadSprite("human/female2"));
+    sprites[4] = (loadSprite("human/female3"));
+    sprites[5] = (loadSprite("human/female4"));
+    sprites[6] = (loadSprite("human/female5"));
     _currentSprite = sprites[indexSpriteSheet];
     delay = GameController.time + 2;
 
@@ -31,7 +34,19 @@ class CharacterPreviewWindows {
   }
 
   void draw(Canvas c) {
-    indexSpriteSheet = 2;
+    Rect leftButton = Rect.fromLTWH(myPos.x - 113, myPos.y, 80, 70);
+    Rect rightButton = Rect.fromLTWH(myPos.x + 18, myPos.y, 80, 70);
+
+    if (TapState.clickedAt(leftButton)) {
+      indexSpriteSheet--;
+    }
+    if (TapState.clickedAt(rightButton)) {
+      indexSpriteSheet++;
+    }
+    indexSpriteSheet = indexSpriteSheet.clamp(0, sprites.length - 1);
+
+    Rect clipRect = Rect.fromLTWH(myPos.x - 115, myPos.y - 10, 220, 90);
+    c.clipRect(clipRect);
     sprites.forEach((key, value) {
       double zoom = .9 - ((key - indexSpriteSheet).abs() * .2);
       Position newPos = myPos +
@@ -60,6 +75,7 @@ class CharacterPreviewWindows {
             .renderScaled(c, newPos, scale: 4 * zoom, overridePaint: alphaP);
       }
     });
+    c.restore();
     _currentSprite = sprites[indexSpriteSheet];
 
     if (GameController.time > delay) {
@@ -93,5 +109,9 @@ class CharacterPreviewWindows {
           rows: 1));
     }
     return sprites;
+  }
+
+  String getSpriteSelected() {
+    return _currentSprite[0].imageName.replaceFirst("/walk/forward.png", "");
   }
 }

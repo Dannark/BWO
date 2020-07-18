@@ -1,7 +1,10 @@
+import 'package:BWO/ui/HUD.dart';
 import 'package:flutter/material.dart';
 
 abstract class SceneObject {
-  SceneObject();
+  HUD hud = HUD();
+
+  SceneObject() {}
 
   void draw(Canvas c) {}
 

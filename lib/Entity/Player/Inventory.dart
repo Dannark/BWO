@@ -2,6 +2,7 @@ import 'package:BWO/Entity/Items/ItemDatabase.dart';
 import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Scene/GameScene.dart';
+import 'package:BWO/ui/HUD.dart';
 import 'package:BWO/ui/UIElement.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/position.dart';
@@ -10,7 +11,7 @@ import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 import 'package:BWO/Utils/TapState.dart';
 
-class Inventory implements UIElement {
+class Inventory extends UIElement {
   List<Item> itemList = [];
 
   double margin = 60;
@@ -26,8 +27,8 @@ class Inventory implements UIElement {
   Sprite _bagSprite;
   Sprite _bagSpriteOpen;
 
-  Inventory(this._player) {
-    GameScene.hud.addElement(this);
+  Inventory(this._player, HUD hudRef) : super(hudRef) {
+    drawOnHUD = true;
     addItem(Item(0, 0, 0, ItemDatabase.itemList[2]));
     // addItem(Item(0, 0, 0, ItemDatabase.itemList[3]));
     loadSprite();

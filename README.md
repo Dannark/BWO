@@ -46,7 +46,7 @@ Next updates: (21/29)
 * [x] Added Scene Manager (Switch between Scenes like Menus, Game etc)
 * [x] Add UI - player creation
 * [x] Added New Character Sprites to the game
-* [ ] Create Node Server
+* [-] Create Node Server
     - [x] Synchronize Players position
     - [x] Smooth player animation
     - [x] Optimze Synchronization player's data only to players in view range
@@ -59,6 +59,13 @@ Next updates: (21/29)
 * [ ] Fix tree generation
 * [ ] Add hungriness
 * [ ] Change background music Volume dynamic
+
+### 17/07
+* New Players sprites
+* Fixed Tree Generation (Sometimes it was random)
+* Minior map improviments
+* Fixed some Server Side Logic
+* Added offline mode for debug
 
 ### 15/07
 * Added 3 New Playable Sprites to play with

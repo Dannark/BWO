@@ -24,7 +24,6 @@ class MapController {
   List<Entity> entitysOnViewport = [];
   int treesGenerated = 0;
   int tilesGenerated = 0;
-  int _lastTreePosX = 0;
 
   int safeY = 0;
   int safeYmax = 0;
@@ -33,17 +32,26 @@ class MapController {
 
   double cameraSpeed = 5;
 
+  int _loopsPerCycle = 0;
+
   var terrainNoise = new SimplexNoise(
-    frequency: 0.004,
-    gain: .9,
+    frequency: 0.006, //0.004
+    gain: 1,
     lacunarity: 2.6,
     octaves: 3,
     fractalType: FractalType.FBM,
   );
 
+  var terrainNoise2 = new PerlinNoise(
+    frequency: .005,
+    gain: 1,
+    lacunarity: 1,
+    octaves: 1,
+    fractalType: FractalType.FBM,
+  );
   var treeNoise = new PerlinNoise(
-    frequency: 0.3,
-    gain: 1.1,
+    frequency: .8,
+    gain: 1,
     lacunarity: 1,
     octaves: 1,
     fractalType: FractalType.FBM,
@@ -110,50 +118,39 @@ class MapController {
             map[y][x][z].draw(c);
           }
         } else {
-          var tileHeight =
-              ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
-                          128) +
-                      127)
-                  .toInt();
-
-          if (map[y] == null) {
-            map[y] = {x: null}; //initialize line
-          }
-          if (map[y][x] == null) {
-            map[y][x] = {0: null}; //initialize line
-          }
-          map[y][x][0] = Ground(x, y, tileHeight, tileSize, null);
-          tilesGenerated++;
-
-          //TREE
-          if (tileHeight > 130 &&
-              tileHeight < 180 &&
-              ((y % 4 == 0 && x % 3 == 1) ||
-                  (y % 7 == 0 && x % 9 == 1) ||
-                  (y % 12 == 0 && x % 15 == 0))) {
-            var treeHeight =
-                ((treeNoise.getPerlin2(x.toDouble(), y.toDouble()) * 128) + 127)
+          if (_loopsPerCycle < 50) {
+            var tileHeight =
+                ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
+                            128) +
+                        127)
                     .toInt();
 
-            if (treeHeight > 160 && (_lastTreePosX - x).abs() > 8) {
-              //170
-              treesGenerated++;
-              _lastTreePosX = x;
+            /*var tileHeight2 =
+                ((terrainNoise2.getPerlin2(x.toDouble(), y.toDouble()) * 128) +
+                        127)
+                    .toInt();
+            tileHeight = ((tileHeight + tileHeight2) ~/ 2);*/
 
-              if (y % 5 == 0) {
-                entityList.add(Tree(x, y, tileSize, "tree04"));
-              } else if (y % 6 == 0) {
-                entityList.add(Tree(x, y, tileSize, "tree02"));
-              } else if (y % 7 == 0) {
-                entityList.add(Tree(x, y, tileSize, "tree03"));
-              } else {
-                entityList.add(Tree(x, y, tileSize, "tree01"));
-              }
+            if (map[y] == null) {
+              map[y] = {x: null}; //initialize line
+            }
+            if (map[y][x] == null) {
+              map[y][x] = {0: null}; //initialize line
+            }
+            map[y][x][0] = Ground(x, y, tileHeight, tileSize, null);
+            tilesGenerated++;
+            _loopsPerCycle++;
+
+            //TREE
+
+            if (tileHeight > 130 && tileHeight < 180) {
+              _addTrees(x, y, tileHeight, tileSize);
             }
           }
         }
       }
     }
+    _loopsPerCycle = 0;
 
     //Organize List to show Entity elements (Players, Trees) on correct Y-Index order
     _findEntitysOnViewport();
@@ -178,6 +175,28 @@ class MapController {
       }
     }
     return defaultHeight;
+  }
+
+  void _addTrees(int x, int y, int z, int tileSize) {
+    if (x % 6 == 0 && y % 6 == 0) {
+      var treeHeight =
+          ((treeNoise.getPerlin2(x.toDouble(), y.toDouble()) * 128) + 127)
+              .toInt();
+
+      if (treeHeight > 165) {
+        treesGenerated++;
+
+        if (y % 5 == 0) {
+          entityList.add(Tree(x, y, tileSize, "tree04"));
+        } else if (y % 6 == 0) {
+          entityList.add(Tree(x, y, tileSize, "tree02"));
+        } else if (y % 7 == 0) {
+          entityList.add(Tree(x, y, tileSize, "tree03"));
+        } else {
+          entityList.add(Tree(x, y, tileSize, "tree01"));
+        }
+      }
+    }
   }
 
   void addEntity(Entity obj) {
@@ -210,7 +229,8 @@ class MapController {
           entityList[i] is Player &&
           entityList[i] != player) {
         //remove players outside view
-        print("removing player ${entityList[i].name}");
+        print(
+            "removing player ${entityList[i].name} ${entityList[i].x}, ${entityList[i].x} | ${entityList[i].posX}, ${entityList[i].posY}");
         entityList.remove(entityList[i]);
       }
     }

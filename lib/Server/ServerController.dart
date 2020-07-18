@@ -21,32 +21,36 @@ class ServerController extends NetworkServer {
   void update() {}
 
   void setPlayer(Player player) {
+    if (offlineMode) return;
     this.player = player;
-    initializeServer(player.name);
+    initializeServer(player.name, player.spriteFolder);
   }
 
   void movePlayer() async {
+    if (offlineMode) return;
     String jsonData =
-        '{"name":"${player.name}", "x":${player.x.toInt()}, "y":${player.y.toInt()}, "xSpeed":"${player.xSpeed.round()}", "ySpeed":"${player.ySpeed.round()}"}';
+        '{"name":"${player.name}", "sprite":"${player.spriteFolder}", "x":${player.x.toInt()}, "y":${player.y.toInt()}, "xSpeed":"${player.xSpeed.round()}", "ySpeed":"${player.ySpeed.round()}"}';
     socketIO.sendMessage("onMove", jsonData);
   }
 
   void hitTree(int targetX, int targetY, int damage) async {
+    if (offlineMode) return;
     String jsonData =
-        '{"name":"${player.name}", "action":"hitTree", targetX:$targetX, targetY:$targetY, "damage":$damage }';
+        '{"name":"${player.name}", "action":"hitTree", "targetX":$targetX, "targetY":$targetY, "damage":$damage }';
     socketIO.sendMessage("onAction", jsonData);
   }
 
   @override
   getPlayers(data) {
     super.getPlayers(data);
-    print("getPlayers");
+    print("getPlayers ${data}");
     Map<String, dynamic> user = jsonDecode(data);
 
     user.forEach((key, value) {
       String name = value["name"].toString();
       double newX = double.parse(value['x'].toString());
       double newY = double.parse(value['y'].toString());
+      String sprite = value['sprite'].toString();
 
       if (name == player.name) {
         if (firstMove == true) {
@@ -55,7 +59,9 @@ class ServerController extends NetworkServer {
           player.y = newY;
         }
       } else {
-        _addEntityIfNotExist(Player(newX, newY, map, false, name));
+        print("creating sprite from getPlayers sprite= $sprite");
+        _addEntityIfNotExist(
+            Player(newX, newY, map, false, name, null, spriteFolder: sprite));
       }
     });
   }
@@ -70,8 +76,9 @@ class ServerController extends NetworkServer {
     double newY = double.parse(user['y'].toString());
 
     String pName = user['name'].toString();
-    print("## ${newX} ${newY}");
-    _addEntityIfNotExist(Player(newX, newY, map, false, pName));
+    String sprite = user['sprite'].toString();
+    _addEntityIfNotExist(
+        Player(newX, newY, map, false, pName, null, spriteFolder: sprite));
   }
 
   @override
@@ -95,6 +102,7 @@ class ServerController extends NetworkServer {
     double newY = double.parse(user['y'].toString());
     double xSpeed = double.parse(user['xSpeed'].toString());
     double ySpeed = double.parse(user['ySpeed'].toString());
+    String sprite = user['sprite'].toString();
 
     String pName = user['name'].toString();
 
@@ -113,7 +121,8 @@ class ServerController extends NetworkServer {
         }
       }
     } else {
-      _addEntityIfNotExist(Player(newX, newY, map, false, pName));
+      _addEntityIfNotExist(
+          Player(newX, newY, map, false, pName, null, spriteFolder: sprite));
     }
   }
 
@@ -123,8 +132,10 @@ class ServerController extends NetworkServer {
         orElse: () => null);
 
     if (foundEntity == null) {
-      print(
-          "> Adding new player ${newEntity.name} at position ${newEntity.x} ${newEntity.y}");
+      if (newEntity is Player) {
+        print(
+            "> Adding new player ${newEntity.name} at position PosX: ${newEntity.posX}, PosY: ${newEntity.posY}) ${newEntity.spriteFolder}");
+      }
       map.addEntity(newEntity);
     } else {
       print("> player already exists ${newEntity.name}. Ignoring...");

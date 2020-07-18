@@ -49,16 +49,20 @@ class PlayerNetwork {
     var targetPos = Offset(newX.toDouble(), newY.toDouble());
 
     var distance = (Offset(player.x, player.y) - targetPos).distance;
-    if (distance > 250) {
-      player.x = targetPos.dx;
-      player.y = targetPos.dy;
-    }
 
     if (newX == 0 && newY == 0) {
       return;
     }
-    player.x = lerpDouble(player.x, newX, GameController.deltaTime * lerpSpeed);
-    player.y = lerpDouble(player.y, newY, GameController.deltaTime * lerpSpeed);
+
+    if (distance > 250) {
+      player.x = targetPos.dx;
+      player.y = targetPos.dy;
+    } else {
+      player.x =
+          lerpDouble(player.x, newX, GameController.deltaTime * lerpSpeed);
+      player.y =
+          lerpDouble(player.y, newY, GameController.deltaTime * lerpSpeed);
+    }
     player.setDirection(targetPos);
   }
 

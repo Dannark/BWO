@@ -1,11 +1,14 @@
 import 'package:BWO/Utils/TapState.dart';
+import 'package:BWO/ui/HUD.dart';
+import 'package:BWO/ui/UIElement.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ButtonUI {
+class ButtonUI extends UIElement {
+  @override
   Rect bounds;
   Paint p = Paint();
 
@@ -20,13 +23,14 @@ class ButtonUI {
   bool canBeSelected = false;
   bool isSelected = false;
 
-  ButtonUI(Rect bounds, this.text,
+  ButtonUI(HUD hudRef, Rect bounds, this.text,
       {Color normalColor,
       Color pressedColor,
       Color fontColor,
       double fontSize = 15,
       bool canBeSelected = false,
-      bool isSelected = false}) {
+      bool isSelected = false})
+      : super(hudRef) {
     this.bounds = Rect.fromLTWH(bounds.left - bounds.width / 2, bounds.top,
         bounds.width, bounds.height);
     this.normalColor =
@@ -51,7 +55,7 @@ class ButtonUI {
       p.color = normalColor;
     }
 
-    if (TapState.clickedAt(bounds)) {
+    if (TapState.clickedAtButton(this)) {
       isSelected = canBeSelected ? !isSelected : isSelected;
       if (onPressedCallback != null) onPressedCallback();
     }

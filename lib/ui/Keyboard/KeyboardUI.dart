@@ -119,6 +119,13 @@ class KeyboardUI {
       return;
     }
 
+    bounds = Rect.fromLTWH(
+      0,
+      GameController.screenSize.height - height,
+      GameController.screenSize.width,
+      height,
+    );
+
     if (TapState.clickedAt(KeyboardUI.getOutbounds()) && _isOpening == false) {
       KeyboardUI.closeKeyboard();
     }

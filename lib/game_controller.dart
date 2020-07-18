@@ -20,9 +20,11 @@ import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
+import 'Utils/PreloadAssets.dart';
+
 class GameController extends Game with PanDetector, WidgetsBindingObserver {
   static Rect screenSize;
-  static double fps;
+  static double fps = 0;
 
   static double deltaTime = 0;
   static double time = 0;
@@ -34,6 +36,7 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
   // Skull skull;
 
   GameController() {
+    PreloadAssets();
     //_gameScene = GameScene(); //init Game;
 
     // skull = new Skull(-300, 32, mapController);
@@ -63,12 +66,23 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
     }
   }
 
+  var fpsList = [];
   void update(double dt) {
     if (screenSize == null) return;
 
-    fps = 1.0 / dt;
     deltaTime = dt;
     time += dt;
+
+    fpsList.add(1.0 / dt);
+    double avg = 0;
+    fpsList.forEach((element) {
+      avg += element;
+    });
+    fps = avg / fpsList.length;
+
+    if (fpsList.length > 20) {
+      fpsList.removeAt(0);
+    }
 
     if (preTapState == TapState.DOWN) {
       tapState = TapState.DOWN;

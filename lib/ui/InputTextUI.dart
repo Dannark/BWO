@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:BWO/Utils/TapState.dart';
 import 'package:BWO/game_controller.dart';
+import 'package:BWO/ui/HUD.dart';
 import 'package:BWO/ui/Keyboard/KeyUIListener.dart';
 import 'package:BWO/ui/Keyboard/KeyboardUI.dart';
 import 'package:BWO/ui/UIElement.dart';
@@ -21,7 +22,7 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
   double width = 200;
   double height = 40;
-  Rect bounds;
+
   double padding = 8;
 
   Paint p = Paint();
@@ -34,13 +35,14 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
   double rotation = 0;
 
-  InputTextUI(this.pos, this.placeHolder,
+  InputTextUI(HUD hudRef, this.pos, this.placeHolder,
       {maxLength: 16,
       Color backGroundColor,
       Color normalColor,
       Color placeholderColor,
       double fontSize = 18.0,
-      double rotation = 0}) {
+      double rotation = 0})
+      : super(hudRef) {
     this.maxLength = maxLength;
 
     p.color = backGroundColor != null ? backGroundColor : Colors.blueGrey[50];
@@ -88,7 +90,7 @@ class InputTextUI extends UIElement implements KeyUIListener {
       );
     }
 
-    if (TapState.clickedAt(bounds)) {
+    if (TapState.clickedAtButton(this)) {
       KeyboardUI.openKeyboard(this);
     }
     c.restore();

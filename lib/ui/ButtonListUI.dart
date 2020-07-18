@@ -1,14 +1,17 @@
 import 'package:BWO/game_controller.dart';
 import 'package:BWO/ui/ButtonUI.dart';
+import 'package:BWO/ui/HUD.dart';
+import 'package:BWO/ui/UIElement.dart';
 import 'package:flutter/material.dart';
 
-class ButtonListUI {
+class ButtonListUI extends UIElement {
   double x, y, width, height, spaceBetween;
   List<ButtonUI> buttonList = [];
 
   var _onPressedCallback;
 
   ButtonListUI(
+    HUD hudRef,
     List<String> list,
     this.x,
     this.y,
@@ -17,11 +20,12 @@ class ButtonListUI {
     int indexSelected = -1,
     double spaceBetween = 1,
     double fontSize = 10,
-  }) {
+  }) : super(hudRef) {
     this.spaceBetween = spaceBetween;
 
     for (int i = 0; i < list.length; i++) {
       buttonList.add(ButtonUI(
+        hudRef,
         Rect.fromLTWH(x, y + spaceBetween + (height * i), width, height),
         list[i],
         fontSize: fontSize,

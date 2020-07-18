@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:BWO/Utils/TapState.dart';
 import 'package:BWO/ui/ButtonListUI.dart';
 import 'package:BWO/ui/ButtonUI.dart';
+import 'package:BWO/ui/HUD.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
@@ -20,17 +21,26 @@ class MapPreviewWindows {
   Offset targetPos = Offset.zero;
   Offset newTarget = Offset.zero;
 
-  ButtonListUI _buttonListUI = ButtonListUI([
-    "Starter Village",
-    "North Village",
-    "East Village",
-    "South Village",
-    "West Village",
-  ], GameController.screenSize.width / 2, 50, 90, 20, indexSelected: 0);
+  ButtonListUI _buttonListUI;
 
   bool _isMapMovingToPosition = false;
 
-  MapPreviewWindows() {
+  MapPreviewWindows(HUD hudRef) {
+    _buttonListUI = ButtonListUI(
+        hudRef,
+        [
+          "Starter Village",
+          "North Village",
+          "East Village",
+          "South Village",
+          "West Village",
+        ],
+        GameController.screenSize.width / 2,
+        50,
+        90,
+        20,
+        indexSelected: 0);
+
     _buttonListUI.onPressedListener(
       callback: (buttonName, buttonIndex) {
         if (buttonIndex == 0) {

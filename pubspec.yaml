@@ -79,6 +79,15 @@ flutter:
       - assets/images/human/male2/walk/forward_right.png
       - assets/images/human/male2/walk/backward_left.png
       - assets/images/human/male2/walk/backward_right.png
+
+      - assets/images/human/male2/attack/forward.png
+      - assets/images/human/male2/attack/backward.png
+      - assets/images/human/male2/attack/left.png
+      - assets/images/human/male2/attack/right.png
+      - assets/images/human/male2/attack/forward_left.png
+      - assets/images/human/male2/attack/forward_right.png
+      - assets/images/human/male2/attack/backward_left.png
+      - assets/images/human/male2/attack/backward_right.png
       
       # female1
       - assets/images/human/female1/walk/forward.png
@@ -89,6 +98,64 @@ flutter:
       - assets/images/human/female1/walk/forward_right.png
       - assets/images/human/female1/walk/backward_left.png
       - assets/images/human/female1/walk/backward_right.png
+
+      - assets/images/human/female1/attack/forward.png
+      - assets/images/human/female1/attack/backward.png
+      - assets/images/human/female1/attack/left.png
+      - assets/images/human/female1/attack/right.png
+      - assets/images/human/female1/attack/forward_left.png
+      - assets/images/human/female1/attack/forward_right.png
+      - assets/images/human/female1/attack/backward_left.png
+      - assets/images/human/female1/attack/backward_right.png
+      
+      # female2
+      - assets/images/human/female2/walk/forward.png
+      - assets/images/human/female2/walk/backward.png
+      - assets/images/human/female2/walk/left.png
+      - assets/images/human/female2/walk/right.png
+      - assets/images/human/female2/walk/forward_left.png
+      - assets/images/human/female2/walk/forward_right.png
+      - assets/images/human/female2/walk/backward_left.png
+      - assets/images/human/female2/walk/backward_right.png
+      
+      # female3
+      - assets/images/human/female3/walk/forward.png
+      - assets/images/human/female3/walk/backward.png
+      - assets/images/human/female3/walk/left.png
+      - assets/images/human/female3/walk/right.png
+      - assets/images/human/female3/walk/forward_left.png
+      - assets/images/human/female3/walk/forward_right.png
+      - assets/images/human/female3/walk/backward_left.png
+      - assets/images/human/female3/walk/backward_right.png
+
+      # female4
+      - assets/images/human/female4/walk/forward.png
+      - assets/images/human/female4/walk/backward.png
+      - assets/images/human/female4/walk/left.png
+      - assets/images/human/female4/walk/right.png
+      - assets/images/human/female4/walk/forward_left.png
+      - assets/images/human/female4/walk/forward_right.png
+      - assets/images/human/female4/walk/backward_left.png
+      - assets/images/human/female4/walk/backward_right.png
+
+      - assets/images/human/female4/attack/forward.png
+      - assets/images/human/female4/attack/backward.png
+      - assets/images/human/female4/attack/left.png
+      - assets/images/human/female4/attack/right.png
+      - assets/images/human/female4/attack/forward_left.png
+      - assets/images/human/female4/attack/forward_right.png
+      - assets/images/human/female4/attack/backward_left.png
+      - assets/images/human/female4/attack/backward_right.png
+
+       # female5
+      - assets/images/human/female5/walk/forward.png
+      - assets/images/human/female5/walk/backward.png
+      - assets/images/human/female5/walk/left.png
+      - assets/images/human/female5/walk/right.png
+      - assets/images/human/female5/walk/forward_left.png
+      - assets/images/human/female5/walk/forward_right.png
+      - assets/images/human/female5/walk/backward_left.png
+      - assets/images/human/female5/walk/backward_right.png
 
       #Enemy - mini-skull
       - assets/images/enemys/miniskull/walk/forward.png

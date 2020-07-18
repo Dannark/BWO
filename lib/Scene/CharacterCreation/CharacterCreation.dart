@@ -4,6 +4,7 @@ import 'package:BWO/Scene/GameScene.dart';
 import 'package:BWO/Scene/SceneObject.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:BWO/ui/ButtonUI.dart';
+import 'package:BWO/ui/HUD.dart';
 import 'package:BWO/ui/InputTextUI.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
@@ -14,12 +15,7 @@ import 'package:flutter/material.dart';
 class CharacterCreation extends SceneObject {
   Paint p = Paint();
 
-  InputTextUI _inputTextUI = InputTextUI(
-      Position(GameController.screenSize.width / 2 + 5, 412), "Player Name",
-      backGroundColor: Color.fromRGBO(255, 255, 255, 0),
-      normalColor: Color.fromRGBO(64, 44, 40, 1),
-      placeholderColor: Color.fromRGBO(216, 165, 120, 1),
-      rotation: -0.05);
+  InputTextUI _inputTextUI;
 
   TextConfig title = TextConfig(
       fontSize: 22.0,
@@ -30,16 +26,27 @@ class CharacterCreation extends SceneObject {
 
   Sprite backPaper = Sprite("ui/backpaper.png");
 
-  MapPreviewWindows _mapPreviewWindows = MapPreviewWindows();
+  MapPreviewWindows _mapPreviewWindows;
   CharacterPreviewWindows _characterPreviewWindows = CharacterPreviewWindows();
 
-  ButtonUI _startGameButton = ButtonUI(
-    Rect.fromLTWH(GameController.screenSize.width / 2, 490, 100, 30),
-    "Start Game",
-    //normalColor: Color.fromRGBO(50, 143, 249, 1),
-  );
+  ButtonUI _startGameButton;
 
   CharacterCreation() {
+    _mapPreviewWindows = MapPreviewWindows(super.hud);
+
+    _inputTextUI = InputTextUI(super.hud,
+        Position(GameController.screenSize.width / 2 + 5, 412), "Player Name",
+        backGroundColor: Color.fromRGBO(255, 255, 255, 0),
+        normalColor: Color.fromRGBO(64, 44, 40, 1),
+        placeholderColor: Color.fromRGBO(216, 165, 120, 1),
+        rotation: -0.05);
+
+    _startGameButton = ButtonUI(
+      super.hud,
+      Rect.fromLTWH(GameController.screenSize.width / 2, 490, 100, 30),
+      "Start Game",
+    );
+
     _inputTextUI.onConfirmListener(callback: (String text) {
       if (text.length >= 3) {
         print("Check if the name Choosed $text is avaliable");
@@ -49,9 +56,11 @@ class CharacterCreation extends SceneObject {
     });
 
     _startGameButton.onPressedListener(callback: () {
-      if (_inputTextUI.getText().length > 3) {
-        GameController.currentScene = GameScene(_inputTextUI.getText(),
-            -_mapPreviewWindows.targetPos * GameScene.worldSize.toDouble());
+      if (_inputTextUI.getText().length >= 3) {
+        GameController.currentScene = GameScene(
+            _inputTextUI.getText(),
+            -_mapPreviewWindows.targetPos * GameScene.worldSize.toDouble(),
+            _characterPreviewWindows.getSpriteSelected());
       } else {
         print("can't start the game because the user name is invalid.");
       }

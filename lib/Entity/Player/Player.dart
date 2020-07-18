@@ -7,6 +7,7 @@ import 'package:BWO/Entity/Player/Inventory.dart';
 import 'package:BWO/Entity/Player/PlayerActions.dart';
 import 'package:BWO/Entity/Player/PlayerNetwork.dart';
 import 'package:BWO/Map/map_controller.dart';
+import 'package:BWO/Scene/SceneObject.dart';
 import 'package:BWO/Utils/Frame.dart';
 import 'package:BWO/Utils/OnAnimationEnd.dart';
 import 'package:BWO/Utils/SpriteController.dart';
@@ -41,16 +42,23 @@ class Player extends Entity implements OnAnimationEnd {
   Inventory inventory;
   PlayerNetwork playerNetwork;
   bool isMine;
+  SceneObject sceneObject;
+  String spriteFolder;
 
-  Player(double x, double y, this.map, this.isMine, String myName)
+  Player(double x, double y, this.map, this.isMine, String myName,
+      this.sceneObject,
+      {String spriteFolder = "human/male1"})
       : super(x, y) {
+    this.spriteFolder = spriteFolder;
     playerActions = PlayerActions(this);
     _inputController = InputController(this);
-    inventory = Inventory(this);
     playerNetwork = PlayerNetwork(this);
 
+    if (isMine) {
+      inventory = Inventory(this, sceneObject.hud);
+    }
     name = myName;
-
+    print("adding player [$name] with sprite: $spriteFolder");
     _loadSprites();
   }
 
@@ -91,6 +99,7 @@ class Player extends Entity implements OnAnimationEnd {
       return;
     }
     _inputController.update();
+
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();
     playerActions.interactWithTrees(map);
@@ -149,9 +158,9 @@ class Player extends Entity implements OnAnimationEnd {
     width = 12 * _scale;
     height = 6 * _scale;
 
-    walkSprites = new SpriteController("human/male1/walk", _viewPort, _pivot,
+    walkSprites = new SpriteController("$spriteFolder/walk", _viewPort, _pivot,
         _scale, _gradeSize, framesCount, this);
-    attackSprites = new SpriteController("human/male1/attack", _viewPort,
+    attackSprites = new SpriteController("$spriteFolder/attack", _viewPort,
         _pivot, _scale, Offset(5, 1), framesCount, this);
 
     currentSprite = walkSprites;

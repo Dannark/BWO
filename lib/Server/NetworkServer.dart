@@ -8,11 +8,17 @@ abstract class NetworkServer {
   SocketIO socketIO;
   String id;
   String playerName;
+  String mSprite;
+
+  bool offlineMode = true;
 
   NetworkServer() {}
 
-  void initializeServer(String playerName) {
+  void initializeServer(String playerName, String sprite) {
     this.playerName = playerName;
+    this.mSprite = sprite;
+
+    if (offlineMode) return;
     socketIO = SocketIOManager().createSocketIO(_SERVER, "/",
         query: "", socketStatusCallback: socketStatus);
 
@@ -41,7 +47,8 @@ abstract class NetworkServer {
     print("## Player ID: " + data);
     id = data;
     if (socketIO != null) {
-      String jsonData = '{"name":"${playerName}", "x":50, "y": 0}';
+      String jsonData =
+          '{"name":"${playerName}", "sprite":"$mSprite", "x":50, "y": 0}';
       socketIO.sendMessage("log-player", jsonData, _onLogMsgSent);
     }
   }

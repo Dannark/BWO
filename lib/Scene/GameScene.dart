@@ -23,15 +23,20 @@ class GameScene extends SceneObject {
   PhysicsController physicsController;
   static ServerController serverController;
 
-  static HUD hud = HUD();
-
-  GameScene(String playerName, Offset startPosition) {
+  GameScene(String playerName, Offset startPosition, String spriteFolder) {
     mapController = new MapController(startPosition);
     serverController = ServerController(mapController);
 
     physicsController = new PhysicsController(mapController);
     player = new Player(
-        startPosition.dx, startPosition.dy, mapController, true, playerName);
+      startPosition.dx,
+      startPosition.dy,
+      mapController,
+      true,
+      playerName,
+      this,
+      spriteFolder: spriteFolder,
+    );
     serverController.setPlayer(player);
     mapController.addPlayerRef(player);
 
@@ -48,14 +53,6 @@ class GameScene extends SceneObject {
 
     mapController.drawMap(c, player.x, player.y, bgRect,
         movimentType: MovimentType.FOLLOW, tileSize: worldSize);
-    int i = 0;
-    mapController.entityList.forEach((e) {
-      if (e is Player) {
-        i++;
-        config.render(c, "ON: ${e.name}", Position(10, 50 + (i * 10.0)),
-            anchor: Anchor.topLeft);
-      }
-    });
 
     config.render(
         c,

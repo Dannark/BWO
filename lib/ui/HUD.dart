@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class HUD {
   bool isActive = true;
-  List<UIElement> _uiElelements = [];
+  List<UIElement> uiElelements = [];
 
   HUD() {}
 
@@ -14,13 +14,15 @@ class HUD {
       return;
     }
 
-    for (var ui in _uiElelements) {
-      ui.draw(c);
+    for (var ui in uiElelements) {
+      if (ui.drawOnHUD) {
+        ui.draw(c);
+      }
     }
   }
 
   void addElement(UIElement newUi) {
-    print("addElement");
-    _uiElelements.add(newUi);
+    newUi.hudRef = this;
+    uiElelements.add(newUi);
   }
 }

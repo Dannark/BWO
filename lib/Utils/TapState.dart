@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:BWO/ui/HUD.dart';
+import 'package:BWO/ui/Keyboard/KeyboardUI.dart';
+import 'package:BWO/ui/UIElement.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
@@ -33,6 +36,33 @@ class TapState {
 
   static bool clickedAt(Rect r) {
     return (instersect(r) && GameController.tapState == DOWN);
+  }
+
+  static bool clickedAtButton(UIElement button) {
+    bool isAboveAllElements = true;
+
+    int indexButton = 0;
+    for (var i = 0; i < button.hudRef.uiElelements.length; i++) {
+      var otherUI = button.hudRef.uiElelements[i];
+      if (otherUI == button) {
+        indexButton = i;
+      }
+    }
+
+    for (var i = 0; i < button.hudRef.uiElelements.length; i++) {
+      var otherUI = button.hudRef.uiElelements[i];
+
+      if (instersect(otherUI.bounds) && otherUI != button) {
+        if (i > indexButton) {
+          isAboveAllElements = false;
+          break;
+        }
+      }
+    }
+    return (instersect(button.bounds) &&
+        GameController.tapState == DOWN &&
+        isAboveAllElements &&
+        !KeyboardUI.isEnable);
   }
 
   static bool currentClickingAt(Rect r) {
