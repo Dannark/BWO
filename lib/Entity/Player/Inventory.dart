@@ -35,8 +35,14 @@ class Inventory extends UIElement {
   }
 
   void loadSprite() async {
-    _bagSprite = await Sprite.loadSprite("items/bag.png");
-    _bagSpriteOpen = await Sprite.loadSprite("items/bag_open.png");
+    print("player : ${_player.spriteFolder}");
+    if (_player.spriteFolder.contains("female")) {
+      _bagSprite = await Sprite.loadSprite("ui/bag2.png");
+      _bagSpriteOpen = await Sprite.loadSprite("ui/bag2_open.png");
+    } else {
+      _bagSprite = await Sprite.loadSprite("ui/bag.png");
+      _bagSpriteOpen = await Sprite.loadSprite("ui/bag_open.png");
+    }
   }
 
   bool isOpen = false;

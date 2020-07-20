@@ -53,7 +53,18 @@ abstract class Entity extends PhysicsEntity {
     print("drawning wrongly, this draw method should be overwritten.");
   }
 
-  void update() {}
+  void update() {
+    if (!isActive) {
+      return;
+    }
+    double walkSpeed = max(inputSpeed.dx.abs(), inputSpeed.dy.abs());
+    status.update(walkSpeed);
+    if (status.getEnergy() <= 0) {
+      maxSpeedEnergyMultiplier = .5;
+    } else {
+      maxSpeedEnergyMultiplier = 1;
+    }
+  }
 
   void debugDraw(Canvas c) {
     p.color = Colors.red;

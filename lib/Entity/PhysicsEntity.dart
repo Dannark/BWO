@@ -14,6 +14,8 @@ abstract class PhysicsEntity {
   Offset impulse = Offset.zero;
   Offset inputSpeed = Offset.zero;
 
+  double maxSpeedEnergyMultiplier = 1;
+
   double _gravity = 0.0;
   double _acceleraction = 0.0;
 
@@ -24,9 +26,10 @@ abstract class PhysicsEntity {
 
   void moveWithPhysics() {
     velocity = Offset(
-      xSpeed * GameController.deltaTime * 50,
-      ySpeed * GameController.deltaTime * 50,
-    );
+          xSpeed * GameController.deltaTime * 50,
+          ySpeed * GameController.deltaTime * 50,
+        ) *
+        maxSpeedEnergyMultiplier;
     x -= velocity.dx;
     y -= velocity.dy;
 

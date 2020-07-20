@@ -1,9 +1,10 @@
 class ItemDatabase {
   static Map<int, ItemDB> itemList = {
-    0: ItemDB("Apple", "items/apple3.png", 1, useEffects: true, hp: 4),
+    0: ItemDB("Apple", "items/apple3.png", 1,
+        useEffects: true, hp: 4, hungriness: 35),
     1: ItemDB("Log", "items/log.png", 2),
     2: ItemDB("Green Apple", "items/apple_green.png", 1,
-        useEffects: true, energy: 4),
+        useEffects: true, energy: 5, hungriness: 50),
     3: ItemDB("Orange", "items/orange.png", 1),
   };
 }

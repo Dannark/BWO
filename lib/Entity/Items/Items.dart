@@ -62,6 +62,7 @@ class Item extends Entity {
       amount--;
       entity.status.addLife(proprieties.hp);
       entity.status.addEnergy(proprieties.energy);
+      entity.status.addHungriness(proprieties.hungriness);
       Flame.audio.play("items/eating_apple.mp3", volume: 0.3);
     }
   }

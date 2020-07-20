@@ -57,14 +57,7 @@ class GameScene extends SceneObject {
     config.render(
         c,
         "FPS: ${GameController.fps.isNaN || GameController.fps.isInfinite ? 0 : GameController.fps.toInt()}",
-        Position(10, 10),
-        anchor: Anchor.topLeft);
-    config.render(c, "HP: ${player.status.getHP()}", Position(10, 20),
-        anchor: Anchor.topLeft);
-    config.render(c, "Energy: ${player.status.getEnergy()}", Position(10, 30),
-        anchor: Anchor.topLeft);
-    config.render(
-        c, "Location: ${player.posX}, ${player.posY}", Position(10, 40),
+        Position(0, GameController.screenSize.height - 11),
         anchor: Anchor.topLeft);
 
     hud.draw(c);

@@ -31,11 +31,14 @@ class PlayerActions {
             isDoingAction = true;
 
             if (player.currentSprite != player.attackSprites) {
-              player.currentSprite = player.attackSprites;
+              bool hasEnergy = player.status.useEnergy(1);
+              if (hasEnergy) {
+                player.currentSprite = player.attackSprites;
 
-              player.playerNetwork
-                  .sendHitTree(entity.x.round(), entity.y.round(), 1);
-              entity.doAction(map);
+                player.playerNetwork
+                    .sendHitTree(entity.x.round(), entity.y.round(), 1);
+                entity.doAction(map);
+              }
             }
             player.setDirection(target);
           } else if (entity is Enemy) {

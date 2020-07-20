@@ -35,7 +35,7 @@ class MapController {
   int _loopsPerCycle = 0;
 
   var terrainNoise = new SimplexNoise(
-    frequency: 0.006, //0.004
+    frequency: 0.003, //0.004
     gain: 1,
     lacunarity: 2.6,
     octaves: 3,

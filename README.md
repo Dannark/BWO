@@ -56,7 +56,7 @@ Next updates: (21/29)
     - [ ] Sync enemies
 * [ ] Level and Progression System
 * [ ] Player HUD
-* [ ] Fix tree generation
+* [x] Fix tree generation
 * [ ] Add hungriness
 * [ ] Change background music Volume dynamic
 

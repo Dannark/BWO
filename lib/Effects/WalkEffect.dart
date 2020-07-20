@@ -25,7 +25,7 @@ class WalkEffect {
   }
 
   void draw(Canvas c, double x, double y, int height, Offset walkSpeed) {
-    var velocity = (walkSpeed.dx.abs() + walkSpeed.dy.abs()).clamp(0, 3);
+    var velocity = max(walkSpeed.dx.abs(), walkSpeed.dy.abs());
 
     if (velocity > 0) {
       height < Ground.WATER

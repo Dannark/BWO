@@ -5,6 +5,7 @@ import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Entity/Player/InputController.dart';
 import 'package:BWO/Entity/Player/Inventory.dart';
 import 'package:BWO/Entity/Player/PlayerActions.dart';
+import 'package:BWO/Entity/Player/PlayerHUD.dart';
 import 'package:BWO/Entity/Player/PlayerNetwork.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Scene/SceneObject.dart';
@@ -40,6 +41,7 @@ class Player extends Entity implements OnAnimationEnd {
   MapController map;
 
   Inventory inventory;
+  PlayerHUD _playerHUD;
   PlayerNetwork playerNetwork;
   bool isMine;
   SceneObject sceneObject;
@@ -56,6 +58,7 @@ class Player extends Entity implements OnAnimationEnd {
 
     if (isMine) {
       inventory = Inventory(this, sceneObject.hud);
+      _playerHUD = PlayerHUD(this, sceneObject.hud);
     }
     name = myName;
     print("adding player [$name] with sprite: $spriteFolder");
@@ -71,7 +74,7 @@ class Player extends Entity implements OnAnimationEnd {
 
     var maxWalkSpeed =
         (_inputController.maxAngle * _inputController.speedMultiplier);
-    var walkSpeed = max(xSpeed.abs(), ySpeed.abs());
+    var walkSpeed = max(xSpeed.abs(), ySpeed.abs()) * maxSpeedEnergyMultiplier;
     var deltaSpeed = (walkSpeed / maxWalkSpeed);
     var animSpeed = 0.07 + (0.1 - (deltaSpeed * 0.1));
     //var playAnim = animSpeed < .17;

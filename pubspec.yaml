@@ -209,13 +209,16 @@ flutter:
       - assets/images/items/apple_green.png
       - assets/images/items/orange.png
       - assets/images/items/log.png
-      - assets/images/items/bag.png
-      - assets/images/items/bag_open.png
-      - assets/images/items/bag2.png
 
       # ui
       - assets/images/ui/backpaper.png
       - assets/images/ui/backpaper1.png
+      - assets/images/ui/bag.png
+      - assets/images/ui/bag_open.png
+      - assets/images/ui/bag2.png
+      - assets/images/ui/bag2_open.png
+      - assets/images/ui/stomach.png
+      - assets/images/ui/stomach_back.png
 
       # sounds
       - assets/audio/recovery.mp3
