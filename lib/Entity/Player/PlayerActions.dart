@@ -34,10 +34,12 @@ class PlayerActions {
               bool hasEnergy = player.status.useEnergy(1);
               if (hasEnergy) {
                 player.currentSprite = player.attackSprites;
+                player.equipmentController.setAction(DoAction.Attack);
 
                 player.playerNetwork
                     .sendHitTree(entity.x.round(), entity.y.round(), 1);
-                entity.doAction(map);
+                entity.doDamage(
+                    map, player.equipmentController.getMaxCutTreeDamage());
               }
             }
             player.setDirection(target);
@@ -48,7 +50,7 @@ class PlayerActions {
                 entity.status.isAlive()) {
               player.currentSprite = player.attackSprites;
 
-              entity.getHut(player.status.getMaxAttackPoint());
+              entity.getHut(player.equipmentController.getMaxAttackDamage());
             }
             player.setDirection(target);
           }
@@ -59,3 +61,5 @@ class PlayerActions {
     }
   }
 }
+
+enum DoAction { Attack }

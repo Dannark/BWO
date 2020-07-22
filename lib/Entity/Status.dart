@@ -13,17 +13,19 @@ class Status {
   double _maxHungriness = 100;
 
   int _force = 2;
+  int _defense = 0;
+  int _treeCut = 1;
 
   int _level = 1;
-  double _exp = 0;
-  double _maxExp = 1;
+  int _exp = 0;
+  int _maxExp = 1;
 
   //regenaration settings
   bool autoRegenHP = true;
   double _hpRegenFrequency = 10; //in seconds
   double _hpRegenTime = 0;
   double _energyRegenSpeed = .5;
-  double _hungrinessDecressSpeed = .25;
+  double _hungrinessDecressSpeed = .15;
 
   Status({int maxHP = 10, double maxEnergy = 5}) {
     this._maxHP = maxHP;
@@ -42,18 +44,30 @@ class Status {
 
     if (_hungriness > 0) {
       _hungriness -= GameController.deltaTime * _hungrinessDecressSpeed;
+    } else {
+      _hungriness = 0;
     }
 
     if (walkSpeed >= 2) {
       if (_energy > 0) {
-        _energy -= GameController.deltaTime * _energyRegenSpeed * .5;
+        var energyDecrease = GameController.deltaTime * _energyRegenSpeed * .5;
+        energyDecrease *= walkSpeed / 3;
+        _energy -= energyDecrease;
       }
     } else {
       if (_energy < _maxEnergy) {
-        _energy += GameController.deltaTime *
-            _energyRegenSpeed *
-            2 *
-            (_hungriness / 100);
+        if (_hungriness > 0) {
+          _energy += GameController.deltaTime *
+              _energyRegenSpeed *
+              2 *
+              (_hungriness / 100);
+        } else {
+          if (_energy < _maxEnergy / 2) {
+            _energy += GameController.deltaTime * 0.001;
+          }
+        }
+      } else {
+        _energy = _maxEnergy;
       }
     }
 
@@ -88,11 +102,11 @@ class Status {
     return _maxEnergy;
   }
 
-  double getExp() {
+  int getExp() {
     return _exp;
   }
 
-  double getMaxExp() {
+  int getMaxExp() {
     return _maxExp;
   }
 
@@ -167,24 +181,34 @@ class Status {
     _levelUpRamp();
   }
 
-  int getMaxAttackPoint() {
+  int getBaseAttackDamage() {
     return _force;
+  }
+
+  int getBaseCutTreeDamage() {
+    return _treeCut + (_force * 0.2).floor();
   }
 
   void _levelUpRamp() {
     int startBaseExp = 10;
     double rampMultiplier = .35;
     _maxExp =
-        _level * startBaseExp + ((_level * _level * _level) * rampMultiplier);
-
-    _maxHP = (10 + ((_level * _level) * .5)).toInt();
-    _maxEnergy = (5 + _level * .5);
+        (_level * startBaseExp + ((_level * _level * _level) * rampMultiplier))
+            .toInt();
 
     if (_exp > _maxExp) {
       _level++;
       _exp -= _maxExp;
       print("level up");
+      _updateStatus();
       refillStatus();
     }
+
+    _updateStatus();
+  }
+
+  void _updateStatus() {
+    _maxHP = (10 + ((_level * _level) * .5)).toInt();
+    _maxEnergy = (5 + _level * .5);
   }
 }

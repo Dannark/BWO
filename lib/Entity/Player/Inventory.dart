@@ -30,7 +30,7 @@ class Inventory extends UIElement {
   Inventory(this._player, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
     addItem(Item(0, 0, 0, ItemDatabase.itemList[2]));
-    // addItem(Item(0, 0, 0, ItemDatabase.itemList[3]));
+    addItem(Item(0, 0, 0, ItemDatabase.itemList[4]));
     loadSprite();
   }
 

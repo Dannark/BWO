@@ -1,5 +1,6 @@
 import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Entity/Items/ItemDatabase.dart';
+import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
@@ -57,13 +58,19 @@ class Item extends Entity {
     }
   }
 
-  void use(Entity entity) {
-    if (proprieties.useEffects) {
-      amount--;
-      entity.status.addLife(proprieties.hp);
-      entity.status.addEnergy(proprieties.energy);
-      entity.status.addHungriness(proprieties.hungriness);
+  void use(Entity playerEntity) {
+    if (proprieties.itemType == ItemType.Usable) {
+      amount--; //removes item from inventory
+      playerEntity.status.addLife(proprieties.hp);
+      playerEntity.status.addEnergy(proprieties.energy);
+      playerEntity.status.addHungriness(proprieties.hungriness);
+
       Flame.audio.play("items/eating_apple.mp3", volume: 0.3);
+    } else if (proprieties.itemType == ItemType.Weapon) {
+      if (playerEntity is Player) {
+        amount--; //removes item from inventory
+        playerEntity.equipmentController.EquipItem(this);
+      }
     }
   }
 

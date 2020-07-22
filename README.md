@@ -1,24 +1,25 @@
 # Borderless World Online (BWO)
 
-An infinity procedural online game using Flutter with Firebase and flames.
+An infinity procedural online game using Flutter and flames with NodeJS Server In back-end.
+
+`! Not going to use Firebase anymore because it needs more control from the backend side and firebase isn't the best choice for it.`
 
 ![gameplay_2](https://user-images.githubusercontent.com/7622553/86072224-7d941800-ba57-11ea-8d1d-9a2cab5c08b4.gif)
+![export](https://user-images.githubusercontent.com/7622553/88120935-99906280-cb9a-11ea-9f4a-05c6b5d9ab61.gif)
 
 ### On the Table
-The world isn't stored in anywhere, it uses some conecpts and rules to generate it equaly in all devices only the changes made by player are actually stored on the firebase.
+The world isn't stored in anywhere, it uses some conecpts and rules (`Perlin Noise` and `Simplex Noise`) to generate it equaly in all devices only the changes made by player are actually stored on the server side.
 
 The players will be able to build theirs houses anywhere on the infinity world. That's why i call it borderless world in first place. :)
 
 This project is still in development and right now it only has some fews features:
 
-- A map generator for a real infinity Map with a mix of `Perlin Noise` and `Simplex Noise` without losing the performance.
-- Trees generation
-- Map Viewport and Map Follow Object Moviment
-- Temporaraly Saving generated data for best perfomance
+# Release Date?
+Hopefully at some point later this year.
 
 ## Dev Log
 
-Next updates: (21/29)
+Next updates/Done:
 * [x] Optimze render and map Generator
 * [x] Fix player animation Position
 * [x] Add shadow to the environment
@@ -29,7 +30,7 @@ Next updates: (21/29)
     - [x] water foam
     - [x] water stars blink
     - [x] sound effects bgm, walk and swim
-    - [ ] Add environment objects
+    - [ ] Add More Life to the environment
     - [ ] Move camera around player when he is afk
 * [x] Add Cut Tree Animation do player
 * [x] Add fruits fell when hiting trees
@@ -52,13 +53,27 @@ Next updates: (21/29)
     - [x] Optimze Synchronization player's data only to players in view range
     - [x] Sync hit tree animation
     - [ ] Sync attack other Players damage/animation
-    - [ ] Sync tree/items spawn
+    - [x] Sync tree/items spawn
     - [ ] Sync enemies
-* [ ] Level and Progression System
-* [ ] Player HUD
+* [x] Level and Progression System
+* [x] Player HUD
+* [x] Equipments and status bonuses
+* [ ] Equipments UI
 * [x] Fix tree generation
-* [ ] Add hungriness
+* [x] Add hungriness
 * [ ] Change background music Volume dynamic
+* [-] Craft Category
+    - [ ] Craft Axe item from others items
+* [-] Build Category
+    - [ ] Think about the Logic and rules to limite players for placing items on world
+    - [ ] Place Objects like walls, doors, foundation and so on
+
+### 21/07
+* Added Level and progression System
+* Added Equipments items and bonus status (Single Source shared to all characters)
+* Added Players HUD and status management logic
+* Added Axe to cut tree faster
+* Added hungriness logic (If you are starving you get badness status and limitations)
 
 ### 17/07
 * New Players sprites

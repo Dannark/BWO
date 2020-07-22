@@ -170,7 +170,7 @@ class Tree extends Entity {
     _isPlaingAnimation = true;
   }
 
-  void doAction(MapController map) {
+  void doDamage(MapController map, int damage) {
     if (isActive && status.isAlive()) {
       this.map = map;
       _playAnimation();
@@ -179,7 +179,9 @@ class Tree extends Entity {
       if (maca != null) {
         map.addEntity(maca);
       }
-      status.takeDamage(1);
+      status.takeDamage(damage);
+      print(
+          "tree taking $damage of damage.. current life is ${status.getHP()}");
 
       //Flame.audio.play("impact_tree.mp3", volume: 0.5);
       audio.play('punch.mp3', volume: 0.4);

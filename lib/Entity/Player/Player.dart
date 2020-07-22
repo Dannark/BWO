@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:BWO/Entity/Entity.dart';
+import 'package:BWO/Entity/EquipmentController.dart';
 import 'package:BWO/Entity/Items/Items.dart';
 import 'package:BWO/Entity/Player/InputController.dart';
 import 'package:BWO/Entity/Player/Inventory.dart';
@@ -47,6 +48,8 @@ class Player extends Entity implements OnAnimationEnd {
   SceneObject sceneObject;
   String spriteFolder;
 
+  EquipmentController equipmentController;
+
   Player(double x, double y, this.map, this.isMine, String myName,
       this.sceneObject,
       {String spriteFolder = "human/male1"})
@@ -59,6 +62,7 @@ class Player extends Entity implements OnAnimationEnd {
     if (isMine) {
       inventory = Inventory(this, sceneObject.hud);
       _playerHUD = PlayerHUD(this, sceneObject.hud);
+      equipmentController = EquipmentController(this);
     }
     name = myName;
     print("adding player [$name] with sprite: $spriteFolder");
@@ -88,6 +92,8 @@ class Player extends Entity implements OnAnimationEnd {
 
       currentSprite.draw(c, x, y, xSpeed, ySpeed, animSpeed, stopAnimWhenIdle,
           mapHeight); //0.125 = 12fps
+
+      equipmentController.draw(c, stopAnimWhenIdle, animSpeed);
     }
 
     config.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
@@ -129,6 +135,7 @@ class Player extends Entity implements OnAnimationEnd {
 
   void setDirection(Offset target) {
     currentSprite.setDirection(target, Offset(x, y));
+    equipmentController?.setDirection(target, Offset(x, y));
   }
 
   void setTargetPosition(double newX, double newY) {

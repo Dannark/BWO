@@ -124,7 +124,7 @@ class IAController {
       self.currentSprite = self.attackSprites;
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
-      target.getHut(self.status.getMaxAttackPoint());
+      target.getHut(self.status.getBaseAttackDamage());
     }
   }
 }

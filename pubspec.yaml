@@ -52,189 +52,52 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       #player
-      - assets/images/human/male1/walk/forward.png
-      - assets/images/human/male1/walk/backward.png
-      - assets/images/human/male1/walk/left.png
-      - assets/images/human/male1/walk/right.png
-      - assets/images/human/male1/walk/forward_left.png
-      - assets/images/human/male1/walk/forward_right.png
-      - assets/images/human/male1/walk/backward_left.png
-      - assets/images/human/male1/walk/backward_right.png
-      
-      - assets/images/human/male1/attack/forward.png
-      - assets/images/human/male1/attack/backward.png
-      - assets/images/human/male1/attack/left.png
-      - assets/images/human/male1/attack/right.png
-      - assets/images/human/male1/attack/forward_left.png
-      - assets/images/human/male1/attack/forward_right.png
-      - assets/images/human/male1/attack/backward_left.png
-      - assets/images/human/male1/attack/backward_right.png
+      - assets/images/human/male1/walk/
+      - assets/images/human/male1/attack/
 
       # male2
-      - assets/images/human/male2/walk/forward.png
-      - assets/images/human/male2/walk/backward.png
-      - assets/images/human/male2/walk/left.png
-      - assets/images/human/male2/walk/right.png
-      - assets/images/human/male2/walk/forward_left.png
-      - assets/images/human/male2/walk/forward_right.png
-      - assets/images/human/male2/walk/backward_left.png
-      - assets/images/human/male2/walk/backward_right.png
-
-      - assets/images/human/male2/attack/forward.png
-      - assets/images/human/male2/attack/backward.png
-      - assets/images/human/male2/attack/left.png
-      - assets/images/human/male2/attack/right.png
-      - assets/images/human/male2/attack/forward_left.png
-      - assets/images/human/male2/attack/forward_right.png
-      - assets/images/human/male2/attack/backward_left.png
-      - assets/images/human/male2/attack/backward_right.png
+      - assets/images/human/male2/walk/
+      - assets/images/human/male2/attack/
       
       # female1
-      - assets/images/human/female1/walk/forward.png
-      - assets/images/human/female1/walk/backward.png
-      - assets/images/human/female1/walk/left.png
-      - assets/images/human/female1/walk/right.png
-      - assets/images/human/female1/walk/forward_left.png
-      - assets/images/human/female1/walk/forward_right.png
-      - assets/images/human/female1/walk/backward_left.png
-      - assets/images/human/female1/walk/backward_right.png
-
-      - assets/images/human/female1/attack/forward.png
-      - assets/images/human/female1/attack/backward.png
-      - assets/images/human/female1/attack/left.png
-      - assets/images/human/female1/attack/right.png
-      - assets/images/human/female1/attack/forward_left.png
-      - assets/images/human/female1/attack/forward_right.png
-      - assets/images/human/female1/attack/backward_left.png
-      - assets/images/human/female1/attack/backward_right.png
+      - assets/images/human/female1/walk/
+      - assets/images/human/female1/attack/
       
       # female2
-      - assets/images/human/female2/walk/forward.png
-      - assets/images/human/female2/walk/backward.png
-      - assets/images/human/female2/walk/left.png
-      - assets/images/human/female2/walk/right.png
-      - assets/images/human/female2/walk/forward_left.png
-      - assets/images/human/female2/walk/forward_right.png
-      - assets/images/human/female2/walk/backward_left.png
-      - assets/images/human/female2/walk/backward_right.png
+      - assets/images/human/female2/walk/
       
       # female3
-      - assets/images/human/female3/walk/forward.png
-      - assets/images/human/female3/walk/backward.png
-      - assets/images/human/female3/walk/left.png
-      - assets/images/human/female3/walk/right.png
-      - assets/images/human/female3/walk/forward_left.png
-      - assets/images/human/female3/walk/forward_right.png
-      - assets/images/human/female3/walk/backward_left.png
-      - assets/images/human/female3/walk/backward_right.png
+      - assets/images/human/female3/walk/
 
       # female4
-      - assets/images/human/female4/walk/forward.png
-      - assets/images/human/female4/walk/backward.png
-      - assets/images/human/female4/walk/left.png
-      - assets/images/human/female4/walk/right.png
-      - assets/images/human/female4/walk/forward_left.png
-      - assets/images/human/female4/walk/forward_right.png
-      - assets/images/human/female4/walk/backward_left.png
-      - assets/images/human/female4/walk/backward_right.png
-
-      - assets/images/human/female4/attack/forward.png
-      - assets/images/human/female4/attack/backward.png
-      - assets/images/human/female4/attack/left.png
-      - assets/images/human/female4/attack/right.png
-      - assets/images/human/female4/attack/forward_left.png
-      - assets/images/human/female4/attack/forward_right.png
-      - assets/images/human/female4/attack/backward_left.png
-      - assets/images/human/female4/attack/backward_right.png
+      - assets/images/human/female4/walk/
 
        # female5
-      - assets/images/human/female5/walk/forward.png
-      - assets/images/human/female5/walk/backward.png
-      - assets/images/human/female5/walk/left.png
-      - assets/images/human/female5/walk/right.png
-      - assets/images/human/female5/walk/forward_left.png
-      - assets/images/human/female5/walk/forward_right.png
-      - assets/images/human/female5/walk/backward_left.png
-      - assets/images/human/female5/walk/backward_right.png
+      - assets/images/human/female5/walk/
 
       #Enemy - mini-skull
-      - assets/images/enemys/miniskull/walk/forward.png
-      - assets/images/enemys/miniskull/walk/backward.png
-      - assets/images/enemys/miniskull/walk/left.png
-      - assets/images/enemys/miniskull/walk/right.png
-      - assets/images/enemys/miniskull/walk/forward_left.png
-      - assets/images/enemys/miniskull/walk/forward_right.png
-      - assets/images/enemys/miniskull/walk/backward_left.png
-      - assets/images/enemys/miniskull/walk/backward_right.png
-      
-      - assets/images/enemys/miniskull/attack/forward.png
-      - assets/images/enemys/miniskull/attack/backward.png
-      - assets/images/enemys/miniskull/attack/left.png
-      - assets/images/enemys/miniskull/attack/right.png
-      - assets/images/enemys/miniskull/attack/forward_left.png
-      - assets/images/enemys/miniskull/attack/forward_right.png
-      - assets/images/enemys/miniskull/attack/backward_left.png
-      - assets/images/enemys/miniskull/attack/backward_right.png
+      - assets/images/enemys/miniskull/walk/
+      - assets/images/enemys/miniskull/attack/
+
+      # Axe Attack Effect
+      - assets/images/equipment/weapons/axe/walk/
+      - assets/images/equipment/weapons/axe/attack/
 
       #enviroment
-      - assets/images/trees/tree01.png
-      - assets/images/trees/tree02.png
-      - assets/images/trees/tree03.png
-      - assets/images/trees/tree04.png
-      - assets/images/enviroment/floor1.png
-      - assets/images/enviroment/floor2.png
-      - assets/images/enviroment/floor3.png
-      - assets/images/enviroment/grass1.png
-      - assets/images/enviroment/grass2.png
-      - assets/images/enviroment/grass3.png
-      - assets/images/enviroment/grass4.png
-      - assets/images/enviroment/grass5.png
-      - assets/images/enviroment/grass6.png
-      - assets/images/enviroment/grass7.png
-      - assets/images/enviroment/grass8.png
-      - assets/images/enviroment/grass9.png
-      - assets/images/enviroment/grass10.png
-      - assets/images/enviroment/grass11.png
-      - assets/images/enviroment/grass12.png
-      - assets/images/enviroment/grass13.png
-      - assets/images/enviroment/grass14.png
-      - assets/images/shadown.png
-      - assets/images/shadown_large.png
-      - assets/images/effects/ripple.png
-      - assets/images/effects/walk_grass.png
-      - assets/images/effects/rip.png
+      - assets/images/
+      - assets/images/trees/
+      - assets/images/effects/
+      - assets/images/enviroment/
 
       #items
-      - assets/images/items/apple3.png
-      - assets/images/items/apple_green.png
-      - assets/images/items/orange.png
-      - assets/images/items/log.png
+      - assets/images/items/
 
       # ui
-      - assets/images/ui/backpaper.png
-      - assets/images/ui/backpaper1.png
-      - assets/images/ui/bag.png
-      - assets/images/ui/bag_open.png
-      - assets/images/ui/bag2.png
-      - assets/images/ui/bag2_open.png
-      - assets/images/ui/stomach.png
-      - assets/images/ui/stomach_back.png
+      - assets/images/ui/
 
       # sounds
-      - assets/audio/recovery.mp3
-      - assets/audio/footstep_grass1.mp3
-      - assets/audio/footstep_grass2.mp3
-      - assets/audio/footstep_sand_beech.mp3
-      - assets/audio/footstep_water_splash.mp3
-      - assets/audio/footstep_water_splash2.mp3
-      - assets/audio/swim_1.mp3
-      - assets/audio/impact_tree.mp3
-      - assets/audio/impact_tree2.mp3
-      - assets/audio/punch.mp3
-      - assets/audio/pickup_item1.mp3
-      - assets/audio/pickup_item2.mp3
-      - assets/audio/power_up.mp3
-      - assets/audio/items/eating_apple.mp3
+      - assets/audio/
+      - assets/audio/items/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
