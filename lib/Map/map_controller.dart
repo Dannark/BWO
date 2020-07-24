@@ -167,7 +167,7 @@ class MapController {
     c.restore();
   }
 
-  int getHeightOnPos(int x, int y, int z) {
+  int getHeightOnPos(int x, int y) {
     int defaultHeight = 255;
     if (map[y] != null) {
       if (map[y][x] != null) {

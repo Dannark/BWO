@@ -33,6 +33,7 @@ class PlayerActions {
             if (player.currentSprite != player.attackSprites) {
               bool hasEnergy = player.status.useEnergy(1);
               if (hasEnergy) {
+                player.status.consumeHungriness(0.3);
                 player.currentSprite = player.attackSprites;
                 player.equipmentController.setAction(DoAction.Attack);
 
@@ -49,8 +50,10 @@ class PlayerActions {
             if (player.currentSprite != player.attackSprites &&
                 entity.status.isAlive()) {
               player.currentSprite = player.attackSprites;
+              player.equipmentController.setAction(DoAction.Attack);
 
-              entity.getHut(player.equipmentController.getMaxAttackDamage());
+              entity.getHut(
+                  player.equipmentController.getMaxAttackDamage(), true);
             }
             player.setDirection(target);
           }

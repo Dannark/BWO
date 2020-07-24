@@ -114,9 +114,9 @@ abstract class Entity extends PhysicsEntity {
     moveFriction();
   }
 
-  void getHut(int damage) {
+  void getHut(int damage, bool isMine) {
     status.takeDamage(damage);
-    _damageEffect.addText(damage);
+    _damageEffect.addText(damage, isMine);
   }
 
   void onTriggerStay(Entity entity) {}

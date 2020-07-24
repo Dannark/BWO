@@ -6,6 +6,6 @@ class Skull extends Enemy {
   Skull(double x, double y, MapController map)
       : super(x, y, map, "enemys/miniskull") {
     iaController.walkSpeed = 1;
-    status.setLife(10);
+    status.setLife(6);
   }
 }

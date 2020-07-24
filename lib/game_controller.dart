@@ -33,14 +33,9 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
 
   static SceneObject currentScene;
 
-  // Skull skull;
-
   GameController() {
     PreloadAssets();
     //_gameScene = GameScene(); //init Game;
-
-    // skull = new Skull(-300, 32, mapController);
-    // mapController.addEntity(skull);
   }
 
   void SafeStart() {

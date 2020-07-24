@@ -65,6 +65,7 @@ flutter:
       
       # female2
       - assets/images/human/female2/walk/
+      - assets/images/human/female2/attack/
       
       # female3
       - assets/images/human/female3/walk/

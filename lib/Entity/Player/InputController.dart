@@ -1,5 +1,7 @@
+import 'package:BWO/Entity/Player/JoystickUI.dart';
 import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/game_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sensors/sensors.dart';
 import 'package:BWO/Utils/TapState.dart';
 
@@ -13,7 +15,25 @@ class InputController {
   double maxAngle = 5;
   double speedMultiplier = .6;
 
+  JoystickUI joystick;
+
   InputController(this.player) {
+    //registerAccelerometer();
+    joystick = JoystickUI(player, player.sceneObject.hud);
+  }
+
+  void update() {
+    if (!player.isMine) {
+      return;
+    }
+    /*if (GameController.tapState == TapState.DOWN) {
+      defaultY = previousY;
+    }*/
+
+    joystick.update();
+  }
+
+  void registerAccelerometer() {
     accelerometerEvents.listen((AccelerometerEvent event) {
       if (!player.isMine) {
         return;
@@ -45,14 +65,5 @@ class InputController {
         player.ySpeed = 0;
       }
     });
-  }
-
-  void update() {
-    if (!player.isMine) {
-      return;
-    }
-    if (GameController.tapState == TapState.DOWN) {
-      defaultY = previousY;
-    }
   }
 }

@@ -9,8 +9,8 @@ class Status {
   double _energy;
   double _maxEnergy;
 
-  double _hungriness = 0;
-  double _maxHungriness = 100;
+  double _calories = 0;
+  double _maxCalories = 100;
 
   int _force = 2;
   int _defense = 0;
@@ -24,8 +24,8 @@ class Status {
   bool autoRegenHP = true;
   double _hpRegenFrequency = 10; //in seconds
   double _hpRegenTime = 0;
-  double _energyRegenSpeed = .5;
-  double _hungrinessDecressSpeed = .15;
+  double _energyRegenSpeed = .6;
+  double _caloriesDecressSpeed = .15; //takes about 10 minutes
 
   Status({int maxHP = 10, double maxEnergy = 5}) {
     this._maxHP = maxHP;
@@ -42,33 +42,33 @@ class Status {
   void _statusRegeneration(double walkSpeed) {
     if (isAlive() == false) return;
 
-    if (_hungriness > 0) {
-      _hungriness -= GameController.deltaTime * _hungrinessDecressSpeed;
+    if (_calories > 0) {
+      _calories -= GameController.deltaTime * _caloriesDecressSpeed;
     } else {
-      _hungriness = 0;
+      _calories = 0;
     }
 
     if (walkSpeed >= 2) {
       if (_energy > 0) {
-        var energyDecrease = GameController.deltaTime * _energyRegenSpeed * .5;
+        var energyDecrease = GameController.deltaTime * _energyRegenSpeed * .7;
         energyDecrease *= walkSpeed / 3;
         _energy -= energyDecrease;
       }
-    } else {
-      if (_energy < _maxEnergy) {
-        if (_hungriness > 0) {
-          _energy += GameController.deltaTime *
-              _energyRegenSpeed *
-              2 *
-              (_hungriness / 100);
-        } else {
-          if (_energy < _maxEnergy / 2) {
-            _energy += GameController.deltaTime * 0.001;
-          }
-        }
+    }
+
+    if (_energy < _maxEnergy) {
+      if (_calories > 0) {
+        _energy += GameController.deltaTime *
+            _energyRegenSpeed *
+            2 *
+            (_calories / 100);
       } else {
-        _energy = _maxEnergy;
+        if (_energy < _maxEnergy / 2) {
+          _energy += GameController.deltaTime * 0.001;
+        }
       }
+    } else {
+      _energy = _maxEnergy;
     }
 
     if (autoRegenHP == false) return;
@@ -110,12 +110,12 @@ class Status {
     return _maxExp;
   }
 
-  double getHungriness() {
-    return _hungriness;
+  double getCalories() {
+    return _calories;
   }
 
-  double getMaxHungriness() {
-    return _maxHungriness;
+  double getMaxCalories() {
+    return _maxCalories;
   }
 
   void takeDamage(int damage) {
@@ -140,6 +140,15 @@ class Status {
     }
   }
 
+  bool consumeHungriness(double calories) {
+    if (_calories >= calories) {
+      _calories -= calories;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void addLife(int life) {
     _hp += life;
     if (_hp > _maxHP) {
@@ -155,9 +164,9 @@ class Status {
   }
 
   void addHungriness(double hungriness) {
-    _hungriness += hungriness;
-    if (_hungriness > _maxHungriness) {
-      _hungriness = _maxHungriness;
+    _calories += hungriness;
+    if (_calories > _maxCalories) {
+      _calories = _maxCalories;
     }
   }
 
@@ -168,7 +177,7 @@ class Status {
   void refillStatus() {
     _hp = _maxHP;
     _energy = _maxEnergy;
-    _hungriness = _maxHungriness;
+    _calories = _maxCalories;
   }
 
   void setLife(int n) {

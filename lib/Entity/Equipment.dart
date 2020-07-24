@@ -35,6 +35,7 @@ class Equipment implements OnAnimationEnd {
   void onAnimationEnd() {
     if (currentSprite == equipmentAttack) {
       currentSprite = equipmentWalk;
+      currentSprite.setDirectionAngle(equipmentAttack.getDirectionAngle());
     }
   }
 }

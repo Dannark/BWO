@@ -10,16 +10,16 @@ class IAController {
   Enemy self;
   Entity target;
 
-  double walkSpeed = 1;
+  double walkSpeed = .5;
   int patrolAreaRange = 300;
 
   ///when this unit see the target at this distance it will immediately attack it
-  int seeTargetDistanceMin = 96;
+  int seeTargetDistanceMin = 80;
 
   ///when this unit see the target at this distance it will attack only if it is running
   int seeTargetDistanceMax = 224;
   int attackDistance = 40;
-  double attackSpeed = 1;
+  double attackFrequencyInSec = 2;
 
   double _followingSpeed = 0;
   Offset _destPoint;
@@ -117,14 +117,14 @@ class IAController {
     if (GameController.time > _attackSpeedDelay &&
         distanceToTarget < attackDistance &&
         totalSpeed < 1) {
-      _attackSpeedDelay = GameController.time + attackSpeed;
+      _attackSpeedDelay = GameController.time + attackFrequencyInSec;
 
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
       self.currentSprite = self.attackSprites;
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
-      target.getHut(self.status.getBaseAttackDamage());
+      target.getHut(self.status.getBaseAttackDamage(), false);
     }
   }
 }

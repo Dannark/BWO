@@ -141,4 +141,12 @@ class SpriteController {
     var walkAngle = 180 * direction / pi;
     _dir = walkAngle ~/ 22.5;
   }
+
+  void setDirectionAngle(int dir) {
+    _dir = dir;
+  }
+
+  int getDirectionAngle() {
+    return _dir;
+  }
 }

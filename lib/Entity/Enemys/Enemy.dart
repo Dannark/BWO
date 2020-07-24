@@ -28,7 +28,7 @@ class Enemy extends Entity implements OnAnimationEnd {
     if (isActive == false) {
       return;
     }
-    mapHeight = map.map[posY][posX][0].height;
+    mapHeight = map.getHeightOnPos(posX, posY);
 
     var maxWalkSpeed = 2;
     var walkSpeed = max(xSpeed.abs(), ySpeed.abs());

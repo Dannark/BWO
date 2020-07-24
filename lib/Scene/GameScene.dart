@@ -1,4 +1,5 @@
 import 'package:BWO/Entity/Enemys/Enemy.dart';
+import 'package:BWO/Entity/Enemys/Skull.dart';
 import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Scene/SceneObject.dart';
@@ -40,6 +41,17 @@ class GameScene extends SceneObject {
     serverController.setPlayer(player);
     mapController.addPlayerRef(player);
 
+    //Skull skull2 = new Skull(300, 32, mapController);
+    mapController.addEntity(new Skull(-300, 32, mapController));
+    //mapController.addEntity(new Skull(300, 32, mapController));
+    //mapController.addEntity(new Skull(-250, 250, mapController));
+    //mapController.addEntity(new Skull(-350, 10, mapController));
+    //mapController.addEntity(new Skull(350, -200, mapController));
+    //mapController.addEntity(new Skull(0, -200, mapController));
+    //mapController.addEntity(new Skull(100, -400, mapController));
+    //mapController.addEntity(new Skull(-400, -400, mapController));
+    //mapController.addEntity(new Skull(400, 400, mapController));
+
     Flame.bgm.initialize();
     //Flame.bgm.play('recovery.mp3', volume: .2);
     Flame.audio.disableLog();
@@ -57,8 +69,8 @@ class GameScene extends SceneObject {
     config.render(
         c,
         "FPS: ${GameController.fps.isNaN || GameController.fps.isInfinite ? 0 : GameController.fps.toInt()}",
-        Position(0, GameController.screenSize.height - 11),
-        anchor: Anchor.topLeft);
+        Position(GameController.screenSize.width, 0),
+        anchor: Anchor.topRight);
 
     hud.draw(c);
   }

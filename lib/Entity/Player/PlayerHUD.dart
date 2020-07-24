@@ -67,8 +67,8 @@ class PlayerHUD extends UIElement {
       Rect.fromLTWH(10, xp.bottom + 5, 16, 16),
       _stomachBack,
       _stomach,
-      _player.status.getHungriness(),
-      _player.status.getMaxHungriness(),
+      _player.status.getCalories(),
+      _player.status.getMaxCalories(),
     );
   }
 

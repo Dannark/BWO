@@ -10,7 +10,7 @@ abstract class NetworkServer {
   String playerName;
   String mSprite;
 
-  bool offlineMode = true;
+  bool offlineMode = false;
 
   NetworkServer() {}
 

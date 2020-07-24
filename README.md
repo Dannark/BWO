@@ -14,7 +14,7 @@ The players will be able to build theirs houses anywhere on the infinity world. 
 
 This project is still in development and right now it only has some fews features:
 
-# Release Date?
+## Release Date?
 Hopefully at some point later this year.
 
 ## Dev Log
@@ -37,43 +37,54 @@ Next updates/Done:
 * [x] Tree Cut Logic and Animation
 * [x] Add pickup items
 * [x] Inventory 
-* [x] Add enemys
+* [x] Enemys Category
     - [x] AI patrol
     - [x] AI Search, follow and lose target
     - [x] AI Attacking
+    - [ ] Generate Random Enemys when walking
 * [x] Add player Attack animation
 * [x] Add combat System
 * [x] Add UI System
 * [x] Added Scene Manager (Switch between Scenes like Menus, Game etc)
 * [x] Add UI - player creation
 * [x] Added New Character Sprites to the game
-* [-] Create Node Server
-    - [x] Synchronize Players position
-    - [x] Smooth player animation
-    - [x] Optimze Synchronization player's data only to players in view range
-    - [x] Sync hit tree animation
-    - [ ] Sync attack other Players damage/animation
-    - [x] Sync tree/items spawn
-    - [ ] Sync enemies
 * [x] Level and Progression System
 * [x] Player HUD
 * [x] Equipments and status bonuses
 * [ ] Equipments UI
 * [x] Fix tree generation
 * [x] Add hungriness
+* [x] Add Input Joystick Style for walking
 * [ ] Change background music Volume dynamic
+* [-] Create Node Server
+    - [x] Synchronize Players position
+    - [x] Smooth player animation
+    - [x] Optimze Synchronization player's data only to players in view range
+    - [x] Sync hit tree animation
+    - [ ] Sync attack other Players damage/animation
+    - [ ] Sync Equipment Sprite 
+    - [x] Sync tree/items spawn
+    - [ ] Sync enemies
 * [-] Craft Category
     - [ ] Craft Axe item from others items
+    - [ ] Craft Database
+    - [ ] Craft UI with drag and drop
 * [-] Build Category
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
+
+### --/07
+* Added Input Joystick Style for walking (Accelerometer is still very interesting and different but it is just too hard for some people)
+* Fixed Enemys not spawning when off screen
+* Damage Text Colors for Enemys/Player
+- Enemys not patroling
 
 ### 21/07
 * Added Level and progression System
 * Added Equipments items and bonus status (Single Source shared to all characters)
 * Added Players HUD and status management logic
 * Added Axe to cut tree faster
-* Added hungriness logic (If you are starving you get badness status and limitations)
+* Added calories logic (If you are starving you get badness status and limitations)
 
 ### 17/07
 * New Players sprites

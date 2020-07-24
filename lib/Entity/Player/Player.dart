@@ -74,7 +74,7 @@ class Player extends Entity implements OnAnimationEnd {
     if (isActive == false) {
       return;
     }
-    mapHeight = map.getHeightOnPos(posX, posY, 0);
+    mapHeight = map.getHeightOnPos(posX, posY);
 
     var maxWalkSpeed =
         (_inputController.maxAngle * _inputController.speedMultiplier);
@@ -97,8 +97,6 @@ class Player extends Entity implements OnAnimationEnd {
     }
 
     config.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
-
-    //inventory.drawPosition(c, x, y);
   }
 
   @override
@@ -143,9 +141,9 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   @override
-  void getHut(int damage) {
+  void getHut(int damage, bool isMine) {
     // TODO: implement getHut
-    super.getHut(damage);
+    super.getHut(damage, isMine);
   }
 
   @override
@@ -180,6 +178,7 @@ class Player extends Entity implements OnAnimationEnd {
   void onAnimationEnd() {
     if (currentSprite == attackSprites) {
       currentSprite = walkSprites;
+      currentSprite.setDirectionAngle(attackSprites.getDirectionAngle());
     }
   }
 }
