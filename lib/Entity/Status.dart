@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:BWO/game_controller.dart';
 
 class Status {
+  double _statusMultiplier = 1;
   int _hp;
   int _maxHP;
 
@@ -64,7 +65,7 @@ class Status {
             (_calories / 100);
       } else {
         if (_energy < _maxEnergy / 2) {
-          _energy += GameController.deltaTime * 0.001;
+          _energy += GameController.deltaTime * 0.04;
         }
       }
     } else {
@@ -84,6 +85,13 @@ class Status {
 
   int getLevel() {
     return _level;
+  }
+
+  void setLevel(int lv, double statusMultiplier) {
+    _level = lv;
+    _statusMultiplier = statusMultiplier;
+    refillStatus();
+    _levelUpRamp();
   }
 
   int getHP() {
@@ -217,7 +225,7 @@ class Status {
   }
 
   void _updateStatus() {
-    _maxHP = (10 + ((_level * _level) * .5)).toInt();
-    _maxEnergy = (5 + _level * .5);
+    _maxHP = (_statusMultiplier * (10 + ((_level * _level) * .5))).toInt();
+    _maxEnergy = _statusMultiplier * (5 + _level * .5);
   }
 }

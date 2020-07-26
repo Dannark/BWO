@@ -114,7 +114,7 @@ abstract class Entity extends PhysicsEntity {
     moveFriction();
   }
 
-  void getHut(int damage, bool isMine) {
+  void getHut(int damage, bool isMine, Entity other) {
     status.takeDamage(damage);
     _damageEffect.addText(damage, isMine);
   }

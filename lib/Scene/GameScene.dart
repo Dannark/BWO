@@ -42,7 +42,7 @@ class GameScene extends SceneObject {
     mapController.addPlayerRef(player);
 
     //Skull skull2 = new Skull(300, 32, mapController);
-    mapController.addEntity(new Skull(-300, 32, mapController));
+    //mapController.addEntity(new Skull(-300, 32, mapController));
     //mapController.addEntity(new Skull(300, 32, mapController));
     //mapController.addEntity(new Skull(-250, 250, mapController));
     //mapController.addEntity(new Skull(-350, 10, mapController));

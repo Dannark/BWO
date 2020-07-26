@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:BWO/Entity/Enemys/IAController.dart';
+import 'package:BWO/Entity/Enemys/IALocalController.dart';
+import 'package:BWO/Entity/Enemys/IANetworkController.dart';
 import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/OnAnimationEnd.dart';
@@ -8,16 +9,19 @@ import 'package:BWO/Utils/SpriteController.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flutter/material.dart';
 
+import 'IAController.dart';
+
 class Enemy extends Entity implements OnAnimationEnd {
   MapController map;
   IAController iaController;
+  bool respawn = false;
   double respawnTime = 0;
 
   Enemy(double x, double y, this.map, String spriteFolder) : super(x, y) {
     _loadSprites(spriteFolder);
     shadownSize = 1.2;
 
-    iaController = IAController(this);
+    iaController = IANetworkController(this);
   }
 
   SpriteController walkSprites;
@@ -61,14 +65,25 @@ class Enemy extends Entity implements OnAnimationEnd {
   void die() {
     if (status.isAlive() == false) {
       if (isActive) {
-        respawnTime = GameController.time + 10;
         isActive = false;
+        if (respawn) {
+          respawnTime = GameController.time + 10;
+        } else {
+          destroy();
+          iaController.target?.status?.addExp(status.getLevel() * 2);
+        }
       }
       if (GameController.time > respawnTime) {
         isActive = true;
         status.refillStatus();
       }
     }
+  }
+
+  @override
+  void getHut(int damage, bool isMine, Entity other) {
+    super.getHut(damage, isMine, other);
+    iaController.target = other;
   }
 
   void _loadSprites(spriteFolder) {

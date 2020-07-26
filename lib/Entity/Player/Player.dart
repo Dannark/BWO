@@ -56,13 +56,13 @@ class Player extends Entity implements OnAnimationEnd {
       : super(x, y) {
     this.spriteFolder = spriteFolder;
     playerActions = PlayerActions(this);
-    _inputController = InputController(this);
     playerNetwork = PlayerNetwork(this);
 
     if (isMine) {
       inventory = Inventory(this, sceneObject.hud);
       _playerHUD = PlayerHUD(this, sceneObject.hud);
       equipmentController = EquipmentController(this);
+      _inputController = InputController(this);
     }
     name = myName;
     print("adding player [$name] with sprite: $spriteFolder");
@@ -76,8 +76,11 @@ class Player extends Entity implements OnAnimationEnd {
     }
     mapHeight = map.getHeightOnPos(posX, posY);
 
-    var maxWalkSpeed =
-        (_inputController.maxAngle * _inputController.speedMultiplier);
+    var maxWalkSpeed = 3.0;
+    if (_inputController != null) {
+      maxWalkSpeed =
+          (_inputController.maxAngle * _inputController.speedMultiplier);
+    }
     var walkSpeed = max(xSpeed.abs(), ySpeed.abs()) * maxSpeedEnergyMultiplier;
     var deltaSpeed = (walkSpeed / maxWalkSpeed);
     var animSpeed = 0.07 + (0.1 - (deltaSpeed * 0.1));
@@ -93,7 +96,7 @@ class Player extends Entity implements OnAnimationEnd {
       currentSprite.draw(c, x, y, xSpeed, ySpeed, animSpeed, stopAnimWhenIdle,
           mapHeight); //0.125 = 12fps
 
-      equipmentController.draw(c, stopAnimWhenIdle, animSpeed);
+      equipmentController?.draw(c, stopAnimWhenIdle, animSpeed);
     }
 
     config.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
@@ -105,7 +108,7 @@ class Player extends Entity implements OnAnimationEnd {
     if (isActive == false) {
       return;
     }
-    _inputController.update();
+    _inputController?.update();
 
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();
@@ -141,9 +144,9 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   @override
-  void getHut(int damage, bool isMine) {
+  void getHut(int damage, bool isMine, Entity other) {
     // TODO: implement getHut
-    super.getHut(damage, isMine);
+    super.getHut(damage, isMine, other);
   }
 
   @override

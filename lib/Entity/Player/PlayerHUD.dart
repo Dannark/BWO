@@ -95,7 +95,7 @@ class PlayerHUD extends UIElement {
 
     txt.render(
       c,
-      "${textValue == "-0.0" ? 0 : textValue}",
+      "${textValue == "-0.0" ? 0.0 : textValue}",
       Position(barRect.left + 5, barRect.center.dy),
       anchor: Anchor.centerLeft,
     );

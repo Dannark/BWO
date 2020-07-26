@@ -52,8 +52,8 @@ class PlayerActions {
               player.currentSprite = player.attackSprites;
               player.equipmentController.setAction(DoAction.Attack);
 
-              entity.getHut(
-                  player.equipmentController.getMaxAttackDamage(), true);
+              entity.getHut(player.equipmentController.getMaxAttackDamage(),
+                  true, player);
             }
             player.setDirection(target);
           }

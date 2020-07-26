@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:BWO/Entity/Enemys/Enemy.dart';
+import 'package:BWO/Entity/Enemys/Skull.dart';
 import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Entity/Player/Player.dart';
 import 'package:BWO/Map/map_controller.dart';
@@ -43,7 +45,7 @@ class ServerController extends NetworkServer {
   @override
   getPlayers(data) {
     super.getPlayers(data);
-    print("getPlayers ${data}");
+    //print("getPlayers ${data}");
     Map<String, dynamic> user = jsonDecode(data);
 
     user.forEach((key, value) {
@@ -67,6 +69,30 @@ class ServerController extends NetworkServer {
   }
 
   @override
+  getEnemys(data) {
+    super.getEnemys(data);
+    print("getEnemys ${data}");
+    Map<String, dynamic> user = jsonDecode(data);
+
+    user.forEach((key, value) {
+      print("getEnemys ${key} ${value}");
+      if (key == 'enemys') {
+        value.forEach((keyEnemy, enemy) {
+          print("enemy: ${keyEnemy} ${enemy}");
+          String name = enemy["name"].toString();
+          double newX = double.parse(enemy['x'].toString());
+          double newY = double.parse(enemy['y'].toString());
+
+          print('creating enemy ${name}');
+          if (name.startsWith('Skull')) {
+            _addEntityIfNotExist(Skull(newX, newY, map, name));
+          }
+        });
+      }
+    });
+  }
+
+  @override
   onAddPlayer(data) {
     super.onAddPlayer(data);
     print("onAddPlayer ${data}");
@@ -77,8 +103,11 @@ class ServerController extends NetworkServer {
 
     String pName = user['name'].toString();
     String sprite = user['sprite'].toString();
-    _addEntityIfNotExist(
-        Player(newX, newY, map, false, pName, null, spriteFolder: sprite));
+    print("adding p= ${pName}");
+    Entity e =
+        Player(newX, newY, map, false, pName, null, spriteFolder: sprite);
+    print("adding p= ${e}");
+    _addEntityIfNotExist(e);
   }
 
   @override
@@ -96,7 +125,7 @@ class ServerController extends NetworkServer {
   @override
   void onMove(data) {
     super.onMove(data);
-    print("onMove ${data}");
+    //print("onMove ${data}");
     Map<String, dynamic> user = jsonDecode(data);
     double newX = double.parse(user['x'].toString());
     double newY = double.parse(user['y'].toString());
@@ -127,18 +156,19 @@ class ServerController extends NetworkServer {
   }
 
   void _addEntityIfNotExist(Entity newEntity) {
+    print("_addEntityIfNotExist");
     Entity foundEntity = map.entitysOnViewport.firstWhere(
         (element) => element.name == newEntity.name,
         orElse: () => null);
-
+    print("foundEntity = ");
+    print("foundEntity = ${foundEntity}");
     if (foundEntity == null) {
-      if (newEntity is Player) {
-        print(
-            "> Adding new player ${newEntity.name} at position PosX: ${newEntity.posX}, PosY: ${newEntity.posY}) ${newEntity.spriteFolder}");
-      }
       map.addEntity(newEntity);
     } else {
-      print("> player already exists ${newEntity.name}. Ignoring...");
+      print("> entity already exists ${newEntity.name}. Ignoring...");
+      if (foundEntity is Enemy) {
+        foundEntity.iaController.moveTo(newEntity.x, newEntity.y);
+      }
     }
   }
 

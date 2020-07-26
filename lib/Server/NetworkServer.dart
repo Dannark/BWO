@@ -25,6 +25,7 @@ abstract class NetworkServer {
     socketIO.init();
     socketIO.subscribe("socket_info", _onSocketInfo);
     socketIO.subscribe("getPlayers", getPlayers);
+    socketIO.subscribe("getEnemys", getEnemys);
     socketIO.subscribe("add-player", onAddPlayer);
     socketIO.subscribe("remove-player", onRemovePlayer);
     socketIO.subscribe("onMove", onMove);
@@ -54,6 +55,8 @@ abstract class NetworkServer {
   }
 
   getPlayers(dynamic data) {}
+
+  getEnemys(dynamic data) {}
 
   onAddPlayer(dynamic data) {}
 
