@@ -7,6 +7,9 @@ import 'package:BWO/Map/map_controller.dart';
 import 'package:BWO/Utils/OnAnimationEnd.dart';
 import 'package:BWO/Utils/SpriteController.dart';
 import 'package:BWO/game_controller.dart';
+import 'package:flame/anchor.dart';
+import 'package:flame/position.dart';
+import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import 'IAController.dart';
@@ -17,10 +20,11 @@ class Enemy extends Entity implements OnAnimationEnd {
   bool respawn = false;
   double respawnTime = 0;
 
-  Enemy(double x, double y, this.map, String spriteFolder) : super(x, y) {
+  Enemy(double x, double y, this.map, String spriteFolder, String myId)
+      : super(x, y) {
     _loadSprites(spriteFolder);
     shadownSize = 1.2;
-
+    id = myId;
     iaController = IANetworkController(this);
   }
 
@@ -50,6 +54,8 @@ class Enemy extends Entity implements OnAnimationEnd {
           c, x, y, xSpeed, ySpeed, animSpeed, stopAnimWhenIdle, mapHeight);
     }
     debugDraw(c);
+    TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia")
+        .render(c, name, Position(x, y - 32), anchor: Anchor.bottomCenter);
   }
 
   @override

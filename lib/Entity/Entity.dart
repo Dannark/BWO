@@ -21,6 +21,7 @@ abstract class Entity extends PhysicsEntity {
   bool isActive = true;
 
   String name;
+  String id;
 
   ///tiled position
   int posX;
@@ -116,6 +117,10 @@ abstract class Entity extends PhysicsEntity {
 
   void getHut(int damage, bool isMine, Entity other) {
     status.takeDamage(damage);
+    showDamage(damage, isMine);
+  }
+
+  void showDamage(int damage, bool isMine) {
     _damageEffect.addText(damage, isMine);
   }
 

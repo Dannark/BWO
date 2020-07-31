@@ -64,7 +64,7 @@ Next updates/Done:
     - [ ] Sync attack other Players damage/animation
     - [ ] Sync Equipment Sprite 
     - [x] Sync tree/items spawn
-    - [ ] Sync enemies
+    - [x] Sync enemies
 * [-] Craft Category
     - [ ] Craft Axe item from others items
     - [ ] Craft Database
@@ -73,7 +73,15 @@ Next updates/Done:
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
 
-### --/07
+### 30/07
+* Reducing Log amount for Socket.io Lib
+* Enemys Name
+* Some Improviments on Connections to Server when receving messages update
+
+### 26/07
+* Realtime Enemy Spawn/Walk Synchronization (Client side)
+
+### 24/07
 * Added Input Joystick Style for walking (Accelerometer is still very interesting and different but it is just too hard for some people)
 * Fixed Enemys not spawning when off screen
 * Damage Text Colors for Enemys/Player

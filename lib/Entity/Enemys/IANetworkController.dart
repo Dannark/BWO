@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 
 class IANetworkController extends IAController {
   int patrolAreaRange = 300;
-  AggressiveLevel agressiveLevel = AggressiveLevel.Passive;
 
   ///when this unit see the target at this distance it will immediately attack it
   int seeTargetDistanceMin = 80;
@@ -26,46 +25,27 @@ class IANetworkController extends IAController {
 
   double _followingSpeed = 0;
   Offset _destPoint;
-  double _newPatrolAreaDelay = 0;
   double _stopDistance = 24;
   double _attackSpeedDelay = 0;
   double _loseTargetDistance = 250;
 
   IANetworkController(Enemy self) : super(self) {
     _destPoint = Offset(self.x, self.y);
-
-    if (_destPoint.distance > 500 * 16) {
-      agressiveLevel = AggressiveLevel.Aggressive;
-    }
   }
 
   void update() {
     if (self.status.isAlive() == false) {
       return;
     }
-    //patrolArea();
     //searchForTargetsEntity();
-    moving();
-    //attackTarget();
-  }
-
-  void patrolArea() {
-    if (target != null) {
-      return;
-    }
-    if (GameController.time > _newPatrolAreaDelay) {
-      _newPatrolAreaDelay = GameController.time + Random().nextInt(5) + 5;
-      _destPoint = Offset(
-          self.x + Random().nextInt(patrolAreaRange) - patrolAreaRange / 2,
-          self.y + Random().nextInt(patrolAreaRange) - patrolAreaRange / 2);
-    }
+    _moving();
   }
 
   void moveTo(double targetX, double targetY) {
     this._destPoint = Offset(targetX, targetY);
   }
 
-  void moving() {
+  void _moving() {
     if (self.currentSprite != self.walkSprites) {
       return;
     }
@@ -86,64 +66,19 @@ class IANetworkController extends IAController {
     }
   }
 
-  void searchForTargetsEntity() {
-    if (agressiveLevel == AggressiveLevel.Passive) {
-      return;
-    }
-    _followingSpeed = target == null ? 0 : 1;
-    for (var entity in self.map.entitysOnViewport) {
-      if (entity != self &&
-          entity.isActive &&
-          entity.status.isAlive() &&
-          entity is Player) {
-        var distance =
-            (Offset(self.x, self.y) - Offset(entity.x, entity.y)).distance;
+  void attackTarget(Entity target, {int damage = 0}) {
+    this.target = target;
+    _destPoint = Offset(target.x, target.y);
+    print('ok now i will attack ${target.name}');
 
-        if (distance < seeTargetDistanceMin) {
-          target = entity;
-        }
-        var targetSpeed = (entity.xSpeed + entity.ySpeed).abs();
-
-        if (distance < seeTargetDistanceMax && targetSpeed > 1.5) {
-          target = entity;
-        }
-      }
-    }
-    if (target != null) {
-      _destPoint = Offset(target.x, target.y);
-    }
-  }
-
-  void attackTarget() {
-    if (target == null) {
-      return;
-    }
-    var distanceToTarget =
-        (Offset(self.x, self.y) - Offset(target.x, target.y)).distance;
-
-    if (distanceToTarget > _loseTargetDistance ||
-        target.status.isAlive() == false) {
-      target = null;
-      return;
-    }
-
-    var totalSpeed = self.xSpeed + self.ySpeed;
-    if (GameController.time > _attackSpeedDelay &&
-        distanceToTarget < attackDistance &&
-        totalSpeed < 1) {
-      _attackSpeedDelay = GameController.time + attackFrequencyInSec;
-
+    if (damage > 0) {
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
       self.currentSprite = self.attackSprites;
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
-      target.getHut(self.status.getBaseAttackDamage(), false, self);
+      //target.getHut(self.status.getBaseAttackDamage(), false, self);
+      target.showDamage(damage, false);
     }
   }
-}
-
-enum AggressiveLevel {
-  Passive, // Attack only when you attack first
-  Aggressive, //Attack you when see
 }

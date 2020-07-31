@@ -201,6 +201,7 @@ class MapController {
 
   void addEntity(Entity obj) {
     entityList.add(obj);
+    entitysOnViewport.add(obj);
   }
 
   void addPlayerRef(Player player) {

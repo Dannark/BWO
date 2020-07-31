@@ -47,7 +47,7 @@ class IALocalController extends IAController {
     patrolArea();
     searchForTargetsEntity();
     moveTo(_destPoint.dx, _destPoint.dy);
-    attackTarget();
+    _attackingTarget();
   }
 
   void patrolArea() {
@@ -111,7 +111,7 @@ class IALocalController extends IAController {
     }
   }
 
-  void attackTarget() {
+  void _attackingTarget() {
     if (target == null) {
       return;
     }

@@ -35,22 +35,12 @@ class GameScene extends SceneObject {
       mapController,
       true,
       playerName,
+      playerName,
       this,
       spriteFolder: spriteFolder,
     );
     serverController.setPlayer(player);
     mapController.addPlayerRef(player);
-
-    //Skull skull2 = new Skull(300, 32, mapController);
-    //mapController.addEntity(new Skull(-300, 32, mapController));
-    //mapController.addEntity(new Skull(300, 32, mapController));
-    //mapController.addEntity(new Skull(-250, 250, mapController));
-    //mapController.addEntity(new Skull(-350, 10, mapController));
-    //mapController.addEntity(new Skull(350, -200, mapController));
-    //mapController.addEntity(new Skull(0, -200, mapController));
-    //mapController.addEntity(new Skull(100, -400, mapController));
-    //mapController.addEntity(new Skull(-400, -400, mapController));
-    //mapController.addEntity(new Skull(400, 400, mapController));
 
     Flame.bgm.initialize();
     //Flame.bgm.play('recovery.mp3', volume: .2);
@@ -62,6 +52,8 @@ class GameScene extends SceneObject {
   void draw(Canvas c) {
     Rect bgRect = Rect.fromLTWH(0, 0, GameController.screenSize.width,
         GameController.screenSize.height);
+
+    if (player.id == null) return; //wait player log it
 
     mapController.drawMap(c, player.x, player.y, bgRect,
         movimentType: MovimentType.FOLLOW, tileSize: worldSize);

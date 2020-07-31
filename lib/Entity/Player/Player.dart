@@ -50,7 +50,7 @@ class Player extends Entity implements OnAnimationEnd {
 
   EquipmentController equipmentController;
 
-  Player(double x, double y, this.map, this.isMine, String myName,
+  Player(double x, double y, this.map, this.isMine, String myName, String myId,
       this.sceneObject,
       {String spriteFolder = "human/male1"})
       : super(x, y) {
@@ -64,6 +64,7 @@ class Player extends Entity implements OnAnimationEnd {
       equipmentController = EquipmentController(this);
       _inputController = InputController(this);
     }
+    id = myId;
     name = myName;
     print("adding player [$name] with sprite: $spriteFolder");
     _loadSprites();
