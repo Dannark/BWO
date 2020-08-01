@@ -20,8 +20,8 @@ Hopefully at some point later this year.
 ## Instructions:
 1. Run the Node Server:
     - Navigate to the folder `bwo-server` and run on console the command `nodemon` or `node server.js`
-2. Ajust the Server URL on the `lib\Server\NetworkServer.dart` if you pretend to launch on your localhost
-    - Tip: You cant use gitpod to launch it alive for free
+2. Adjust  the Server URL on the `lib\Server\NetworkServer.dart` if you pretend to launch on your localhost
+    - Tip: You can use gitpod to launch it alive for free
 3. Launch the app on your device
 
 By default the Server is launched on the port 3000
