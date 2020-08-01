@@ -34,6 +34,7 @@ class ServerController extends NetworkServer {
 
   void movePlayer() async {
     if (offlineMode) return;
+    print("movePlayer");
     String jsonData =
         '{"name":"${player.name}", "sprite":"${player.spriteFolder}", "x":${player.x.toInt()}, "y":${player.y.toInt()}, "xSpeed":"${player.xSpeed.round()}", "ySpeed":"${player.ySpeed.round()}"}';
     socketIO.sendMessage("onMove", jsonData);
@@ -47,9 +48,9 @@ class ServerController extends NetworkServer {
   }
 
   @override
-  getPlayersOnScreen(data) {
-    super.getPlayersOnScreen(data);
-    //print("getPlayers ${data}");
+  onReceivedPlayersOnScreen(data) {
+    super.onReceivedPlayersOnScreen(data);
+    print("onReceivedPlayersOnScreen ${data}");
     Map<String, dynamic> user = jsonDecode(data);
 
     user.forEach((key, value) {
@@ -57,6 +58,7 @@ class ServerController extends NetworkServer {
       double newX = double.parse(value['x'].toString());
       double newY = double.parse(value['y'].toString());
       String sprite = value['sprite'].toString();
+      String playerId = value['playerId'].toString();
 
       if (name == player.name) {
         if (firstMove == true) {
@@ -66,7 +68,8 @@ class ServerController extends NetworkServer {
         }
       } else {
         print("creating sprite from getPlayers sprite= $sprite");
-        _addEntityIfNotExist(Player(newX, newY, map, false, name, id, null,
+        _addEntityIfNotExist(Player(
+            newX, newY, map, false, name, playerId, null,
             spriteFolder: sprite));
       }
     });
@@ -99,13 +102,13 @@ class ServerController extends NetworkServer {
   }
 
   @override
-  getAllEnemysOnScreen(data) {
-    super.getAllEnemysOnScreen(data);
+  onReceivedEnemysOnScreen(data) {
+    super.onReceivedEnemysOnScreen(data);
     /**
      * Actived when players walks
      * the list returned is all the enemys on the player's screen
      */
-    print("getAllEnemysOnScreen ${data}");
+    print("onReceivedEnemysOnScreen ${data}");
     Map<String, dynamic> user = jsonDecode(data);
 
     List<Entity> spawnedEntitys = [];
@@ -147,10 +150,11 @@ class ServerController extends NetworkServer {
     double newY = double.parse(user['y'].toString());
 
     String pName = user['name'].toString();
+    String pId = user['playerId'].toString();
     String sprite = user['sprite'].toString();
 
     Entity e =
-        Player(newX, newY, map, false, pName, id, null, spriteFolder: sprite);
+        Player(newX, newY, map, false, pName, pId, null, spriteFolder: sprite);
 
     _addEntityIfNotExist(e);
   }
@@ -170,7 +174,7 @@ class ServerController extends NetworkServer {
   @override
   void onMove(data) {
     super.onMove(data);
-    //print("onMove ${data}");
+    print("onMove ${data}");
     Map<String, dynamic> user = jsonDecode(data);
     double newX = double.parse(user['x'].toString());
     double newY = double.parse(user['y'].toString());
@@ -209,7 +213,8 @@ class ServerController extends NetworkServer {
       print("## >>> Adding entity ${newEntity.name}.");
       map.addEntity(newEntity);
     } else {
-      print("> entity already exists ${newEntity.name}. Ignoring...");
+      print(
+          "> entity already exists ${newEntity.name} with id ${newEntity.id}. Ignoring...");
       if (foundEntity is Enemy) {
         foundEntity.iaController.moveTo(newEntity.x, newEntity.y);
       }

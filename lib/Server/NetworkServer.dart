@@ -3,8 +3,8 @@ import 'package:flutter_socket_io/flutter_socket_io.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
 
 abstract class NetworkServer {
-  final String _SERVER =
-      "https://3000-e92204fd-e411-4285-8fd3-cf3515d1c358.ws-us02.gitpod.io";
+  //final String _SERVER = "https://3000-e92204fd-e411-4285-8fd3-cf3515d1c358.ws-us02.gitpod.io";
+  final String _SERVER = "http://192.168.1.111:3000/";
 
   SocketIO socketIO;
   String id;
@@ -30,9 +30,9 @@ abstract class NetworkServer {
 
     socketIO.init();
     socketIO.subscribe("socket_info", onSetup);
-    socketIO.subscribe("getPlayersOnScreen", getPlayersOnScreen);
+    socketIO.subscribe("onReceivedPlayersOnScreen", onReceivedPlayersOnScreen);
     socketIO.subscribe("getEnemys", getEnemys);
-    socketIO.subscribe("getAllEnemysOnScreen", getAllEnemysOnScreen);
+    socketIO.subscribe("onReceivedEnemysOnScreen", onReceivedEnemysOnScreen);
     socketIO.subscribe("onEnemyTargetingPlayer", onEnemyTargetingPlayer);
     socketIO.subscribe("add-player", onAddPlayer);
     socketIO.subscribe("remove-player", onRemovePlayer);
@@ -42,7 +42,7 @@ abstract class NetworkServer {
   }
 
   void socketStatus(dynamic data) {
-    //print("## Socket status: " + data);
+    print("## Socket status: " + data);
   }
 
   void destoryConnection() {
@@ -63,11 +63,11 @@ abstract class NetworkServer {
     }
   }
 
-  getPlayersOnScreen(dynamic data) {}
+  onReceivedPlayersOnScreen(dynamic data) {}
 
   getEnemys(dynamic data) {}
 
-  getAllEnemysOnScreen(dynamic data) {}
+  onReceivedEnemysOnScreen(dynamic data) {}
 
   onAddPlayer(dynamic data) {}
 

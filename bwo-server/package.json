@@ -1,0 +1,19 @@
+{
+  "name": "bwo",
+  "version": "1.0.0",
+  "description": "Borderless World Online",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "author": "Dannark",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
