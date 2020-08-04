@@ -24,36 +24,43 @@ sockets.on('connection', (socket) => {
     socket.emit('socket_info', playerId)
 
     socket.on('log-player', (command) => {
-        console.log("log-player");
+        //var c = JSON.parse(command);
+        console.log("log-player ", command);
         game.logPlayer({ playerId: playerId, ...command })
         
-        socket.emit('onReceivedPlayersOnScreen', game.getAllPlayersAround(playerId))
+        sendMessage('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
     })
 
     socket.on('onMove', (command) => {
         game.state.statistics.msgRecived ++;
         game.updatePlayer({playerId: playerId, ...command})
 
-        socket.emit('onReceivedPlayersOnScreen', game.getAllPlayersAround(playerId))
-        socket.emit('onReceivedEnemysOnScreen', game.getAllEnemysAround (playerId))
+        sendMessage('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
+        sendMessage('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
     })
 
     socket.on('onTreeHit', (command) => {
-        console.log("onTreeHit")
         game.hitTree({playerId: playerId, ...command})
+    })
+
+    socket.on('onEnemyAttackPlayer', (command) => {
+        game.enemyAttackPlayer(command);
     })
 
     socket.on('disconnect', () => {
         game.removePlayer({ playerId: playerId })
         console.log(`> Player disconnected: ${playerId}`)
     })
+    
+    function sendMessage(tag, obj){
+        var isEmpty = Object.keys(obj).length === 0 && obj.constructor === Object
+        if(isEmpty == false){
+            socket.emit(tag, obj)
+        }
+    }
 })
 
 //app.use(express.static('public'))
-
-app.get('/map', (request, response) => {
-    
-})
 
 app.get('/', (request, response) => {
     

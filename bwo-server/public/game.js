@@ -11,11 +11,11 @@ export default function startServer() {
     };
 
     // make enemy random walk
-    setInterval(() => enemysController.patrolArea(state.enemys, (enemysMoved) => {
+    setInterval(() => enemysController.patrolArea(state, (enemysMoved) => {
         Object.entries(enemysMoved).forEach(enemy => {
             var mPoint = {x: enemy[1].x, y: enemy[1].y};
             notifyAllOnRangeOfArea({
-                type: 'getEnemys',
+                type: 'onEnemysWalk',
                 point: mPoint,
                 enemys: enemysMoved
             })
@@ -24,12 +24,20 @@ export default function startServer() {
     }), 5000);
 
     //make enemys attack players
-    setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
+    // setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
+    //     notifyAllOnRangeOfPlayer({
+    //         ...command,
+    //         type: 'onEnemyTargetingPlayer',
+    //     })
+    // }), 1500);
+
+    //----
+    setInterval(() => enemysController.simulateMove(state, (command) =>{
         notifyAllOnRangeOfPlayer({
             ...command,
             type: 'onEnemyTargetingPlayer',
         })
-    }), 1500);
+    }), 500);
 
     const observers = []
 
@@ -50,14 +58,14 @@ export default function startServer() {
     function removeSocket(id) {
         delete socketList[id]
     }
-    function notifyAllOnRangeOfPlayer(command) {
-        var allPlayers = getAllPlayersAround(command.playerId)
-        //delete command.playerId
-
+    function notifyAllOnRangeOfPlayer(command, ignoreSelf = false) {
+        //console.log(`> notifyAllOnRangeOfPlayer:`, command, `(${state.statistics.msgRecived}) `)
+        var allPlayers = getAllPlayersAround(command.playerId, ignoreSelf)
+        
         for (const skt of socketList) {
             if (allPlayers[skt.id] != undefined) {
                 var type = command.type
-                //delete command.type
+                delete command.type
                 skt.emit(type, command)
             }
         }
@@ -93,7 +101,7 @@ export default function startServer() {
             notifyAllOnRangeOfPlayer({
                 type: 'onMove',
                 ...command
-            })
+            }, true)
         }
         else {
             console.log(`> player ${playerId} not found when trying to move him`)
@@ -102,7 +110,7 @@ export default function startServer() {
         enemysController.spawnEnemyLoop(playerFound, state.enemys, (enemyListAroundPlayer) => {
             //enemy created 
             notifyAllOnRangeOfPlayer({
-                type: 'getEnemys',
+                type: 'onEnemysWalk',
                 playerId: playerId,
                 enemys: enemyListAroundPlayer
             })
@@ -156,25 +164,26 @@ export default function startServer() {
         const playerName = command.name
         var playerFound = state.players[playerId]
 
-
         if (playerFound != undefined) {
-            return playerFound;
+            console.log(`> Player ${playerId} already conneced`)
+            return;
         } else {
             console.log(`> Player ${playerId} not found, creating new player '${playerName}'`)
             addPlayer({ playerId: playerId, sprite: command.sprite, name: playerName, x: command.x, y: command.y })
             var totalPlayers = Object.keys(state.players).length
             console.log(`> Players Online: ${totalPlayers}`)
-            playerFound = state.players[playerId]
+            //playerFound = state.players[playerId]
         }
     }
 
-    function getAllPlayersAround(playerId) {
+    function getAllPlayersAround(playerId, ignoreSelf) {
         var mPlayer = state.players[playerId]
         var width = 300
         var height = 400
 
         var playersArray = Object.entries(state.players).filter((player) => {
-            return player[1].x > mPlayer.x - width
+            return (player[1].playerId != playerId == ignoreSelf)
+                && player[1].x > mPlayer.x - width
                 && player[1].y > mPlayer.y - height
                 && player[1].x < mPlayer.x + width
                 && player[1].y < mPlayer.y + height;
@@ -216,6 +225,10 @@ export default function startServer() {
         })
     }
 
+    function enemyAttackPlayer(command){
+        console.log(command);
+    }
+
     return {
         hitTree,
         logPlayer,
@@ -226,6 +239,7 @@ export default function startServer() {
         subscribe,
         state,
         addSocket,
+        enemyAttackPlayer
     }
 }
 

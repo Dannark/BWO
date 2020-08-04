@@ -53,7 +53,7 @@ class Enemy extends Entity implements OnAnimationEnd {
       currentSprite.draw(
           c, x, y, xSpeed, ySpeed, animSpeed, stopAnimWhenIdle, mapHeight);
     }
-    debugDraw(c);
+    //debugDraw(c);
     TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia")
         .render(c, name, Position(x, y - 32), anchor: Anchor.bottomCenter);
   }

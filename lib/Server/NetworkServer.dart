@@ -1,16 +1,17 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_socket_io/flutter_socket_io.dart';
-import 'package:flutter_socket_io/socket_io_manager.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 abstract class NetworkServer {
   //final String _SERVER = "https://3000-e92204fd-e411-4285-8fd3-cf3515d1c358.ws-us02.gitpod.io";
-  final String _SERVER = "http://192.168.1.111:3000/";
+  final String _SERVER = "http://192.168.1.111:3000";
 
-  SocketIO socketIO;
-  String id;
-  String playerName;
-  String mSprite;
-  Offset spawnPos;
+  Socket socket;
+
+  String _playerName;
+  String _mSprite;
+  Offset _spawnPos;
 
   bool offlineMode = false;
   var callback;
@@ -21,53 +22,62 @@ abstract class NetworkServer {
       Function(String) callback) {
     this.callback = callback;
 
-    this.playerName = playerName;
-    this.mSprite = sprite;
-    this.spawnPos = spawnPos;
+    this._playerName = playerName;
+    this._mSprite = sprite;
+    this._spawnPos = spawnPos;
 
-    socketIO = SocketIOManager().createSocketIO(_SERVER, "/",
-        query: "", socketStatusCallback: socketStatus);
+    socket = io(_SERVER, <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false
+    });
+    socket.connect();
 
-    socketIO.init();
-    socketIO.subscribe("socket_info", onSetup);
-    socketIO.subscribe("onReceivedPlayersOnScreen", onReceivedPlayersOnScreen);
-    socketIO.subscribe("getEnemys", getEnemys);
-    socketIO.subscribe("onReceivedEnemysOnScreen", onReceivedEnemysOnScreen);
-    socketIO.subscribe("onEnemyTargetingPlayer", onEnemyTargetingPlayer);
-    socketIO.subscribe("add-player", onAddPlayer);
-    socketIO.subscribe("remove-player", onRemovePlayer);
-    socketIO.subscribe("onMove", onMove);
-    socketIO.subscribe("onTreeHit", onTreeHit);
-    socketIO.connect();
+    socket.on('socket_info', onSetup);
+    socket.on('onPlayerEnterScreen', onPlayerEnterScreen);
+    socket.on('onEnemysWalk', onEnemysWalk);
+    socket.on('onEnemysEnterScreen', onEnemysEnterScreen);
+    socket.on('onEnemyTargetingPlayer', onEnemyTargetingPlayer);
+    socket.on('add-player', onAddPlayer);
+    socket.on("remove-player", onRemovePlayer);
+    socket.on("onMove", onMove);
+    socket.on("onTreeHit", onTreeHit);
+
+    socket.on('disconnect', (_) => print('disconnected'));
+    socket.on('fromServer', (_) => print(_));
   }
 
   void socketStatus(dynamic data) {
     print("## Socket status: " + data);
   }
 
-  void destoryConnection() {
-    if (socketIO != null) {
-      print("## Login out ");
-      SocketIOManager().destroySocket(socketIO);
-    }
-  }
-
   onSetup(dynamic data) {
     print("## Player ID: " + data);
-    id = data;
     callback(data);
-    if (socketIO != null) {
-      String jsonData =
-          '{"name":"${playerName}", "sprite":"$mSprite", "x":${spawnPos.dx.toInt()}, "y": ${spawnPos.dy.toInt()}}';
-      socketIO.sendMessage("log-player", jsonData, _onLogMsgSent);
+    if (socket.connected) {
+      var jsonData = {
+        "name": _playerName,
+        "sprite": _mSprite,
+        "x": _spawnPos.dx.toInt(),
+        "y": _spawnPos.dy.toInt()
+      };
+      print(jsonData);
+      socket.emit("log-player", jsonData);
     }
   }
 
-  onReceivedPlayersOnScreen(dynamic data) {}
+  void sendMessage(String tag, var jsonData) {
+    if (socket.connected) {
+      socket.emit(tag, jsonData);
+    } else {
+      print('Not connected, fail to send message: $tag');
+    }
+  }
 
-  getEnemys(dynamic data) {}
+  onPlayerEnterScreen(dynamic data) {}
 
-  onReceivedEnemysOnScreen(dynamic data) {}
+  onEnemysWalk(dynamic data) {}
+
+  onEnemysEnterScreen(dynamic data) {}
 
   onAddPlayer(dynamic data) {}
 
@@ -78,6 +88,4 @@ abstract class NetworkServer {
   void onTreeHit(dynamic data) {}
 
   void onEnemyTargetingPlayer(dynamic data) {}
-
-  void _onLogMsgSent(dynamic data) {}
 }

@@ -1,5 +1,6 @@
 import 'package:BWO/Entity/Enemys/Enemy.dart';
 import 'package:BWO/Entity/Entity.dart';
+import 'package:flutter/material.dart';
 
 abstract class IAController {
   Enemy self;
@@ -14,6 +15,10 @@ abstract class IAController {
   patrolArea() {}
 
   void moveTo(double targetX, double targetY) {}
+
+  Offset getDestination() {
+    return Offset.zero;
+  }
 
   void searchForTargetsEntity() {}
 

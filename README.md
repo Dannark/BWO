@@ -2,8 +2,6 @@
 
 An infinity procedural online game using Flutter and flames with NodeJS Server In back-end.
 
-`! Not going to use Firebase anymore because it needs more control from the backend side and firebase isn't the best choice for it.`
-
 ![gameplay_2](https://user-images.githubusercontent.com/7622553/86072224-7d941800-ba57-11ea-8d1d-9a2cab5c08b4.gif)
 ![export](https://user-images.githubusercontent.com/7622553/88120935-99906280-cb9a-11ea-9f4a-05c6b5d9ab61.gif)
 
@@ -47,10 +45,10 @@ Next updates/Done:
 * [x] Add pickup items
 * [x] Inventory 
 * [x] Enemys Category
-    - [x] AI patrol
-    - [x] AI Search, follow and lose target
-    - [x] AI Attacking
-    - [ ] Generate Random Enemys when walking
+    - [x] AI patrol (local)
+    - [x] AI Search, follow and lose target (local)
+    - [x] AI Attacking (local)
+    - [x] Generate Random Enemys when walking (online)
 * [x] Add player Attack animation
 * [x] Add combat System
 * [x] Add UI System
@@ -81,6 +79,9 @@ Next updates/Done:
 * [-] Build Category
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
+
+### 03/08
+* Rebuilng Logic to Synchronize enemy walk with speed simulation from Server-Side (This is need to calculate when enemy is REALLY close to player, instead of "teleporting" to from backend while in front they are not close)
 
 ### 01/08
 * Added Server-Side Folder to the project

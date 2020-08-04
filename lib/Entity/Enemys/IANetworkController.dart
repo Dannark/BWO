@@ -4,6 +4,8 @@ import 'package:BWO/Entity/Enemys/Enemy.dart';
 import 'package:BWO/Entity/Enemys/IAController.dart';
 import 'package:BWO/Entity/Entity.dart';
 import 'package:BWO/Entity/Player/Player.dart';
+import 'package:BWO/Scene/GameScene.dart';
+import 'package:BWO/Server/ServerController.dart';
 import 'package:BWO/game_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -45,6 +47,11 @@ class IANetworkController extends IAController {
     this._destPoint = Offset(targetX, targetY);
   }
 
+  @override
+  Offset getDestination() {
+    return _destPoint;
+  }
+
   void _moving() {
     if (self.currentSprite != self.walkSprites) {
       return;
@@ -68,9 +75,12 @@ class IANetworkController extends IAController {
 
   void attackTarget(Entity target, {int damage = 0}) {
     this.target = target;
-    _destPoint = Offset(target.x, target.y);
-    print('ok now i will attack ${target.name}');
+    if (target != null) {
+      _destPoint = Offset(target.x, target.y);
+      print('ok now i will attack ${target.name}');
+    }
 
+    //show damage
     if (damage > 0) {
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
