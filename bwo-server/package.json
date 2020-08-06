@@ -5,16 +5,21 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "nodemon server.js"
+    "test": "nodemon server.js --env=development "
   },
   "author": "Dannark",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "extend": "^3.0.2",
     "lerp": "^1.0.3",
+    "minimist": "^1.2.5",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
+  },
+  "nodemonConfig": {
+    "ignore": ["/resources/data/tmp/*"]
   }
 }

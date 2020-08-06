@@ -1,14 +1,11 @@
+import {saveState, loadState} from '../resources/data/state_manager.js'
 import * as enemysController from "./Enemys.js";
 
 export default function startServer() {
-    const state = {
-        players: {},
-        enemys: {},
-        statistics: {
-            msgRecived: 0,
-            msgSent: 0,
-        }
-    };
+    const state = loadState();
+    setInterval(() => {
+        saveState(state);
+    }, 10000);
 
     // make enemy random walk
     setInterval(() => enemysController.patrolArea(state, (enemysMoved) => {
@@ -67,6 +64,8 @@ export default function startServer() {
                 var type = command.type
                 delete command.type
                 skt.emit(type, command)
+
+                state.statistics.msgSent ++
             }
         }
     }
@@ -81,6 +80,8 @@ export default function startServer() {
                 var type = command.type
                 delete command.type
                 skt.emit(type, command)
+
+                state.statistics.msgSent ++
             }
 
         }
@@ -152,7 +153,8 @@ export default function startServer() {
             removeSocket(playerId);
 
             var totalPlayers = Object.keys(state.players).length
-            console.log(`> Players Online: ${totalPlayers}`)
+            var totalEnemys = Object.keys(state.enemys).length
+            console.log(`> Players Online: ${totalPlayers} and ${totalEnemys} Enemys Spawned`)
         }
         else {
             console.log(`can't remove player because it dosen't exist anymore`)
@@ -171,7 +173,8 @@ export default function startServer() {
             console.log(`> Player ${playerId} not found, creating new player '${playerName}'`)
             addPlayer({ playerId: playerId, sprite: command.sprite, name: playerName, x: command.x, y: command.y })
             var totalPlayers = Object.keys(state.players).length
-            console.log(`> Players Online: ${totalPlayers}`)
+            var totalEnemys = Object.keys(state.enemys).length
+            console.log(`> Players Online: ${totalPlayers} and ${totalEnemys} Enemys Spawned`)
             //playerFound = state.players[playerId]
         }
     }
