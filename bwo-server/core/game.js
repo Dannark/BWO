@@ -179,13 +179,15 @@ export default function startServer() {
         }
     }
 
-    function getAllPlayersAround(playerId, ignoreSelf) {
+    function getAllPlayersAround(playerId, ignoreSelf = true) {
         var mPlayer = state.players[playerId]
         var width = 300
         var height = 400
 
         var playersArray = Object.entries(state.players).filter((player) => {
-            return (player[1].playerId != playerId == ignoreSelf)
+            var isSelf = player[1].playerId == playerId;
+
+            return ((isSelf && ignoreSelf == false) || !isSelf)
                 && player[1].x > mPlayer.x - width
                 && player[1].y > mPlayer.y - height
                 && player[1].x < mPlayer.x + width

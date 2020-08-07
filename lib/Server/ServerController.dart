@@ -177,8 +177,7 @@ class ServerController extends NetworkServer {
     super.onRemovePlayer(data);
     print("onRemovePlayer ${data}");
 
-    Map<String, dynamic> user = jsonDecode(data);
-    String pName = user['name'].toString();
+    String pName = data['name'].toString();
     print(pName);
 
     map.entityList.removeWhere((element) => element.name == pName);

@@ -19,6 +19,7 @@ class MapController {
 
   double posX = 0;
   double posY = 0;
+  Offset targetPos;
 
   List<Entity> entityList = [];
   List<Entity> entitysOnViewport = [];
@@ -60,6 +61,7 @@ class MapController {
   MapController(Offset startPosition) {
     posX = startPosition.dx;
     posY = startPosition.dy;
+    this.targetPos = Offset(posX, posY);
   }
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
@@ -76,19 +78,17 @@ class MapController {
       this.posX += moveX.roundToDouble();
       this.posY += moveY.roundToDouble();
     } else if (movimentType == MovimentType.FOLLOW) {
+      this.targetPos = Offset(
+          (-moveX.roundToDouble() + screenSize.width / 2) + border * tileSize,
+          (-moveY.roundToDouble() + screenSize.height / 2) + border * tileSize);
+
       this.posX = ui
           .lerpDouble(
-              posX,
-              (-moveX.roundToDouble() + screenSize.width / 2) +
-                  border * tileSize,
-              GameController.deltaTime * cameraSpeed)
+              posX, targetPos.dx, GameController.deltaTime * cameraSpeed)
           .roundToDouble();
       this.posY = ui
           .lerpDouble(
-              posY,
-              (-moveY.roundToDouble() + screenSize.height / 2) +
-                  border * tileSize,
-              GameController.deltaTime * cameraSpeed)
+              posY, targetPos.dy, GameController.deltaTime * cameraSpeed)
           .roundToDouble();
     }
 
@@ -221,6 +221,8 @@ class MapController {
 
     entityList.removeWhere((element) => element.marketToBeRemoved);
 
+    var distance = (Offset(posX, posY) - this.targetPos).distance;
+
     for (int i = 0; i < entityList.length; i++) {
       if (entityList[i] is Player || _isEntityInsideViewport(entityList[i])) {
         entitysOnViewport.add(entityList[i]);
@@ -228,11 +230,13 @@ class MapController {
 
       if (_isEntityInsideViewport(entityList[i]) == false &&
           entityList[i] is Player &&
-          entityList[i] != player) {
+          entityList[i] != player &&
+          distance < 16) {
         //remove players outside view
         print(
-            "removing player ${entityList[i].name} ${entityList[i].x}, ${entityList[i].x} | ${entityList[i].posX}, ${entityList[i].posY}");
-        entityList.remove(entityList[i]);
+            "[MapController]: removing player ${entityList[i].name} ${entityList[i].x}, ${entityList[i].y} | ${entityList[i].posX}, ${entityList[i].posY}");
+        //entityList.remove(entityList[i]);
+        entityList[i].marketToBeRemoved = true;
       }
     }
   }

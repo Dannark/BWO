@@ -58,10 +58,10 @@ class PlayerNetwork {
       player.x = targetPos.dx;
       player.y = targetPos.dy;
     } else {
-      player.x =
-          lerpDouble(player.x, newX, GameController.deltaTime * lerpSpeed);
-      player.y =
-          lerpDouble(player.y, newY, GameController.deltaTime * lerpSpeed);
+      player.x = lerpDouble(
+          player.x, targetPos.dx, GameController.deltaTime * lerpSpeed);
+      player.y = lerpDouble(
+          player.y, targetPos.dy, GameController.deltaTime * lerpSpeed);
     }
     player.setDirection(targetPos);
   }

@@ -55,7 +55,7 @@ class Ground extends Tile {
 
     if (heightLvl > 142 && heightLvl < 152 && Random().nextInt(100) > 98) {
       var id = Random().nextInt(3) + 1;
-      grass = PreloadAssets.getEnviromentSprite("floor${id}.png");
+      grass = PreloadAssets.getEnviromentSprite("floor${id}");
       /*grass = Sprite("enviroment/floor${id}.png",
           width: size.toDouble(), height: size.toDouble());*/
     }
@@ -75,7 +75,7 @@ class Ground extends Tile {
     } else if (heightLvl < LOW_GRASS) {
       if (Random().nextInt(100) > 95) {
         var id = Random().nextInt(4) + 7;
-        grass = PreloadAssets.getEnviromentSprite("grass${id}.png");
+        grass = PreloadAssets.getEnviromentSprite("grass${id}");
         /*grass = Sprite("enviroment/grass${id}.png",
             width: size.toDouble(), height: size.toDouble());*/
       }
@@ -83,7 +83,7 @@ class Ground extends Tile {
     } else if (heightLvl < 160) {
       if (Random().nextInt(100) > 96) {
         var id = Random().nextInt(2) + 11;
-        grass = PreloadAssets.getEnviromentSprite("grass${id}.png");
+        grass = PreloadAssets.getEnviromentSprite("grass${id}");
         /*grass = Sprite("enviroment/grass${id}.png",
             width: size.toDouble(), height: size.toDouble());*/
       }
@@ -91,7 +91,7 @@ class Ground extends Tile {
     } else if (heightLvl < 185) {
       if (Random().nextInt(100) > 98) {
         var id = Random().nextInt(2) + 13;
-        grass = PreloadAssets.getEnviromentSprite("grass${id}.png");
+        grass = PreloadAssets.getEnviromentSprite("grass${id}");
         /*grass = Sprite("enviroment/grass${id}.png",
             width: size.toDouble(), height: size.toDouble());*/
       }

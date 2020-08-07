@@ -119,6 +119,6 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
   void lifecycleStateChange(AppLifecycleState state) {
     // TODO: implement lifecycleStateChange
     super.lifecycleStateChange(state);
-    print("state = ${state}");
+    //print("state = ${state}");
   }
 }

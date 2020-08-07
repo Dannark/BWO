@@ -26,7 +26,7 @@ By default the Server is launched on the port 3000
 
 ## Dev Log
 
-Next updates/Done:
+Usecases:
 * [x] Optimze render and map Generator
 * [x] Fix player animation Position
 * [x] Add shadow to the environment
@@ -79,6 +79,18 @@ Next updates/Done:
 * [-] Build Category
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
+
+## Focusing on / Doing Now:
+- Enemy Attack Sync
+- TDD Tests
+- Add NoSQL database
+- Login/Creation user
+
+### 07/08
+* New enviroment Production/Development updates when starting server
+* Fixed Spawn Players position after previous update
+* Fixed not loading grass textures
+* Adedd Wakelock
 
 ### 03/08
 * Rebuilng Logic to Synchronize enemy walk with speed simulation from Server-Side (This is need to calculate when enemy is REALLY close to player, instead of "teleporting" to from backend while in front they are not close)

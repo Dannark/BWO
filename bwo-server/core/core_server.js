@@ -12,7 +12,7 @@ export default function startServer () {
     const game = game_server();
 
     game.subscribe((command) => {
-        console.log(`> Emitting ${command.type} (${game.state.statistics.msgRecived}) `)
+        console.log(`> Emitting to All ${command.type} (${game.state.statistics.msgRecived}) `)
         var type = command.type
         delete command.type
         sockets.emit(type, command)
@@ -48,6 +48,7 @@ export default function startServer () {
         })
 
         socket.on('onEnemyAttackPlayer', (command) => {
+            game.state.statistics.msgRecived ++;
             game.enemyAttackPlayer(command);
         })
 
