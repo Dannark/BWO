@@ -21,24 +21,27 @@ function spawnEnemy(player, enemyList, enemyListAroundPlayer, callback){
     var offSetY = 0;
     var width = 15;
     var height = 25;
+
+    var xSpeed = player.xSpeed?player.xSpeed:0
+    var ySpeed = player.ySpeed?player.ySpeed:0
     
-    if(Math.abs(player.xSpeed) > Math.abs(player.ySpeed)){
-        if(player.xSpeed < 0){
+    if(Math.abs(xSpeed) > Math.abs(ySpeed)){
+        if(xSpeed < 0){
             offSetX = -width*16
         }
         else{
             offSetX = width*16
         }
-        offSetY = (player.ySpeed * 10)*16;
+        offSetY = (ySpeed * 10)*16;
     }
     else{
-        if(player.ySpeed < 0){
+        if(ySpeed < 0){
             offSetY = -height*16
         }
         else{
             offSetY = height*16
         }
-        offSetX = (player.xSpeed * 10)*16;
+        offSetX = (xSpeed * 10)*16;
     }
     
     var enemyId = getRandomID ();
@@ -53,8 +56,8 @@ function spawnEnemy(player, enemyList, enemyListAroundPlayer, callback){
     enemyList[enemyId] = enemy;
     enemyListAroundPlayer[enemyId] = enemy;
     //var totalEnemys = Object.keys(enemyList).length
-    if(parseInt((enemy.x)/16) == NaN || parseInt((enemy.x)/16) == null){
-        console.log(`> ${player.x} ${offSetX} `);
+    if(isNaN(parseInt((enemy.x)/16)) || parseInt((enemy.x)/16) == null){
+        console.log(`> ${player.x} ${offSetX} `,player, (width*16) );
     }
     console.log(`> Spawning ${enemy.name} ${parseInt((enemy.x)/16)}, ${parseInt((enemy.y)/16)} `, enemy.x, enemy.y);
     callback(enemyListAroundPlayer);
@@ -82,24 +85,38 @@ function getRandomID () {
 export function attackPlayerIfInRange(state, callback){
     Object.entries(state.players).forEach(player => {
         var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 150, 150)
-        
+
         Object.entries(enemyListAroundPlayer).forEach(element => {
             var distance = getDistance(element[1], player[1]);
-            console.log(distance, `e: ${element[1].x}, ${element[1].y}`, `p: ${player[1].x}, ${player[1].y}`);
-            if(distance < 128){
-                state.enemys[element[0]] = {
-                    ...state.enemys[element[0]],
-                    target: player[1].playerId
-                }
-                
+
+            //console.log('I Will follow the player');
+            state.enemys[element[0]] = {
+                ...state.enemys[element[0]],
+                toX: player[1].x,
+                toY: player[1].y,
+                target: player[1].playerId
             }
-            else{
-                //lose target
-                if(state.enemys[element[0]].target != undefined){
-                    console.log("lose target")
-                    //delete state.enemys[element[0]].target;
-                }
+            
+            enemysToBeMoved = [
+                ...enemysToBeMoved,
+                element[0]
+            ];
+
+            if(distance < 16){
+                console.log('I Will DAMAGE the player');
             }
+            
+            //lose target
+            // if(state.enemys[element[0]].target != undefined){
+            //     console.log("lose target")
+            //     delete state.enemys[element[0]].target;
+            //     state.enemys[element[0]] = {
+            //         ...state.enemys[element[0]],
+            //         toX: player[1].x,
+            //         toY: player[1].y,
+            //         target: player[1].playerId
+            //     }
+            // }
 
             /*if(distance < 32){
                 //send damage
@@ -140,6 +157,7 @@ export function patrolArea(state, callback){
     Object.entries(state.enemys).forEach(enemy => {
         if(Math.random() < .3){//.3
             if(enemy[1].target == undefined){
+                //console.log("patrolArea",enemy)
                 //enemy[1].x += parseInt((Math.random() * patrolAreaRange) - patrolAreaRange/2);
                 //enemy[1].y += parseInt((Math.random() * patrolAreaRange) - patrolAreaRange/2);
                 let toX = enemy[1].x + (parseInt((Math.random() * patrolAreaRange) - patrolAreaRange/2));
@@ -162,22 +180,41 @@ export function patrolArea(state, callback){
     callback(enemysMoved);
 }
 
-export function simulateMove(state){
+export function simulateMove(state, callback){
     
     enemysToBeMoved.forEach(enemyCached => {
-        var enemy = state.enemys[enemyCached]
+        let enemy = state.enemys[enemyCached]
         
         var point = {x: enemy.toX, y: enemy.toY}
+        if(enemy.target != undefined){
+            let target = state.players[enemy.target];
+            point = {x: target.x, y: target.y};
+        }
 
-        var distance = getDistance(enemy, point);
-        //console.log(`${enemy.name} walking...`, distance)
-        enemy.x += clamp(point.x - enemy.x, -30, 30)
-        enemy.y += clamp(point.y - enemy.y, -30, 30)
+        let distance = getDistance(enemy, point);
+        
+        distance > 0 ? console.log(`${enemy.name} walking...`, distance) : null
+        
+        enemy.x += clamp(point.x - enemy.x, -25, 25)
+        enemy.y += clamp(point.y - enemy.y, -25, 25)
 
         if(distance < 16){
-            enemy.x = point.x;
-            enemy.y = point.y;
+            if(enemy.target == undefined){
+                enemy.x = point.x;
+                enemy.y = point.y;
+            }
             enemysToBeMoved.splice(enemysToBeMoved.indexOf(enemyCached), 1);
+        }
+        else if(distance > 250){
+            if(enemy.target != undefined){
+                delete state.enemys[enemyCached].target;
+                console.log('losing target: too far')
+                callback({...state.enemys[enemyCached] , point});
+            }
+        }
+
+        if(enemy.target != undefined && distance >= 16){
+            callback({...enemy, point});
         }
     });
 }
@@ -191,4 +228,4 @@ function getDistance(p1, p2){
 
 function clamp(num, min, max) {
     return num <= min ? min : num >= max ? max : num;
-  }
+}

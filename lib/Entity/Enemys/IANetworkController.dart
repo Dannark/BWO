@@ -77,7 +77,6 @@ class IANetworkController extends IAController {
     this.target = target;
     if (target != null) {
       _destPoint = Offset(target.x, target.y);
-      print('ok now i will attack ${target.name}');
     }
 
     //show damage

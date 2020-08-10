@@ -66,7 +66,7 @@ class Player extends Entity implements OnAnimationEnd {
     }
     id = myId;
     name = myName;
-    print("adding player [$name] with sprite: $spriteFolder");
+    //print("adding player [$name] with sprite: $spriteFolder");
     _loadSprites();
   }
 

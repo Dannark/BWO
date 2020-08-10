@@ -5,7 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "nodemon server.js --env=development "
+    "start": "nodemon server.js --env=development ",
+    "test": "jasmine"
   },
   "author": "Dannark",
   "license": "ISC",
@@ -20,6 +21,8 @@
     "nodemon": "^2.0.4"
   },
   "nodemonConfig": {
-    "ignore": ["/resources/data/tmp/*"]
+    "ignore": [
+      "/resources/data/tmp/*"
+    ]
   }
 }

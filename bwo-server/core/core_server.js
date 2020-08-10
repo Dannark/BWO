@@ -85,6 +85,6 @@ export default function startServer () {
     })
 
     server.listen(config.port, () => {
-        console.log(`Server running on port: ${config.port} for enviroment ${config.enviroment}`)
+        console.log(`Server running on port: ${config.port} in [${config.enviroment}] mode.`)
     })
 }

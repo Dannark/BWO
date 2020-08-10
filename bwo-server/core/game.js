@@ -20,20 +20,21 @@ export default function startServer() {
         
     }), 5000);
 
-    //make enemys attack players
-    // setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
-    //     notifyAllOnRangeOfPlayer({
-    //         ...command,
-    //         type: 'onEnemyTargetingPlayer',
-    //     })
-    // }), 1500);
-
-    //----
-    setInterval(() => enemysController.simulateMove(state, (command) =>{
+    // make enemys attack players
+    setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
         notifyAllOnRangeOfPlayer({
             ...command,
             type: 'onEnemyTargetingPlayer',
         })
+    }), 1500);
+
+    setInterval(() => enemysController.simulateMove(state, (command) =>{
+        //console.log("simulateMove1: ",command);
+        /*notifyAllOnRangeOfArea({
+            ...command,
+            type: 'onEnemysWalk',
+            point: command.point,
+        })*/
     }), 500);
 
     const observers = []

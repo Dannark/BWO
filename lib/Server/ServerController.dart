@@ -42,6 +42,7 @@ class ServerController extends NetworkServer {
       "xSpeed": player.xSpeed.round(),
       "ySpeed": player.ySpeed.round()
     };
+
     sendMessage("onMove", jsonData);
   }
 
@@ -102,10 +103,16 @@ class ServerController extends NetworkServer {
           double y = double.parse(enemy['y'].toString());
           double newX = double.parse(enemy['toX'].toString());
           double newY = double.parse(enemy['toY'].toString());
+          String targetId = enemy['target'];
 
           if (name == 'Skull') {
             Skull skull =
                 Skull(x, y, map, name, enemyId, moveTo: Offset(newX, newY));
+
+            Entity playerFound = map.entityList.firstWhere(
+                (element) => element.id == targetId,
+                orElse: () => null);
+            skull.iaController.target = playerFound;
             _addEntityIfNotExist(skull);
           }
         });
@@ -130,12 +137,19 @@ class ServerController extends NetworkServer {
       double y = double.parse(enemy['y'].toString());
       double newX = double.parse(enemy['toX'].toString());
       double newY = double.parse(enemy['toY'].toString());
+      String targetId = enemy['target'];
 
       if (name == 'Skull') {
         Skull skull =
             Skull(x, y, map, name, enemyId, moveTo: Offset(newX, newY));
         spawnedEntitys.add(skull);
-        _addEntityIfNotExist(skull);
+
+        Entity playerFound = map.entityList.firstWhere(
+            (element) => element.id == targetId,
+            orElse: () => null);
+        skull.iaController.target = playerFound;
+
+        _addEntityIfNotExist(skull, update: true);
       }
     });
 
@@ -144,6 +158,7 @@ class ServerController extends NetworkServer {
         Entity foundEntity = spawnedEntitys.firstWhere(
             (element) => element.name == entityOnMap.name,
             orElse: () => null);
+
         if (foundEntity == null) {
           entityOnMap.destroy();
           print(
@@ -217,7 +232,7 @@ class ServerController extends NetworkServer {
     }
   }
 
-  void _addEntityIfNotExist(Entity newEntity) {
+  void _addEntityIfNotExist(Entity newEntity, {update = true}) {
     Entity foundEntity = map.entityList.firstWhere(
         (element) => element.id == newEntity.id,
         orElse: () => null);
@@ -225,16 +240,13 @@ class ServerController extends NetworkServer {
     if (foundEntity == null) {
       map.addEntity(newEntity);
     } else {
-      if (foundEntity is Enemy && newEntity is Enemy) {
+      if (foundEntity is Enemy && newEntity is Enemy && update) {
         Offset dest = newEntity.iaController.getDestination();
-        Offset diff = (Offset(newEntity.x, newEntity.y) -
-            Offset(foundEntity.x, foundEntity.y));
-
-        if (diff.distance > 100) {
-          foundEntity.x = newEntity.x;
-          foundEntity.y = newEntity.y;
-        }
+        //foundEntity.x = newEntity.x;
+        //foundEntity.y = newEntity.y;
         foundEntity.iaController.moveTo(dest.dx, dest.dy);
+        //foundEntity.iaController.moveTo(foundEntity.x, foundEntity.y);
+        //foundEntity.iaController.target = newEntity.iaController.target;
       }
     }
   }
@@ -271,13 +283,13 @@ class ServerController extends NetworkServer {
         .firstWhere((element) => element.id == targetId, orElse: () => null);
 
     enemys.forEach((enemyID, enemyData) {
-      String enemyName = enemyData['name'].toString();
+      String enemyId = enemyData['enemyId'].toString();
+
       int damage = int.parse(
           (enemyData['damage'] != null ? enemyData['damage'] : 0).toString());
 
-      Entity foundEntity = map.entityList.firstWhere(
-          (element) => element.name == enemyName,
-          orElse: () => null);
+      Entity foundEntity = map.entityList
+          .firstWhere((element) => element.id == enemyId, orElse: () => null);
 
       if (foundEntity is Enemy && playerFound != null) {
         print(

@@ -21,7 +21,7 @@ var common_conf = {
 var conf = {
     production:{
         ip: args.ip || "0.0.0.0",
-        port: args.port || "3000",
+        port: args.port || process.env.PORT,
         database: "mongodb://127.0.0.1/bwo_prod"
     },
     development:{

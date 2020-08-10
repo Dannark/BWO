@@ -82,15 +82,19 @@ Usecases:
 
 ## Focusing on / Doing Now:
 - Enemy Attack Sync
-- TDD Tests
 - Add NoSQL database
 - Login/Creation user
+
+### 09/08
+- Added Jasmine for Testing Driven-Development (TDD) on the back-end Server
+
 
 ### 07/08
 * New enviroment Production/Development updates when starting server
 * Fixed Spawn Players position after previous update
 * Fixed not loading grass textures
-* Adedd Wakelock
+* Adedd Wakelock (Screen will keep Aweake)
+* Fixed Rare bug when enemys spawn with NaN Values
 
 ### 03/08
 * Rebuilng Logic to Synchronize enemy walk with speed simulation from Server-Side (This is need to calculate when enemy is REALLY close to player, instead of "teleporting" to from backend while in front they are not close)
