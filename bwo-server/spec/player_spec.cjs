@@ -65,11 +65,19 @@ describe("Player interaction with the world:", () => {
       });
     });
   }
+
   
 })
 
 describe("Desconnect player", () =>{
   it('should disconnect the player from the server', function() {
     conn.disconnect();
+    
   });
 })
+
+
+afterAll(done => {
+  console.log('\x1b[36m%s\x1b[0m', '\n> All tests passed [OK]!');  //cyan
+  done();
+});

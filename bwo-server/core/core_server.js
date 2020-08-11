@@ -34,7 +34,7 @@ export default function startServer () {
             sendMessage('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
         })
 
-        socket.on('onMove', (command) => {
+        socket.on('onUpdate', (command) => {
             game.state.statistics.msgRecived ++;
             game.updatePlayer({playerId: playerId, ...command})
 
@@ -45,11 +45,6 @@ export default function startServer () {
         socket.on('onTreeHit', (command) => {
             game.state.statistics.msgRecived ++;
             game.hitTree({playerId: playerId, ...command})
-        })
-
-        socket.on('onEnemyAttackPlayer', (command) => {
-            game.state.statistics.msgRecived ++;
-            game.enemyAttackPlayer(command);
         })
 
         socket.on('disconnect', () => {
@@ -70,15 +65,13 @@ export default function startServer () {
     //app.use(express.static('public'))
 
     app.get('/', (request, response) => {
-        
         return response.json({
             server_name: config.name,
             version: config.version,
             statistics:{
                 players_online: Object.entries(game.state.players).length,
                 enemys_spawned: Object.entries(game.state.enemys).length,
-                msg_recived: game.state.statistics.msgRecived,
-                msg_sent: game.state.statistics.msgSent
+                state:game.state,
             }
 
         })

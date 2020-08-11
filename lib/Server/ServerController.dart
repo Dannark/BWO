@@ -26,24 +26,15 @@ class ServerController extends NetworkServer {
     if (offlineMode) return;
     this.player = player;
 
-    initializeServer(
-        player.name, player.spriteFolder, Offset(player.x, player.y), (id) {
+    initializeClient(player, (id) {
       player.id = id;
     });
   }
 
-  void movePlayer() async {
+  void updatePlayer(jsonData) async {
     if (offlineMode) return;
-    var jsonData = {
-      "name": player.name,
-      "sprite": player.spriteFolder,
-      "x": player.x.toInt(),
-      "y": player.y.toInt(),
-      "xSpeed": player.xSpeed.round(),
-      "ySpeed": player.ySpeed.round()
-    };
 
-    sendMessage("onMove", jsonData);
+    sendMessage("onUpdate", jsonData);
   }
 
   void hitTree(int targetX, int targetY, int damage) async {
@@ -113,6 +104,7 @@ class ServerController extends NetworkServer {
                 (element) => element.id == targetId,
                 orElse: () => null);
             skull.iaController.target = playerFound;
+
             _addEntityIfNotExist(skull);
           }
         });
@@ -123,7 +115,7 @@ class ServerController extends NetworkServer {
   @override
   onEnemysEnterScreen(data) {
     super.onEnemysEnterScreen(data);
-    print("onEnemysEnterScreen ${data}");
+    //print("onEnemysEnterScreen ${data}");
     /**
      * Fired when the player walks
      */
@@ -149,7 +141,7 @@ class ServerController extends NetworkServer {
             orElse: () => null);
         skull.iaController.target = playerFound;
 
-        _addEntityIfNotExist(skull, update: true);
+        _addEntityIfNotExist(skull);
       }
     });
 
@@ -242,9 +234,15 @@ class ServerController extends NetworkServer {
     } else {
       if (foundEntity is Enemy && newEntity is Enemy && update) {
         Offset dest = newEntity.iaController.getDestination();
-        //foundEntity.x = newEntity.x;
-        //foundEntity.y = newEntity.y;
-        foundEntity.iaController.moveTo(dest.dx, dest.dy);
+        double distance = (dest - Offset(newEntity.x, newEntity.y)).distance;
+
+        foundEntity.iaController.moveTo(newEntity.x, newEntity.y);
+
+        if (newEntity.iaController.target != null && distance > 24) {
+          //foundEntity.x = newEntity.x;
+          //foundEntity.y = newEntity.y;
+        }
+
         //foundEntity.iaController.moveTo(foundEntity.x, foundEntity.y);
         //foundEntity.iaController.target = newEntity.iaController.target;
       }
@@ -284,17 +282,24 @@ class ServerController extends NetworkServer {
 
     enemys.forEach((enemyID, enemyData) {
       String enemyId = enemyData['enemyId'].toString();
+      double x = double.parse(enemyData['x'].toString());
+      double y = double.parse(enemyData['y'].toString());
 
       int damage = int.parse(
           (enemyData['damage'] != null ? enemyData['damage'] : 0).toString());
+
+      int target_hp = int.parse(
+          (enemyData['target_hp'] != null ? enemyData['target_hp'] : 0)
+              .toString());
 
       Entity foundEntity = map.entityList
           .firstWhere((element) => element.id == enemyId, orElse: () => null);
 
       if (foundEntity is Enemy && playerFound != null) {
-        print(
-            'Enemy $foundEntity attacking player $playerFound with damage $damage');
-        foundEntity.iaController.attackTarget(playerFound, damage: damage);
+        //print('Enemy $foundEntity attacking player $playerFound with damage $damage');
+
+        foundEntity.iaController
+            .attackTarget(playerFound, damage: damage, target_hp: target_hp);
       }
     });
   }

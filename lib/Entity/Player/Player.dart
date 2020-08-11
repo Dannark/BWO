@@ -131,6 +131,8 @@ class Player extends Entity implements OnAnimationEnd {
         y = 0;
         status.refillStatus();
         isActive = true;
+
+        playerNetwork.refillStatus();
       }
     }
   }

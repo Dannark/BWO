@@ -28,13 +28,13 @@ export default function startServer() {
         })
     }), 1500);
 
-    setInterval(() => enemysController.simulateMove(state, (command) =>{
+    setInterval(() => enemysController.simulateMove(state, (command, point) =>{
         //console.log("simulateMove1: ",command);
-        /*notifyAllOnRangeOfArea({
-            ...command,
+        notifyAllOnRangeOfArea({
             type: 'onEnemysWalk',
-            point: command.point,
-        })*/
+            point: point,
+            enemys: command
+        })
     }), 500);
 
     const observers = []
@@ -91,15 +91,14 @@ export default function startServer() {
     function updatePlayer(command) {
         const playerId = command.playerId
         var playerFound = state.players[playerId]
-        var type = command.type
+        
         if (playerFound != undefined) {
 
             state.players[command.playerId] = {
+                ...state.players[command.playerId],
                 ...command,
-                x: command.x,
-                y: command.y
             };
-
+            
             notifyAllOnRangeOfPlayer({
                 type: 'onMove',
                 ...command
@@ -125,7 +124,7 @@ export default function startServer() {
             name: command.name,
             ...command,
             x: command.x,
-            y: command.y
+            y: command.y,
         }
 
         notifyAllOnRangeOfPlayer({
@@ -172,7 +171,7 @@ export default function startServer() {
             return;
         } else {
             console.log(`> Player ${playerId} not found, creating new player '${playerName}'`)
-            addPlayer({ playerId: playerId, sprite: command.sprite, name: playerName, x: command.x, y: command.y })
+            addPlayer({ ...command })
             var totalPlayers = Object.keys(state.players).length
             var totalEnemys = Object.keys(state.enemys).length
             console.log(`> Players Online: ${totalPlayers} and ${totalEnemys} Enemys Spawned`)
@@ -231,10 +230,6 @@ export default function startServer() {
         })
     }
 
-    function enemyAttackPlayer(command){
-        console.log(command);
-    }
-
     return {
         hitTree,
         logPlayer,
@@ -244,8 +239,7 @@ export default function startServer() {
         getAllEnemysAround,
         subscribe,
         state,
-        addSocket,
-        enemyAttackPlayer
+        addSocket
     }
 }
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:BWO/Entity/Player/Player.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -8,23 +9,17 @@ abstract class NetworkServer {
   final String _SERVER = "http://192.168.1.111:3000";
 
   Socket socket;
-
-  String _playerName;
-  String _mSprite;
-  Offset _spawnPos;
+  Player _player;
 
   bool offlineMode = false;
   var callback;
 
   NetworkServer() {}
 
-  void initializeServer(String playerName, String sprite, Offset spawnPos,
-      Function(String) callback) {
+  void initializeClient(Player player, Function(String) callback) {
     this.callback = callback;
 
-    this._playerName = playerName;
-    this._mSprite = sprite;
-    this._spawnPos = spawnPos;
+    this._player = player;
 
     socket = io(_SERVER, <String, dynamic>{
       'transports': ['websocket'],
@@ -55,10 +50,11 @@ abstract class NetworkServer {
     callback(data);
     if (socket.connected) {
       var jsonData = {
-        "name": _playerName,
-        "sprite": _mSprite,
-        "x": _spawnPos.dx.toInt(),
-        "y": _spawnPos.dy.toInt()
+        "name": _player.name,
+        "sprite": _player.spriteFolder,
+        "x": _player.x,
+        "y": _player.y,
+        "hp": _player.status.getHP(),
       };
       print(jsonData);
       socket.emit("log-player", jsonData);

@@ -84,10 +84,10 @@ Usecases:
 - Enemy Attack Sync
 - Add NoSQL database
 - Login/Creation user
+- Bug where onEnemyWalk function doesnt fire for all connected players
 
 ### 09/08
-- Added Jasmine for Testing Driven-Development (TDD) on the back-end Server
-
+* Added Jasmine for Testing Driven-Development (TDD) on the back-end Server
 
 ### 07/08
 * New enviroment Production/Development updates when starting server
@@ -114,7 +114,7 @@ Usecases:
 * Added Input Joystick Style for walking (Accelerometer is still very interesting and different but it is just too hard for some people)
 * Fixed Enemys not spawning when off screen
 * Damage Text Colors for Enemys/Player
-- Enemys not patroling
+* Enemys not patroling
 
 ### 21/07
 * Added Level and progression System

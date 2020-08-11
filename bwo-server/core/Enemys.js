@@ -84,70 +84,45 @@ function getRandomID () {
 /* ATTACK LOGIC */
 export function attackPlayerIfInRange(state, callback){
     Object.entries(state.players).forEach(player => {
-        var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 150, 150)
 
-        Object.entries(enemyListAroundPlayer).forEach(element => {
-            var distance = getDistance(element[1], player[1]);
+        if(state.players[player[0]].hp > 0){
+            var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 150, 150)
 
-            //console.log('I Will follow the player');
-            state.enemys[element[0]] = {
-                ...state.enemys[element[0]],
-                toX: player[1].x,
-                toY: player[1].y,
-                target: player[1].playerId
-            }
-            
-            enemysToBeMoved = [
-                ...enemysToBeMoved,
-                element[0]
-            ];
+            Object.entries(enemyListAroundPlayer).forEach(element => {
+                var distance = getDistance(element[1], player[1]);
 
-            if(distance < 16){
-                console.log('I Will DAMAGE the player');
-            }
-            
-            //lose target
-            // if(state.enemys[element[0]].target != undefined){
-            //     console.log("lose target")
-            //     delete state.enemys[element[0]].target;
-            //     state.enemys[element[0]] = {
-            //         ...state.enemys[element[0]],
-            //         toX: player[1].x,
-            //         toY: player[1].y,
-            //         target: player[1].playerId
-            //     }
-            // }
-
-            /*if(distance < 32){
-                //send damage
-                enemyListAroundPlayer[element[0]] ={
-                    ...enemyListAroundPlayer[element[0]],
-                    damage: element[1].force + parseInt(Math.random() * 2)
+                state.enemys[element[0]] = {
+                    ...state.enemys[element[0]],
+                    toX: player[1].x,
+                    toY: player[1].y,
+                    target: player[1].playerId
                 }
-            }*/
-        });
 
-        if(Object.entries(enemyListAroundPlayer).length > 0){
-            callback({playerId:player[1].playerId, enemys:enemyListAroundPlayer});
+                enemysToBeMoved.add(element[0])
+
+                if(distance < 16 && state.players[player[0]].hp > 0){
+                    var damage = element[1].name == 'Skull'? 2 : 0;
+                    state.players[player[0]].hp -= damage;
+
+                    //send damage
+                    enemyListAroundPlayer[element[0]] ={
+                        ...enemyListAroundPlayer[element[0]],
+                        damage: damage + parseInt(Math.random() * 2),
+                        target_hp: state.players[player[0]].hp
+                    }
+                }
+                
+            });
+
+            if(Object.entries(enemyListAroundPlayer).length > 0){
+                callback({playerId:player[1].playerId, enemys:enemyListAroundPlayer});
+            }
         }
     });
 
 }
 
-function loseTargetIfNotInRange(state, enemy){
-    if(enemy.target != undefined){
-        var playerTargeted = state.players[enemy.target]
-        
-        if(playerTargeted != undefined){
-            var distance = getDistance(enemy, playerTargeted);
-            if(distance > 192){
-                delete enemy.target;
-            }
-        }
-    }
-}
-
-let enemysToBeMoved = []
+let enemysToBeMoved = new Set()
 
 export function patrolArea(state, callback){
     var patrolAreaRange = 300;
@@ -166,10 +141,7 @@ export function patrolArea(state, callback){
                 enemy[1].toX = toX;
                 enemy[1].toY = toY;
                 
-                enemysToBeMoved = [
-                    ...enemysToBeMoved,
-                    enemy[0]
-                ]
+                enemysToBeMoved.add(enemy[0])
 
                 enemysMoved[enemy[0]] = {
                     ...enemy[1]
@@ -188,33 +160,38 @@ export function simulateMove(state, callback){
         var point = {x: enemy.toX, y: enemy.toY}
         if(enemy.target != undefined){
             let target = state.players[enemy.target];
-            point = {x: target.x, y: target.y};
+            if(target == undefined){
+                console.log('player target logged off, deleting it from enemy target', enemy.target, state.players[enemy.target]);
+                enemysToBeMoved.delete(enemyCached);
+                delete state.enemys[enemyCached].target;
+                return;
+            }
+            point = {x: target.x, y: target.y}; //crashing a lot when player leave: TypeError: Cannot read property 'x' of undefined
         }
 
         let distance = getDistance(enemy, point);
         
-        distance > 0 ? console.log(`${enemy.name} walking...`, distance) : null
+        //distance > 0 ? console.log(`${enemy.name} walking...`, distance) : null
         
-        enemy.x += clamp(point.x - enemy.x, -25, 25)
-        enemy.y += clamp(point.y - enemy.y, -25, 25)
+        enemy.x += clamp(point.x - enemy.x, -24, 24)
+        enemy.y += clamp(point.y - enemy.y, -24, 24)
 
         if(distance < 16){
             if(enemy.target == undefined){
-                enemy.x = point.x;
-                enemy.y = point.y;
+                enemysToBeMoved.delete(enemyCached);
             }
-            enemysToBeMoved.splice(enemysToBeMoved.indexOf(enemyCached), 1);
         }
         else if(distance > 250){
             if(enemy.target != undefined){
                 delete state.enemys[enemyCached].target;
-                console.log('losing target: too far')
-                callback({...state.enemys[enemyCached] , point});
+                
+                console.log('Losing target, reason: too far.')
+                callback({[enemyCached]:{...enemy}},point);
             }
         }
 
         if(enemy.target != undefined && distance >= 16){
-            callback({...enemy, point});
+            callback({[enemyCached]:{...enemy}},point);
         }
     });
 }

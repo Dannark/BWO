@@ -22,5 +22,5 @@ abstract class IAController {
 
   void searchForTargetsEntity() {}
 
-  void attackTarget(Entity target, {int damage = 0}) {}
+  void attackTarget(Entity target, {int damage = 0, int target_hp = 0}) {}
 }

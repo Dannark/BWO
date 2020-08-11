@@ -51,4 +51,8 @@ var move = function (player, callback) {
     }, 300);
 }
 
+var attackEnemy = function (){
+    
+}
+
 module.exports = { open, login, disconnect, move };

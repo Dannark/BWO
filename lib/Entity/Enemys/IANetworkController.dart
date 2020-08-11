@@ -73,7 +73,7 @@ class IANetworkController extends IAController {
     }
   }
 
-  void attackTarget(Entity target, {int damage = 0}) {
+  void attackTarget(Entity target, {int damage = 0, int target_hp = 0}) {
     this.target = target;
     if (target != null) {
       _destPoint = Offset(target.x, target.y);
@@ -86,8 +86,10 @@ class IANetworkController extends IAController {
       self.currentSprite = self.attackSprites;
       self.currentSprite
           .setDirection(Offset(target.x, target.y), Offset(self.x, self.y));
-      //target.getHut(self.status.getBaseAttackDamage(), false, self);
-      target.showDamage(damage, false);
+
+      target.getHut(damage, false, self);
+      //target.showDamage(damage, false);
+      target.status.setLife(target_hp);
     }
   }
 }
