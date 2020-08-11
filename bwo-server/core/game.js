@@ -22,6 +22,7 @@ export default function startServer() {
 
     // make enemys attack players
     setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
+        console.log('enemysController', command)
         notifyAllOnRangeOfPlayer({
             ...command,
             type: 'onEnemyTargetingPlayer',

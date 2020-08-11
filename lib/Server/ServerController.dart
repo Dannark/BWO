@@ -69,7 +69,6 @@ class ServerController extends NetworkServer {
           player.y = newY;
         }
       } else {
-        print("creating sprite from getPlayers sprite= $sprite");
         _addEntityIfNotExist(Player(
             newX, newY, map, false, name, playerId, null,
             spriteFolder: sprite));
@@ -274,14 +273,11 @@ class ServerController extends NetworkServer {
     super.onEnemyTargetingPlayer(data);
     print("onEnemyTargetingPlayer ${data}");
 
-    var targetId = data['playerId'];
     var enemys = data['enemys'];
-
-    Entity playerFound = map.entityList
-        .firstWhere((element) => element.id == targetId, orElse: () => null);
 
     enemys.forEach((enemyID, enemyData) {
       String enemyId = enemyData['enemyId'].toString();
+      String targetId = enemyData['target'].toString();
       double x = double.parse(enemyData['x'].toString());
       double y = double.parse(enemyData['y'].toString());
 
@@ -291,6 +287,9 @@ class ServerController extends NetworkServer {
       int target_hp = int.parse(
           (enemyData['target_hp'] != null ? enemyData['target_hp'] : 0)
               .toString());
+
+      Entity playerFound = map.entityList
+          .firstWhere((element) => element.id == targetId, orElse: () => null);
 
       Entity foundEntity = map.entityList
           .firstWhere((element) => element.id == enemyId, orElse: () => null);

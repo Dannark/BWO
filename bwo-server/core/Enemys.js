@@ -89,26 +89,30 @@ export function attackPlayerIfInRange(state, callback){
             var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 150, 150)
 
             Object.entries(enemyListAroundPlayer).forEach(element => {
-                var distance = getDistance(element[1], player[1]);
+                console.log(state.enemys[element[0]].name, state.enemys[element[0]].target, ':', player[1].playerId)
+                //dont switch the target if there is one already
+                if(state.enemys[element[0]].target == player[1].playerId || state.enemys[element[0]].target == undefined){
+                    var distance = getDistance(element[1], player[1]);
+                    console.log('setando target');
+                    state.enemys[element[0]] = {
+                        ...state.enemys[element[0]],
+                        toX: player[1].x,
+                        toY: player[1].y,
+                        target: player[1].playerId
+                    }
 
-                state.enemys[element[0]] = {
-                    ...state.enemys[element[0]],
-                    toX: player[1].x,
-                    toY: player[1].y,
-                    target: player[1].playerId
-                }
+                    enemysToBeMoved.add(element[0])
 
-                enemysToBeMoved.add(element[0])
+                    if(distance < 16 && state.players[player[0]].hp > 0){
+                        var damage = element[1].name == 'Skull'? 2 : 0;
+                        state.players[player[0]].hp -= damage;
 
-                if(distance < 16 && state.players[player[0]].hp > 0){
-                    var damage = element[1].name == 'Skull'? 2 : 0;
-                    state.players[player[0]].hp -= damage;
-
-                    //send damage
-                    enemyListAroundPlayer[element[0]] ={
-                        ...enemyListAroundPlayer[element[0]],
-                        damage: damage + parseInt(Math.random() * 2),
-                        target_hp: state.players[player[0]].hp
+                        //send damage
+                        enemyListAroundPlayer[element[0]] ={
+                            ...enemyListAroundPlayer[element[0]],
+                            damage: damage + parseInt(Math.random() * 2),
+                            target_hp: state.players[player[0]].hp
+                        }
                     }
                 }
                 
@@ -189,10 +193,16 @@ export function simulateMove(state, callback){
                 callback({[enemyCached]:{...enemy}},point);
             }
         }
-
-        if(enemy.target != undefined && distance >= 16){
+        
+        if(enemy.target != undefined){
+            if(distance >= 16){
+                callback({[enemyCached]:{...enemy}},point);
+            }
+        }
+        else{
             callback({[enemyCached]:{...enemy}},point);
         }
+        
     });
 }
 

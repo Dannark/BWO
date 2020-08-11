@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js --env=development ",
+    "start": "nodemon server.js --env=development --resetstate",
     "test": "jasmine"
   },
   "author": "Dannark",
