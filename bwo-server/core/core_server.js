@@ -34,12 +34,17 @@ export default function startServer () {
             sendMessage('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
         })
 
-        socket.on('onUpdate', (command) => {
+        socket.on('onMove', (command) => {
             game.state.statistics.msgRecived ++;
-            game.updatePlayer({playerId: playerId, ...command})
+            game.movePlayer({playerId: playerId, ...command})
 
             sendMessage('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             sendMessage('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
+        })
+
+        socket.on('onUpdate', (command) => {
+            game.state.statistics.msgRecived ++;
+            game.updatePlayer({playerId: playerId, ...command})
         })
 
         socket.on('onTreeHit', (command) => {

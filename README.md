@@ -80,14 +80,15 @@ Usecases:
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
 
-## Focusing on / Doing Now:
+## Focusing on / Doing Now / Missing:
 - Enemy Attack Sync
 - Add NoSQL database
 - Login/Creation user
-- Bug where onEnemyWalk function doesnt fire for all connected players
+- Delete enemys that walks out of the screen
 
-### 09/08
+### 11/08
 * Added Jasmine for Testing Driven-Development (TDD) on the back-end Server
+* Make the Enemy loses its target when he dies
 
 ### 07/08
 * New enviroment Production/Development updates when starting server

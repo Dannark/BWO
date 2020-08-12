@@ -40,14 +40,7 @@ class PlayerNetwork {
         lastY = player.y.toInt();
         //SEND POSITION TO SERVER
 
-        var jsonData = {
-          "name": player.name,
-          "x": player.x.toInt(),
-          "y": player.y.toInt(),
-          "xSpeed": player.xSpeed.round(),
-          "ySpeed": player.ySpeed.round()
-        };
-        GameScene.serverController.updatePlayer(jsonData);
+        GameScene.serverController.movePlayer();
       }
     }
   }
@@ -91,9 +84,14 @@ class PlayerNetwork {
   }
 
   void refillStatus() {
-    var jsonData = {
-      "hp": player.status.getHP(),
-    };
-    GameScene.serverController.sendMessage("onUpdate", jsonData);
+    if (player.isMine) {
+      var jsonData = {
+        "action": "reviving",
+        "hp": player.status.getHP(),
+        "x": player.x,
+        "y": player.y,
+      };
+      GameScene.serverController.sendMessage("onUpdate", jsonData);
+    }
   }
 }

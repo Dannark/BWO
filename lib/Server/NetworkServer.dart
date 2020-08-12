@@ -35,6 +35,7 @@ abstract class NetworkServer {
     socket.on('add-player', onAddPlayer);
     socket.on("remove-player", onRemovePlayer);
     socket.on("onMove", onMove);
+    socket.on("onPlayerUpdate", onPlayerUpdate);
     socket.on("onTreeHit", onTreeHit);
 
     socket.on('disconnect', (_) => print('disconnected'));
@@ -69,19 +70,39 @@ abstract class NetworkServer {
     }
   }
 
-  onPlayerEnterScreen(dynamic data) {}
+  onPlayerEnterScreen(dynamic data) {
+    //print("onPlayerEnterScreen ${data}");
+  }
 
-  onEnemysWalk(dynamic data) {}
+  onEnemysWalk(dynamic data) {
+    //print("onEnemysWalk ${data}");
+  }
 
-  onEnemysEnterScreen(dynamic data) {}
+  onEnemysEnterScreen(dynamic data) {
+    //print("onEnemysEnterScreen ${data}");
+  }
 
-  onAddPlayer(dynamic data) {}
+  onAddPlayer(dynamic data) {
+    print("onAddPlayer ${data}");
+  }
 
-  onRemovePlayer(dynamic data) {}
+  onRemovePlayer(dynamic data) {
+    print("onRemovePlayer ${data}");
+  }
 
-  void onMove(dynamic data) {}
+  void onMove(dynamic data) {
+    print("onMove ${data}");
+  }
 
-  void onTreeHit(dynamic data) {}
+  void onPlayerUpdate(dynamic data) {
+    print("onPlayerUpdate ${data}");
+  }
 
-  void onEnemyTargetingPlayer(dynamic data) {}
+  void onTreeHit(dynamic data) {
+    print("onTreeHit ${data}");
+  }
+
+  void onEnemyTargetingPlayer(dynamic data) {
+    print("onEnemyTargetingPlayer ${data}");
+  }
 }

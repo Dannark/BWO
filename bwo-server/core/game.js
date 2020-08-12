@@ -22,7 +22,7 @@ export default function startServer() {
 
     // make enemys attack players
     setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
-        console.log('enemysController', command)
+        //console.log('attackPlayerIfInRange', command)
         notifyAllOnRangeOfPlayer({
             ...command,
             type: 'onEnemyTargetingPlayer',
@@ -30,7 +30,7 @@ export default function startServer() {
     }), 1500);
 
     setInterval(() => enemysController.simulateMove(state, (command, point) =>{
-        //console.log("simulateMove1: ",command);
+        //console.log("simulateMove1: ");
         notifyAllOnRangeOfArea({
             type: 'onEnemysWalk',
             point: point,
@@ -59,27 +59,29 @@ export default function startServer() {
     }
     function notifyAllOnRangeOfPlayer(command, ignoreSelf = false) {
         //console.log(`> notifyAllOnRangeOfPlayer:`, command, `(${state.statistics.msgRecived}) `)
-        var allPlayers = getAllPlayersAround(command.playerId, ignoreSelf)
+        var type = command.type;
+        var allPlayers = getAllPlayersAround(command.playerId, ignoreSelf);
+        command.action == undefined? delete command.action: null;
         
         for (const skt of socketList) {
             if (allPlayers[skt.id] != undefined) {
-                var type = command.type
+                
                 delete command.type
                 skt.emit(type, command)
-
+                
+                
                 state.statistics.msgSent ++
             }
         }
     }
     function notifyAllOnRangeOfArea(command) {
         //console.log(`> Emitting Optimized: ${command.type} (${state.statistics.msgRecived}) `)
-
+        var type = command.type
         var allPlayers = getAllPlayersAroundPoint(command.point)
         delete command.point
-
+        
         for (const skt of socketList) {
             if (allPlayers[skt.id] != undefined) {
-                var type = command.type
                 delete command.type
                 skt.emit(type, command)
 
@@ -89,7 +91,24 @@ export default function startServer() {
         }
     }
 
-    function updatePlayer(command) {
+    function updatePlayer(command){
+        const playerId = command.playerId
+        var playerFound = state.players[playerId]
+        
+        if (playerFound != undefined) {
+            state.players[command.playerId] = {
+                ...state.players[command.playerId],
+                ...command,
+            };
+
+            notifyAllOnRangeOfPlayer({
+                type: 'onPlayerUpdate',
+                ...state.players[command.playerId]
+            }, true)
+        }
+    }
+
+    function movePlayer(command) {
         const playerId = command.playerId
         var playerFound = state.players[playerId]
         
@@ -102,7 +121,7 @@ export default function startServer() {
             
             notifyAllOnRangeOfPlayer({
                 type: 'onMove',
-                ...command
+                ...state.players[command.playerId]
             }, true)
         }
         else {
@@ -234,6 +253,7 @@ export default function startServer() {
     return {
         hitTree,
         logPlayer,
+        movePlayer,
         updatePlayer,
         getAllPlayersAround,
         removePlayer,

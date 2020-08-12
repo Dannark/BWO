@@ -86,14 +86,13 @@ export function attackPlayerIfInRange(state, callback){
     Object.entries(state.players).forEach(player => {
 
         if(state.players[player[0]].hp > 0){
-            var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 150, 150)
+            var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 100, 100)
 
             Object.entries(enemyListAroundPlayer).forEach(element => {
-                console.log(state.enemys[element[0]].name, state.enemys[element[0]].target, ':', player[1].playerId)
                 //dont switch the target if there is one already
                 if(state.enemys[element[0]].target == player[1].playerId || state.enemys[element[0]].target == undefined){
                     var distance = getDistance(element[1], player[1]);
-                    console.log('setando target');
+                    
                     state.enemys[element[0]] = {
                         ...state.enemys[element[0]],
                         toX: player[1].x,
@@ -121,6 +120,15 @@ export function attackPlayerIfInRange(state, callback){
             if(Object.entries(enemyListAroundPlayer).length > 0){
                 callback({playerId:player[1].playerId, enemys:enemyListAroundPlayer});
             }
+
+            //lose target after sending damage
+            Object.entries(enemyListAroundPlayer).forEach(element => {
+                console.log('=',player[0], state.players[player[0]].hp);
+                if(state.players[player[0]].hp <= 0){
+                    console.log('deleting target ', state.enemys[element[0]].target,' from enemy ', state.enemys[element[0]].name, ' hp was: ', state.players[player[0]].hp)
+                    delete state.enemys[element[0]].target;
+                }
+            });
         }
     });
 

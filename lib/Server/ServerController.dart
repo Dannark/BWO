@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:BWO/Entity/Enemys/Enemy.dart';
 import 'package:BWO/Entity/Enemys/Skull.dart';
@@ -31,10 +32,16 @@ class ServerController extends NetworkServer {
     });
   }
 
-  void updatePlayer(jsonData) async {
+  void movePlayer() async {
     if (offlineMode) return;
-
-    sendMessage("onUpdate", jsonData);
+    var jsonData = {
+      "name": player.name,
+      "x": player.x.toInt(),
+      "y": player.y.toInt(),
+      "xSpeed": player.xSpeed.round(),
+      "ySpeed": player.ySpeed.round()
+    };
+    sendMessage("onMove", jsonData);
   }
 
   void hitTree(int targetX, int targetY, int damage) async {
@@ -52,15 +59,14 @@ class ServerController extends NetworkServer {
   @override
   onPlayerEnterScreen(data) {
     super.onPlayerEnterScreen(data);
-    print("onPlayerEnterScreen ${data}");
     Map<String, dynamic> user = data;
 
     user.forEach((key, value) {
-      String name = value["name"].toString();
-      double newX = double.parse(value['x'].toString());
-      double newY = double.parse(value['y'].toString());
-      String sprite = value['sprite'].toString();
-      String playerId = value['playerId'].toString();
+      final String name = value["name"].toString();
+      final double newX = double.parse(value['x'].toString());
+      final double newY = double.parse(value['y'].toString());
+      final String sprite = value['sprite'].toString();
+      final String playerId = value['playerId'].toString();
 
       if (name == player.name) {
         if (firstMove == true) {
@@ -79,7 +85,6 @@ class ServerController extends NetworkServer {
   @override
   onEnemysWalk(data) {
     super.onEnemysWalk(data);
-    print("onEnemysWalk ${data}");
     /**
      * Fire when enemy walk by it self
      */
@@ -87,19 +92,19 @@ class ServerController extends NetworkServer {
     data.forEach((key, value) {
       if (key == 'enemys') {
         value.forEach((keyEnemy, enemy) {
-          String name = enemy["name"].toString();
-          String enemyId = enemy["enemyId"].toString();
-          double x = double.parse(enemy['x'].toString());
-          double y = double.parse(enemy['y'].toString());
-          double newX = double.parse(enemy['toX'].toString());
-          double newY = double.parse(enemy['toY'].toString());
-          String targetId = enemy['target'];
+          final String name = enemy["name"].toString();
+          final String enemyId = enemy["enemyId"].toString();
+          final double x = double.parse(enemy['x'].toString());
+          final double y = double.parse(enemy['y'].toString());
+          final double newX = double.parse(enemy['toX'].toString());
+          final double newY = double.parse(enemy['toY'].toString());
+          final String targetId = enemy['target'];
 
           if (name == 'Skull') {
-            Skull skull =
+            final Skull skull =
                 Skull(x, y, map, name, enemyId, moveTo: Offset(newX, newY));
 
-            Entity playerFound = map.entityList.firstWhere(
+            final Entity playerFound = map.entityList.firstWhere(
                 (element) => element.id == targetId,
                 orElse: () => null);
             skull.iaController.target = playerFound;
@@ -114,7 +119,6 @@ class ServerController extends NetworkServer {
   @override
   onEnemysEnterScreen(data) {
     super.onEnemysEnterScreen(data);
-    //print("onEnemysEnterScreen ${data}");
     /**
      * Fired when the player walks
      */
@@ -122,20 +126,20 @@ class ServerController extends NetworkServer {
     List<Entity> spawnedEntitys = [];
 
     data.forEach((keyEnemy, enemy) {
-      String name = enemy["name"].toString();
-      String enemyId = enemy["enemyId"].toString();
-      double x = double.parse(enemy['x'].toString());
-      double y = double.parse(enemy['y'].toString());
-      double newX = double.parse(enemy['toX'].toString());
-      double newY = double.parse(enemy['toY'].toString());
-      String targetId = enemy['target'];
+      final String name = enemy["name"].toString();
+      final String enemyId = enemy["enemyId"].toString();
+      final double x = double.parse(enemy['x'].toString());
+      final double y = double.parse(enemy['y'].toString());
+      final double newX = double.parse(enemy['toX'].toString());
+      final double newY = double.parse(enemy['toY'].toString());
+      final String targetId = enemy['target'];
 
       if (name == 'Skull') {
-        Skull skull =
+        final Skull skull =
             Skull(x, y, map, name, enemyId, moveTo: Offset(newX, newY));
         spawnedEntitys.add(skull);
 
-        Entity playerFound = map.entityList.firstWhere(
+        final Entity playerFound = map.entityList.firstWhere(
             (element) => element.id == targetId,
             orElse: () => null);
         skull.iaController.target = playerFound;
@@ -146,7 +150,7 @@ class ServerController extends NetworkServer {
 
     map.entitysOnViewport.forEach((entityOnMap) {
       if (entityOnMap is Enemy) {
-        Entity foundEntity = spawnedEntitys.firstWhere(
+        final Entity foundEntity = spawnedEntitys.firstWhere(
             (element) => element.name == entityOnMap.name,
             orElse: () => null);
 
@@ -162,17 +166,16 @@ class ServerController extends NetworkServer {
   @override
   onAddPlayer(data) {
     super.onAddPlayer(data);
-    print("onAddPlayer ${data}");
 
     Map<String, dynamic> user = data;
-    double newX = double.parse(user['x'].toString());
-    double newY = double.parse(user['y'].toString());
+    final double newX = double.parse(user['x'].toString());
+    final double newY = double.parse(user['y'].toString());
 
-    String pName = user['name'].toString();
-    String pId = user['playerId'].toString();
-    String sprite = user['sprite'].toString();
+    final String pName = user['name'].toString();
+    final String pId = user['playerId'].toString();
+    final String sprite = user['sprite'].toString();
 
-    Entity e =
+    final Entity e =
         Player(newX, newY, map, false, pName, pId, null, spriteFolder: sprite);
 
     _addEntityIfNotExist(e);
@@ -181,29 +184,54 @@ class ServerController extends NetworkServer {
   @override
   onRemovePlayer(data) {
     super.onRemovePlayer(data);
-    print("onRemovePlayer ${data}");
 
-    String pName = data['name'].toString();
-    print(pName);
+    final String pName = data['name'].toString();
 
     map.entityList.removeWhere((element) => element.name == pName);
   }
 
   @override
+  void onPlayerUpdate(data) {
+    super.onPlayerUpdate(data);
+
+    final double x = double.parse(data['x'].toString());
+    final double y = double.parse(data['y'].toString());
+    final double xSpeed = double.parse(data['xSpeed'].toString());
+    final double ySpeed = double.parse(data['ySpeed'].toString());
+    final String sprite = data['sprite'].toString();
+    final int hp = int.parse(data['hp'].toString());
+
+    final String playerId = data['playerId'].toString();
+
+    final Entity foundEntity = map.entitysOnViewport
+        .firstWhere((element) => element.id == playerId, orElse: () => null);
+    print('onPlayerUpdate ${foundEntity}');
+    if (foundEntity != null) {
+      foundEntity.x = x;
+      foundEntity.y = y;
+      //foundEntity.xSpeed = xSpeed;
+      //foundEntity.ySpeed = ySpeed;
+
+      if (foundEntity is Player) {
+        //foundEntity.spriteFolder = sprite;
+      }
+    }
+  }
+
+  @override
   void onMove(data) {
     super.onMove(data);
-    print("onMove ${data}");
 
-    double newX = double.parse(data['x'].toString());
-    double newY = double.parse(data['y'].toString());
-    double xSpeed = double.parse(data['xSpeed'].toString());
-    double ySpeed = double.parse(data['ySpeed'].toString());
-    String sprite = data['sprite'].toString();
-    String pId = data['playerId'].toString();
+    final double newX = double.parse(data['x'].toString());
+    final double newY = double.parse(data['y'].toString());
+    final double xSpeed = double.parse(data['xSpeed'].toString());
+    final double ySpeed = double.parse(data['ySpeed'].toString());
+    final String sprite = data['sprite'].toString();
+    final String pId = data['playerId'].toString();
 
-    String pName = data['name'].toString();
+    final String pName = data['name'].toString();
 
-    Entity foundEntity = map.entitysOnViewport
+    final Entity foundEntity = map.entitysOnViewport
         .firstWhere((element) => element.name == pName, orElse: () => null);
 
     if (foundEntity != null) {
@@ -251,16 +279,15 @@ class ServerController extends NetworkServer {
   @override
   void onTreeHit(data) {
     super.onTreeHit(data);
-    print("onTreeHit ${data}");
 
-    double targetX = double.parse(data['targetX'].toString());
-    double targetY = double.parse(data['targetY'].toString());
+    final double targetX = double.parse(data['targetX'].toString());
+    final double targetY = double.parse(data['targetY'].toString());
 
-    String pName = data['name'].toString();
+    final String pName = data['name'].toString();
     if (pName == player.name) {
       return;
     }
-    Entity foundEntity = map.entityList
+    final Entity foundEntity = map.entityList
         .firstWhere((element) => element.name == pName, orElse: () => null);
 
     if (foundEntity != null && foundEntity is Player) {
@@ -271,7 +298,6 @@ class ServerController extends NetworkServer {
   @override
   void onEnemyTargetingPlayer(data) {
     super.onEnemyTargetingPlayer(data);
-    print("onEnemyTargetingPlayer ${data}");
 
     var enemys = data['enemys'];
 
@@ -281,10 +307,10 @@ class ServerController extends NetworkServer {
       double x = double.parse(enemyData['x'].toString());
       double y = double.parse(enemyData['y'].toString());
 
-      int damage = int.parse(
+      final damage = int.parse(
           (enemyData['damage'] != null ? enemyData['damage'] : 0).toString());
 
-      int target_hp = int.parse(
+      final target_hp = int.parse(
           (enemyData['target_hp'] != null ? enemyData['target_hp'] : 0)
               .toString());
 
