@@ -1,8 +1,8 @@
-import 'package:BWO/Entity/Items/Items.dart';
-import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/Utils/OnAnimationEnd.dart';
-import 'package:BWO/Utils/SpriteController.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/on_animation_end.dart';
+import '../utils/sprite_controller.dart';
+import 'items/items.dart';
 
 class Equipment implements OnAnimationEnd {
   SpriteController equipmentAttack;
@@ -13,15 +13,15 @@ class Equipment implements OnAnimationEnd {
   Item item;
 
   Equipment(this.item) {
-    this.spriteFolder = item.proprieties.equipmentFolderSprite;
+    spriteFolder = item.proprieties.equipmentFolderSprite;
     loadSprite(spriteFolder);
   }
 
-  void loadSprite(spriteFolder) async {
-    Rect _viewPort = Rect.fromLTWH(0, 0, 32, 32);
-    Offset _pivot = Offset(16, 24);
-    double _scale = 3;
-    int framesCount = 0;
+  void loadSprite(String spriteFolder) async {
+    var _viewPort = Rect.fromLTWH(0, 0, 32, 32);
+    var _pivot = Offset(16, 24);
+    var _scale = 3.0;
+    var framesCount = 0;
 
     equipmentWalk = SpriteController("equipment/weapons/$spriteFolder/walk",
         _viewPort, _pivot, _scale, Offset(4, 1), framesCount, this);
@@ -35,7 +35,7 @@ class Equipment implements OnAnimationEnd {
   void onAnimationEnd() {
     if (currentSprite == equipmentAttack) {
       currentSprite = equipmentWalk;
-      currentSprite.setDirectionAngle(equipmentAttack.getDirectionAngle());
+      currentSprite.direcion = equipmentAttack.direcion;
     }
   }
 }

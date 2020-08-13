@@ -1,47 +1,43 @@
+import 'dart:math';
 import 'dart:ui';
 
-import 'package:BWO/Entity/Entity.dart';
-import 'package:BWO/Entity/EquipmentController.dart';
-import 'package:BWO/Entity/Items/Items.dart';
-import 'package:BWO/Entity/Player/InputController.dart';
-import 'package:BWO/Entity/Player/Inventory.dart';
-import 'package:BWO/Entity/Player/PlayerActions.dart';
-import 'package:BWO/Entity/Player/PlayerHUD.dart';
-import 'package:BWO/Entity/Player/PlayerNetwork.dart';
-import 'package:BWO/Map/map_controller.dart';
-import 'package:BWO/Scene/SceneObject.dart';
-import 'package:BWO/Utils/Frame.dart';
-import 'package:BWO/Utils/OnAnimationEnd.dart';
-import 'package:BWO/Utils/SpriteController.dart';
-import 'package:BWO/game_controller.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/sprite_batch.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
-import 'package:sensors/sensors.dart';
-import 'dart:math';
+
+import '../../game_controller.dart';
+import '../../map/map_controller.dart';
+import '../../scene/scene_object.dart' '';
+import '../../utils/on_animation_end.dart';
+import '../../utils/sprite_controller.dart' '';
+import '../entity.dart';
+import '../equipment_controller.dart';
+import '../items/items.dart';
+import 'input_controller.dart';
+import 'inventory.dart';
+import 'player_actions.dart';
+import 'player_hud.dart';
+import 'player_network.dart';
 
 class Player extends Entity implements OnAnimationEnd {
-  TextConfig config =
+  final TextConfig _text =
       TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
-
-  Paint boxPaint = Paint();
-  Rect boxRect;
 
   SpriteController walkSprites;
   SpriteController attackSprites;
   SpriteController currentSprite;
-  Sprite deathSprite = Sprite("effects/rip.png");
-  double timeToRespawn = 0;
+  final Sprite _deathSprite = Sprite("effects/rip.png");
+  double _timeToRespawn = 0;
 
   PlayerActions playerActions;
   InputController _inputController;
-  MapController map;
+  final MapController _map;
 
-  Inventory inventory;
+  Inventory _inventory;
+  // ignore: unused_field
   PlayerHUD _playerHUD;
   PlayerNetwork playerNetwork;
   bool isMine;
@@ -50,23 +46,22 @@ class Player extends Entity implements OnAnimationEnd {
 
   EquipmentController equipmentController;
 
-  Player(double x, double y, this.map, this.isMine, String myName, String myId,
+  Player(double x, double y, this._map, String myName, String myId,
       this.sceneObject,
-      {String spriteFolder = "human/male1"})
+      {this.spriteFolder = "human/male1", this.isMine = false})
       : super(x, y) {
-    this.spriteFolder = spriteFolder;
     playerActions = PlayerActions(this);
     playerNetwork = PlayerNetwork(this);
 
     if (isMine) {
-      inventory = Inventory(this, sceneObject.hud);
+      _inventory = Inventory(this, sceneObject.hud);
       _playerHUD = PlayerHUD(this, sceneObject.hud);
       equipmentController = EquipmentController(this);
       _inputController = InputController(this);
     }
     id = myId;
     name = myName;
-    //print("adding player [$name] with sprite: $spriteFolder");
+    print("adding player [$name] with sprite: $spriteFolder");
     _loadSprites();
   }
 
@@ -75,7 +70,7 @@ class Player extends Entity implements OnAnimationEnd {
     if (isActive == false) {
       return;
     }
-    mapHeight = map.getHeightOnPos(posX, posY);
+    mapHeight = _map.getHeightOnPos(posX, posY);
 
     var maxWalkSpeed = 3.0;
     if (_inputController != null) {
@@ -88,19 +83,20 @@ class Player extends Entity implements OnAnimationEnd {
     //var playAnim = animSpeed < .17;
 
     if (currentSprite != null) {
-      bool stopAnimWhenIdle = true;
+      var stopAnimWhenIdle = true;
       if (currentSprite.folder.contains("/attack")) {
         stopAnimWhenIdle = false;
         animSpeed = 0.07;
       }
 
-      currentSprite.draw(c, x, y, xSpeed, ySpeed, animSpeed, stopAnimWhenIdle,
-          mapHeight); //0.125 = 12fps
+      currentSprite.draw(c, x, y, xSpeed, ySpeed, animSpeed, mapHeight,
+          stopAnimWhenIdle: stopAnimWhenIdle); //0.125 = 12fps
 
-      equipmentController?.draw(c, stopAnimWhenIdle, animSpeed);
+      equipmentController?.draw(c, animSpeed,
+          stopAnimWhenIdle: stopAnimWhenIdle);
     }
 
-    config.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
+    _text.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
   }
 
   @override
@@ -113,20 +109,20 @@ class Player extends Entity implements OnAnimationEnd {
 
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();
-    playerActions.interactWithTrees(map);
+    playerActions.interactWithTrees(_map);
     playerNetwork.update();
   }
 
   void die(Canvas c) {
     if (status.isAlive() == false) {
       isActive = false;
-      deathSprite.renderScaled(c, Position(x - 16, y - 32), scale: 2);
+      _deathSprite.renderScaled(c, Position(x - 16, y - 32), scale: 2);
 
-      if (timeToRespawn == 0) {
-        timeToRespawn = GameController.time + 5;
+      if (_timeToRespawn == 0) {
+        _timeToRespawn = GameController.time + 5;
       }
-      if (GameController.time > timeToRespawn) {
-        timeToRespawn = 0;
+      if (GameController.time > _timeToRespawn) {
+        _timeToRespawn = 0;
         x = 0;
         y = 0;
         status.refillStatus();
@@ -147,15 +143,14 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   @override
-  void getHut(int damage, bool isMine, Entity other) {
-    // TODO: implement getHut
-    super.getHut(damage, isMine, other);
+  void getHut(int damage, Entity other, {bool isMine = false}) {
+    super.getHut(damage, other, isMine: isMine);
   }
 
   @override
   void onTriggerStay(Entity entity) {
     if (entity is Item) {
-      inventory.addItem(entity) ? entity.destroy() : null;
+      _inventory.addItem(entity) ? entity.destroy() : null;
       status.addExp(2);
 
       Flame.audio.play("pickup_item1.mp3", volume: 0.9);
@@ -163,19 +158,19 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   void _loadSprites() {
-    Rect _viewPort = Rect.fromLTWH(0, 0, 16, 16);
-    Offset _pivot = Offset(8, 16);
-    double _scale = 3;
-    Offset _gradeSize = Offset(4, 1);
-    int framesCount = 0;
+    var _viewPort = Rect.fromLTWH(0, 0, 16, 16);
+    var _pivot = Offset(8, 16);
+    var _scale = 3.0;
+    var _gradeSize = Offset(4, 1);
+    var _framesCount = 0;
 
     width = 12 * _scale;
     height = 6 * _scale;
 
-    walkSprites = new SpriteController("$spriteFolder/walk", _viewPort, _pivot,
-        _scale, _gradeSize, framesCount, this);
-    attackSprites = new SpriteController("$spriteFolder/attack", _viewPort,
-        _pivot, _scale, Offset(5, 1), framesCount, this);
+    walkSprites = SpriteController("$spriteFolder/walk", _viewPort, _pivot,
+        _scale, _gradeSize, _framesCount, this);
+    attackSprites = SpriteController("$spriteFolder/attack", _viewPort, _pivot,
+        _scale, Offset(5, 1), _framesCount, this);
 
     currentSprite = walkSprites;
   }
@@ -184,7 +179,7 @@ class Player extends Entity implements OnAnimationEnd {
   void onAnimationEnd() {
     if (currentSprite == attackSprites) {
       currentSprite = walkSprites;
-      currentSprite.setDirectionAngle(attackSprites.getDirectionAngle());
+      currentSprite.direcion = attackSprites.direcion;
     }
   }
 }

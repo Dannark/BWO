@@ -1,24 +1,25 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:BWO/Effects/FoamWaterEffect.dart';
-import 'package:BWO/Effects/WaterStarsEffect.dart';
-import 'package:BWO/Map/Tile.dart';
-import 'package:BWO/Utils/PreloadAssets.dart';
-import 'package:BWO/game_controller.dart';
+
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+
+import '../effects/foam_water_effect.dart';
+import '../effects/water_stars_effect.dart';
+import '../utils/preload_assets.dart';
+import 'tile.dart';
 
 class Ground extends Tile {
   WaterStarsEffect waterStarsEffect;
   FoamWaterEffect foamWaterEffect;
   Sprite grass;
 
-  static const WATER = 95;
-  static const LOW_WATER = 110;
-  static const LOW_SAND = 112;
-  static const SAND = 118;
-  static const LOW_GRASS = 140;
+  static const water = 95;
+  static const lowWater = 110;
+  static const lowSand = 112;
+  static const sand = 118;
+  static const lowGrass = 140;
 
   Ground(int posX, int posY, int height, int size, Color color)
       : super(posX, posY, height, size, color) {
@@ -50,12 +51,12 @@ class Ground extends Tile {
   }
 
   Color getTileDetailsBasedOnHight(int heightLvl) {
-    this.height = heightLvl;
+    height = heightLvl;
     var green = 255 - heightLvl;
 
     if (heightLvl > 142 && heightLvl < 152 && Random().nextInt(100) > 98) {
       var id = Random().nextInt(3) + 1;
-      grass = PreloadAssets.getEnviromentSprite("floor${id}");
+      grass = PreloadAssets.getEnviromentSprite("floor$id");
       /*grass = Sprite("enviroment/floor${id}.png",
           width: size.toDouble(), height: size.toDouble());*/
     }
@@ -64,34 +65,34 @@ class Ground extends Tile {
       return Colors.blue[700];
     } else if (heightLvl < 75) {
       return Colors.blue[600];
-    } else if (heightLvl < WATER) {
+    } else if (heightLvl < water) {
       return Colors.blue;
-    } else if (heightLvl < LOW_WATER) {
+    } else if (heightLvl < lowWater) {
       return Colors.blue[400];
-    } else if (heightLvl < LOW_SAND) {
+    } else if (heightLvl < lowSand) {
       return Color.fromRGBO(255, 224, 130, .94);
-    } else if (heightLvl < SAND) {
+    } else if (heightLvl < sand) {
       return Colors.amber[200];
-    } else if (heightLvl < LOW_GRASS) {
+    } else if (heightLvl < lowGrass) {
       if (Random().nextInt(100) > 95) {
         var id = Random().nextInt(4) + 7;
-        grass = PreloadAssets.getEnviromentSprite("grass${id}");
-        /*grass = Sprite("enviroment/grass${id}.png",
+        grass = PreloadAssets.getEnviromentSprite("grass$id");
+        /*grass = Sprite("enviroment/grass$id.png",
             width: size.toDouble(), height: size.toDouble());*/
       }
       return Color.fromRGBO(116, green + 50, 54, 1);
     } else if (heightLvl < 160) {
       if (Random().nextInt(100) > 96) {
         var id = Random().nextInt(2) + 11;
-        grass = PreloadAssets.getEnviromentSprite("grass${id}");
-        /*grass = Sprite("enviroment/grass${id}.png",
+        grass = PreloadAssets.getEnviromentSprite("grass$id");
+        /*grass = Sprite("enviroment/grass$id.png",
             width: size.toDouble(), height: size.toDouble());*/
       }
       return Color.fromRGBO(82, green + 40, 46, 1);
     } else if (heightLvl < 185) {
       if (Random().nextInt(100) > 98) {
         var id = Random().nextInt(2) + 13;
-        grass = PreloadAssets.getEnviromentSprite("grass${id}");
+        grass = PreloadAssets.getEnviromentSprite("grass$id");
         /*grass = Sprite("enviroment/grass${id}.png",
             width: size.toDouble(), height: size.toDouble());*/
       }

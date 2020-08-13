@@ -1,18 +1,17 @@
 import 'dart:math';
 
-import 'package:BWO/Entity/Enemys/IALocalController.dart';
-import 'package:BWO/Entity/Enemys/IANetworkController.dart';
-import 'package:BWO/Entity/Entity.dart';
-import 'package:BWO/Map/map_controller.dart';
-import 'package:BWO/Utils/OnAnimationEnd.dart';
-import 'package:BWO/Utils/SpriteController.dart';
-import 'package:BWO/game_controller.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
-import 'IAController.dart';
+import '../../game_controller.dart';
+import '../../map/map_controller.dart';
+import '../../utils/on_animation_end.dart';
+import '../../utils/sprite_controller.dart';
+import '../entity.dart';
+import 'ia_controller.dart';
+import 'ia_network_controller.dart';
 
 class Enemy extends Entity implements OnAnimationEnd {
   MapController map;
@@ -44,14 +43,14 @@ class Enemy extends Entity implements OnAnimationEnd {
     var animSpeed = 0.07 + (0.1 - (deltaSpeed * 0.1));
 
     if (currentSprite != null) {
-      bool stopAnimWhenIdle = true;
+      var stopAnimWhenIdle = true;
       if (currentSprite.folder.contains("attack")) {
         stopAnimWhenIdle = false;
         animSpeed = 0.07;
       }
 
-      currentSprite.draw(
-          c, x, y, xSpeed, ySpeed, animSpeed, stopAnimWhenIdle, mapHeight);
+      currentSprite.draw(c, x, y, xSpeed, ySpeed, animSpeed, mapHeight,
+          stopAnimWhenIdle: stopAnimWhenIdle);
     }
     //debugDraw(c);
     TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia")
@@ -87,25 +86,25 @@ class Enemy extends Entity implements OnAnimationEnd {
   }
 
   @override
-  void getHut(int damage, bool isMine, Entity other) {
-    super.getHut(damage, isMine, other);
+  void getHut(int damage, Entity other, {bool isMine = false}) {
+    super.getHut(damage, other, isMine: isMine);
     iaController.target = other;
   }
 
   void _loadSprites(spriteFolder) {
-    Rect _viewPort = Rect.fromLTWH(0, 0, 16, 16);
-    Offset _pivot = Offset(8, 16);
-    double _scale = 3;
-    Offset _gradeSize = Offset(4, 1);
-    int framesCount = 0;
+    var _viewPort = Rect.fromLTWH(0, 0, 16, 16);
+    var _pivot = Offset(8, 16);
+    var _scale = 3.0;
+    var _gradeSize = Offset(4, 1);
+    var framesCount = 0;
 
     width = 6 * _scale;
     height = 6 * _scale;
 
-    walkSprites = new SpriteController(spriteFolder + "/walk", _viewPort,
-        _pivot, _scale, _gradeSize, framesCount, this);
-    attackSprites = new SpriteController(spriteFolder + "/attack", _viewPort,
-        _pivot, _scale, _gradeSize, framesCount, this);
+    walkSprites = SpriteController("$spriteFolder/walk", _viewPort, _pivot,
+        _scale, _gradeSize, framesCount, this);
+    attackSprites = SpriteController("$spriteFolder/attack", _viewPort, _pivot,
+        _scale, _gradeSize, framesCount, this);
 
     currentSprite = walkSprites;
   }

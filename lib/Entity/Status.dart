@@ -1,6 +1,4 @@
-import 'dart:ffi';
-
-import 'package:BWO/game_controller.dart';
+import '../game_controller.dart';
 
 class Status {
   double _statusMultiplier = 1;
@@ -11,11 +9,11 @@ class Status {
   double _maxEnergy;
 
   double _calories = 0;
-  double _maxCalories = 100;
+  final double _maxCalories = 100;
 
   int _force = 2;
   int _defense = 0;
-  int _treeCut = 1;
+  final int _treeCut = 1;
 
   int _level = 1;
   int _exp = 0;
@@ -23,14 +21,14 @@ class Status {
 
   //regenaration settings
   bool autoRegenHP = true;
-  double _hpRegenFrequency = 10; //in seconds
+  final double _hpRegenFrequency = 10; //in seconds
   double _hpRegenTime = 0;
-  double _energyRegenSpeed = .6;
-  double _caloriesDecressSpeed = .15; //takes about 10 minutes
+  final double _energyRegenSpeed = .6;
+  final double _caloriesDecressSpeed = .15; //takes about 10 minutes
 
   Status({int maxHP = 10, double maxEnergy = 5}) {
-    this._maxHP = maxHP;
-    this._maxEnergy = maxEnergy;
+    _maxHP = maxHP;
+    _maxEnergy = maxEnergy;
 
     refillStatus();
   }
@@ -127,7 +125,7 @@ class Status {
   }
 
   void takeDamage(int damage) {
-    _hp -= damage;
+    _hp -= (damage - _defense).clamp(0, double.infinity);
     if (_hp < 0) {
       _hp = 0;
     }
@@ -207,8 +205,8 @@ class Status {
   }
 
   void _levelUpRamp() {
-    int startBaseExp = 10;
-    double rampMultiplier = .35;
+    var startBaseExp = 10;
+    var rampMultiplier = .35;
     _maxExp =
         (_level * startBaseExp + ((_level * _level * _level) * rampMultiplier))
             .toInt();
@@ -227,5 +225,9 @@ class Status {
   void _updateStatus() {
     _maxHP = (_statusMultiplier * (10 + ((_level * _level) * .5))).toInt();
     _maxEnergy = _statusMultiplier * (5 + _level * .5);
+
+    //gives +1 force for each 3 levels
+    _force = 2 + (_level ~/ 3);
+    _defense = 0 + (_level ~/ 4);
   }
 }

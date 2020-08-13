@@ -1,39 +1,38 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:BWO/Entity/Entity.dart';
-import 'package:BWO/Entity/Items/ItemDatabase.dart';
-import 'package:BWO/Entity/Items/Items.dart';
-import 'package:BWO/Map/map_controller.dart';
-import 'package:BWO/Map/tile.dart';
-import 'package:BWO/Scene/GameScene.dart';
-import 'package:BWO/Utils/PreloadAssets.dart';
-import 'package:BWO/game_controller.dart';
-import 'package:flame/flame.dart';
+
 import 'package:flame/flame_audio.dart';
-import 'package:flame/sprite.dart';
 import 'package:flame/sprite_batch.dart';
 import 'package:flutter/material.dart';
 
+import '../entity/entity.dart';
+import '../entity/items/item_database.dart';
+import '../entity/items/items.dart';
+import '../game_controller.dart';
+import '../scene/game_scene.dart';
+import '../utils/preload_assets.dart';
+import 'map_controller.dart';
+
 class Tree extends Entity {
-  int _tileSize;
+  final int _tileSize;
   SpriteBatch _tree;
-  String _spriteImage;
-  double delay = 0.05;
+  final String _spriteImage;
+  final double _delay = 0.05;
   bool _isPlaingAnimation = false;
 
   int _currentRotationId = 0;
-  List<double> rotationList = [0, 0, -0.05, 0.04, -0.02, 0.01, 0];
+  final List<double> _rotationList = [0, 0, -0.05, 0.04, -0.02, 0.01, 0];
   double _timeInFuture = 0;
 
-  int applesLeft = 1;
+  int _applesLeft = 1;
 
-  FlameAudio audio = FlameAudio();
+  final FlameAudio _audio = FlameAudio();
   double _deadRotation = 0;
   double _gravityRotation = 0;
 
-  MapController map;
-  double deleteTime = double.infinity;
-  double respawnTime = double.infinity;
+  MapController _map;
+  double _deleteTime = double.infinity;
+  double _respawnTime = double.infinity;
 
   Tree(int posX, int posY, this._tileSize, this._spriteImage)
       : super((posX.toDouble() * GameScene.worldSize),
@@ -46,7 +45,7 @@ class Tree extends Entity {
     status.setLife(20);
 
     shadownSize = 4;
-    applesLeft = Random().nextInt(1) + 1;
+    _applesLeft = Random().nextInt(1) + 1;
   }
 
   void loadSprite() async {
@@ -78,21 +77,21 @@ class Tree extends Entity {
   }
 
   void _die() {
-    if (deleteTime == double.infinity) {
-      deleteTime = GameController.time + 4;
+    if (_deleteTime == double.infinity) {
+      _deleteTime = GameController.time + 4;
     }
-    if (GameController.time > deleteTime && isActive) {
+    if (GameController.time > _deleteTime && isActive) {
       _dropLogs();
       //destroy(); //make it inactive instead becase we want to respawn it
       isActive = false;
-      respawnTime = GameController.time + 164;
+      _respawnTime = GameController.time + 164;
 
       _gravityRotation = 0;
       _deadRotation = 0;
     }
 
     //resets
-    if (GameController.time > respawnTime) {
+    if (GameController.time > _respawnTime) {
       resetTree();
     }
   }
@@ -102,9 +101,9 @@ class Tree extends Entity {
     _gravityRotation = 0;
     _deadRotation = 0;
     status.refillStatus();
-    applesLeft = Random().nextInt(1) + 1;
-    respawnTime = double.infinity;
-    deleteTime = double.infinity;
+    _applesLeft = Random().nextInt(1) + 1;
+    _respawnTime = double.infinity;
+    _deleteTime = double.infinity;
     updatePhysics();
   }
 
@@ -149,21 +148,21 @@ class Tree extends Entity {
 
   void hitted() {
     if (GameController.time > _timeInFuture && _isPlaingAnimation) {
-      _timeInFuture = GameController.time + delay;
+      _timeInFuture = GameController.time + _delay;
 
       _currentRotationId++;
 
-      if (_currentRotationId >= rotationList.length) {
+      if (_currentRotationId >= _rotationList.length) {
         _currentRotationId = 0;
         _isPlaingAnimation = false;
       }
     }
 
-    if (delay <= 0.01) {
+    if (_delay <= 0.01) {
       _currentRotationId = 0;
     }
 
-    _updateFrame(rotationList[_currentRotationId]);
+    _updateFrame(_rotationList[_currentRotationId]);
   }
 
   void _playAnimation() {
@@ -172,10 +171,10 @@ class Tree extends Entity {
 
   void doDamage(MapController map, int damage) {
     if (isActive && status.isAlive()) {
-      this.map = map;
+      _map = map;
       _playAnimation();
 
-      Item maca = _dropApple();
+      var maca = _dropApple();
       if (maca != null) {
         map.addEntity(maca);
       }
@@ -184,14 +183,14 @@ class Tree extends Entity {
           "tree taking $damage of damage.. current life is ${status.getHP()}");
 
       //Flame.audio.play("impact_tree.mp3", volume: 0.5);
-      audio.play('punch.mp3', volume: 0.4);
+      _audio.play('punch.mp3', volume: 0.4);
     }
   }
 
   Item _dropApple() {
-    if (Random().nextInt(100) < 3 && applesLeft > 0) {
-      applesLeft--;
-      return Item(x - 32, y, 100, ItemDatabase.itemList[0]);
+    if (Random().nextInt(100) < 3 && _applesLeft > 0) {
+      _applesLeft--;
+      return Item(x - 32, y, 100, itemListDatabase[0]);
     }
     return null;
   }
@@ -200,11 +199,11 @@ class Tree extends Entity {
     var logAmount = Random().nextInt(3) + 1;
 
     for (var i = 0; i < logAmount; i++) {
-      double rPosX = x + Random().nextInt(130).toDouble() - 30;
-      double rPosY = y + Random().nextInt(50).toDouble() - 25;
-      double zPosZ = Random().nextInt(30).toDouble() + 10;
+      var rPosX = x + Random().nextInt(130).toDouble() - 30;
+      var rPosY = y + Random().nextInt(50).toDouble() - 25;
+      var zPosZ = Random().nextInt(30).toDouble() + 10;
 
-      map.addEntity(Item(rPosX, rPosY, zPosZ, ItemDatabase.itemList[1]));
+      _map.addEntity(Item(rPosX, rPosY, zPosZ, itemListDatabase[1]));
     }
   }
 

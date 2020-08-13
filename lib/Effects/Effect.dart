@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 
-abstract class Effect{
-
+abstract class Effect {
   bool isAlive = true;
 
-  Effect(){
+  Effect();
 
-  }
-
-  void draw(Canvas c){
-    
-  }
-
+  void draw(Canvas c) {}
 }

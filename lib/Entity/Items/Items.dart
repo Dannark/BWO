@@ -1,11 +1,12 @@
-import 'package:BWO/Entity/Entity.dart';
-import 'package:BWO/Entity/Items/ItemDatabase.dart';
-import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/game_controller.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+
+import '../../game_controller.dart';
+import '../entity.dart';
+import '../player/player.dart';
+import 'item_database.dart';
 
 class Item extends Entity {
   ItemDB proprieties;
@@ -44,8 +45,7 @@ class Item extends Entity {
 
       p.color = Color.fromRGBO(255, 255, 255, alphaBlink);
 
-      Offset pivot =
-          Offset((proprieties.zoom * 16) / 2, (proprieties.zoom * 16));
+      var pivot = Offset((proprieties.zoom * 16) / 2, (proprieties.zoom * 16));
       sprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
           scale: proprieties.zoom, overridePaint: p);
       updatePhysics();
@@ -59,17 +59,17 @@ class Item extends Entity {
   }
 
   void use(Entity playerEntity) {
-    if (proprieties.itemType == ItemType.Usable) {
+    if (proprieties.itemType == ItemType.usable) {
       amount--; //removes item from inventory
       playerEntity.status.addLife(proprieties.hp);
       playerEntity.status.addEnergy(proprieties.energy);
       playerEntity.status.addHungriness(proprieties.hungriness);
 
       Flame.audio.play("items/eating_apple.mp3", volume: 0.3);
-    } else if (proprieties.itemType == ItemType.Weapon) {
+    } else if (proprieties.itemType == ItemType.weapon) {
       if (playerEntity is Player) {
         amount--; //removes item from inventory
-        playerEntity.equipmentController.EquipItem(this);
+        playerEntity.equipmentController.equipItem(this);
       }
     }
   }

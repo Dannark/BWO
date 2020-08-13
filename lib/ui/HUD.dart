@@ -1,13 +1,12 @@
-import 'package:BWO/game_controller.dart';
-import 'package:BWO/ui/UIElement.dart';
-import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+
+import 'ui_element.dart';
 
 class HUD {
   bool isActive = true;
   List<UIElement> uiElelements = [];
 
-  HUD() {}
+  HUD();
 
   void draw(Canvas c) {
     if (!isActive) {

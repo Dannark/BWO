@@ -1,19 +1,16 @@
 import 'dart:math';
 
-import 'package:BWO/Effects/DamageEffect.dart';
-import 'package:BWO/Effects/RippleWaterEffect.dart';
-import 'package:BWO/Effects/WalkEffect.dart';
-import 'package:BWO/Entity/Items/Items.dart';
-import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/Entity/Status.dart';
-import 'package:BWO/Map/tree.dart';
-import 'package:BWO/Scene/GameScene.dart';
-import 'package:BWO/game_controller.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
-import 'PhysicsEntity.dart';
+import '../effects/damage_effect.dart';
+import '../effects/ripple_water_effect.dart';
+import '../effects/walk_effect.dart';
+import '../scene/game_scene.dart';
+import 'physics_entity.dart';
+import 'player/player.dart';
+import 'status.dart';
 
 abstract class Entity extends PhysicsEntity {
   Status status = Status();
@@ -27,7 +24,7 @@ abstract class Entity extends PhysicsEntity {
   int posX;
   int posY;
 
-  var mapHeight = 1;
+  int mapHeight = 1;
   double width = 16;
   double height = 16;
 
@@ -36,13 +33,13 @@ abstract class Entity extends PhysicsEntity {
 
   double worldSize;
 
-  Paint p = new Paint();
+  Paint p = Paint();
 
   double shadownSize = 2;
-  Sprite shadownLarge = new Sprite("shadown_large.png");
-  RippleWaterEffect _rippleWaterEffect = RippleWaterEffect();
-  WalkEffect _walkEffect = WalkEffect();
-  DamageEffect _damageEffect = DamageEffect();
+  Sprite shadownLarge = Sprite("shadown_large.png");
+  final RippleWaterEffect _rippleWaterEffect = RippleWaterEffect();
+  final WalkEffect _walkEffect = WalkEffect();
+  final DamageEffect _damageEffect = DamageEffect();
 
   Entity(double x, double y) : super(x, y) {
     worldSize = GameScene.worldSize.toDouble();
@@ -58,7 +55,7 @@ abstract class Entity extends PhysicsEntity {
     if (!isActive) {
       return;
     }
-    double walkSpeed = max(inputSpeed.dx.abs(), inputSpeed.dy.abs());
+    var walkSpeed = max(inputSpeed.dx.abs(), inputSpeed.dy.abs());
     status.update(walkSpeed);
     if (status.getEnergy() <= 0) {
       maxSpeedEnergyMultiplier = .5;
@@ -88,7 +85,7 @@ abstract class Entity extends PhysicsEntity {
 
   void _drawShadown(Canvas c) {
     var distanceToGround = 1 - (z.abs().clamp(0, 100) / 100);
-    Paint p = Paint();
+    var p = Paint();
     p.color = Color.fromRGBO(255, 255, 255, distanceToGround);
 
     var sizeX = 16 * shadownSize / 2;
@@ -115,13 +112,13 @@ abstract class Entity extends PhysicsEntity {
     moveFriction();
   }
 
-  void getHut(int damage, bool isMine, Entity other) {
+  void getHut(int damage, Entity other, {bool isMine = false}) {
     status.takeDamage(damage);
-    showDamage(damage, isMine);
+    showDamage(damage, isMine: isMine);
   }
 
-  void showDamage(int damage, bool isMine) {
-    _damageEffect.addText(damage, isMine);
+  void showDamage(int damage, {bool isMine = false}) {
+    _damageEffect.addText(damage, isMine: isMine);
   }
 
   void onTriggerStay(Entity entity) {}

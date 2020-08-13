@@ -1,36 +1,36 @@
-import 'package:BWO/Entity/Items/ItemDatabase.dart';
-import 'package:BWO/Entity/Items/Items.dart';
-import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/Scene/GameScene.dart';
-import 'package:BWO/ui/HUD.dart';
-import 'package:BWO/ui/UIElement.dart';
-import 'package:BWO/game_controller.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
-import 'package:BWO/Utils/TapState.dart';
+
+import '../../game_controller.dart';
+import '../../ui/hud.dart';
+import '../../ui/ui_element.dart';
+import '../../utils/tap_state.dart';
+import '../items/item_database.dart';
+import '../items/items.dart';
+import 'player.dart';
 
 class Inventory extends UIElement {
   List<Item> itemList = [];
 
-  double margin = 60;
+  final double _margin = 60;
 
-  int maxSlots = 4;
-  int maxHorizontalSlots = 2;
-  double spaceBetweenSlots = 2;
+  final int _maxSlots = 4;
+  final int _maxHorizontalSlots = 2;
+  final double _spaceBetweenSlots = 2;
 
-  TextConfig config =
+  final TextConfig _config =
       TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia");
-  Player _player;
+  final Player _player;
 
   Sprite _bagSprite;
   Sprite _bagSpriteOpen;
 
   Inventory(this._player, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
-    addItem(Item(0, 0, 0, ItemDatabase.itemList[2]));
-    addItem(Item(0, 0, 0, ItemDatabase.itemList[4]));
+    addItem(Item(0, 0, 0, itemListDatabase[2]));
+    addItem(Item(0, 0, 0, itemListDatabase[4]));
     loadSprite();
   }
 
@@ -53,9 +53,9 @@ class Inventory extends UIElement {
   }
 
   bool addItem(Item item) {
-    bool itemAdded = false;
+    var itemAdded = false;
 
-    bool found = false;
+    var found = false;
     for (var itemOnInventory in itemList) {
       if (itemOnInventory.proprieties.name == item.proprieties.name) {
         found = true;
@@ -64,7 +64,7 @@ class Inventory extends UIElement {
       }
     }
 
-    if (found == false && itemList.length < maxSlots) {
+    if (found == false && itemList.length < _maxSlots) {
       itemList.add(item);
       itemAdded = true;
     }
@@ -80,16 +80,16 @@ class Inventory extends UIElement {
     }
 
     p.color = Colors.brown[200];
-    var maxWidth = maxHorizontalSlots * 32;
-    for (int i = 0; i < maxSlots; i++) {
-      var xSlot = (i % maxHorizontalSlots) * (32 + spaceBetweenSlots);
+    var maxWidth = _maxHorizontalSlots * 32;
+    for (var i = 0; i < _maxSlots; i++) {
+      var xSlot = (i % _maxHorizontalSlots) * (32 + _spaceBetweenSlots);
       var ySlot =
-          ((i * 32) / maxWidth).floorToDouble() * (32 + spaceBetweenSlots);
-      var maxYSlot = (maxSlots * 32) / maxWidth * (32 + spaceBetweenSlots);
+          ((i * 32) / maxWidth).floorToDouble() * (32 + _spaceBetweenSlots);
+      var maxYSlot = (_maxSlots * 32) / maxWidth * (32 + _spaceBetweenSlots);
 
-      Rect slotRect = Rect.fromLTWH(
+      var slotRect = Rect.fromLTWH(
         x + xSlot - maxWidth / 2,
-        y + ySlot - margin - maxYSlot,
+        y + ySlot - _margin - maxYSlot,
         32,
         32,
       );
@@ -102,13 +102,13 @@ class Inventory extends UIElement {
         itemList[i].sprite.renderScaled(
             c, Position(slotRect.left + 4, slotRect.top + 4),
             scale: 1.5);
-        config.render(
+        _config.render(
           c,
           "${itemList[i].amount}",
           Position(slotRect.left + 2, slotRect.top + 1),
         );
 
-        if (GameController.tapState == TapState.DOWN &&
+        if (GameController.tapState == TapState.down &&
             TapState.instersect(slotRect)) {
           print("Using Item ${itemList[i].proprieties.name}");
           itemList[i].use(_player);
@@ -128,14 +128,14 @@ class Inventory extends UIElement {
 
   void drawBagButton(Canvas c) {
     if (_bagSprite != null && _bagSpriteOpen != null) {
-      Position bPos = Position(10, GameController.screenSize.height - 128);
+      var bPos = Position(10, GameController.screenSize.height - 128);
       if (isOpen) {
         _bagSpriteOpen.renderScaled(c, bPos, scale: 2);
       } else {
         _bagSprite.renderScaled(c, bPos, scale: 2);
       }
 
-      Rect bRect = Rect.fromLTWH(bPos.x, bPos.y, 32, 32);
+      var bRect = Rect.fromLTWH(bPos.x, bPos.y, 32, 32);
       if (TapState.clickedAt(bRect)) {
         isOpen = !isOpen;
       }

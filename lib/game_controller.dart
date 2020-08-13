@@ -1,35 +1,23 @@
-import 'dart:math';
 import 'dart:ui';
-import 'package:BWO/Effects/EffectsController.dart';
-import 'package:BWO/Entity/Enemys/Enemy.dart';
-import 'package:BWO/Entity/Enemys/Skull.dart';
-import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/Scene/GameScene.dart';
-import 'package:BWO/Scene/CharacterCreation/CharacterCreation.dart';
-import 'package:BWO/Scene/SceneObject.dart';
-import 'package:BWO/Server/ServerController.dart';
-import 'package:BWO/Map/map_controller.dart';
-import 'package:BWO/Utils/PhysicsController.dart';
-import 'package:BWO/Utils/TapState.dart';
-import 'package:BWO/ui/Keyboard/KeyboardUI.dart';
-import 'package:flame/anchor.dart';
-import 'package:flame/flame.dart';
+
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
-import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
-import 'Utils/PreloadAssets.dart';
+import 'scene/character_creation/character_creation.dart';
+import 'scene/scene_object.dart';
+import 'ui/keyboard/keyboard_ui.dart';
+import 'utils/preload_assets.dart';
+import 'utils/tap_state.dart';
 
-class GameController extends Game with PanDetector, WidgetsBindingObserver {
+class GameController extends Game with PanDetector {
   static Rect screenSize;
   static double fps = 0;
 
   static double deltaTime = 0;
   static double time = 0;
-  static int tapState = TapState.UP;
-  static int preTapState = TapState.UP;
+  static int tapState = TapState.up;
+  static int preTapState = TapState.up;
 
   static SceneObject currentScene;
 
@@ -38,7 +26,7 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
     //_gameScene = GameScene(); //init Game;
   }
 
-  void SafeStart() {
+  void _safeStart() {
     if (currentScene == null) {
       KeyboardUI.build();
       currentScene = CharacterCreation();
@@ -48,20 +36,20 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
   void render(Canvas c) {
     if (screenSize == null) return;
 
-    Paint bgPaint = Paint();
+    var bgPaint = Paint();
     bgPaint.color = Color(0xff000000);
     c.drawRect(screenSize, bgPaint);
 
     currentScene.draw(c);
-    EffectsController.draw(c);
     KeyboardUI.draw(c);
 
-    if (tapState == TapState.DOWN) {
-      tapState = TapState.PRESSING;
+    if (tapState == TapState.down) {
+      tapState = TapState.pressing;
     }
   }
 
-  var fpsList = [];
+  List<double> fpsList = [];
+
   void update(double dt) {
     if (screenSize == null) return;
 
@@ -69,19 +57,20 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
     time += dt;
 
     fpsList.add(1.0 / dt);
-    double avg = 0;
-    fpsList.forEach((element) {
-      avg += element;
-    });
+    var avg = 0.0;
+
+    for (var fps in fpsList) {
+      avg += fps;
+    }
     fps = avg / fpsList.length;
 
     if (fpsList.length > 20) {
       fpsList.removeAt(0);
     }
 
-    if (preTapState == TapState.DOWN) {
-      tapState = TapState.DOWN;
-      preTapState = TapState.UP;
+    if (preTapState == TapState.down) {
+      tapState = TapState.down;
+      preTapState = TapState.up;
     }
 
     currentScene.update();
@@ -91,12 +80,12 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
     super.resize(size);
     screenSize = Rect.fromLTWH(0, 0, size.width, size.height);
 
-    SafeStart();
+    _safeStart();
   }
 
   @override
   void onPanDown(DragDownDetails details) {
-    preTapState = TapState.DOWN;
+    preTapState = TapState.down;
     TapState.pressedPosition = details.localPosition;
     TapState.currentPosition = details.localPosition;
     TapState.lastPosition = details.localPosition;
@@ -104,7 +93,7 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
 
   @override
   void onPanUpdate(DragUpdateDetails details) {
-    if (tapState == TapState.PRESSING) {
+    if (tapState == TapState.pressing) {
       TapState.lastPosition = TapState.currentPosition;
       TapState.currentPosition = details.localPosition;
     }
@@ -112,13 +101,6 @@ class GameController extends Game with PanDetector, WidgetsBindingObserver {
 
   @override
   void onPanEnd(DragEndDetails details) {
-    tapState = TapState.UP;
-  }
-
-  @override
-  void lifecycleStateChange(AppLifecycleState state) {
-    // TODO: implement lifecycleStateChange
-    super.lifecycleStateChange(state);
-    //print("state = ${state}");
+    tapState = TapState.up;
   }
 }

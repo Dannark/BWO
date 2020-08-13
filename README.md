@@ -1,5 +1,7 @@
 # Borderless World Online (BWO)
 
+[![style: effective dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)](https://pub.dev/packages/effective_dart)[![Powered by Flame](https://img.shields.io/badge/Powered%20by-%F0%9F%94%A5-orange.svg)](https://flame-engine.org)
+
 An infinity procedural online game using Flutter and flames with NodeJS Server In back-end.
 
 ![gameplay_2](https://user-images.githubusercontent.com/7622553/86072224-7d941800-ba57-11ea-8d1d-9a2cab5c08b4.gif)
@@ -85,6 +87,9 @@ Usecases:
 - Add NoSQL database
 - Login/Creation user
 - Delete enemys that walks out of the screen
+
+### 13/08
+* Added Effective Dart to the project (Massive refactoring)
 
 ### 11/08
 * Added Jasmine for Testing Driven-Development (TDD) on the back-end Server

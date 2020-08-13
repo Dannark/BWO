@@ -1,14 +1,14 @@
-import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:BWO/Entity/Entity.dart';
-import 'package:BWO/Entity/Player/Player.dart';
-import 'package:BWO/Map/ground.dart';
-import 'package:BWO/Map/tree.dart';
-import 'package:BWO/game_controller.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
-import 'package:BWO/Map/Tile.dart';
+
+import '../entity/entity.dart';
+import '../entity/player/player.dart';
+import '../game_controller.dart';
+import 'ground.dart';
+import 'tile.dart';
+import 'tree.dart';
 
 class MapController {
   final Map<int, Map<int, Map<int, Tile>>> map = {};
@@ -35,7 +35,7 @@ class MapController {
 
   int _loopsPerCycle = 0;
 
-  var terrainNoise = new SimplexNoise(
+  SimplexNoise terrainNoise = SimplexNoise(
     frequency: 0.003, //0.004
     gain: 1,
     lacunarity: 2.6,
@@ -43,14 +43,14 @@ class MapController {
     fractalType: FractalType.FBM,
   );
 
-  var terrainNoise2 = new PerlinNoise(
+  PerlinNoise terrainNoise2 = PerlinNoise(
     frequency: .005,
     gain: 1,
     lacunarity: 1,
     octaves: 1,
     fractalType: FractalType.FBM,
   );
-  var treeNoise = new PerlinNoise(
+  PerlinNoise treeNoise = PerlinNoise(
     frequency: .8,
     gain: 1,
     lacunarity: 1,
@@ -61,32 +61,34 @@ class MapController {
   MapController(Offset startPosition) {
     posX = startPosition.dx;
     posY = startPosition.dy;
-    this.targetPos = Offset(posX, posY);
+    targetPos = Offset(posX, posY);
   }
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {int tileSize = 15, border = 6, int movimentType = MovimentType.MOVE}) {
+      {int tileSize = 15,
+      int border = 6,
+      int movimentType = MovimentType.move}) {
     var borderSize = (border * tileSize);
 
-    this.widthViewPort =
+    widthViewPort =
         (screenSize.width / tileSize).roundToDouble() + (border * 2);
-    this.heightViewPort =
+    heightViewPort =
         (screenSize.height / tileSize).roundToDouble() + (border * 2);
 
     // move camera
-    if (movimentType == MovimentType.MOVE) {
-      this.posX += moveX.roundToDouble();
-      this.posY += moveY.roundToDouble();
-    } else if (movimentType == MovimentType.FOLLOW) {
-      this.targetPos = Offset(
+    if (movimentType == MovimentType.move) {
+      posX += moveX.roundToDouble();
+      posY += moveY.roundToDouble();
+    } else if (movimentType == MovimentType.follow) {
+      targetPos = Offset(
           (-moveX.roundToDouble() + screenSize.width / 2) + border * tileSize,
           (-moveY.roundToDouble() + screenSize.height / 2) + border * tileSize);
 
-      this.posX = ui
+      posX = ui
           .lerpDouble(
               posX, targetPos.dx, GameController.deltaTime * cameraSpeed)
           .roundToDouble();
-      this.posY = ui
+      posY = ui
           .lerpDouble(
               posY, targetPos.dy, GameController.deltaTime * cameraSpeed)
           .roundToDouble();
@@ -95,7 +97,7 @@ class MapController {
     c.save();
     c.translate(posX - borderSize, posY - borderSize);
 
-    Rect viewPort = Rect.fromLTWH(
+    var viewPort = Rect.fromLTWH(
       -posX / tileSize,
       -posY / tileSize,
       widthViewPort,
@@ -107,14 +109,14 @@ class MapController {
     safeX = (viewPort.left).ceil();
     safeXmax = (viewPort.right).ceil();
 
-    for (int y = safeY; y < safeYmax; y++) {
-      for (int x = safeX; x < safeXmax; x++) {
-        bool isSafeLine = map[y] != null ? map[y][x] != null : false;
+    for (var y = safeY; y < safeYmax; y++) {
+      for (var x = safeX; x < safeXmax; x++) {
+        var isSafeLine = map[y] != null ? map[y][x] != null : false;
 
         if (isSafeLine) {
           //check if tile already exist, if yes, draw, otherwise create it
-          int safeZmax = map[y][x].length;
-          for (int z = 0; z < safeZmax; z++) {
+          var safeZmax = map[y][x].length;
+          for (var z = 0; z < safeZmax; z++) {
             map[y][x][z].draw(c);
           }
         } else {
@@ -152,7 +154,8 @@ class MapController {
     }
     _loopsPerCycle = 0;
 
-    //Organize List to show Entity elements (Players, Trees) on correct Y-Index order
+    // Organize List to show Entity elements (Players, Trees)
+    // on correct Y-Index order
     _findEntitysOnViewport();
     entitysOnViewport.sort((a, b) => a.y.compareTo(b.y));
 
@@ -168,7 +171,7 @@ class MapController {
   }
 
   int getHeightOnPos(int x, int y) {
-    int defaultHeight = 255;
+    var defaultHeight = 255;
     if (map[y] != null) {
       if (map[y][x] != null) {
         defaultHeight = map[y][x][0].height;
@@ -221,9 +224,9 @@ class MapController {
 
     entityList.removeWhere((element) => element.marketToBeRemoved);
 
-    var distance = (Offset(posX, posY) - this.targetPos).distance;
+    var distance = (Offset(posX, posY) - targetPos).distance;
 
-    for (int i = 0; i < entityList.length; i++) {
+    for (var i = 0; i < entityList.length; i++) {
       if (entityList[i] is Player || _isEntityInsideViewport(entityList[i])) {
         entitysOnViewport.add(entityList[i]);
       }
@@ -232,9 +235,6 @@ class MapController {
           entityList[i] is Player &&
           entityList[i] != player &&
           distance < 16) {
-        //remove players outside view
-        print(
-            "[MapController]: removing player ${entityList[i].name} ${entityList[i].x}, ${entityList[i].y} | ${entityList[i].posX}, ${entityList[i].posY}");
         //entityList.remove(entityList[i]);
         entityList[i].marketToBeRemoved = true;
       }
@@ -243,7 +243,7 @@ class MapController {
 }
 
 class MovimentType {
-  static const int None = 0;
-  static const int MOVE = 1;
-  static const int FOLLOW = 2;
+  static const int none = 0;
+  static const int move = 1;
+  static const int follow = 2;
 }

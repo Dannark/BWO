@@ -1,6 +1,7 @@
-import 'package:BWO/Entity/Enemys/Enemy.dart';
-import 'package:BWO/Map/map_controller.dart';
 import 'package:flutter/material.dart';
+
+import '../../map/map_controller.dart';
+import 'enemy.dart';
 
 class Skull extends Enemy {
   Skull(double x, double y, MapController map, String name, String id,
