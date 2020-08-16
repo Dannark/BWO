@@ -18,7 +18,7 @@ export default function startServer() {
             })
         });
         
-    }), 4000);
+    }), 3000);
 
     // make enemys attack players
     setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
