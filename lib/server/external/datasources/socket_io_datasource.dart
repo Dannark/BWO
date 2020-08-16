@@ -1,15 +1,13 @@
 import 'package:socket_io_client/socket_io_client.dart';
 
-import '../entity/player/player.dart';
+import '../../../entity/player/player.dart';
+import '../../domain/repositories/server_repository.dart';
+import '../../utils/server_utils.dart';
 
-abstract class NetworkServer {
-  //final String _server = "https://3000-e92204fd-e411-4285-8fd3-cf3515d1c358.ws-us02.gitpod.io";
-  final String _server = "http://192.168.1.111:3000";
-
+class SocketIoRepository implements ServerRepository {
   Socket socket;
   Player _player;
 
-  bool offlineMode = false;
   Function(String) callback;
 
   void initializeClient(Player player, Function(String) callback) {
@@ -17,24 +15,29 @@ abstract class NetworkServer {
 
     _player = player;
 
-    socket = io(_server, <String, dynamic>{
+    socket = io(ServerUtils.server, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false
     });
     socket.connect();
 
-    socket.on('socket_info', onSetup);
-    socket.on('onPlayerEnterScreen', onPlayerEnterScreen);
-    socket.on('onEnemysWalk', onEnemysWalk);
-    socket.on('onEnemysEnterScreen', onEnemysEnterScreen);
-    socket.on('onEnemyTargetingPlayer', onEnemyTargetingPlayer);
+    socket.on('onSetup', onSetup);
+
+    /*socket.on('onPlayerEnterScreen', onPlayerEnterScreen);
     socket.on('add-player', onAddPlayer);
     socket.on("remove-player", onRemovePlayer);
     socket.on("onMove", onMove);
     socket.on("onPlayerUpdate", onPlayerUpdate);
-    socket.on("onTreeHit", onTreeHit);
+    socket.on('onEnemysWalk', onEnemysWalk);
+    socket.on('onEnemysEnterScreen', onEnemysEnterScreen);
+    socket.on('onEnemyTargetingPlayer', onEnemyTargetingPlayer);
+    socket.on("onTreeHit", onTreeHit);*/
 
     socket.on('disconnect', (_) => print('disconnected'));
+  }
+
+  void setListener(String event, dynamic Function(dynamic) callback) {
+    socket.on(event, callback);
   }
 
   void socketStatus(dynamic data) {
@@ -66,7 +69,7 @@ abstract class NetworkServer {
   }
 
   void onPlayerEnterScreen(dynamic data) {
-    //print("onPlayerEnterScreen ${data}");
+    print("onPlayerEnterScreen $data");
   }
 
   void onEnemysWalk(dynamic data) {

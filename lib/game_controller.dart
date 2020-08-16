@@ -78,6 +78,7 @@ class GameController extends Game with PanDetector {
 
   void resize(Size size) {
     super.resize(size);
+    print('Starting game with $size');
     screenSize = Rect.fromLTWH(0, 0, size.width, size.height);
 
     _safeStart();

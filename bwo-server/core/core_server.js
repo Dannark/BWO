@@ -23,7 +23,7 @@ export default function startServer () {
         console.log(`Player connected: ${playerId}`)
         game.addSocket(socket)
 
-        socket.emit('socket_info', playerId)
+        socket.emit('onSetup', playerId)
 
         socket.on('log-player', (command) => {
             game.state.statistics.msgRecived ++;
@@ -44,7 +44,13 @@ export default function startServer () {
 
         socket.on('onUpdate', (command) => {
             game.state.statistics.msgRecived ++;
-            game.updatePlayer({playerId: playerId, ...command})
+
+            if(command.action == 'reviving'){
+                game.respawn({playerId: playerId, ...command});
+            }
+            else{
+                game.updatePlayer({playerId: playerId, ...command})
+            }
         })
 
         socket.on('onTreeHit', (command) => {

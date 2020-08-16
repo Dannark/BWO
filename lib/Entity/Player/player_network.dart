@@ -55,6 +55,7 @@ class PlayerNetwork {
     }
 
     if (distance > 250) {
+      print('teleporting player ${player.name} because he is too far');
       player.x = targetPos.dx;
       player.y = targetPos.dy;
     } else {
@@ -87,9 +88,9 @@ class PlayerNetwork {
     if (player.isMine) {
       var jsonData = {
         "action": "reviving",
-        "hp": player.status.getHP(),
-        "x": player.x,
-        "y": player.y,
+        "hp": player.status.getMaxHP(),
+        "x": 0,
+        "y": 0,
       };
       GameScene.serverController.sendMessage("onUpdate", jsonData);
     }

@@ -8,7 +8,7 @@ import '../entity/enemys/enemy.dart';
 import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../map/map_controller.dart';
-import '../server/server_controller.dart';
+import '../server/domain/usecases/server_controller.dart';
 import '../utils/physics_controller.dart';
 import 'scene_object.dart';
 
@@ -79,6 +79,5 @@ class GameScene extends SceneObject {
     }
 
     physicsController.update();
-    serverController.update();
   }
 }

@@ -118,19 +118,29 @@ class Player extends Entity implements OnAnimationEnd {
       isActive = false;
       _deathSprite.renderScaled(c, Position(x - 16, y - 32), scale: 2);
 
+      if (!isMine) return;
+
       if (_timeToRespawn == 0) {
         _timeToRespawn = GameController.time + 5;
       }
       if (GameController.time > _timeToRespawn) {
         _timeToRespawn = 0;
-        x = 0;
-        y = 0;
-        status.refillStatus();
-        isActive = true;
+        //x = 0;
+        //y = 0;
+        //status.refillStatus();
+        //isActive = true;
 
         playerNetwork.refillStatus();
       }
     }
+  }
+
+  void respawn() {
+    x = 0;
+    y = 0;
+    playerNetwork.setTargetPosition(x, y);
+    isActive = true;
+    status.refillStatus();
   }
 
   void setDirection(Offset target) {

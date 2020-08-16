@@ -18,7 +18,7 @@ export default function startServer() {
             })
         });
         
-    }), 5000);
+    }), 4000);
 
     // make enemys attack players
     setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
@@ -65,10 +65,8 @@ export default function startServer() {
         
         for (const skt of socketList) {
             if (allPlayers[skt.id] != undefined) {
-                
                 delete command.type
                 skt.emit(type, command)
-                
                 
                 state.statistics.msgSent ++
             }
@@ -105,6 +103,36 @@ export default function startServer() {
                 type: 'onPlayerUpdate',
                 ...state.players[command.playerId]
             }, true)
+        }
+    }
+
+    function respawn(command){
+        const playerId = command.playerId
+        var playerFound = state.players[playerId]
+        var dead_body_point = {
+            x: state.players[command.playerId].x,
+            y: state.players[command.playerId].y
+        }
+
+        if (playerFound != undefined) {
+            state.players[command.playerId] = {
+                ...state.players[command.playerId],
+                ...command,
+            };
+            console.log('respawn');
+
+            //nofiy all players on where my body really is now incluring myself
+            notifyAllOnRangeOfPlayer({
+                type: 'onPlayerUpdate',
+                ...state.players[command.playerId]
+            }, false)
+
+            //nofity all players around the deadbody that this player will respawn
+            notifyAllOnRangeOfArea({
+                type: 'onPlayerUpdate',
+                point: dead_body_point,
+                ...state.players[command.playerId]
+            })
         }
     }
 
@@ -255,6 +283,7 @@ export default function startServer() {
         logPlayer,
         movePlayer,
         updatePlayer,
+        respawn,
         getAllPlayersAround,
         removePlayer,
         getAllEnemysAround,
