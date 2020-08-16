@@ -86,7 +86,6 @@ Usecases:
 - Enemy Attack Sync
 - Add NoSQL database
 - Login/Creation user
-- Delete enemys that walks out of the screen
 
 ### 13/08
 * Added Effective Dart to the project (Massive refactoring)
