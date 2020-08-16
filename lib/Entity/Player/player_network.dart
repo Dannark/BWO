@@ -73,7 +73,19 @@ class PlayerNetwork {
   }
 
   void sendHitTree(int targetX, int targetY, int damage) {
-    GameScene.serverController.hitTree(targetX, targetY, damage);
+    var jsonData = {
+      "name": "${player.name}",
+      "targetX": targetX,
+      "targetY": targetY,
+      "damage": damage
+    };
+    GameScene.serverController.sendMessage("onTreeHit", jsonData);
+  }
+
+  /// Attack Enemy Entity, the damage is not calculated on the server-side.
+  void attackEnemy(String enemyId, int damage) {
+    var jsonData = {"enemyId": enemyId, "damage": damage};
+    GameScene.serverController.sendMessage("onPlayerAttackEnemy", jsonData);
   }
 
   void hitTreeAnimation(double targetX, double targetY) {

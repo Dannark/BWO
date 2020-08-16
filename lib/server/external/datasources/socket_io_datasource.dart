@@ -61,46 +61,11 @@ class SocketIoRepository implements ServerRepository {
   }
 
   void sendMessage(String tag, dynamic jsonData) {
+    if (ServerUtils.offlineMode) return;
     if (socket.connected) {
       socket.emit(tag, jsonData);
     } else {
       print('Not connected, fail to send message: $tag');
     }
-  }
-
-  void onPlayerEnterScreen(dynamic data) {
-    print("onPlayerEnterScreen $data");
-  }
-
-  void onEnemysWalk(dynamic data) {
-    //print("onEnemysWalk ${data}");
-  }
-
-  void onEnemysEnterScreen(dynamic data) {
-    //print("onEnemysEnterScreen ${data}");
-  }
-
-  void onAddPlayer(dynamic data) {
-    print("onAddPlayer $data");
-  }
-
-  void onRemovePlayer(dynamic data) {
-    print("onRemovePlayer $data");
-  }
-
-  void onMove(dynamic data) {
-    print("onMove $data");
-  }
-
-  void onPlayerUpdate(dynamic data) {
-    print("onPlayerUpdate $data");
-  }
-
-  void onTreeHit(dynamic data) {
-    print("onTreeHit $data");
-  }
-
-  void onEnemyTargetingPlayer(dynamic data) {
-    print("onEnemyTargetingPlayer $data");
   }
 }

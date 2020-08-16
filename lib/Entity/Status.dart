@@ -70,16 +70,20 @@ class Status {
       _energy = _maxEnergy;
     }
 
-    if (autoRegenHP == false) return;
-    if (_hp < _maxHP && GameController.time > _hpRegenTime) {
-      if (walkSpeed == 0) {
-        _hpRegenTime = GameController.time + _hpRegenFrequency * .5;
-      } else {
-        _hpRegenTime = GameController.time + _hpRegenFrequency;
-      }
-      _hp += 1;
-    }
+    //_regenerateHP(walkSpeed); //Will work from server side Only
   }
+
+  // void _regenerateHP(double walkSpeed) {
+  //   if (autoRegenHP == false) return;
+  //   if (_hp < _maxHP && GameController.time > _hpRegenTime) {
+  //     if (walkSpeed == 0) {
+  //       _hpRegenTime = GameController.time + _hpRegenFrequency * .5;
+  //     } else {
+  //       _hpRegenTime = GameController.time + _hpRegenFrequency;
+  //     }
+  //     _hp += 1;
+  //   }
+  // }
 
   int getLevel() {
     return _level;

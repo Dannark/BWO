@@ -31,15 +31,16 @@ export default function startServer () {
             console.log("log-player ", command);
             game.logPlayer({ playerId: playerId, ...command })
             
-            sendMessage('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
+            socket.emit('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
+            socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
         })
 
         socket.on('onMove', (command) => {
             game.state.statistics.msgRecived ++;
             game.movePlayer({playerId: playerId, ...command})
 
-            sendMessage('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
-            sendMessage('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
+            sendMessageIfNotEmpty('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
+            socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
         })
 
         socket.on('onUpdate', (command) => {
@@ -47,6 +48,7 @@ export default function startServer () {
 
             if(command.action == 'reviving'){
                 game.respawn({playerId: playerId, ...command});
+                socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
             }
             else{
                 game.updatePlayer({playerId: playerId, ...command})
@@ -58,13 +60,18 @@ export default function startServer () {
             game.hitTree({playerId: playerId, ...command})
         })
 
+        socket.on('onPlayerAttackEnemy', (command) => {
+            game.state.statistics.msgRecived ++;
+            game.attackEnemy({playerId: playerId, ...command})
+        })
+
         socket.on('disconnect', () => {
             game.state.statistics.msgRecived ++;
             game.removePlayer({ playerId: playerId })
             console.log(`> Player disconnected: ${playerId}`)
         })
         
-        function sendMessage(tag, obj){
+        function sendMessageIfNotEmpty(tag, obj){
             game.state.statistics.msgSent ++;
             var isEmpty = Object.keys(obj).length === 0 && obj.constructor === Object
             if(isEmpty == false){

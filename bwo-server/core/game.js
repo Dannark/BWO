@@ -15,10 +15,10 @@ export default function startServer() {
                 type: 'onEnemysWalk',
                 point: mPoint,
                 enemys: enemysMoved
-            })
+            },false)
         });
         
-    }), 3000);
+    }), 3500);
 
     // make enemys attack players
     setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
@@ -27,7 +27,7 @@ export default function startServer() {
             ...command,
             type: 'onEnemyTargetingPlayer',
         })
-    }), 1500);
+    }), 500);
 
     setInterval(() => enemysController.simulateMove(state, (command, point) =>{
         //console.log("simulateMove1: ");
@@ -72,8 +72,8 @@ export default function startServer() {
             }
         }
     }
-    function notifyAllOnRangeOfArea(command) {
-        //console.log(`> Emitting Optimized: ${command.type} (${state.statistics.msgRecived}) `)
+    function notifyAllOnRangeOfArea(command, showlog = false) {
+        showlog? console.log(`> `,command) : null;
         var type = command.type
         var allPlayers = getAllPlayersAroundPoint(command.point)
         delete command.point
@@ -229,8 +229,8 @@ export default function startServer() {
 
     function getAllPlayersAround(playerId, ignoreSelf = true) {
         var mPlayer = state.players[playerId]
-        var width = 300
-        var height = 400
+        var width = 350
+        var height = 500
 
         var playersArray = Object.entries(state.players).filter((player) => {
             var isSelf = player[1].playerId == playerId;
@@ -247,8 +247,8 @@ export default function startServer() {
     }
 
     function getAllPlayersAroundPoint(point) {
-        var width = 300
-        var height = 400
+        var width = 350
+        var height = 500
 
         var playersArray = Object.entries(state.players).filter((player) => {
             return player[1].x > point.x - width
@@ -263,8 +263,8 @@ export default function startServer() {
 
     function getAllEnemysAround(playerId){
         var mPlayer = state.players[playerId]
-        var width = 300
-        var height = 400
+        var width = 350
+        var height = 500
 
         var enemyListAroundPlayer = enemysController.getEnemysAroundPlayer(mPlayer, state.enemys, width, height)
 
@@ -278,8 +278,28 @@ export default function startServer() {
         })
     }
 
+    function attackEnemy(command){
+        const mPlayer = state.players[command.playerId];
+        const mEnemy = state.enemys[command.enemyId];
+
+        if(mPlayer != undefined && mEnemy != undefined){
+            mEnemy.hp -= command.damage;
+
+            notifyAllOnRangeOfPlayer({
+                type: 'onPlayerAttackEnemy',
+                ...command,
+                enemyHp: mEnemy.hp,
+            })
+
+            if(mEnemy.hp <= 0){
+                delete state.enemys[command.enemyId]
+            }
+        }
+    }
+
     return {
         hitTree,
+        attackEnemy,
         logPlayer,
         movePlayer,
         updatePlayer,

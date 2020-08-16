@@ -1,10 +1,10 @@
 import '../../../entity/player/player.dart';
 import '../../../map/map_controller.dart';
+import '../../external/datasources/socket_io_datasource.dart';
+import '../../utils/server_utils.dart';
 import '../repositories/server_repository.dart';
 import 'entities/enemy_data_controller.dart';
 import 'entities/player_data_controller.dart';
-import '../../external/datasources/socket_io_datasource.dart';
-import '../../utils/server_utils.dart';
 
 class ServerController {
   MapController map;
@@ -35,6 +35,7 @@ class ServerController {
     _repo.setListener("remove-player", _pControl.onRemovePlayer);
     _repo.setListener("onMove", _pControl.onMove);
     _repo.setListener("onPlayerUpdate", _pControl.onPlayerUpdate);
+    _repo.setListener("onPlayerAttackEnemy", _pControl.onPlayerAttackEnemy);
     _repo.setListener("onEnemysWalk", _eControl.onEnemysWalk);
     _repo.setListener("onEnemysEnterScreen", _eControl.onEnemysEnterScreen);
     _repo.setListener(
@@ -70,7 +71,7 @@ class ServerController {
 
   void attackEnemy(String targetId, String playerId) {
     var jsonData = {"enemyId": targetId, "playerId": playerId};
-    _repo.sendMessage("onPlayerAttackEnemy", jsonData);
+    _repo.sendMessage("onAttackEnemy", jsonData);
   }
 
   void onTreeHit(dynamic data) {

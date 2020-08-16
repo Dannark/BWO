@@ -39,7 +39,7 @@ Usecases:
     - [x] water foam
     - [x] water stars blink
     - [x] sound effects bgm, walk and swim
-    - [ ] Add More Life to the environment
+    - [x] Add More Life to the environment
     - [ ] Move camera around player when he is afk
 * [x] Add Cut Tree Animation do player
 * [x] Add fruits fell when hiting trees
@@ -82,10 +82,16 @@ Usecases:
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
 
-## Focusing on / Doing Now / Missing:
+## Focusing on / Doing Now / Missing / Problems:
 - Enemy Attack Sync
 - Add NoSQL database
 - Login/Creation user
+- [Problem]Walk slip offset when walking
+
+### 16/08
+* Fixed enemy walk when it goes offscreen
+* Improviment on enemy's reaction when a player is on its range and attack delay
+* Synchronized Players Attack to Enemys
 
 ### 13/08
 * Added Effective Dart to the project (Massive refactoring)

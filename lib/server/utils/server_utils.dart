@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../entity/enemys/enemy.dart';
 import '../../entity/entity.dart';
+import '../../entity/player/player.dart';
 import '../../map/map_controller.dart';
 
 class ServerUtils {
@@ -21,17 +22,23 @@ class ServerUtils {
     } else {
       if (foundEntity is Enemy && newEntity is Enemy && updateIfExist) {
         var dest = newEntity.iaController.getDestination();
-        var distance = (dest - Offset(newEntity.x, newEntity.y)).distance;
+        var distance = (dest - Offset(foundEntity.x, foundEntity.y)).distance;
 
-        foundEntity.iaController.moveTo(newEntity.x, newEntity.y);
-
-        if (newEntity.iaController.target != null && distance > 24) {
-          //foundEntity.x = newEntity.x;
-          //foundEntity.y = newEntity.y;
+        if (distance > 150) {
+          foundEntity.x = newEntity.x;
+          foundEntity.y = newEntity.y;
         }
 
-        //foundEntity.iaController.moveTo(foundEntity.x, foundEntity.y);
-        //foundEntity.iaController.target = newEntity.iaController.target;
+        foundEntity.updatePhysics();
+        foundEntity.iaController.moveTo(dest.dx, dest.dy);
+      }
+
+      if (foundEntity is Player && updateIfExist) {
+        if (foundEntity.isMine == false) {
+          foundEntity.setTargetPosition(newEntity.x, newEntity.y);
+          foundEntity.xSpeed = newEntity.xSpeed;
+          foundEntity.ySpeed = newEntity.ySpeed;
+        }
       }
     }
   }

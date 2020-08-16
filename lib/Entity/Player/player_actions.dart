@@ -49,9 +49,12 @@ class PlayerActions {
               player.currentSprite = player.attackSprites;
               player.equipmentController.setAction(DoAction.attack);
 
-              entity.getHut(
+              /*entity.getHut(
                   player.equipmentController.getMaxAttackDamage(), player,
-                  isMine: true);
+                  isMine: true);*/
+              //send damage to cloud
+              player.playerNetwork.attackEnemy(
+                  entity.id, player.equipmentController.getMaxAttackDamage());
             }
             player.setDirection(target);
           }

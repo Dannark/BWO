@@ -1,3 +1,5 @@
+import 'package:BWO/entity/enemys/enemy.dart';
+
 import '../../../../entity/player/player.dart';
 import '../../../../map/map_controller.dart';
 import '../../../utils/server_utils.dart';
@@ -57,7 +59,7 @@ class PlayerDataController {
   }
 
   void onPlayerUpdate(dynamic data) {
-    print(data);
+    print("onPlayerUpdate: $data");
     // var x = double.parse(data['x'].toString());
     // var y = double.parse(data['y'].toString());
     // var xSpeed = double.parse(data['xSpeed'].toString());
@@ -93,25 +95,31 @@ class PlayerDataController {
 
     var pName = data['name'].toString();
 
-    var foundEntity = _map.entitysOnViewport
-        .firstWhere((element) => element.name == pName, orElse: () => null);
+    var p = Player(newX, newY, _map, pName, pId, null,
+        spriteFolder: sprite, isMine: false);
+    p.xSpeed = xSpeed;
+    p.ySpeed = ySpeed;
 
-    if (foundEntity != null) {
-      if (foundEntity.name != _player.name) {
-        if (foundEntity is Player) {
-          foundEntity.setTargetPosition(newX, newY);
-          foundEntity.xSpeed = xSpeed;
-          foundEntity.ySpeed = ySpeed;
-        } else {
-          foundEntity.x = newX;
-          foundEntity.y = newY;
-        }
-      }
-    } else {
-      ServerUtils.addEntityIfNotExist(
-          _map,
-          Player(newX, newY, _map, pName, pId, null,
-              spriteFolder: sprite, isMine: false));
+    ServerUtils.addEntityIfNotExist(_map, p, updateIfExist: true);
+  }
+
+  void onPlayerAttackEnemy(dynamic data) {
+    print('onPlayerAttackEnemy, $data');
+
+    var enemyId = data['enemyId'].toString();
+    var playerId = data['playerId'].toString();
+    var damage = int.parse(data['damage'].toString());
+    var enemyHp = int.parse(data['enemyHp'].toString());
+
+    var enemyEntity = _map.entitysOnViewport
+        .firstWhere((element) => element.id == enemyId, orElse: () => null);
+    var playerEntity = _map.entitysOnViewport
+        .firstWhere((element) => element.id == playerId, orElse: () => null);
+
+    print('damaging enemy [$enemyEntity] player: $playerEntity');
+    if (enemyEntity is Enemy && playerEntity != null) {
+      enemyEntity.getHut(damage, playerEntity);
+      enemyEntity.status.setLife(enemyHp);
     }
   }
 }

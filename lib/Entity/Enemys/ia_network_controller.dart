@@ -69,6 +69,12 @@ class IANetworkController extends IAController {
     this.target = target;
     if (target != null) {
       _destPoint = Offset(target.x, target.y);
+
+      var distance = (_destPoint - Offset(self.x, self.y)).distance;
+      if (distance > 250 && damage > 0) {
+        self.x = _destPoint.dx;
+        self.y = _destPoint.dy;
+      }
     }
 
     //show damage

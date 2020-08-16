@@ -126,4 +126,9 @@ abstract class Entity extends PhysicsEntity {
   void destroy() {
     marketToBeRemoved = true;
   }
+
+  @override
+  String toString() {
+    return """name: $name, (x: $x, y: $y), isActive: $isActive, isAlive: ${status.isAlive()}, hp: ${status.getHP()}, marketToBeRemoved: $marketToBeRemoved, id: $id""";
+  }
 }

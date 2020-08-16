@@ -1,4 +1,5 @@
 import lerp from 'lerp';
+import moment from 'moment';
 
 export function spawnEnemyLoop(player, enemyList, callback){
     if(Math.random() < .08){//.05
@@ -51,7 +52,8 @@ function spawnEnemy(player, enemyList, enemyListAroundPlayer, callback){
         x: (player.x - offSetX),
         y: (player.y - offSetY),
         toX: (player.x - offSetX),
-        toY: (player.y - offSetY)
+        toY: (player.y - offSetY),
+        hp: 6,
     }
     enemyList[enemyId] = enemy;
     enemyListAroundPlayer[enemyId] = enemy;
@@ -86,7 +88,7 @@ export function attackPlayerIfInRange(state, callback){
     Object.entries(state.players).forEach(player => {
 
         if(state.players[player[0]].hp > 0){
-            var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 100, 100)
+            var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 164, 164)
 
             Object.entries(enemyListAroundPlayer).forEach(element => {
                 //dont switch the target if there is one already
@@ -102,15 +104,40 @@ export function attackPlayerIfInRange(state, callback){
 
                     enemysToBeMoved.add(element[0])
 
-                    if(distance < 16 && state.players[player[0]].hp > 0){
+                    if(distance <= 16 && state.players[player[0]].hp > 0){
                         var damage = element[1].name == 'Skull'? 2 : 0;
-                        state.players[player[0]].hp -= damage;
+                        
+                        damage += parseInt(Math.random() * 2);
 
-                        //send damage
-                        enemyListAroundPlayer[element[0]] ={
-                            ...enemyListAroundPlayer[element[0]],
-                            damage: damage + parseInt(Math.random() * 2),
-                            target_hp: state.players[player[0]].hp
+                        var readyToSendDamage = true;
+                        if(state.enemys[element[0]].last_damage_stamp != undefined){
+                            var previousTime = state.enemys[element[0]].last_damage_stamp;
+                            var milisecondsPassed = moment(moment.format).diff(previousTime, 'miliseconds');
+
+                            if(milisecondsPassed >= 1500){
+                                //attack again
+                                readyToSendDamage = true;
+                            }
+                            else{
+                                readyToSendDamage = false;
+                            }
+                        }
+                        
+
+                        if(readyToSendDamage){
+                            //update state
+                            state.enemys[element[0]] = {
+                                ...state.enemys[element[0]],
+                                last_damage_stamp: moment().format()
+                            }
+                            state.players[player[0]].hp -= damage;
+
+                            //send damage
+                            enemyListAroundPlayer[element[0]] ={
+                                ...enemyListAroundPlayer[element[0]],
+                                damage: damage,
+                                target_hp: state.players[player[0]].hp
+                            }
                         }
                     }
                 }
@@ -161,13 +188,22 @@ export function patrolArea(state, callback){
             }
         }
     });
-    callback(enemysMoved);
+
+    if(Object.entries(state.enemys).length > 0){
+        callback(enemysMoved);
+    }
 }
 
 export function simulateMove(state, callback){
     
     enemysToBeMoved.forEach(enemyCached => {
         let enemy = state.enemys[enemyCached]
+
+        if(enemy == undefined || enemy.hp <= 0){
+            console.log('Enemy is dead. Removing from simulate Move list.');
+            enemysToBeMoved.delete(enemyCached);
+            return;
+        }
         
         var point = {x: enemy.toX, y: enemy.toY}
         if(enemy.target != undefined){

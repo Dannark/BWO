@@ -12,6 +12,7 @@ class EnemyDataController {
   EnemyDataController(this._map);
 
   void onEnemysWalk(dynamic data) {
+    print('onEnemysWalk $data');
     /**
      * Fire when enemy walk by him self
      */
@@ -35,7 +36,7 @@ class EnemyDataController {
                 (element) => element.id == targetId,
                 orElse: () => null);
             skull.iaController.target = playerFound;
-
+            print('>>> enemy $enemyId on $x, $y');
             ServerUtils.addEntityIfNotExist(_map, skull);
           }
         });
@@ -44,6 +45,7 @@ class EnemyDataController {
   }
 
   void onEnemysEnterScreen(dynamic data) {
+    //print('onEnemysEnterScreen $data');
     /**
      * Fired when the player walks
      */
@@ -73,22 +75,11 @@ class EnemyDataController {
       }
     });
 
-    for (var entityOnMap in _map.entitysOnViewport) {
-      if (entityOnMap is Enemy) {
-        var foundEntity = spawnedEntitys.firstWhere(
-            (element) => element.name == entityOnMap.name,
-            orElse: () => null);
-
-        if (foundEntity == null) {
-          entityOnMap.destroy();
-          print("""
-### Destroying ENEMY ${entityOnMap.name} that is not on my Screen anymore""");
-        }
-      }
-    }
+    deleteEnemyFromList(_map, spawnedEntitys);
   }
 
   void onEnemyTargetingPlayer(dynamic data) {
+    print('onEnemyTargetingPlayer, $data');
     var enemys = data['enemys'];
 
     enemys.forEach((enemyID, enemyData) {
@@ -107,13 +98,29 @@ class EnemyDataController {
       var playerFound = _map.entityList
           .firstWhere((element) => element.id == targetId, orElse: () => null);
 
-      var foundEntity = _map.entityList
+      var entityFound = _map.entityList
           .firstWhere((element) => element.id == enemyId, orElse: () => null);
 
-      if (foundEntity is Enemy && playerFound != null) {
-        foundEntity.iaController
+      if (entityFound is Enemy && playerFound != null) {
+        entityFound.iaController
             .attackTarget(playerFound, damage: damage, targetHp: targetHp);
       }
     });
+  }
+
+  void deleteEnemyFromList(MapController _map, List<dynamic> spawnedEntitys) {
+    for (var entityOnMap in _map.entitysOnViewport) {
+      if (entityOnMap is Enemy) {
+        var foundEntity = spawnedEntitys.firstWhere(
+            (element) => element.id == entityOnMap.id,
+            orElse: () => null);
+
+        if (foundEntity == null) {
+          entityOnMap.destroy();
+          print("""
+### Destroying ENEMY ${entityOnMap.name} that is not on my Screen anymore""");
+        }
+      }
+    }
   }
 }

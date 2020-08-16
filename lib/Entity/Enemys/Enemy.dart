@@ -18,8 +18,9 @@ class Enemy extends Entity implements OnAnimationEnd {
   IAController iaController;
   bool respawn = false;
   double respawnTime = 0;
+  String spriteFolder;
 
-  Enemy(double x, double y, this.map, String spriteFolder, String myId)
+  Enemy(double x, double y, this.map, this.spriteFolder, String myId)
       : super(x, y) {
     _loadSprites(spriteFolder);
     shadownSize = 1.2;

@@ -51,7 +51,6 @@ describe("Player interaction with the world:", () => {
         }
         else{
           const p = Object.entries(result)[0];
-          console.log(result);
           expect(p[0]).not.toBe(null | undefined);
           
           expect(p[1].name).not.toBe(undefined | null);
