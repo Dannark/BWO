@@ -23,11 +23,11 @@ Hopefully at some point later this year.
         - To Run test on Server `npm test` (still in development)
         - To reset the state and delete all enemy (saved on a .txt file for test propose) use `--resetstate`
         - To specify an environment use  `--env=development` or `--env=production`
-2. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you do not pretend to launch on your localhost
+2. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you want to use your own server (localhost for example)
     - Tip: You can use gitpod to launch it alive for free
 3. Launch the app on your device
 
-By default the Server is launched on the port 3000, you can also open the host url on browser to see the currently server state
+You can also open the host url on your browser to see the currently server state (for debuging)
 
 ## Dev Log
 
@@ -92,6 +92,9 @@ Usecases:
 - Sync Player Attack Animation
 - [Problem]Walk slip offset when walking
 - Sync Player status (like health regen)
+
+### 17/07
+* Added heroku server so we can test it online. ❤️
 
 ### 16/08
 * Fixed enemy walk when it goes offscreen
