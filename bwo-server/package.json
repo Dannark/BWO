@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js --env=development --resetstate",
+    "start": "node server.js --env=development --resetstate ",
     "test": "jasmine"
   },
   "author": "Dannark",
