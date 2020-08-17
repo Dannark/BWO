@@ -7,7 +7,8 @@ import '../../map/map_controller.dart';
 
 class ServerUtils {
   //static const String server = "https://3000-e92204fd-e411-4285-8fd3-cf3515d1c358.ws-us02.gitpod.io";
-  static const String server = "http://192.168.1.111:3000";
+  //static const String server = "http://192.168.1.111:3000";
+  static const String server = "https://borderless-world.herokuapp.com:3000";
 
   static const bool offlineMode = false;
 
