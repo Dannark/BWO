@@ -1,5 +1,4 @@
-import 'package:BWO/entity/enemys/enemy.dart';
-
+import '../../../../entity/enemys/enemy.dart';
 import '../../../../entity/player/player.dart';
 import '../../../../map/map_controller.dart';
 import '../../../utils/server_utils.dart';
@@ -116,8 +115,9 @@ class PlayerDataController {
     var playerEntity = _map.entitysOnViewport
         .firstWhere((element) => element.id == playerId, orElse: () => null);
 
-    print('damaging enemy [$enemyEntity] player: $playerEntity');
-    if (enemyEntity is Enemy && playerEntity != null) {
+    if (enemyEntity is Enemy && playerEntity is Player) {
+      playerEntity.currentSprite = playerEntity.attackSprites;
+
       enemyEntity.getHut(damage, playerEntity);
       enemyEntity.status.setLife(enemyHp);
     }

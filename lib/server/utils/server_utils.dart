@@ -24,7 +24,7 @@ class ServerUtils {
         var dest = newEntity.iaController.getDestination();
         var distance = (dest - Offset(foundEntity.x, foundEntity.y)).distance;
 
-        if (distance > 150) {
+        if (distance > 250) {
           foundEntity.x = newEntity.x;
           foundEntity.y = newEntity.y;
         }

@@ -150,7 +150,6 @@ export function attackPlayerIfInRange(state, callback){
 
             //lose target after sending damage
             Object.entries(enemyListAroundPlayer).forEach(element => {
-                console.log('=',player[0], state.players[player[0]].hp);
                 if(state.players[player[0]].hp <= 0){
                     console.log('deleting target ', state.enemys[element[0]].target,' from enemy ', state.enemys[element[0]].name, ' hp was: ', state.players[player[0]].hp)
                     delete state.enemys[element[0]].target;

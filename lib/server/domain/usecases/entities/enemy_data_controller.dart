@@ -12,7 +12,7 @@ class EnemyDataController {
   EnemyDataController(this._map);
 
   void onEnemysWalk(dynamic data) {
-    print('onEnemysWalk $data');
+    //print('onEnemysWalk $data');
     /**
      * Fire when enemy walk by him self
      */
@@ -36,7 +36,7 @@ class EnemyDataController {
                 (element) => element.id == targetId,
                 orElse: () => null);
             skull.iaController.target = playerFound;
-            print('>>> enemy $enemyId on $x, $y');
+
             ServerUtils.addEntityIfNotExist(_map, skull);
           }
         });
@@ -79,7 +79,7 @@ class EnemyDataController {
   }
 
   void onEnemyTargetingPlayer(dynamic data) {
-    print('onEnemyTargetingPlayer, $data');
+    //print('onEnemyTargetingPlayer, $data');
     var enemys = data['enemys'];
 
     enemys.forEach((enemyID, enemyData) {

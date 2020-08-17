@@ -4,7 +4,7 @@
 
 An infinity procedural online game using Flutter and flames with NodeJS Server In back-end.
 
-![gameplay_2](https://user-images.githubusercontent.com/7622553/86072224-7d941800-ba57-11ea-8d1d-9a2cab5c08b4.gif)
+![gameplay1](https://user-images.githubusercontent.com/7622553/90344825-b0887000-dff3-11ea-9d1e-eca2ec55af6f.gif)
 ![export](https://user-images.githubusercontent.com/7622553/88120935-99906280-cb9a-11ea-9f4a-05c6b5d9ab61.gif)
 
 ### On the Table
@@ -19,12 +19,15 @@ Hopefully at some point later this year.
 
 ## Instructions:
 1. Run the Node Server:
-    - Navigate to the folder `bwo-server` and run on console the command `nodemon` or `node server.js`
-2. Adjust  the Server URL on the `lib\Server\NetworkServer.dart` if you pretend to launch on your localhost
+    - Navigate to the folder `bwo-server` and run on console the command `npm start` or `node server.js` or just `nodemon`
+        - To Run test on Server `npm test` (still in development)
+        - To reset the state and delete all enemy (saved on a .txt file for test propose) use `--resetstate`
+        - To specify an environment use  `--env=development` or `--env=production`
+2. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you do not pretend to launch on your localhost
     - Tip: You can use gitpod to launch it alive for free
 3. Launch the app on your device
 
-By default the Server is launched on the port 3000
+By default the Server is launched on the port 3000, you can also open the host url on browser to see the currently server state
 
 ## Dev Log
 
@@ -86,7 +89,9 @@ Usecases:
 - Enemy Attack Sync
 - Add NoSQL database
 - Login/Creation user
+- Sync Player Attack Animation
 - [Problem]Walk slip offset when walking
+- Sync Player status (like health regen)
 
 ### 16/08
 * Fixed enemy walk when it goes offscreen
