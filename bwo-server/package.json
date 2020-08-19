@@ -16,6 +16,7 @@
     "lerp": "^1.0.3",
     "minimist": "^1.2.5",
     "moment": "^2.27.0",
+    "moment-timezone": "^0.5.31",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {

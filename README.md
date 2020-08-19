@@ -97,10 +97,10 @@ Usecases:
 - Login/Creation user
 - [Problem]Walk slip offset when walking
 - Sync Player status (like health regen)
-- Added logs record
 
 ### 19/08
 * Fixing bad UI elements position on some devices.
+* Added logs record on server
 
 ### 17/07
 * Added heroku server so we can test it online. ❤️
