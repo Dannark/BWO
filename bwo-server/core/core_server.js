@@ -3,6 +3,7 @@ import express from 'express'
 import http from 'http'
 import game_server from "./game.js"
 import socketio from 'socket.io'
+import {loadLog, saveLog} from '../resources/data/state_manager.js'
 
 export default function startServer () {
     const app = express()
@@ -27,9 +28,10 @@ export default function startServer () {
 
         socket.on('log-player', (command) => {
             game.state.statistics.msgRecived ++;
+            saveLog('server-info',`Player connected: ${command.name}, sprite: '${command.sprite}' at (x: ${parseInt(command.x)}, y: ${parseInt(command.y)})`);
             //var c = JSON.parse(command);
             console.log("log-player ", command);
-            game.logPlayer({ playerId: playerId, ...command })
+            game.playerController.logPlayer({ playerId: playerId, ...command })
             
             socket.emit('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
@@ -37,7 +39,7 @@ export default function startServer () {
 
         socket.on('onMove', (command) => {
             game.state.statistics.msgRecived ++;
-            game.movePlayer({playerId: playerId, ...command})
+            game.playerController.movePlayer({playerId: playerId, ...command})
 
             sendMessageIfNotEmpty('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
@@ -47,28 +49,29 @@ export default function startServer () {
             game.state.statistics.msgRecived ++;
 
             if(command.action == 'reviving'){
-                game.respawn({playerId: playerId, ...command});
+                game.playerController.respawn({playerId: playerId, ...command});
                 socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
             }
             else{
-                game.updatePlayer({playerId: playerId, ...command})
+                game.playerController.updatePlayer({playerId: playerId, ...command})
             }
         })
 
         socket.on('onTreeHit', (command) => {
             game.state.statistics.msgRecived ++;
-            game.hitTree({playerId: playerId, ...command})
+            game.playerController.hitTree({playerId: playerId, ...command})
         })
 
         socket.on('onPlayerAttackEnemy', (command) => {
             game.state.statistics.msgRecived ++;
-            game.attackEnemy({playerId: playerId, ...command})
+            game.playerController.attackEnemy({playerId: playerId, ...command})
         })
 
         socket.on('disconnect', () => {
             game.state.statistics.msgRecived ++;
-            game.removePlayer({ playerId: playerId })
+            game.playerController.removePlayer({ playerId: playerId })
             console.log(`> Player disconnected: ${playerId}`)
+            saveLog('server-info',`Player connected: ${playerId}`);
         })
         
         function sendMessageIfNotEmpty(tag, obj){
@@ -87,15 +90,22 @@ export default function startServer () {
             server_name: config.name,
             version: config.version,
             statistics:{
+                state:game.state,
                 players_online: Object.entries(game.state.players).length,
                 enemys_spawned: Object.entries(game.state.enemys).length,
-                state:game.state,
             }
 
         })
     })
 
+    app.get('/log', (request, response) => {
+        return response.json({
+            ...loadLog()
+        })
+    })
+
     server.listen(config.port, () => {
+        saveLog('server-status','server started successfully');
         console.log(`Server running on port: ${config.port} in [${config.enviroment}] mode.`)
     })
 }

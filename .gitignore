@@ -9,4 +9,5 @@
 /pubspec.lock
 /build
 /bwo-server/node_modules
+/bwo-server/resources/data/tmp/
 /.vscode

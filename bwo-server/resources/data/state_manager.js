@@ -1,4 +1,5 @@
 import fs from 'fs'
+import moment from 'moment';
 
 let defaulState = {
     players: {},
@@ -8,6 +9,10 @@ let defaulState = {
         msgSent: 0,
     }
 };
+var defaultLogState = {
+    createdAt: moment().format('DD/MM/YYYY'),
+    logs:[]
+}
 
 export function saveState(state) {
     //console.log("saving state ",state);
@@ -41,4 +46,48 @@ export function resetState() {
             console.log('The file has NOT been saved!', err);
         }
     });
+}
+
+
+export function saveLog(tag, msg) {
+    //console.log("saving state ",state);
+    var stateCopy = Object.assign({}, defaultLogState); 
+    stateCopy.logs = [
+        ...stateCopy.logs,
+        {time: moment().format('HH:mm:ss'), msg: msg}
+    ];
+
+    fs.writeFile(`./resources/data/tmp/server-log${moment().format('_DD-MM-YYYY')}.json`, JSON.stringify(stateCopy),  (err) => {
+        if (err) throw err;
+        if(err != null){
+            console.log('The file has NOT been saved!', err);
+        }
+    });
+}
+export function loadLog(){
+    var loadedState;
+    try {
+        var loadedState = fs.readFileSync(`./resources/data/tmp/server-log${moment().format('_DD-MM-YYYY')}.json`, 'utf8');
+    } catch (err) {
+        if (err.code === 'ENOENT') {
+            //console.log('File not found!');
+            var file_name = 'server-log'+moment().format('_DD-MM-YYYY')+'.json';
+            console.log(`Creating the log ${file_name}`);
+
+            fs.writeFile(`./resources/data/tmp/${file_name}`, JSON.stringify(defaultLogState),  (err) => {
+                if (err) throw err;
+                if(err != null){
+                    console.log('The file has NOT been saved!', err);
+                }
+            });
+        } else {
+            throw err;
+        }
+    }
+    
+    if(loadedState != undefined && loadedState != 'undefined' && loadedState != ''){
+        defaultLogState = JSON.parse(loadedState);
+    }
+
+    return defaultLogState;
 }

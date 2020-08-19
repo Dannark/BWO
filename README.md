@@ -17,15 +17,22 @@ This project is still in development and right now it only has some fews feature
 ### Release Date?
 Hopefully at some point later this year.
 
-## Instructions:
-1. Run the Node Server:
-    - Navigate to the folder `bwo-server` and run on console the command `npm start` or `node server.js` or just `nodemon`
-        - To Run test on Server `npm test` (still in development)
+## Instructions: (Server Side)
+1. Requirements
+    - The newest NodeJS version installed on your system
+    - Navigate to the folder `bwo-server` and run on the console the command `npm install` to install all the dependences
+
+2. Run the Node Server:
+    - Navigate to the folder `bwo-server` and run on the console the command `npm start` or `node server.js` or just `nodemon`
+        - To Run test on the Server side run `npm test` (still in development)
         - To reset the state and delete all enemy (saved on a .txt file for test propose) use `--resetstate`
-        - To specify an environment use  `--env=development` or `--env=production`
-2. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you want to use your own server (localhost for example)
+        - To specify an environment use `--env=development` or `--env=production`
+
+## Instructions: (Client Side)
+1. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you want to use your own server (localhost for example)
     - Tip: You can use gitpod to launch it alive for free
-3. Launch the app on your device
+
+2. Launch the app on your device
 
 You can also open the host url on your browser to see the currently server state (for debuging)
 
@@ -86,12 +93,11 @@ Usecases:
     - [ ] Place Objects like walls, doors, foundation and so on
 
 ## Focusing on / Doing Now / Missing / Problems:
-- Enemy Attack Sync
 - Add NoSQL database
 - Login/Creation user
-- Sync Player Attack Animation
 - [Problem]Walk slip offset when walking
 - Sync Player status (like health regen)
+- Added logs record
 
 ### 17/07
 * Added heroku server so we can test it online. ❤️

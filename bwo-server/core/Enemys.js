@@ -151,7 +151,6 @@ export function attackPlayerIfInRange(state, callback){
             //lose target after sending damage
             Object.entries(enemyListAroundPlayer).forEach(element => {
                 if(state.players[player[0]].hp <= 0){
-                    console.log('deleting target ', state.enemys[element[0]].target,' from enemy ', state.enemys[element[0]].name, ' hp was: ', state.players[player[0]].hp)
                     delete state.enemys[element[0]].target;
                 }
             });
@@ -170,9 +169,6 @@ export function patrolArea(state, callback){
     Object.entries(state.enemys).forEach(enemy => {
         if(Math.random() < .3){//.3
             if(enemy[1].target == undefined){
-                //console.log("patrolArea",enemy)
-                //enemy[1].x += parseInt((Math.random() * patrolAreaRange) - patrolAreaRange/2);
-                //enemy[1].y += parseInt((Math.random() * patrolAreaRange) - patrolAreaRange/2);
                 let toX = enemy[1].x + (parseInt((Math.random() * patrolAreaRange) - patrolAreaRange/2));
                 let toY = enemy[1].y + (parseInt((Math.random() * patrolAreaRange) - patrolAreaRange/2));
                 

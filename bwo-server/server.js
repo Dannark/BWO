@@ -1,6 +1,7 @@
 //import Required libraries
 import fs from 'fs'
 import startServer from './core/core_server.js'
+import {loadLog, saveLog} from './resources/data/state_manager.js'
 
 //3. load game maps data
 // const maps = {name:"main"}
@@ -11,4 +12,5 @@ import startServer from './core/core_server.js'
 
 //4. Initiate the server and listen to the internets
     //all of server logic
+loadLog();
 startServer();
