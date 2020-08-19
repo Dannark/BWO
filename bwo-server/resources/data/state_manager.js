@@ -56,7 +56,7 @@ export function saveLog(tag, msg) {
     var stateCopy = Object.assign({}, defaultLogState); 
     stateCopy.logs = [
         ...stateCopy.logs,
-        {time: moment().format('HH:mm:ss'), msg: msg}
+        {time: m.format('HH:mm:ss'), msg: msg}
     ];
 
     fs.writeFile(`./resources/data/tmp/server-log${m.format('_DD-MM-YYYY')}.json`, JSON.stringify(stateCopy),  (err) => {
