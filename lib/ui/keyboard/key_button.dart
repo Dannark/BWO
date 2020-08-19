@@ -17,6 +17,8 @@ class KeyButton {
   double width;
   double height;
 
+  Position _gridPos;
+
   double padding = 1;
 
   Paint p = Paint();
@@ -30,7 +32,7 @@ class KeyButton {
   double animationZoom = 0;
   double animSpeed = 8;
 
-  KeyButton(Position gridPos, KeyModel keyVal) {
+  KeyButton(this._gridPos, KeyModel keyVal) {
     p.color = KeyboardUI.keyBGColor;
 
     keyText = keyVal.value;
@@ -46,10 +48,10 @@ class KeyButton {
     height = KeyboardUI.keyHeight;
 
     pos = Position(
-      (gridPos.x * defaultWidth +
+      (_gridPos.x * defaultWidth +
           KeyboardUI.bounds.left +
           KeyboardUI.paddingX / 2),
-      gridPos.y * height + KeyboardUI.bounds.top + KeyboardUI.paddingY / 2,
+      _gridPos.y * height + KeyboardUI.bounds.top + KeyboardUI.paddingY / 2,
     );
 
     valueText =
@@ -59,6 +61,10 @@ class KeyButton {
   }
 
   void draw(Canvas c) {
+    pos = Position(
+      pos.x,
+      _gridPos.y * height + KeyboardUI.bounds.top + KeyboardUI.paddingY / 2,
+    );
     fadeAnimation();
 
     bounds = Rect.fromLTWH(

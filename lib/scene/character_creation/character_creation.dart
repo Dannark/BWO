@@ -33,16 +33,25 @@ class CharacterCreation extends SceneObject {
   CharacterCreation() {
     _mapPreviewWindows = MapPreviewWindows(super.hud);
 
-    _inputTextUI = InputTextUI(super.hud,
-        Position(GameController.screenSize.width / 2 + 5, 412), "Player Name",
-        backGroundColor: Color.fromRGBO(255, 255, 255, 0),
-        normalColor: Color.fromRGBO(64, 44, 40, 1),
-        placeholderColor: Color.fromRGBO(216, 165, 120, 1),
-        rotation: -0.05);
+    _inputTextUI = InputTextUI(
+      super.hud,
+      Position(GameController.screenSize.width / 2,
+          GameController.screenSize.height * 0.64),
+      "Player Name",
+      backGroundColor: Color.fromRGBO(255, 255, 255, 0),
+      normalColor: Color.fromRGBO(64, 44, 40, 1),
+      placeholderColor: Color.fromRGBO(216, 165, 120, 1),
+      rotation: -0.05,
+    );
 
     _startGameButton = ButtonUI(
       super.hud,
-      Rect.fromLTWH(GameController.screenSize.width / 2, 490, 100, 30),
+      Rect.fromLTWH(
+        GameController.screenSize.width / 2,
+        GameController.screenSize.height * 0.77,
+        100,
+        30,
+      ),
       "Start Game",
     );
 
@@ -80,7 +89,20 @@ class CharacterCreation extends SceneObject {
 
     _mapPreviewWindows.draw(c);
     _characterPreviewWindows.draw(c);
+    _inputTextUI.pos = Position(
+      GameController.screenSize.width / 2,
+      GameController.screenSize.height * 0.64,
+    );
     _inputTextUI.draw(c);
+
+    _startGameButton.setPosition(
+      Rect.fromLTWH(
+        GameController.screenSize.width / 2,
+        GameController.screenSize.height * 0.77,
+        100,
+        30,
+      ),
+    );
     _startGameButton.draw(c);
   }
 

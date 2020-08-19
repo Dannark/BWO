@@ -18,7 +18,7 @@ class CharacterPreviewWindows {
   int indexFrame = 0;
   double delay = 0;
 
-  double width = 44;
+  final double width = 44;
 
   CharacterPreviewWindows() {
     sprites[0] = (loadSprite("human/male1"));
@@ -31,7 +31,10 @@ class CharacterPreviewWindows {
     _currentSprite = sprites[indexSpriteSheet];
     delay = GameController.time + 2;
 
-    myPos = Position(GameController.screenSize.width / 2 + 3, 310);
+    myPos = Position(
+      GameController.screenSize.width / 2 + 3,
+      GameController.screenSize.height * .5,
+    );
   }
 
   void draw(Canvas c) {

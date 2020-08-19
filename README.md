@@ -99,6 +99,9 @@ Usecases:
 - Sync Player status (like health regen)
 - Added logs record
 
+### 19/08
+* Fixing bad UI elements position on some devices.
+
 ### 17/07
 * Added heroku server so we can test it online. ❤️
 

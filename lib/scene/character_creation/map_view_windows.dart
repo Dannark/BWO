@@ -36,9 +36,10 @@ class MapPreviewWindows {
         ],
         GameController.screenSize.width / 2,
         50,
-        90,
-        20,
-        indexSelected: 0);
+        GameController.screenSize.width * .34,
+        26,
+        indexSelected: 0,
+        fontSize: 12);
 
     _buttonListUI.onPressedListener = (buttonName, buttonIndex) {
       if (buttonIndex == 0) {
@@ -56,7 +57,12 @@ class MapPreviewWindows {
   }
 
   void draw(Canvas c) {
-    var bounds = Rect.fromLTWH(60, 95, 150, 150);
+    var bounds = Rect.fromLTWH(
+      60,
+      95,
+      GameController.screenSize.width * .34,
+      150,
+    );
 
     var blockSize = 32.0;
     //targetPos += Offset(-.5, -.5);

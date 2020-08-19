@@ -30,8 +30,8 @@ class ButtonUI extends UIElement {
       this.canBeSelected = false,
       this.isSelected = false})
       : super(hudRef) {
-    this.bounds = Rect.fromLTWH(bounds.left - bounds.width / 2, bounds.top,
-        bounds.width, bounds.height);
+    setPosition(bounds);
+
     _normalColor =
         normalColor != null ? normalColor : Color.fromRGBO(216, 165, 120, 1);
     _pressedColor =
@@ -64,5 +64,10 @@ class ButtonUI extends UIElement {
 
     _normalText.render(c, text, Position(bounds.center.dx, bounds.center.dy),
         anchor: Anchor.center);
+  }
+
+  void setPosition(Rect bounds) {
+    this.bounds = Rect.fromLTWH(bounds.left - bounds.width / 2, bounds.top,
+        bounds.width, bounds.height);
   }
 }
