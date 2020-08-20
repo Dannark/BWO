@@ -12,15 +12,15 @@ The world isn't stored in anywhere, it uses some conecpts and rules (`Perlin Noi
 
 The players will be able to build theirs houses anywhere on the infinity world. That's why i call it borderless world in first place. :)
 
-This project is still in development and right now it only has some fews features:
+This project is still in development and it doesnt have many features yet
 
 ### Release Date?
 Hopefully at some point later this year.
 
 ## Instructions: (Server Side)
 1. Requirements
-    - The newest NodeJS version installed on your system
-    - Navigate to the folder `bwo-server` and run on the console the command `npm install` to install all the dependences
+    - The [NPM and NodeJS](https://www.npmjs.com/get-npm) installed on your system
+    - Navigate to the folder `bwo-server` and run on the console the command `npm install` to install and update all the dependences
 
 2. Run the Node Server:
     - Navigate to the folder `bwo-server` and run on the console the command `npm start` or `node server.js` or just `nodemon`
@@ -37,7 +37,6 @@ Hopefully at some point later this year.
 You can also open the host url on your browser to see the currently server state (for debuging)
 
 ## Dev Log
-
 Usecases:
 * [x] Optimze render and map Generator
 * [x] Fix player animation Position
@@ -91,19 +90,24 @@ Usecases:
 * [-] Build Category
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
+* [ ] Add NoSQL database
+* [ ] Login/Creation user
+* [ ] Biomes
 
 ## Focusing on / Doing Now / Missing / Problems:
-- Add NoSQL database
-- Login/Creation user
-- [Problem]Walk slip offset when walking
-- Sync Player status (like health regen)
+- Walk slip offset when walking
+- Temporarily not able to hit cut down trees
 
 ### 19/08
 * Fixing bad UI elements position on some devices.
 * Added logs record on server
+* Added Player HP Regeneration from server
+* Added XP reward for killing monster from server
+* Fixed order male1 left/right walk sprite animation
+* Changed Keyboard open animation and Auto letters
 
 ### 17/07
-* Added heroku server so we can test it online. ❤️
+* Added heroku server for tests.
 
 ### 16/08
 * Fixed enemy walk when it goes offscreen

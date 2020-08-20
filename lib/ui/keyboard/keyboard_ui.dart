@@ -142,6 +142,7 @@ class KeyboardUI {
     for (var element in _buttons) {
       if (element.keyText != keyName) {
         element.initializeAnimation(AnimationType.explosion);
+        switchCaptalize(isCap: false);
       }
     }
 
@@ -155,15 +156,7 @@ class KeyboardUI {
     }
 
     if (keyName == '⊼') {
-      _isCapitalized = !_isCapitalized;
-
-      for (var button in _buttons) {
-        if (_isCapitalized) {
-          button.keyText = button.keyText.toUpperCase();
-        } else {
-          button.keyText = button.keyText.toLowerCase();
-        }
-      }
+      switchCaptalize(isCap: !_isCapitalized);
     }
 
     if (keyName == '➢') {
@@ -179,7 +172,7 @@ class KeyboardUI {
   static void _resetAnimation() {
     //resets animation with default open animation
     for (var element in _buttons) {
-      element.initializeAnimation(AnimationType.roll3dCenter);
+      element.initializeAnimation(AnimationType.roll3dBottomCenter);
     }
   }
 
@@ -193,5 +186,17 @@ class KeyboardUI {
   static void closeKeyboard() {
     isEnable = false;
     _keyUIListener = null;
+  }
+
+  static void switchCaptalize({bool isCap = true}) {
+    _isCapitalized = isCap;
+
+    for (var button in _buttons) {
+      if (_isCapitalized) {
+        button.keyText = button.keyText.toUpperCase();
+      } else {
+        button.keyText = button.keyText.toLowerCase();
+      }
+    }
   }
 }

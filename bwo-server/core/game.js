@@ -1,6 +1,6 @@
 import {saveState, loadState} from '../resources/data/state_manager.js'
-import * as enemysController from "./Enemys.js";
-import * as playerController from "./players.js";
+import * as enemysController from "./entity/enemy/enemys.js";
+import * as playerController from "./entity/player/players.js";
 
 export default function startServer() {
     const state = loadState();
@@ -39,10 +39,9 @@ export default function startServer() {
         })
     }), 500);
 
-    //update players status
-    setInterval(() => {
-        
-    }, 1000);
+    // setInterval(() => {
+    //     playerController.update();
+    // }, 2000);
 
     const observers = []
 
@@ -138,7 +137,6 @@ export default function startServer() {
 
         return enemyListAroundPlayer;
     }
-
 
     return {
         getAllPlayersAround,

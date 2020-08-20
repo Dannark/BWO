@@ -21,7 +21,7 @@ export default function startServer () {
 
     sockets.on('connection', (socket) => {
         const playerId = socket.id;
-        console.log(`Player connected: ${playerId}`)
+        //console.log(`Player on lobby: ${playerId}`)
         game.addSocket(socket)
 
         socket.emit('onSetup', playerId)
@@ -73,6 +73,8 @@ export default function startServer () {
             console.log(`> Player disconnected: ${playerId}`)
             saveLog('server-info',`Player connected: ${playerId}`);
         })
+
+        game.playerController.update(playerId);
         
         function sendMessageIfNotEmpty(tag, obj){
             game.state.statistics.msgSent ++;
@@ -89,11 +91,9 @@ export default function startServer () {
         return response.json({
             server_name: config.name,
             version: config.version,
-            statistics:{
-                state:game.state,
-                players_online: Object.entries(game.state.players).length,
-                enemys_spawned: Object.entries(game.state.enemys).length,
-            }
+            players_online: Object.entries(game.state.players).length,
+            enemys_spawned: Object.entries(game.state.enemys).length,
+            state:game.state,
 
         })
     })

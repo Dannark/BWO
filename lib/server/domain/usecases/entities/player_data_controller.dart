@@ -59,6 +59,8 @@ class PlayerDataController {
 
   void onPlayerUpdate(dynamic data) {
     print("onPlayerUpdate: $data");
+    var hp = int.parse(data['hp'].toString(), onError: (source) => null);
+    var xp = int.parse(data['xp'].toString(), onError: (source) => null);
     // var x = double.parse(data['x'].toString());
     // var y = double.parse(data['y'].toString());
     // var xSpeed = double.parse(data['xSpeed'].toString());
@@ -72,8 +74,8 @@ class PlayerDataController {
         .firstWhere((element) => element.id == playerId, orElse: () => null);
 
     if (foundEntity != null) {
-      //foundEntity.xSpeed = xSpeed;
-      //foundEntity.ySpeed = ySpeed;
+      hp != null ? foundEntity.status.setLife(hp) : null;
+      xp != null ? foundEntity.status.setExp(xp) : null;
 
       if (foundEntity is Player) {
         if (action == 'reviving') {

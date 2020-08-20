@@ -17,7 +17,7 @@ class KeyButton {
   double width;
   double height;
 
-  Position _gridPos;
+  final Position _gridPos;
 
   double padding = 1;
 

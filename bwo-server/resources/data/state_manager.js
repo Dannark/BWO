@@ -1,8 +1,6 @@
 import fs from 'fs'
 import moment from 'moment-timezone';
 
-var m = moment().tz("America/Sao_Paulo");
-
 let defaulState = {
     players: {},
     enemys: {},
@@ -12,7 +10,7 @@ let defaulState = {
     }
 };
 var defaultLogState = {
-    createdAt: m.format('DD/MM/YYYY'),
+    createdAt: moment().tz("America/Sao_Paulo").format('DD/MM/YYYY'),
     logs:[]
 }
 
@@ -56,10 +54,10 @@ export function saveLog(tag, msg) {
     var stateCopy = Object.assign({}, defaultLogState); 
     stateCopy.logs = [
         ...stateCopy.logs,
-        {time: m.format('HH:mm:ss'), msg: msg}
+        {time: moment().tz("America/Sao_Paulo").format('HH:mm:ss'), msg: msg}
     ];
 
-    fs.writeFile(`./resources/data/tmp/server-log${m.format('_DD-MM-YYYY')}.json`, JSON.stringify(stateCopy),  (err) => {
+    fs.writeFile(`./resources/data/tmp/server-log${moment().tz("America/Sao_Paulo").format('_DD-MM-YYYY')}.json`, JSON.stringify(stateCopy),  (err) => {
         if (err) throw err;
         if(err != null){
             console.log('The file has NOT been saved!', err);
@@ -69,11 +67,11 @@ export function saveLog(tag, msg) {
 export function loadLog(){
     var loadedState;
     try {
-        var loadedState = fs.readFileSync(`./resources/data/tmp/server-log${m.format('_DD-MM-YYYY')}.json`, 'utf8');
+        var loadedState = fs.readFileSync(`./resources/data/tmp/server-log${moment().tz("America/Sao_Paulo").format('_DD-MM-YYYY')}.json`, 'utf8');
     } catch (err) {
         if (err.code === 'ENOENT') {
             //console.log('File not found!');
-            var file_name = 'server-log'+m.format('_DD-MM-YYYY')+'.json';
+            var file_name = 'server-log'+moment().tz("America/Sao_Paulo").format('_DD-MM-YYYY')+'.json';
             console.log(`Creating the log ${file_name}`);
 
             fs.writeFile(`./resources/data/tmp/${file_name}`, JSON.stringify(defaultLogState),  (err) => {

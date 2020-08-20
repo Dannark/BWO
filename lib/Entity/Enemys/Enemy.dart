@@ -76,7 +76,6 @@ class Enemy extends Entity implements OnAnimationEnd {
           respawnTime = GameController.time + 10;
         } else {
           destroy();
-          iaController.target?.status?.addExp(status.getLevel() * 2);
         }
       }
       if (GameController.time > respawnTime) {

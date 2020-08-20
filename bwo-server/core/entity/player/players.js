@@ -1,3 +1,5 @@
+import * as status from "./status.js";
+
 var state;
 var notifyAllOnRangeOfPlayer;
 var notifyAllOnRangeOfArea;
@@ -161,6 +163,14 @@ export function attackEnemy(command) {
         })
 
         if (mEnemy.hp <= 0) {
+            status.addExp(mPlayer, mEnemy);
+            notifyAllOnRangeOfPlayer({
+                type: 'onPlayerUpdate',
+                xp: mPlayer.xp,
+                playerId: mPlayer.playerId,
+                x: mPlayer.x,
+                y: mPlayer.y
+            }, false)
             delete state.enemys[command.enemyId]
         }
     }
@@ -171,4 +181,24 @@ export function hitTree(command) {
         ...command,
         type: 'onTreeHit',
     })
+}
+
+// private scoped player's functions
+export function update(playerId){
+    setInterval(() => {
+        var p = state.players[playerId];
+        if(p != undefined){
+            var hpHasChanged = status.regenerateHP(p);
+            
+            if(hpHasChanged){
+                notifyAllOnRangeOfPlayer({
+                    type: 'onPlayerUpdate',
+                    hp: p.hp,
+                    playerId: p.playerId,
+                    x: p.x,
+                    y: p.y
+                }, false)
+            }
+        }
+    }, 8000);
 }

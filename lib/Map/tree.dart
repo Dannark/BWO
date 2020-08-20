@@ -178,10 +178,11 @@ class Tree extends Entity {
       if (maca != null) {
         map.addEntity(maca);
       }
+      /*
       status.takeDamage(damage);
       print(
           "tree taking $damage of damage.. current life is ${status.getHP()}");
-
+      */
       //Flame.audio.play("impact_tree.mp3", volume: 0.5);
       _audio.play('punch.mp3', volume: 0.4);
     }

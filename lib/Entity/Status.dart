@@ -21,8 +21,7 @@ class Status {
 
   //regenaration settings
   bool autoRegenHP = true;
-  final double _hpRegenFrequency = 10; //in seconds
-  double _hpRegenTime = 0;
+
   final double _energyRegenSpeed = .6;
   final double _caloriesDecressSpeed = .15; //takes about 10 minutes
 
@@ -133,17 +132,12 @@ class Status {
     if (_hp < 0) {
       _hp = 0;
     }
-
-    //resets the time to not auto regenerate status
-    _hpRegenTime = GameController.time + _hpRegenFrequency * 2;
   }
 
   bool useEnergy(int energy) {
     if (_energy >= energy) {
       _energy -= energy;
 
-      //resets the time to not auto regenerate status
-      _hpRegenTime = GameController.time + _hpRegenFrequency * 2;
       return true;
     } else {
       return false;
@@ -195,9 +189,15 @@ class Status {
     _hp = _maxHP;
   }
 
+  @Deprecated('This method was moved to the server')
   void addExp(int amount) {
     _exp += amount;
     _levelUpRamp();
+  }
+
+  // ignore: use_setters_to_change_properties
+  void setExp(int xp) {
+    _exp = xp;
   }
 
   int getBaseAttackDamage() {

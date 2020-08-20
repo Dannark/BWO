@@ -84,6 +84,7 @@ class PlayerNetwork {
 
   /// Attack Enemy Entity, the damage is not calculated on the server-side.
   void attackEnemy(String enemyId, int damage) {
+    Flame.audio.play('punch.mp3', volume: 0.4);
     var jsonData = {"enemyId": enemyId, "damage": damage};
     GameScene.serverController.sendMessage("onPlayerAttackEnemy", jsonData);
   }

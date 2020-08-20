@@ -54,6 +54,7 @@ function spawnEnemy(player, enemyList, enemyListAroundPlayer, callback){
         toX: (player.x - offSetX),
         toY: (player.y - offSetY),
         hp: 6,
+        lv: 1
     }
     enemyList[enemyId] = enemy;
     enemyListAroundPlayer[enemyId] = enemy;
@@ -86,11 +87,12 @@ function getRandomID () {
 /* ATTACK LOGIC */
 export function attackPlayerIfInRange(state, callback){
     Object.entries(state.players).forEach(player => {
-
+        
         if(state.players[player[0]].hp > 0){
             var enemyListAroundPlayer = getEnemysAroundPlayer(player[1], state.enemys, 164, 164)
-
+                
             Object.entries(enemyListAroundPlayer).forEach(element => {
+                
                 //dont switch the target if there is one already
                 if(state.enemys[element[0]].target == player[1].playerId || state.enemys[element[0]].target == undefined){
                     var distance = getDistance(element[1], player[1]);
@@ -103,7 +105,7 @@ export function attackPlayerIfInRange(state, callback){
                     }
 
                     enemysToBeMoved.add(element[0])
-
+                    
                     if(distance <= 16 && state.players[player[0]].hp > 0){
                         var damage = element[1].name == 'Skull'? 2 : 0;
                         
@@ -139,6 +141,13 @@ export function attackPlayerIfInRange(state, callback){
                                 target_hp: state.players[player[0]].hp
                             }
                         }
+                    }
+                }
+                else{
+                    var playerSelected = state.players[state.enemys[element[0]].target];
+                    if(playerSelected == undefined){
+                        console.log('deleting target from enemy becase it doesnt exists anymore');
+                        delete state.enemys[element[0]].target;
                     }
                 }
                 
