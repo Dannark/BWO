@@ -1,3 +1,5 @@
+import 'package:BWO/map/tree.dart';
+
 import '../../../entity/player/player.dart';
 import '../../../map/map_controller.dart';
 import '../../external/datasources/socket_io_datasource.dart';
@@ -40,6 +42,7 @@ class ServerController {
     _repo.setListener("onEnemysEnterScreen", _eControl.onEnemysEnterScreen);
     _repo.setListener(
         "onEnemyTargetingPlayer", _eControl.onEnemyTargetingPlayer);
+    _repo.setListener("onTreeUpdate", onTreeUpdate);
   }
 
   void sendMessage(String tag, dynamic jsonData) {
@@ -74,19 +77,43 @@ class ServerController {
     _repo.sendMessage("onAttackEnemy", jsonData);
   }
 
-  void onTreeHit(dynamic data) {
-    var targetX = double.parse(data['targetX'].toString());
-    var targetY = double.parse(data['targetY'].toString());
-    var pName = data['name'].toString();
+  void onTreeUpdate(dynamic data) {
+    print('onTreeUpdate: $data');
 
-    if (pName == player.name) {
-      return;
-    }
-    var foundEntity = map.entityList
-        .firstWhere((element) => element.name == pName, orElse: () => null);
+    data.forEach((treeId, value) {
+      var x = double.parse(value['x'].toString());
+      var y = double.parse(value['y'].toString());
+      var playerId = value['playerId'].toString();
+      var dead_time =
+          int.parse(value['dead_time'].toString(), onError: (source) => null);
+      var hp = int.parse(value['hp'].toString(), onError: (source) => null);
+      var damage =
+          int.parse(value['damage'].toString(), onError: (source) => null);
 
-    if (foundEntity != null && foundEntity is Player) {
-      foundEntity.playerNetwork.hitTreeAnimation(targetX, targetY);
-    }
+      //Make the hit attack player animation
+      var foundEntity = map.entityList
+          .firstWhere((element) => element.id == playerId, orElse: () => null);
+      if (foundEntity != null && foundEntity is Player) {
+        foundEntity.playerNetwork.hitTreeAnimation(x, y);
+      }
+
+      //Set the tree health
+      var foundTree = map.entitysOnViewport
+          .firstWhere((element) => element.id == treeId, orElse: () => null);
+      if (foundTree != null && foundTree is Tree) {
+        if (hp != null) {
+          if (damage != null) {
+            //take damage
+            foundTree.setHealth(hp);
+          } else if (hp <= 0 && dead_time > 5) {
+            //immediately dies (cancel die animation)
+            foundTree.disable(respawnSecTimeout: 190 - dead_time);
+          } else if (hp > 0 && damage == null) {
+            //respawn
+            foundTree.resetTree();
+          }
+        }
+      }
+    });
   }
 }

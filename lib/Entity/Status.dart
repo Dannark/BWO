@@ -29,12 +29,13 @@ class Status {
     _maxHP = maxHP;
     _maxEnergy = maxEnergy;
 
+    _levelUpRamp();
     refillStatus();
   }
 
   void update(double walkSpeed) {
     _statusRegeneration(walkSpeed);
-    _levelUpRamp();
+    //_levelUpRamp();
   }
 
   void _statusRegeneration(double walkSpeed) {
@@ -91,8 +92,8 @@ class Status {
   void setLevel(int lv, double statusMultiplier) {
     _level = lv;
     _statusMultiplier = statusMultiplier;
-    refillStatus();
     _levelUpRamp();
+    //refillStatus();
   }
 
   int getHP() {
@@ -185,8 +186,7 @@ class Status {
   }
 
   void setLife(int n) {
-    _maxHP = n;
-    _hp = _maxHP;
+    _hp = n;
   }
 
   @Deprecated('This method was moved to the server')
@@ -214,15 +214,6 @@ class Status {
     _maxExp =
         (_level * startBaseExp + ((_level * _level * _level) * rampMultiplier))
             .toInt();
-
-    if (_exp > _maxExp) {
-      _level++;
-      _exp -= _maxExp;
-      print("level up");
-      _updateStatus();
-      refillStatus();
-    }
-
     _updateStatus();
   }
 

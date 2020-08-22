@@ -159,9 +159,9 @@ class Player extends Entity implements OnAnimationEnd {
 
   @override
   void onTriggerStay(Entity entity) {
+    if (!isMine) return;
     if (entity is Item) {
       _inventory.addItem(entity) ? entity.destroy() : null;
-      status.addExp(2);
 
       Flame.audio.play("pickup_item1.mp3", volume: 0.9);
     }

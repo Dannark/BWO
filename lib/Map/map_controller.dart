@@ -23,6 +23,7 @@ class MapController {
 
   List<Entity> entityList = [];
   List<Entity> entitysOnViewport = [];
+  List<Entity> _tmpEntitysToBeAdded = [];
   int treesGenerated = 0;
   int tilesGenerated = 0;
 
@@ -34,6 +35,7 @@ class MapController {
   double cameraSpeed = 5;
 
   int _loopsPerCycle = 0;
+  int _maxLoopsPerCycle = 200; //first loop
 
   SimplexNoise terrainNoise = SimplexNoise(
     frequency: 0.003, //0.004
@@ -120,7 +122,7 @@ class MapController {
             map[y][x][z].draw(c);
           }
         } else {
-          if (_loopsPerCycle < 50) {
+          if (_loopsPerCycle < _maxLoopsPerCycle) {
             var tileHeight =
                 ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
                             128) +
@@ -153,13 +155,14 @@ class MapController {
       }
     }
     _loopsPerCycle = 0;
+    _maxLoopsPerCycle = 50;
 
     // Organize List to show Entity elements (Players, Trees)
     // on correct Y-Index order
     _findEntitysOnViewport();
     entitysOnViewport.sort((a, b) => a.y.compareTo(b.y));
 
-    //drawShadowns
+    //drawShadowns behind all elements
     for (var entity in entitysOnViewport) {
       entity.drawEffects(c);
     }
@@ -190,21 +193,26 @@ class MapController {
         treesGenerated++;
 
         if (y % 5 == 0) {
-          entityList.add(Tree(x, y, tileSize, "tree04"));
+          entityList.add(Tree(this, x, y, tileSize, "tree04"));
         } else if (y % 6 == 0) {
-          entityList.add(Tree(x, y, tileSize, "tree02"));
+          entityList.add(Tree(this, x, y, tileSize, "tree02"));
         } else if (y % 7 == 0) {
-          entityList.add(Tree(x, y, tileSize, "tree03"));
+          entityList.add(Tree(this, x, y, tileSize, "tree03"));
         } else {
-          entityList.add(Tree(x, y, tileSize, "tree01"));
+          entityList.add(Tree(this, x, y, tileSize, "tree01"));
         }
       }
     }
   }
 
-  void addEntity(Entity obj) {
-    entityList.add(obj);
-    entitysOnViewport.add(obj);
+  void addEntity(Entity newEntity) {
+    var foundEntity = _tmpEntitysToBeAdded.firstWhere(
+        (element) => element.id == newEntity.id,
+        orElse: () => null);
+
+    if (foundEntity == null) {
+      _tmpEntitysToBeAdded.add(newEntity);
+    }
   }
 
   void addPlayerRef(Player player) {
@@ -223,6 +231,13 @@ class MapController {
     entitysOnViewport.clear();
 
     entityList.removeWhere((element) => element.marketToBeRemoved);
+
+    //add entities in queuee
+    for (var e in _tmpEntitysToBeAdded) {
+      entityList.add(e);
+      entitysOnViewport.add(e);
+    }
+    _tmpEntitysToBeAdded.clear();
 
     var distance = (Offset(posX, posY) - targetPos).distance;
 

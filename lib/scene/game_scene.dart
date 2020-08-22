@@ -45,7 +45,7 @@ class GameScene extends SceneObject {
     Flame.bgm.dispose();
     if (Flame.bgm.isPlaying == false) {
       Flame.bgm.initialize();
-      Flame.bgm.play('recovery.mp3', volume: .2);
+      //Flame.bgm.play('recovery.mp3', volume: .2);
     }
     Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }

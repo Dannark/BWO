@@ -2,12 +2,13 @@ import fs from 'fs'
 import moment from 'moment-timezone';
 
 let defaulState = {
-    players: {},
-    enemys: {},
     statistics: {
         msgRecived: 0,
         msgSent: 0,
-    }
+    },
+    players: {},
+    enemys: {},
+    trees: {} //cut trees
 };
 var defaultLogState = {
     createdAt: moment().tz("America/Sao_Paulo").format('DD/MM/YYYY'),

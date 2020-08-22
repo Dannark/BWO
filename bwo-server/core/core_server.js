@@ -35,14 +35,17 @@ export default function startServer () {
             
             socket.emit('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
+            sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
         })
 
         socket.on('onMove', (command) => {
             game.state.statistics.msgRecived ++;
+            
             game.playerController.movePlayer({playerId: playerId, ...command})
 
             sendMessageIfNotEmpty('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
+            sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
         })
 
         socket.on('onUpdate', (command) => {
@@ -59,11 +62,13 @@ export default function startServer () {
 
         socket.on('onTreeHit', (command) => {
             game.state.statistics.msgRecived ++;
-            game.playerController.hitTree({playerId: playerId, ...command})
+
+            game.treeController.hitTree({playerId: playerId, ...command})
         })
 
         socket.on('onPlayerAttackEnemy', (command) => {
             game.state.statistics.msgRecived ++;
+
             game.playerController.attackEnemy({playerId: playerId, ...command})
         })
 
@@ -75,6 +80,9 @@ export default function startServer () {
         })
 
         game.playerController.update(playerId);
+
+
+        // -- helper functions
         
         function sendMessageIfNotEmpty(tag, obj){
             game.state.statistics.msgSent ++;

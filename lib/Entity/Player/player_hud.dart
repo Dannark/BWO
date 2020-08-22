@@ -35,7 +35,7 @@ class PlayerHUD extends UIElement {
         Color.fromRGBO(242, 81, 61, 1),
         _player.status.getHP().toDouble(),
         _player.status.getMaxHP().toDouble(),
-        "${_player.status.getHP()}",
+        "${_player.status.getHP().clamp(0, double.infinity)}/${_player.status.getMaxHP()}",
         _txt14);
 
     //energy

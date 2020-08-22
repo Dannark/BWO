@@ -1,6 +1,7 @@
 import {saveState, loadState} from '../resources/data/state_manager.js'
 import * as enemysController from "./entity/enemy/enemys.js";
 import * as playerController from "./entity/player/players.js";
+import * as treeController from "./entity/tree/tree.js";
 
 export default function startServer() {
     const state = loadState();
@@ -9,6 +10,7 @@ export default function startServer() {
     }, 10000);
 
     playerController.setup(state, notifyAllOnRangeOfPlayer, notifyAllOnRangeOfArea, enemysController, notifyAll, removeSocket);
+    treeController.setup(state, notifyAllOnRangeOfPlayer, notifyAllOnRangeOfArea);
 
     // make enemy random walk
     setInterval(() => enemysController.patrolArea(state, (enemysMoved) => {
@@ -24,11 +26,11 @@ export default function startServer() {
     }), 3500);
 
     // make enemys attack players
-    setInterval(() => enemysController.attackPlayerIfInRange(state, (command) =>{
+    setInterval(() => enemysController.attackPlayerIfInRange(state, (command, playerId) =>{
         notifyAllOnRangeOfPlayer({
             ...command,
             type: 'onEnemyTargetingPlayer',
-        })
+        }, playerId)
     }), 500);
 
     setInterval(() => enemysController.simulateMove(state, (command, point) =>{
@@ -38,10 +40,6 @@ export default function startServer() {
             enemys: command
         })
     }), 500);
-
-    // setInterval(() => {
-    //     playerController.update();
-    // }, 2000);
 
     const observers = []
 
@@ -62,10 +60,10 @@ export default function startServer() {
     function removeSocket(id) {
         delete socketList[id]
     }
-    function notifyAllOnRangeOfPlayer(command, ignoreSelf = false) {
+    function notifyAllOnRangeOfPlayer(command, playerId, ignoreSelf = false) {
         //console.log(`> notifyAllOnRangeOfPlayer:`, command, `(${state.statistics.msgRecived}) `)
         var type = command.type;
-        var allPlayers = getAllPlayersAround(command.playerId, ignoreSelf);
+        var allPlayers = getAllPlayersAround(playerId, ignoreSelf);
         command.action == undefined? delete command.action: null;
         
         for (const skt of socketList) {
@@ -94,40 +92,6 @@ export default function startServer() {
         }
     }
 
-    function getAllPlayersAround(playerId, ignoreSelf = true) {
-        var mPlayer = state.players[playerId]
-        var width = 350
-        var height = 500
-
-        var playersArray = Object.entries(state.players).filter((player) => {
-            var isSelf = player[1].playerId == playerId;
-
-            return ((isSelf && ignoreSelf == false) || !isSelf)
-                && player[1].x > mPlayer.x - width
-                && player[1].y > mPlayer.y - height
-                && player[1].x < mPlayer.x + width
-                && player[1].y < mPlayer.y + height;
-        });
-
-        var playersObject = Object.fromEntries(playersArray);
-        return playersObject;
-    }
-
-    function getAllPlayersAroundPoint(point) {
-        var width = 350
-        var height = 500
-
-        var playersArray = Object.entries(state.players).filter((player) => {
-            return player[1].x > point.x - width
-                && player[1].y > point.y - height
-                && player[1].x < point.x + width
-                && player[1].y < point.y + height;
-        });
-
-        var playersObject = Object.fromEntries(playersArray);
-        return playersObject;
-    }
-
     function getAllEnemysAround(playerId){
         var mPlayer = state.players[playerId]
         var width = 350
@@ -138,13 +102,50 @@ export default function startServer() {
         return enemyListAroundPlayer;
     }
 
+    function getAllPlayersAround(playerId, ignoreSelf = true) {
+        var mPlayer = state.players[playerId]
+        var width = 350
+        var height = 500
+        
+        var playersArray = Object.entries(state.players).filter((player) => {
+            var isSelf = player[1].playerId == playerId;
+    
+            return ((isSelf && ignoreSelf == false) || !isSelf)
+                && player[1].x > mPlayer.x - width
+                && player[1].y > mPlayer.y - height
+                && player[1].x < mPlayer.x + width
+                && player[1].y < mPlayer.y + height;
+        });
+    
+        var playersObject = Object.fromEntries(playersArray);
+        return playersObject;
+    }
+    
+    function getAllPlayersAroundPoint(point) {
+        var width = 350
+        var height = 500
+    
+        var playersArray = Object.entries(state.players).filter((player) => {
+            return player[1].x > point.x - width
+                && player[1].y > point.y - height
+                && player[1].x < point.x + width
+                && player[1].y < point.y + height;
+        });
+    
+        var playersObject = Object.fromEntries(playersArray);
+        return playersObject;
+    }
+    
+
     return {
         getAllPlayersAround,
+        getAllPlayersAroundPoint,
         getAllEnemysAround,
         subscribe,
         state,
         addSocket,
-        playerController
+        playerController,
+        treeController
     }
 }
 

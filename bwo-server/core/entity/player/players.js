@@ -16,7 +16,7 @@ export function setup(mState, mNotifyAllOnRangeOfPlayer, mNotifyAllOnRangeOfArea
     removeSocket = mRemoveSocket;
 }
 
-export function updatePlayer(command, state, notifyAllOnRangeOfPlayer) {
+export function updatePlayer(command, state) {
     const playerId = command.playerId
     var playerFound = state.players[playerId]
 
@@ -29,7 +29,7 @@ export function updatePlayer(command, state, notifyAllOnRangeOfPlayer) {
         notifyAllOnRangeOfPlayer({
             type: 'onPlayerUpdate',
             ...state.players[command.playerId]
-        }, true)
+        }, command.playerId, true)
     }
 }
 
@@ -47,7 +47,7 @@ export function movePlayer(command) {
         notifyAllOnRangeOfPlayer({
             type: 'onMove',
             ...state.players[command.playerId]
-        }, true)
+        }, command.playerId, true)
     }
     else {
         console.log(`> player ${playerId} not found when trying to move him`)
@@ -57,9 +57,8 @@ export function movePlayer(command) {
         //enemy created 
         notifyAllOnRangeOfPlayer({
             type: 'onEnemysWalk',
-            playerId: command.playerId,
             enemys: enemyListAroundPlayer
-        })
+        },command.playerId)
     })
 }
 
@@ -75,7 +74,7 @@ function addPlayer(command) {
     notifyAllOnRangeOfPlayer({
         type: 'add-player',
         ...command
-    })
+    },command.playerId)
 }
 
 export function removePlayer(command) {
@@ -138,14 +137,14 @@ export function respawn(command) {
         notifyAllOnRangeOfPlayer({
             type: 'onPlayerUpdate',
             ...state.players[command.playerId]
-        }, false)
+        },command.playerId, false)
 
         //nofity all players around the deadbody that this player will respawn
         notifyAllOnRangeOfArea({
             type: 'onPlayerUpdate',
             point: dead_body_point,
             ...state.players[command.playerId]
-        })
+        },command.playerId)
     }
 }
 
@@ -160,27 +159,22 @@ export function attackEnemy(command) {
             type: 'onPlayerAttackEnemy',
             ...command,
             enemyHp: mEnemy.hp,
-        })
+        },command.playerId)
 
         if (mEnemy.hp <= 0) {
             status.addExp(mPlayer, mEnemy);
             notifyAllOnRangeOfPlayer({
                 type: 'onPlayerUpdate',
+                lv: mPlayer.lv,
                 xp: mPlayer.xp,
+                hp: mPlayer.hp,
                 playerId: mPlayer.playerId,
                 x: mPlayer.x,
                 y: mPlayer.y
-            }, false)
+            }, command.playerId, false)
             delete state.enemys[command.enemyId]
         }
     }
-}
-
-export function hitTree(command) {
-    notifyAllOnRangeOfPlayer({
-        ...command,
-        type: 'onTreeHit',
-    })
 }
 
 // private scoped player's functions
@@ -197,7 +191,7 @@ export function update(playerId){
                     playerId: p.playerId,
                     x: p.x,
                     y: p.y
-                }, false)
+                }, playerId, false)
             }
         }
     }, 8000);

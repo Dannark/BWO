@@ -34,9 +34,11 @@ class Tree extends Entity {
   double _deleteTime = double.infinity;
   double _respawnTime = double.infinity;
 
-  Tree(int posX, int posY, this._tileSize, this._spriteImage)
+  Tree(this._map, int posX, int posY, this._tileSize, this._spriteImage)
       : super((posX.toDouble() * GameScene.worldSize),
             (posY.toDouble() * GameScene.worldSize)) {
+    id = '_${x.toInt()}_${y.toInt()}';
+
     width = 2.0 * _tileSize;
     height = 2.0 * _tileSize;
     updatePhysics();
@@ -68,7 +70,7 @@ class Tree extends Entity {
         hitted();
       } else {
         _chopDownTree();
-        _die();
+        _checksDeath();
       }
       isActive ? _tree.render(c) : null;
     }
@@ -76,24 +78,21 @@ class Tree extends Entity {
     //isActive ? debugDraw(c) : null;
   }
 
-  void _die() {
+  void _checksDeath() {
     if (_deleteTime == double.infinity) {
       _deleteTime = GameController.time + 4;
     }
     if (GameController.time > _deleteTime && isActive) {
       _dropLogs();
-      //destroy(); //make it inactive instead becase we want to respawn it
-      isActive = false;
-      _respawnTime = GameController.time + 164;
-
-      _gravityRotation = 0;
-      _deadRotation = 0;
+      disable();
     }
+  }
 
-    //resets
-    if (GameController.time > _respawnTime) {
-      resetTree();
-    }
+  void disable({int respawnSecTimeout = 190}) {
+    isActive = false;
+    _gravityRotation = 0;
+    _deadRotation = 0;
+    _respawnTime = GameController.time + respawnSecTimeout;
   }
 
   void resetTree() {
@@ -169,21 +168,22 @@ class Tree extends Entity {
     _isPlaingAnimation = true;
   }
 
-  void doDamage(MapController map, int damage) {
+  void setHealth(int hp) {
     if (isActive && status.isAlive()) {
-      _map = map;
       _playAnimation();
 
       var maca = _dropApple();
       if (maca != null) {
-        map.addEntity(maca);
+        _map.addEntity(maca);
       }
-      /*
-      status.takeDamage(damage);
-      print(
-          "tree taking $damage of damage.. current life is ${status.getHP()}");
-      */
-      //Flame.audio.play("impact_tree.mp3", volume: 0.5);
+
+      if (status.isAlive() == false && hp > 0) {
+        //is time to revive
+        resetTree();
+      }
+
+      status.setLife(hp);
+
       _audio.play('punch.mp3', volume: 0.4);
     }
   }
@@ -207,6 +207,4 @@ class Tree extends Entity {
       _map.addEntity(Item(rPosX, rPosY, zPosZ, itemListDatabase[1]));
     }
   }
-
-  void cutTree() {}
 }

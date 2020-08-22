@@ -154,7 +154,7 @@ export function attackPlayerIfInRange(state, callback){
             });
 
             if(Object.entries(enemyListAroundPlayer).length > 0){
-                callback({playerId:player[1].playerId, enemys:enemyListAroundPlayer});
+                callback({enemys:enemyListAroundPlayer}, player[1].playerId);
             }
 
             //lose target after sending damage

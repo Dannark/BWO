@@ -30,14 +30,15 @@ class PlayerActions {
             if (player.currentSprite != player.attackSprites) {
               var hasEnergy = player.status.useEnergy(1);
               if (hasEnergy) {
-                player.status.consumeHungriness(0.3);
-                player.currentSprite = player.attackSprites;
                 player.equipmentController.setAction(DoAction.attack);
+                player.currentSprite = player.attackSprites;
+                player.status.consumeHungriness(0.3);
+                //entity.doDamage();
 
-                player.playerNetwork
-                    .sendHitTree(entity.x.round(), entity.y.round(), 1);
-                entity.doDamage(
-                    map, player.equipmentController.getMaxCutTreeDamage());
+                player.playerNetwork.sendHitTree(
+                    entity.x.round(),
+                    entity.y.round(),
+                    player.equipmentController.getMaxCutTreeDamage());
               }
             }
             player.setDirection(target);

@@ -138,10 +138,9 @@ class IALocalController extends IAController {
 }
 
 enum AggressiveLevel {
+  /// Attack only when you attack first
   passive,
 
-  /// Attack only when you attack first
-  aggressive,
-
   /// Attack you when see
+  aggressive,
 }

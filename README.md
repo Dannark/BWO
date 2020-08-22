@@ -17,7 +17,7 @@ This project is still in development and it doesnt have many features yet
 ### Release Date?
 Hopefully at some point later this year.
 
-## Instructions: (Server Side)
+## Instructions:
 1. Requirements
     - The [NPM and NodeJS](https://www.npmjs.com/get-npm) installed on your system
     - Navigate to the folder `bwo-server` and run on the console the command `npm install` to install and update all the dependences
@@ -28,11 +28,10 @@ Hopefully at some point later this year.
         - To reset the state and delete all enemy (saved on a .txt file for test propose) use `--resetstate`
         - To specify an environment use `--env=development` or `--env=production`
 
-## Instructions: (Client Side)
-1. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you want to use your own server (localhost for example)
+3. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you want to use your own server (localhost for example)
     - Tip: You can use gitpod to launch it alive for free
 
-2. Launch the app on your device
+4. Launch the app on your device
 
 You can also open the host url on your browser to see the currently server state (for debuging)
 
@@ -69,20 +68,17 @@ Usecases:
 * [x] Level and Progression System
 * [x] Player HUD
 * [x] Equipments and status bonuses
-* [ ] Equipments UI
-* [x] Fix tree generation
 * [x] Add hungriness
 * [x] Add Input Joystick Style for walking
-* [ ] Change background music Volume dynamic
 * [-] Create Node Server
     - [x] Synchronize Players position
     - [x] Smooth player animation
     - [x] Optimze Synchronization player's data only to players in view range
-    - [x] Sync hit tree animation
+    - [x] Sync hit tree animation / state / respawn
+    - [x] Sync enemies
     - [ ] Sync attack other Players damage/animation
     - [ ] Sync Equipment Sprite 
-    - [x] Sync tree/items spawn
-    - [x] Sync enemies
+    - [ ] Sync items spawn
 * [-] Craft Category
     - [ ] Craft Axe item from others items
     - [ ] Craft Database
@@ -90,13 +86,27 @@ Usecases:
 * [-] Build Category
     - [ ] Think about the Logic and rules to limite players for placing items on world
     - [ ] Place Objects like walls, doors, foundation and so on
+* [-] Interfaces
+    * [ ] Create Account UI
+    * [x] Character Creation UI
+    * [ ] Login UI
+    * [ ] Equipments UI
+* [ ] Change background music Volume dynamic
 * [ ] Add NoSQL database
-* [ ] Login/Creation user
 * [ ] Biomes
 
-## Focusing on / Doing Now / Missing / Problems:
-- Walk slip offset when walking
-- Temporarily not able to hit cut down trees
+### Know Problems / Missing
+- Sometimes slipping a too much when receiving walks updates
+- [Missing] life time to enemies so they will die normally (to not overpopulate the server)
+
+### Focusing on / Doing Now
+- Temporarily not able to cut down trees
+- Sync Trees state on server
+
+### 21/08
+* Added Leveled Up System from Server
+* Synchronized: hit tree action
+* Synchronized: Tree health / Tree Dying animation / respawn after 180s
 
 ### 19/08
 * Fixing bad UI elements position on some devices.
@@ -104,7 +114,7 @@ Usecases:
 * Added Player HP Regeneration from server
 * Added XP reward for killing monster from server
 * Fixed order male1 left/right walk sprite animation
-* Changed Keyboard open animation and Auto letters
+* Changed Keyboard open animation and auto capitalize
 
 ### 17/07
 * Added heroku server for tests.
@@ -118,7 +128,7 @@ Usecases:
 * Added Effective Dart to the project (Massive refactoring)
 
 ### 11/08
-* Added Jasmine for Testing Driven-Development (TDD) on the back-end Server
+* Added Jasmine for (TDD) on the back-end Server
 * Make the Enemy loses its target when he dies
 
 ### 07/08

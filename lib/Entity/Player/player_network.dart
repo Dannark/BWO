@@ -59,12 +59,14 @@ class PlayerNetwork {
       player.x = targetPos.dx;
       player.y = targetPos.dy;
     } else {
-      player.x = lerpDouble(
-          player.x, targetPos.dx, GameController.deltaTime * lerpSpeed);
-      player.y = lerpDouble(
-          player.y, targetPos.dy, GameController.deltaTime * lerpSpeed);
+      if (distance > 8) {
+        player.setDirection(targetPos);
+        player.x = lerpDouble(
+            player.x, targetPos.dx, GameController.deltaTime * lerpSpeed);
+        player.y = lerpDouble(
+            player.y, targetPos.dy, GameController.deltaTime * lerpSpeed);
+      }
     }
-    player.setDirection(targetPos);
   }
 
   void setTargetPosition(double newX, double newY) {
@@ -72,12 +74,12 @@ class PlayerNetwork {
     this.newY = newY;
   }
 
-  void sendHitTree(int targetX, int targetY, int damage) {
+  void sendHitTree(int x, int y, int damage) {
     var jsonData = {
       "name": "${player.name}",
-      "targetX": targetX,
-      "targetY": targetY,
-      "damage": damage
+      "x": x,
+      "y": y,
+      "damage": damage,
     };
     GameScene.serverController.sendMessage("onTreeHit", jsonData);
   }
@@ -92,6 +94,7 @@ class PlayerNetwork {
   void hitTreeAnimation(double targetX, double targetY) {
     player.currentSprite = player.attackSprites;
     Flame.audio.play("punch.mp3", volume: 0.5);
+    player.status.consumeHungriness(0.3);
 
     var targetPos = Offset(targetX, targetY);
     player.setDirection(targetPos);
