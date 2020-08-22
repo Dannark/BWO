@@ -70,12 +70,15 @@ flutter:
       
       # female3
       - assets/images/human/female3/walk/
+      - assets/images/human/female3/attack/
 
       # female4
       - assets/images/human/female4/walk/
+      - assets/images/human/female4/attack/
 
        # female5
       - assets/images/human/female5/walk/
+      - assets/images/human/female5/attack/
 
       #Enemy - mini-skull
       - assets/images/enemys/miniskull/walk/

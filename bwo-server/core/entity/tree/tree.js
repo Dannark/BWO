@@ -19,7 +19,7 @@ export function hitTree(command) {
         state.trees[treeId]={
             hp: 20,
             x: command.x,
-            y: command.y,
+            y: command.y
         }
         
     }
@@ -34,6 +34,7 @@ export function hitTree(command) {
             treeId:treeId,
             hp: state.trees[treeId].hp,
             damage:command.damage,
+            playerId:command.playerId
         }
     }, command.playerId, false)
 }
