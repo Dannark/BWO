@@ -13,14 +13,18 @@ class JoystickUI extends UIElement {
 
   final Paint _p = Paint();
 
+  bool isEnable = true;
+
   JoystickUI(this._player, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
   }
 
-  void update() {
+  void update({bool isEnable = true}) {
+    this.isEnable = isEnable;
     _player.xSpeed = 0;
     _player.ySpeed = 0;
-    if (TapState.isTapingRight()) {
+
+    if (TapState.isTapingRight() && isEnable) {
       var diff = (TapState.pressedPosition - TapState.currentPosition) * 0.1;
       _input = diff;
 
@@ -36,7 +40,7 @@ class JoystickUI extends UIElement {
 
   @override
   void draw(Canvas c) {
-    if (TapState.isTapingRight()) {
+    if (TapState.isTapingRight() && isEnable) {
       _p.color = Color.fromRGBO(0, 0, 0, .25);
       _p.strokeWidth = 0;
       _p.style = PaintingStyle.fill;

@@ -9,6 +9,9 @@ import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
+import '../../hud/build_hud.dart';
+import '../../hud/inventory.dart';
+import '../../hud/player_hud.dart';
 import '../../map/map_controller.dart';
 import '../../scene/scene_object.dart' '';
 import '../../utils/on_animation_end.dart';
@@ -17,9 +20,7 @@ import '../entity.dart';
 import '../equipment_controller.dart';
 import '../items/items.dart';
 import 'input_controller.dart';
-import 'inventory.dart';
 import 'player_actions.dart';
-import 'player_hud.dart';
 import 'player_network.dart';
 
 class Player extends Entity implements OnAnimationEnd {
@@ -39,12 +40,15 @@ class Player extends Entity implements OnAnimationEnd {
   Inventory _inventory;
   // ignore: unused_field
   PlayerHUD _playerHUD;
+  BuildHUD _buildHUD;
   PlayerNetwork playerNetwork;
   bool isMine;
   SceneObject sceneObject;
   String spriteFolder;
 
   EquipmentController equipmentController;
+
+  bool canWalk = true;
 
   Player(double x, double y, this._map, String myName, String myId,
       this.sceneObject,
@@ -56,12 +60,13 @@ class Player extends Entity implements OnAnimationEnd {
     if (isMine) {
       _inventory = Inventory(this, sceneObject.hud);
       _playerHUD = PlayerHUD(this, sceneObject.hud);
+      _buildHUD = BuildHUD(this, _map, sceneObject.hud);
       equipmentController = EquipmentController(this);
       _inputController = InputController(this);
     }
     id = myId;
     name = myName;
-    //print("adding player [$name] with sprite: $spriteFolder");
+
     _loadSprites();
   }
 
@@ -95,7 +100,7 @@ class Player extends Entity implements OnAnimationEnd {
       equipmentController?.draw(c, animSpeed,
           stopAnimWhenIdle: stopAnimWhenIdle);
     }
-
+    //debugDraw(c);
     _text.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
   }
 
@@ -174,7 +179,7 @@ class Player extends Entity implements OnAnimationEnd {
     var _gradeSize = Offset(4, 1);
     var _framesCount = 0;
 
-    width = 12 * _scale;
+    width = 10 * _scale;
     height = 6 * _scale;
 
     walkSprites = SpriteController("$spriteFolder/walk", _viewPort, _pivot,

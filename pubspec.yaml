@@ -100,6 +100,9 @@ flutter:
       # ui
       - assets/images/ui/
 
+      # walls
+      - assets/images/walls/
+
       # sounds
       - assets/audio/
       - assets/audio/items/

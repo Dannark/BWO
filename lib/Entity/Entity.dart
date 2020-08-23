@@ -37,6 +37,7 @@ abstract class Entity extends PhysicsEntity {
 
   double shadownSize = 2;
   Sprite shadownLarge = Sprite("shadown_large.png");
+  Offset shadownOffset = Offset.zero;
   final RippleWaterEffect _rippleWaterEffect = RippleWaterEffect();
   final WalkEffect _walkEffect = WalkEffect();
   final DamageEffect _damageEffect = DamageEffect();
@@ -94,8 +95,8 @@ abstract class Entity extends PhysicsEntity {
     shadownLarge.renderScaled(
       c,
       Position(
-        x - sizeX * distanceToGround,
-        y - sizeY * distanceToGround,
+        x - sizeX * distanceToGround + shadownOffset.dx,
+        y - sizeY * distanceToGround + shadownOffset.dy,
       ),
       scale: shadownSize * distanceToGround,
       overridePaint: p,

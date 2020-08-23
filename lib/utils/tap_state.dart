@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:BWO/map/map_controller.dart';
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
@@ -83,5 +85,20 @@ class TapState {
 
   static Offset deltaPosition() {
     return lastPosition - currentPosition;
+  }
+
+  static Offset screenToWorldPoint(Offset point, MapController map) {
+    var midBorder = (map.border) * 16;
+    var mapPos = Offset(map.posX - midBorder, map.posY - midBorder);
+
+    var tap = (point - mapPos);
+    return tap;
+  }
+
+  static Offset worldToScreenPoint(MapController map) {
+    var midBorder = (map.border) * 16;
+    var tap = Offset(map.posX - midBorder, map.posY - midBorder);
+
+    return tap;
   }
 }

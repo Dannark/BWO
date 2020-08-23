@@ -17,13 +17,15 @@ class MapController {
   double widthViewPort;
   double heightViewPort;
 
+  int border = 6;
+
   double posX = 0;
   double posY = 0;
   Offset targetPos;
 
   List<Entity> entityList = [];
   List<Entity> entitysOnViewport = [];
-  List<Entity> _tmpEntitysToBeAdded = [];
+  final List<Entity> _tmpEntitysToBeAdded = [];
   int treesGenerated = 0;
   int tilesGenerated = 0;
 
@@ -67,9 +69,7 @@ class MapController {
   }
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {int tileSize = 15,
-      int border = 6,
-      int movimentType = MovimentType.move}) {
+      {int tileSize = 15, int movimentType = MovimentType.move}) {
     var borderSize = (border * tileSize);
 
     widthViewPort =

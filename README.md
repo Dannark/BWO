@@ -84,8 +84,13 @@ Usecases:
     - [ ] Craft Database
     - [ ] Craft UI with drag and drop
 * [-] Build Category
-    - [ ] Think about the Logic and rules to limite players for placing items on world
-    - [ ] Place Objects like walls, doors, foundation and so on
+    - [X] Foundation for private building
+    - [x] Wall placements
+    * [ ] Animated Doors
+    * [ ] Static objects like Windows, furnitures and so on
+    * [ ] Object Windows selection
+    * [ ] Craft or buying system
+    * [ ] Sync building to the server
 * [-] Interfaces
     * [ ] Create Account UI
     * [x] Character Creation UI
@@ -102,6 +107,10 @@ Usecases:
 ### Focusing on / Doing Now
 - Temporarily not able to cut down trees
 - Sync Trees state on server
+
+## 23/08
+* Added Foundation for private House Build System
+* Added Wall Placement on terrain
 
 ### 21/08
 * Added Leveled Up System from Server

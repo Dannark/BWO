@@ -4,9 +4,9 @@ import 'package:flame/sprite.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
-import '../../ui/hud.dart';
-import '../../ui/ui_element.dart';
-import 'player.dart';
+import '../entity/player/player.dart';
+import '../ui/hud.dart';
+import '../ui/ui_element.dart';
 
 /// SHOWS Players stats on HUD.
 /// This class is added to a list of UIElements on GameScene

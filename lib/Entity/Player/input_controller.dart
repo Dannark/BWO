@@ -25,11 +25,8 @@ class InputController {
     if (!player.isMine) {
       return;
     }
-    /*if (GameController.tapState == TapState.DOWN) {
-      defaultY = previousY;
-    }*/
 
-    joystick.update();
+    joystick.update(isEnable: player.canWalk);
   }
 
   void registerAccelerometer() {
