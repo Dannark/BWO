@@ -6,6 +6,7 @@ An infinity procedural online game using Flutter and flames with NodeJS Server I
 
 ![gameplay1](https://user-images.githubusercontent.com/7622553/90344825-b0887000-dff3-11ea-9d1e-eca2ec55af6f.gif)
 ![export](https://user-images.githubusercontent.com/7622553/88120935-99906280-cb9a-11ea-9f4a-05c6b5d9ab61.gif)
+![bulding tools](https://user-images.githubusercontent.com/7622553/90987921-239a6500-e565-11ea-92c9-133f4e4f58fd.gif)
 
 ### On the Table
 The world isn't stored in anywhere, it uses some conecpts and rules (`Perlin Noise` and `Simplex Noise`) to generate it equaly in all devices only the changes made by player are actually stored on the server side.
