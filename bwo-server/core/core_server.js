@@ -1,11 +1,10 @@
-import config from '../resources/config.js'
 import express from 'express'
 import http from 'http'
 import game_server from "./game.js"
 import socketio from 'socket.io'
 import {loadLog, saveLog} from '../resources/data/state_manager.js'
 
-export default function startServer () {
+export default function startServer (config) {
     const app = express()
     const server = http.createServer(app)
     const sockets = socketio(server)
@@ -28,7 +27,7 @@ export default function startServer () {
 
         socket.on('log-player', (command) => {
             game.state.statistics.msgRecived ++;
-            saveLog('server-info',`Player connected: ${command.name}, sprite: '${command.sprite}' at (x: ${parseInt(command.x)}, y: ${parseInt(command.y)})`);
+            saveLog('server-info',`Player connected: ${command.name}, sprite: '${command.sprite}' at (x: ${parseInt(command.x)}, y: ${parseInt(command.y)}) id:${playerId}`);
             //var c = JSON.parse(command);
             console.log("log-player ", command);
             game.playerController.logPlayer({ playerId: playerId, ...command })
@@ -76,7 +75,7 @@ export default function startServer () {
             game.state.statistics.msgRecived ++;
             game.playerController.removePlayer({ playerId: playerId })
             console.log(`> Player disconnected: ${playerId}`)
-            saveLog('server-info',`Player connected: ${playerId}`);
+            saveLog('server-info',`Player disconnected: ${playerId}`);
         })
 
         game.playerController.update(playerId);

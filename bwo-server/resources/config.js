@@ -1,13 +1,10 @@
 import minimist from 'minimist';
 import extend from 'extend';
-import {resetState} from '../resources/data/state_manager.js'
 
 const args = minimist(process.argv.slice(2));
 
 var envivoriment = args.env || 'development'
 var reset_state = args.resetstate || false
-
-if(reset_state) resetState()
 
 var common_conf = {
     name: "Borderless World Online - MMO Game Server",
@@ -21,14 +18,22 @@ var common_conf = {
 var conf = {
     production:{
         ip: args.ip || "0.0.0.0",
-        port: args.port || process.env.PORT,
-        database: "mongodb://127.0.0.1/bwo_prod"
+        port: args.port || process.env.PORT || "3000",
+        database_conf: {
+            apiKey: process.env.FIREBASE_PRIVATE_API_KEY,
+            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+            databaseURL: process.env.FIREBASE_DATABASE_URL,
+        }
     },
     development:{
         ip: args.ip || "0.0.0.0",
         port: args.port || "3000",
-        database: "mongodb://127.0.0.1/bwo_test"
-    }
+        database_conf: {
+            apiKey: process.env.FIREBASE_PRIVATE_API_KEY,
+            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+            databaseURL: process.env.FIREBASE_DATABASE_URL,
+        }
+    },
 }
 
 extend(false, conf.production, common_conf)

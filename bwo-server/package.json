@@ -13,6 +13,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "extend": "^3.0.2",
+    "firebase": "^7.19.0",
+    "firebase-admin": "^9.1.1",
     "lerp": "^1.0.3",
     "minimist": "^1.2.5",
     "moment": "^2.27.0",

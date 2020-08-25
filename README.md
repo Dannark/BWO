@@ -2,7 +2,7 @@
 
 [![style: effective dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)](https://pub.dev/packages/effective_dart)[![Powered by Flame](https://img.shields.io/badge/Powered%20by-%F0%9F%94%A5-orange.svg)](https://flame-engine.org)
 
-An infinity procedural online game using Flutter and flames with NodeJS Server In back-end.
+An infinity procedural online game using Flutter and flames with NodeJS and Firebase for the back-end.
 
 ![gameplay1](https://user-images.githubusercontent.com/7622553/90344825-b0887000-dff3-11ea-9d1e-eca2ec55af6f.gif)
 ![export](https://user-images.githubusercontent.com/7622553/88120935-99906280-cb9a-11ea-9f4a-05c6b5d9ab61.gif)
@@ -26,8 +26,8 @@ Hopefully at some point later this year.
 2. Run the Node Server:
     - Navigate to the folder `bwo-server` and run on the console the command `npm start` or `node server.js` or just `nodemon`
         - To Run test on the Server side run `npm test` (still in development)
-        - To reset the state and delete all enemy (saved on a .txt file for test propose) use `--resetstate`
         - To specify an environment use `--env=development` or `--env=production`
+        - If you want to use firebase in production mode, create a project in firebase console and edit the enviroment variables in `resources/config.js`
 
 3. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you want to use your own server (localhost for example)
     - Tip: You can use gitpod to launch it alive for free
@@ -91,7 +91,8 @@ Usecases:
     - [X] Foundation for private building
     - [x] Wall placements
     - [x] Auto/Toggle wall tall level
-    - [ ] Delete/Replace Foundations
+    - [x] Delete Foundations
+    - [ ] Ground Tiles
     - [ ] Animated Doors
     - [ ] Static objects like Windows, furnitures and so on
     - [ ] Object Windows selection
@@ -109,9 +110,15 @@ Usecases:
 ### Know Problems / Missing
 - Sometimes slipping a too much when receiving walks updates
 - [Missing] life time to enemies so they will die normally (to not overpopulate the server)
+- [Missing] Code refactoring Server-side and Client-side
+- [Missing] Game Diagram and comments
 
 ### Focusing on / Doing Now
-- Sync Trees state on server
+- Ground tilesets
+- Animated doors
+
+## 25/08
+* Added firebase database to save persistence data
 
 ## 24/08
 * Added 02 new sprite characters

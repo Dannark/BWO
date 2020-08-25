@@ -10,4 +10,5 @@
 /build
 /bwo-server/node_modules
 /bwo-server/resources/data/tmp/
+/bwo-server/resources/data/service-account-file.json
 /.vscode
