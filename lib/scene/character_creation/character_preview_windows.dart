@@ -23,11 +23,13 @@ class CharacterPreviewWindows {
   CharacterPreviewWindows() {
     sprites[0] = (loadSprite("human/male1"));
     sprites[1] = (loadSprite("human/male2"));
-    sprites[2] = (loadSprite("human/female1"));
-    sprites[3] = (loadSprite("human/female2"));
-    sprites[4] = (loadSprite("human/female3"));
-    sprites[5] = (loadSprite("human/female4"));
-    sprites[6] = (loadSprite("human/female5"));
+    sprites[2] = (loadSprite("human/male3"));
+    sprites[3] = (loadSprite("human/female1"));
+    sprites[4] = (loadSprite("human/female2"));
+    sprites[5] = (loadSprite("human/female3"));
+    sprites[6] = (loadSprite("human/female4"));
+    sprites[7] = (loadSprite("human/female5"));
+    sprites[8] = (loadSprite("human/female6"));
     _currentSprite = sprites[indexSpriteSheet];
     delay = GameController.time + 2;
 

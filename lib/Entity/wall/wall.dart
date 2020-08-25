@@ -6,8 +6,11 @@ import '../entity.dart';
 
 class Wall extends Entity {
   Sprite sprite;
+  Sprite lowSprite;
   String _imgPath;
   final double zoom = 1;
+
+  bool showLow = false;
 
   Wall(double newPosX, double newPosY, int imageId)
       : super(newPosX.floor() * 16.0 + 8, newPosY.ceil() * 16.0) {
@@ -23,18 +26,28 @@ class Wall extends Entity {
   }
 
   void loadSprite() async {
-    sprite = await Sprite.loadSprite(_imgPath);
+    sprite = await Sprite.loadSprite('walls/$_imgPath');
+    lowSprite = await Sprite.loadSprite('walls/low_$_imgPath');
   }
 
   void draw(Canvas c) {
-    if (sprite == null) return;
+    if (sprite == null || lowSprite == null) return;
     var pivot = Offset((zoom * 16) / 2, height);
-    sprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z), scale: 1);
+
+    if (showLow) {
+      lowSprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
+          scale: 1);
+    } else {
+      sprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
+          scale: 1);
+    }
 
     //debugDraw(c);
   }
 
   String getImageId(int imageId) {
-    return 'walls/wall$imageId.png';
+    return 'wall$imageId.png';
   }
 }
+
+enum WallLevel { hight, low, auto }

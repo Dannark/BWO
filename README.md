@@ -33,6 +33,9 @@ Hopefully at some point later this year.
     - Tip: You can use gitpod to launch it alive for free
 
 4. Launch the app on your device
+    - Left tap on screen = walk
+    - Right tap on screen = cut tree/attack
+    - While in build mode you can't walk and can only place object inside the foundation square 
 
 You can also open the host url on your browser to see the currently server state (for debuging)
 
@@ -87,11 +90,13 @@ Usecases:
 * [-] Build Category
     - [X] Foundation for private building
     - [x] Wall placements
-    * [ ] Animated Doors
-    * [ ] Static objects like Windows, furnitures and so on
-    * [ ] Object Windows selection
-    * [ ] Craft or buying system
-    * [ ] Sync building to the server
+    - [x] Auto/Toggle wall tall level
+    - [ ] Delete/Replace Foundations
+    - [ ] Animated Doors
+    - [ ] Static objects like Windows, furnitures and so on
+    - [ ] Object Windows selection
+    - [ ] Craft or buying system
+    - [ ] Sync building to the server
 * [-] Interfaces
     * [ ] Create Account UI
     * [x] Character Creation UI
@@ -106,8 +111,11 @@ Usecases:
 - [Missing] life time to enemies so they will die normally (to not overpopulate the server)
 
 ### Focusing on / Doing Now
-- Temporarily not able to cut down trees
 - Sync Trees state on server
+
+## 24/08
+* Added 02 new sprite characters
+* Added Toggle wall tall level (Auto, low and tall)
 
 ## 23/08
 * Added Foundation for private House Build System

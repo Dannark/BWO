@@ -59,6 +59,10 @@ flutter:
       # male2
       - assets/images/human/male2/walk/
       - assets/images/human/male2/attack/
+
+      # male3
+      - assets/images/human/male3/walk/
+      - assets/images/human/male3/attack/
       
       # female1
       - assets/images/human/female1/walk/
@@ -76,9 +80,13 @@ flutter:
       - assets/images/human/female4/walk/
       - assets/images/human/female4/attack/
 
-       # female5
+      # female5
       - assets/images/human/female5/walk/
       - assets/images/human/female5/attack/
+      
+      # female6
+      - assets/images/human/female6/walk/
+      - assets/images/human/female6/attack/
 
       #Enemy - mini-skull
       - assets/images/enemys/miniskull/walk/
