@@ -3,13 +3,13 @@ import 'package:flame/sprite.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
+import '../entity/items/item_database.dart';
+import '../entity/items/items.dart';
+import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../ui/hud.dart';
 import '../ui/ui_element.dart';
 import '../utils/tap_state.dart';
-import '../entity/items/item_database.dart';
-import '../entity/items/items.dart';
-import '../entity/player/player.dart';
 
 class Inventory extends UIElement {
   List<Item> itemList = [];

@@ -8,19 +8,22 @@ export function isReady(){
 }
 
 let db;
+let db_name;
 
 export function startFirebase(mConfig){
-  var defaultApp = firebase.default.initializeApp(mConfig);
+  var defaultApp = firebase.default.initializeApp(mConfig.database_conf);
   db = firebase.default.database();
+
+  db_name = mConfig.database+"/";
 
   var ref = db.ref("version");
   ref.once("value", function (snapshot) {
     db_version = snapshot.val();
-    console.log('> Connected to Firebase:', defaultApp.name, 'version:', db_version);
+    console.log('> Connected to Firebase:', mConfig.database, 'version:', db_version);
     eventReceived ++;
   });
 
-  let ref_state = db.ref("state");
+  let ref_state = db.ref(db_name+"state");
   ref_state.once("value", function (snapshot) {
     my_state = snapshot.val();
 
@@ -29,11 +32,11 @@ export function startFirebase(mConfig){
 }
 
 export function writeState(state) {
-  db.ref('state/').set(state);
+  db.ref(db_name+'state/').update(state);
 }
 
 export function writeLog(log,log_id) {
-  db.ref('log/'+log_id).set(log);
+  db.ref(db_name+'log/'+log_id).set(log);
 }
 
 export let db_version;

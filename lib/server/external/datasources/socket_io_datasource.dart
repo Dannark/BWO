@@ -22,17 +22,6 @@ class SocketIoRepository implements ServerRepository {
     socket.connect();
 
     socket.on('onSetup', onSetup);
-
-    /*socket.on('onPlayerEnterScreen', onPlayerEnterScreen);
-    socket.on('add-player', onAddPlayer);
-    socket.on("remove-player", onRemovePlayer);
-    socket.on("onMove", onMove);
-    socket.on("onPlayerUpdate", onPlayerUpdate);
-    socket.on('onEnemysWalk', onEnemysWalk);
-    socket.on('onEnemysEnterScreen', onEnemysEnterScreen);
-    socket.on('onEnemyTargetingPlayer', onEnemyTargetingPlayer);
-    socket.on("onTreeHit", onTreeHit);*/
-
     socket.on('disconnect', (_) => print('disconnected'));
   }
 
@@ -51,8 +40,8 @@ class SocketIoRepository implements ServerRepository {
       var jsonData = {
         "name": _player.name,
         "sprite": _player.spriteFolder,
-        "x": _player.x,
-        "y": _player.y,
+        "x": _player.x.toInt(),
+        "y": _player.y.toInt(),
         "hp": _player.status.getHP(),
         "lv": 1,
         "xp": 0
@@ -63,7 +52,6 @@ class SocketIoRepository implements ServerRepository {
   }
 
   void sendMessage(String tag, dynamic jsonData) {
-    if (ServerUtils.offlineMode) return;
     if (socket.connected) {
       socket.emit(tag, jsonData);
     } else {

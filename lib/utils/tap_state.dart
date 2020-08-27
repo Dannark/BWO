@@ -1,10 +1,9 @@
 import 'dart:math';
 
-import 'package:BWO/map/map_controller.dart';
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
+import '../map/map_controller.dart';
 import '../ui/keyboard/keyboard_ui.dart';
 import '../ui/ui_element.dart';
 

@@ -1,7 +1,6 @@
-import 'package:BWO/map/tree.dart';
-
 import '../../../entity/player/player.dart';
 import '../../../map/map_controller.dart';
+import '../../../map/tree.dart';
 import '../../external/datasources/socket_io_datasource.dart';
 import '../../utils/server_utils.dart';
 import '../repositories/server_repository.dart';
@@ -22,7 +21,6 @@ class ServerController {
   }
 
   void setPlayer(Player player) {
-    if (ServerUtils.offlineMode) return;
     this.player = player;
 
     _repo.initializeClient(player, (id) {
@@ -50,7 +48,6 @@ class ServerController {
   }
 
   void movePlayer() async {
-    if (ServerUtils.offlineMode) return;
     var jsonData = {
       "name": player.name,
       "x": player.x.toInt(),
@@ -62,7 +59,6 @@ class ServerController {
   }
 
   void hitTree(int targetX, int targetY, int damage) async {
-    if (ServerUtils.offlineMode) return;
     var jsonData = {
       "name": "${player.name}",
       "targetX": targetX,
@@ -84,7 +80,7 @@ class ServerController {
       var x = double.parse(value['x'].toString());
       var y = double.parse(value['y'].toString());
       var playerId = value['playerId'].toString();
-      var dead_time =
+      var deadTime =
           int.parse(value['dead_time'].toString(), onError: (source) => null);
       var hp = int.parse(value['hp'].toString(), onError: (source) => null);
       var damage =
@@ -105,9 +101,9 @@ class ServerController {
           if (damage != null) {
             //take damage
             foundTree.setHealth(hp);
-          } else if (hp <= 0 && dead_time > 5) {
+          } else if (hp <= 0 && deadTime > 5) {
             //immediately dies (cancel die animation)
-            foundTree.disable(respawnSecTimeout: 190 - dead_time);
+            foundTree.disable(respawnSecTimeout: 190 - deadTime);
           } else if (hp > 0 && damage == null) {
             //respawn
             foundTree.resetTree();

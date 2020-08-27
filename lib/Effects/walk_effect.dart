@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/animation.dart' as anim;
-import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 

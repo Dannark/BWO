@@ -62,7 +62,7 @@ function spawnEnemy(player, enemyList, enemyListAroundPlayer, callback){
     if(isNaN(parseInt((enemy.x)/16)) || parseInt((enemy.x)/16) == null){
         console.log(`> ${player.x} ${offSetX} `,player, (width*16) );
     }
-    console.log(`> Spawning ${enemy.name} ${parseInt((enemy.x)/16)}, ${parseInt((enemy.y)/16)} `, enemy.x, enemy.y);
+    console.log(`> Spawning x:${enemy.name} y:${parseInt((enemy.x)/16)}, ${parseInt((enemy.y)/16)} `, enemy.x, enemy.y);
     callback(enemyListAroundPlayer);
 }
 

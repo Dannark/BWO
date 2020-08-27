@@ -95,6 +95,7 @@ export default function startServer (config) {
     //app.use(express.static('public'))
 
     app.get('/', (request, response) => {
+        saveLog('server-info',`Requested ./ from web.`);
         return response.json({
             server_name: config.name,
             version: config.version,
@@ -106,6 +107,7 @@ export default function startServer (config) {
     })
 
     app.get('/log', (request, response) => {
+        saveLog('server-info',`Requested ./Log from web.`);
         return response.json({
             ...loadLog()
         })
@@ -113,6 +115,6 @@ export default function startServer (config) {
 
     server.listen(config.port, () => {
         saveLog('server-status','server started successfully');
-        console.log(`Server running on port: ${config.port} in [${config.enviroment}] mode.`)
+        console.log(`Server running on port: ${config.port} in [${config.environment}] mode.`)
     })
 }

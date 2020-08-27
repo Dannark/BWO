@@ -30,9 +30,8 @@ class Tree extends Entity {
   double _deadRotation = 0;
   double _gravityRotation = 0;
 
-  MapController _map;
+  final MapController _map;
   double _deleteTime = double.infinity;
-  double _respawnTime = double.infinity;
 
   Tree(this._map, int posX, int posY, this._tileSize, this._spriteImage)
       : super((posX.toDouble() * GameScene.worldSize),
@@ -92,7 +91,6 @@ class Tree extends Entity {
     isActive = false;
     _gravityRotation = 0;
     _deadRotation = 0;
-    _respawnTime = GameController.time + respawnSecTimeout;
   }
 
   void resetTree() {
@@ -101,7 +99,6 @@ class Tree extends Entity {
     _deadRotation = 0;
     status.refillStatus();
     _applesLeft = Random().nextInt(1) + 1;
-    _respawnTime = double.infinity;
     _deleteTime = double.infinity;
     updatePhysics();
   }

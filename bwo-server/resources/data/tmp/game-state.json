@@ -1,1 +1,1 @@
-{"statistics":{"msgRecived":0,"msgSent":0},"players":{},"enemys":{},"trees":{}}
+{"statistics":{"msgRecived":107,"msgSent":341},"players":{},"enemys":{"_2yoamkfru":{"enemyId":"_2yoamkfru","name":"Skull","x":-501.0140014206886,"y":-492.9588328160362,"toX":-501.0140014206886,"toY":-492.9588328160362,"hp":6,"lv":1},"_u5q309e2b":{"enemyId":"_u5q309e2b","name":"Skull","x":-1200,"y":-560,"toX":-1200,"toY":-560,"hp":6,"lv":1,"last_damage_stamp":"2020-08-26T21:29:22-03:00"}},"trees":{}}

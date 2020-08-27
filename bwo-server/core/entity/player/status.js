@@ -10,7 +10,7 @@ export function regenerateHP(player) {
 
     if (player.hp < _maxHP) {
         player.hp += 1;
-        console.log('> ', player.name, 'regenerating HP:', player.hp);
+        console.log('>', player.name, 'regenerating HP:', player.hp);
 
         return true;
     }
@@ -26,7 +26,7 @@ export function addExp(player, enemy) {
     var xp = enemy.lv * 2;
     player.xp += enemy.lv * 2;
 
-    console.log('> ', player.name, 'adding xp:', xp);
+    console.log('>', player.name, 'adding xp:', xp);
     levelUpRamp(player);
 }
 

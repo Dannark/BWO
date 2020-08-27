@@ -7,7 +7,7 @@ export default function startServer() {
     const state = loadState();
     setInterval(() => {
         saveState(state);
-    }, 30 * 1000);
+    }, 20 * 1000);
 
     playerController.setup(state, notifyAllOnRangeOfPlayer, notifyAllOnRangeOfArea, enemysController, notifyAll, removeSocket);
     treeController.setup(state, notifyAllOnRangeOfPlayer, notifyAllOnRangeOfArea);

@@ -33,6 +33,14 @@ dependencies:
   sensors: '>=0.4.2+2 <2.0.0'
   socket_io_client: ^0.9.11
   wakelock: ^0.1.4+2
+  
+  google_sign_in: ^4.5.3
+  firebase_core: ^0.5.0
+  firebase_analytics: ^6.0.0
+  firebase_auth: ^0.18.0+1
+  cloud_firestore: ^0.14.0+2
+  firebase_database: ^4.0.0
+
 
 dev_dependencies:
   flutter_test:

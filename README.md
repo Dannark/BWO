@@ -13,7 +13,7 @@ The world isn't stored in anywhere, it uses some conecpts and rules (`Perlin Noi
 
 The players will be able to build theirs houses anywhere on the infinity world. That's why i call it borderless world in first place. :)
 
-This project is still in development and it doesnt have many features yet
+This project is still in development and it doesnt have many features yet.
 
 ### Release Date?
 Hopefully at some point later this year.
@@ -23,21 +23,32 @@ Hopefully at some point later this year.
     - The [NPM and NodeJS](https://www.npmjs.com/get-npm) installed on your system
     - Navigate to the folder `bwo-server` and run on the console the command `npm install` to install and update all the dependences
 
-2. Run the Node Server:
-    - Navigate to the folder `bwo-server` and run on the console the command `npm start` or `node server.js` or just `nodemon`
-        - To Run test on the Server side run `npm test` (still in development)
-        - To specify an environment use `--env=development` or `--env=production`
-        - If you want to use firebase in production mode, create a project in firebase console and edit the enviroment variables in `resources/config.js`
+2. Launch your own server :
+    2.1 Setup the database if you want to run it Online:
+        - Create a project and setup your Firebase database and Cloud Firestore on [Google console](console.firebase.google.com)
+            - Save the `google-services.json` file in `android\app\`
+        - Edit the enviroment variables in `resources/config.js` or set them in your system so the server can connects to your database.
 
-3. Adjust the Server URL on the `lib\server\utils\server_utils.dart` if you want to use your own server (localhost for example)
-    - Tip: You can use gitpod to launch it alive for free
+    2.2. Run the Node Server:
+        - Navigate to the folder `bwo-server` and run on the console the command `npm start` or `node server.js`
+            - To specify an environment use `--env=development` or `--env=production` in both case you need to be authenticated in firebase. For localhost use `--env=localhost`
+            - To Run test on the Server side run `npm test` (still in development)
+
+    2.3 For the client-side (Android App), Adjust the Server URL in `lib\server\utils\server_utils.dart`
+        - Set your database name `development`, `production`, `localhost`
+        - Tip: You can host in gitpod or heroku to launch it alive for free
+
+3. If you do not want to configure your own server and just want to run the game:
+    - Make sure to adjust the `server` variable URL in `lib\server\utils\server_utils.dart` to `https://borderless-world.herokuapp.com`
 
 4. Launch the app on your device
     - Left tap on screen = walk
     - Right tap on screen = cut tree/attack
-    - While in build mode you can't walk and can only place object inside the foundation square 
+    - While in build mode you can't walk and can only place/delete object inside the foundation square 
 
 You can also open the host url on your browser to see the currently server state (for debuging)
+
+And please, let me know if you have any problems, `open an issue` and i will be in touch very soon. Code refactoring are really appreciated at this point.
 
 ## Dev Log
 Usecases:
@@ -92,10 +103,10 @@ Usecases:
     - [x] Wall placements
     - [x] Auto/Toggle wall tall level
     - [x] Delete Foundations
+    - [ ] UI object selection interface
     - [ ] Ground Tiles
     - [ ] Animated Doors
     - [ ] Static objects like Windows, furnitures and so on
-    - [ ] Object Windows selection
     - [ ] Craft or buying system
     - [ ] Sync building to the server
 * [-] Interfaces
@@ -106,6 +117,8 @@ Usecases:
 * [ ] Change background music Volume dynamic
 * [ ] Add NoSQL database
 * [ ] Biomes
+* [ ] Dynamic bundle and CI/CD for playstore
+* [ ] Global Chat System
 
 ### Know Problems / Missing
 - Sometimes slipping a too much when receiving walks updates
@@ -114,8 +127,13 @@ Usecases:
 - [Missing] Game Diagram and comments
 
 ### Focusing on / Doing Now
-- Ground tilesets
-- Animated doors
+- UI object selection interface
+
+## 26/08
+* Added Google sign in method Authentication
+* Saving User character data and user account to firebase
+* Added Merge function between firebase and server data
+* Enemies are no longer saved permanently as since they are spawned as you walk, also a good idea for cleanin up the server on each restart
 
 ## 25/08
 * Added firebase database to save persistence data

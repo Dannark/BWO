@@ -10,7 +10,8 @@ class ServerUtils {
   //static const String server = "http://192.168.1.111:3000";
   static const String server = "https://borderless-world.herokuapp.com";
 
-  static const bool offlineMode = false;
+  static const String database = 'development';
+  //static const String database_login = 'production';
 
   static void addEntityIfNotExist(MapController map, Entity newEntity,
       {bool updateIfExist = true}) {

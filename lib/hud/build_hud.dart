@@ -1,10 +1,10 @@
-import 'package:BWO/entity/wall/wall.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/player/player.dart';
 import '../entity/wall/foundation.dart';
+import '../entity/wall/wall.dart';
 import '../game_controller.dart';
 import '../map/map_controller.dart';
 import '../ui/hud.dart';
@@ -166,7 +166,7 @@ enum BuildButtonState {
 
 /// not implemented yet
 class BuildWindows extends UIElement {
-  BuildWindows(HUD hudRef) : super(hudRef) {}
+  BuildWindows(HUD hudRef) : super(hudRef);
 
   void draw(Canvas c) {}
 }

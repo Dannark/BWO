@@ -23,7 +23,8 @@ class GameScene extends SceneObject {
   PhysicsController physicsController;
   static ServerController serverController;
 
-  GameScene(String playerName, Offset startPosition, String spriteFolder) {
+  GameScene(String playerName, Offset startPosition, String spriteFolder,
+      int hp, int xp, int lv) {
     mapController = MapController(startPosition);
     serverController = ServerController(mapController);
 
@@ -38,6 +39,10 @@ class GameScene extends SceneObject {
       spriteFolder: spriteFolder,
       isMine: true,
     );
+    player.status.setLife(hp);
+    player.status.setExp(xp);
+    player.status.setLevel(lv, 1);
+
     serverController.setPlayer(player);
     mapController.addPlayerRef(player);
 

@@ -185,6 +185,7 @@ class Status {
     _calories = _maxCalories;
   }
 
+  // ignore: use_setters_to_change_properties
   void setLife(int n) {
     _hp = n;
   }

@@ -40,7 +40,6 @@ class Player extends Entity implements OnAnimationEnd {
   Inventory _inventory;
   // ignore: unused_field
   PlayerHUD _playerHUD;
-  BuildHUD _buildHUD;
   PlayerNetwork playerNetwork;
   bool isMine;
   SceneObject sceneObject;
@@ -60,7 +59,7 @@ class Player extends Entity implements OnAnimationEnd {
     if (isMine) {
       _inventory = Inventory(this, sceneObject.hud);
       _playerHUD = PlayerHUD(this, sceneObject.hud);
-      _buildHUD = BuildHUD(this, _map, sceneObject.hud);
+      BuildHUD(this, _map, sceneObject.hud);
       equipmentController = EquipmentController(this);
       _inputController = InputController(this);
     }

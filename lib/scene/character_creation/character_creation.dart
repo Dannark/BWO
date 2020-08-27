@@ -8,6 +8,7 @@ import '../../game_controller.dart';
 import '../../ui/button_ui.dart';
 import '../../ui/input_text_ui.dart';
 import '../game_scene.dart';
+import '../login/auth.dart';
 import '../scene_object.dart';
 import 'character_preview_windows.dart';
 import 'map_view_windows.dart';
@@ -30,7 +31,7 @@ class CharacterCreation extends SceneObject {
 
   ButtonUI _startGameButton;
 
-  CharacterCreation() {
+  CharacterCreation(AuthService auth) {
     _mapPreviewWindows = MapPreviewWindows(super.hud);
 
     _inputTextUI = InputTextUI(
@@ -56,23 +57,40 @@ class CharacterCreation extends SceneObject {
     );
 
     _inputTextUI.onConfirmListener = (text) {
-      if (text.length >= 3) {
-        print("Check if the name Choosed $text is avaliable");
-      } else {
-        print("Name is two short");
-      }
+      createCharacter(auth);
     };
 
     _startGameButton.onPressedListener = () {
-      if (_inputTextUI.getText().length >= 3) {
-        GameController.currentScene = GameScene(
-            _inputTextUI.getText(),
-            -_mapPreviewWindows.targetPos * GameScene.worldSize.toDouble(),
-            _characterPreviewWindows.getSpriteSelected());
-      } else {
-        print("can't start the game because the user name is invalid.");
-      }
+      createCharacter(auth);
     };
+  }
+
+  void createCharacter(AuthService auth) {
+    var charName = _inputTextUI.getText();
+    if (charName.length >= 3) {
+      auth.isNameAvailable(charName).then((isAvailable) {
+        if (isAvailable) {
+          auth.createCharacterForUser(charName).then((value) {
+            startGame();
+          });
+        } else {
+          print('Name Not Avaiable');
+        }
+      });
+    } else {
+      print("can't start the game because the user name is invalid.");
+    }
+  }
+
+  void startGame() {
+    print('Starting game...');
+    GameController.currentScene = GameScene(
+        _inputTextUI.getText(),
+        -_mapPreviewWindows.targetPos * GameScene.worldSize.toDouble(),
+        _characterPreviewWindows.getSpriteSelected(),
+        10,
+        0,
+        1);
   }
 
   @override
