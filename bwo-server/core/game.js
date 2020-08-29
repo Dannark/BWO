@@ -2,6 +2,7 @@ import {saveState, loadState} from '../resources/data/state_manager.js'
 import * as enemysController from "./entity/enemy/enemys.js";
 import * as playerController from "./entity/player/players.js";
 import * as treeController from "./entity/tree/tree.js";
+import * as foundationController from "./entity/foundation/foundation.js"
 
 export default function startServer() {
     const state = loadState();
@@ -11,6 +12,7 @@ export default function startServer() {
 
     playerController.setup(state, notifyAllOnRangeOfPlayer, notifyAllOnRangeOfArea, enemysController, notifyAll, removeSocket);
     treeController.setup(state, notifyAllOnRangeOfPlayer, notifyAllOnRangeOfArea);
+    foundationController.setup(state, notifyAllOnRangeOfPlayer, notifyAllOnRangeOfArea);
 
     // make enemy random walk
     setInterval(() => enemysController.patrolArea(state, (enemysMoved) => {
@@ -135,6 +137,7 @@ export default function startServer() {
         var playersObject = Object.fromEntries(playersArray);
         return playersObject;
     }
+
     
 
     return {
@@ -145,7 +148,8 @@ export default function startServer() {
         state,
         addSocket,
         playerController,
-        treeController
+        treeController,
+        foundationController
     }
 }
 

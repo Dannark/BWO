@@ -33,6 +33,7 @@ dependencies:
   sensors: '>=0.4.2+2 <2.0.0'
   socket_io_client: ^0.9.11
   wakelock: ^0.1.4+2
+  package_info: ^0.4.3
   
   google_sign_in: ^4.5.3
   firebase_core: ^0.5.0

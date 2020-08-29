@@ -7,12 +7,14 @@ import '../entity.dart';
 class Wall extends Entity {
   Sprite sprite;
   Sprite lowSprite;
+  int imageId;
   String _imgPath;
   final double zoom = 1;
 
   bool showLow = false;
+  bool showCollisionBox = false;
 
-  Wall(double newPosX, double newPosY, int imageId)
+  Wall(double newPosX, double newPosY, this.imageId)
       : super(newPosX.floor() * 16.0 + 8, newPosY.ceil() * 16.0) {
     _imgPath = getImageId(imageId);
     loadSprite();
@@ -42,11 +44,20 @@ class Wall extends Entity {
           scale: 1);
     }
 
-    //debugDraw(c);
+    showCollisionBox ? debugDraw(c) : null;
   }
 
   String getImageId(int imageId) {
     return 'wall$imageId.png';
+  }
+
+  @override
+  String toString() {
+    return """id:$imageId, x:$posX y:$posY""";
+  }
+
+  dynamic toObject() {
+    return {'id': imageId, 'x': posX, 'y': posY};
   }
 }
 

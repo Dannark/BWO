@@ -55,7 +55,7 @@ class Ground extends Tile {
     var green = 255 - heightLvl;
 
     if (heightLvl > 142 && heightLvl < 152 && Random().nextInt(100) > 98) {
-      var id = Random().nextInt(3) + 1;
+      var id = Random().nextInt(5) + 1;
       grass = PreloadAssets.getEnviromentSprite("floor$id");
       /*grass = Sprite("enviroment/floor${id}.png",
           width: size.toDouble(), height: size.toDouble());*/

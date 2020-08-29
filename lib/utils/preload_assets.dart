@@ -6,6 +6,8 @@ class PreloadAssets {
     "floor1": Sprite("enviroment/floor1.png"),
     "floor2": Sprite("enviroment/floor2.png"),
     "floor3": Sprite("enviroment/floor3.png"),
+    "floor4": Sprite("enviroment/floor4.png"),
+    "floor5": Sprite("enviroment/floor5.png"),
     "grass1": Sprite("enviroment/grass1.png"),
     "grass2": Sprite("enviroment/grass2.png"),
     "grass3": Sprite("enviroment/grass3.png"),

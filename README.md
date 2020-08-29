@@ -129,6 +129,12 @@ Usecases:
 ### Focusing on / Doing Now
 - UI object selection interface
 
+## 28/08
+* Added Wall Placement synchronization over the server. *Finally!:O* (Not saving data yet)
+* Added server send menssages improviments when walking
+* Added new sprites
+* Started Build windows action (not finished)
+
 ## 26/08
 * Added Google sign in method Authentication
 * Saving User character data and user account to firebase

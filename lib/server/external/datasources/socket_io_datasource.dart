@@ -43,8 +43,8 @@ class SocketIoRepository implements ServerRepository {
         "x": _player.x.toInt(),
         "y": _player.y.toInt(),
         "hp": _player.status.getHP(),
-        "lv": 1,
-        "xp": 0
+        "lv": _player.status.getLevel(),
+        "xp": _player.status.getExp()
       };
       print(jsonData);
       socket.emit("log-player", jsonData);

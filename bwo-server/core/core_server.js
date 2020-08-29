@@ -1,3 +1,4 @@
+import moment from 'moment';
 import express from 'express'
 import http from 'http'
 import game_server from "./game.js"
@@ -23,6 +24,8 @@ export default function startServer (config) {
         //console.log(`Player on lobby: ${playerId}`)
         game.addSocket(socket)
 
+        var lastMoveUpdateTime = moment().format();
+
         socket.emit('onSetup', playerId)
 
         socket.on('log-player', (command) => {
@@ -35,6 +38,7 @@ export default function startServer (config) {
             socket.emit('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
             sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
+            socket.emit('onAddFoundation', game.foundationController.getAllFoundationsAround(playerId))
         })
 
         socket.on('onMove', (command) => {
@@ -44,7 +48,12 @@ export default function startServer (config) {
 
             sendMessageIfNotEmpty('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
-            sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
+
+            if(isReadyToUpdate(lastMoveUpdateTime, 1000)){//send update with limited time
+                lastMoveUpdateTime = moment().format();
+                sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
+                socket.emit('onAddFoundation', game.foundationController.getAllFoundationsAround(playerId))
+            }
         })
 
         socket.on('onUpdate', (command) => {
@@ -65,6 +74,12 @@ export default function startServer (config) {
             game.treeController.hitTree({playerId: playerId, ...command})
         })
 
+        socket.on('onFoundationAdd', (command) => {
+            game.state.statistics.msgRecived ++;
+            console.log('onFoundationAdd');
+            game.foundationController.addFoundation({playerId: playerId, ...command});
+        })
+
         socket.on('onPlayerAttackEnemy', (command) => {
             game.state.statistics.msgRecived ++;
 
@@ -75,7 +90,7 @@ export default function startServer (config) {
             game.state.statistics.msgRecived ++;
             game.playerController.removePlayer({ playerId: playerId })
             console.log(`> Player disconnected: ${playerId}`)
-            saveLog('server-info',`Player disconnected: ${playerId}`);
+            //saveLog('server-info',`Player disconnected: ${playerId}`);
         })
 
         game.playerController.update(playerId);
@@ -89,6 +104,13 @@ export default function startServer (config) {
             if(isEmpty == false){
                 socket.emit(tag, obj)
             }
+        }
+
+        
+        function isReadyToUpdate(previousTime, miliseconds){
+            var milisecondsPassed = moment(moment.format).diff(previousTime, 'miliseconds');
+            var isReady = milisecondsPassed >= miliseconds;
+            return isReady;
         }
     })
 

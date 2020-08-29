@@ -9,7 +9,8 @@ import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
-import '../../hud/build_hud.dart';
+import '../../hud/build/build_foundation.dart';
+import '../../hud/build/build_hud.dart';
 import '../../hud/inventory.dart';
 import '../../hud/player_hud.dart';
 import '../../map/map_controller.dart';
@@ -60,6 +61,7 @@ class Player extends Entity implements OnAnimationEnd {
       _inventory = Inventory(this, sceneObject.hud);
       _playerHUD = PlayerHUD(this, sceneObject.hud);
       BuildHUD(this, _map, sceneObject.hud);
+      _map.buildFoundation = BuildFoundation(this, _map);
       equipmentController = EquipmentController(this);
       _inputController = InputController(this);
     }

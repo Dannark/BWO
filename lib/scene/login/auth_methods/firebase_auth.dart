@@ -21,22 +21,31 @@ class FirebaseAuth implements AuthService {
   CollectionReference usersCollection;
   GoogleSignInAccount mAccount;
 
-  FirebaseAuth() {
+  String appVersion;
+
+  FirebaseAuth(this.appVersion) {
     _googleSignIn.onCurrentUserChanged.listen((var account) {
       print('account $account');
+      mAccount = account;
 
-      //onLoggedIn(user);
-      _updateUserData(account);
+      _getVersionNumber();
     });
     _googleSignIn.signInSilently();
   }
 
   Future<void> _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } on Exception catch (error) {
-      print(error);
-    }
+    _googleSignIn.isSignedIn().then((isLogged) {
+      if (isLogged == false) {
+        try {
+          _googleSignIn.signIn();
+        } on Exception catch (error) {
+          print(error);
+        }
+      } else {
+        print('You are already logged in, welcome ${mAccount.displayName}');
+        _getVersionNumber();
+      }
+    });
   }
 
   Future<void> _handleSignOut() => _googleSignIn.disconnect();
@@ -49,19 +58,31 @@ class FirebaseAuth implements AuthService {
     _handleSignOut();
   }
 
+  void _getVersionNumber() async {
+    var data = FirebaseDatabase.instance.reference().child('version');
+
+    data.once().then((snapshot) {
+      if (snapshot.value == appVersion) {
+        _createOrReplaceAndLogUser();
+      } else {
+        print(
+            """Sorry App is out of date. App Version is: $appVersion server version is: ${snapshot.value}""");
+      }
+    });
+  }
+
   //firebase
-  void _updateUserData(GoogleSignInAccount account) async {
-    mAccount = account;
+  void _createOrReplaceAndLogUser() async {
     await Firebase.initializeApp();
 
     firestore = FirebaseFirestore.instance;
     usersCollection = firestore.collection('users');
 
     var user = {
-      "id": account.id,
-      "displayName": account.displayName,
-      "email": account.email,
-      "photoUrl": account.photoUrl
+      "id": mAccount.id,
+      "displayName": mAccount.displayName,
+      "email": mAccount.email,
+      "photoUrl": mAccount.photoUrl
     };
     await usersCollection.doc(user["id"]).set(user, SetOptions(merge: true));
 
@@ -108,7 +129,7 @@ class FirebaseAuth implements AuthService {
   Future<bool> isNameAvailable(String characterName) async {
     var data = FirebaseDatabase.instance
         .reference()
-        .child('production/state/players/$characterName');
+        .child('${ServerUtils.database}/state/players/$characterName');
 
     var isAvaiable = false;
 

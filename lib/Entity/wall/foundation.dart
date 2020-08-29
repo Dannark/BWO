@@ -3,6 +3,7 @@ import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../map/map_controller.dart';
+import '../../scene/game_scene.dart';
 import '../../utils/tap_state.dart';
 import '../player/player.dart';
 import 'wall.dart';
@@ -11,6 +12,7 @@ class Foundation {
   final MapController _map;
   final Player _player;
   double left, top, width, height;
+  final dynamic foundationData;
   final List<Wall> wallList = [];
 
   Rect bounds = Rect.zero;
@@ -21,28 +23,15 @@ class Foundation {
   final TextConfig _txt10 = TextConfig(
       fontSize: 10.0, color: Colors.blueGrey[700], fontFamily: "Blocktopia");
 
-  Foundation(dynamic foundationData, this._map, this._player) {
-    // dynamic foundationData = [
-    //   {
-    //     'owner': 'Someone',
-    //     'name': 'Home sweet home',
-    //     'x': 0,
-    //     'y': 0,
-    //     'w': 16,
-    //     'h': 16,
-    //   },
-    //   [
-    //     // {'id': 2, 'x': 0, 'y': 0},
-    //     // {'id': 2, 'x': 15, 'y': 15},
-    //   ]
-    // ];
+  Foundation(this.foundationData, this._map, this._player) {
+    left = double.parse(foundationData['x'].toString());
+    top = double.parse(foundationData['y'].toString());
+    width = double.parse(foundationData['w'].toString());
+    height = double.parse(foundationData['h'].toString());
 
-    left = double.parse(foundationData[0]['x'].toString());
-    top = double.parse(foundationData[0]['y'].toString());
-    width = double.parse(foundationData[0]['w'].toString());
-    height = double.parse(foundationData[0]['h'].toString());
+    var wallDataList = foundationData['walls'];
 
-    foundationData[1].forEach((data) {
+    for (var data in wallDataList) {
       var x = double.parse(data['x'].toString());
       var y = double.parse(data['y'].toString());
       var imgId = int.parse(data['id'].toString());
@@ -50,7 +39,7 @@ class Foundation {
       var wall = Wall(x, y, imgId);
       wallList.add(wall);
       _map.addEntity(wall);
-    });
+    }
 
     bounds = getBuildingArea();
   }
@@ -69,10 +58,32 @@ class Foundation {
     }
   }
 
+  void save() {
+    var foundationObject = fromListToObject();
+    print('saving foundationObject: $foundationObject');
+    GameScene.serverController.sendMessage('onFoundationAdd', foundationObject);
+  }
+
+  dynamic fromListToObject() {
+    var finalObject = {
+      'owner': foundationData['owner'],
+      'name': foundationData['name'],
+      'x': foundationData['x'],
+      'y': foundationData['y'],
+      'w': foundationData['w'],
+      'h': foundationData['h'],
+      'walls': []
+    };
+
+    for (var item in wallList) {
+      finalObject["walls"] = [...finalObject["walls"], item.toObject()];
+    }
+    return finalObject;
+  }
+
   void deleteWall(double x, double y) {
     if (isInsideFoundation(x, y)) {
       var wall = Wall(x, y, 1);
-
       var foundWall = wallList.firstWhere((element) => element.id == wall.id,
           orElse: () => null);
 
@@ -138,13 +149,13 @@ class Foundation {
         posY < (top + height);
   }
 
-  void switchWallHeight() {
+  void switchWallHeight({bool isBuildingMode = false}) {
     for (var wall in wallList) {
       if (showWallLevel == WallLevel.auto) {
         if (isInsideFoundation(
             _player.posX.toDouble(), _player.posY.toDouble())) {
-          var leftRow = (left + 1).floor() == wall.posX;
-          var rightRow = (left + width - 0).floor() == wall.posX;
+          var leftRow = left.floor() == wall.posX;
+          var rightRow = (left.ceil() + width - 1) == wall.posX;
           var topLine = (top + 1).floor() == wall.posY;
 
           if (leftRow || rightRow || topLine) {
@@ -160,6 +171,8 @@ class Foundation {
       } else {
         wall.showLow = true;
       }
+
+      wall.showCollisionBox = isBuildingMode;
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
+import 'package:flame/sprite.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,10 @@ class ButtonUI extends UIElement {
   Color _normalColor;
   Color _pressedColor;
 
+  Rect padding = Rect.zero;
+
+  Sprite icon = Sprite("ui/backpaper1.png");
+
   Function() onPressedListener;
 
   bool canBeSelected = false;
@@ -28,7 +33,9 @@ class ButtonUI extends UIElement {
       Color fontColor,
       double fontSize = 15,
       this.canBeSelected = false,
-      this.isSelected = false})
+      this.isSelected = false,
+      this.padding = Rect.zero,
+      this.icon})
       : super(hudRef) {
     setPosition(bounds);
 
@@ -62,8 +69,17 @@ class ButtonUI extends UIElement {
 
     c.drawRect(bounds, _p);
 
-    _normalText.render(c, text, Position(bounds.center.dx, bounds.center.dy),
-        anchor: Anchor.center);
+    var iconScale = 0.5;
+    var iconHeight = 42 * iconScale;
+    icon?.renderScaled(
+        c, Position(bounds.left + 10, bounds.center.dy - iconHeight / 2),
+        scale: iconScale);
+    _normalText.render(
+      c,
+      text,
+      Position(bounds.center.dx + padding.left, bounds.center.dy + padding.top),
+      anchor: Anchor.center,
+    );
   }
 
   void setPosition(Rect bounds) {

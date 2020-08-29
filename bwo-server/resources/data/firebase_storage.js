@@ -17,7 +17,8 @@ let defaulState = {
     },
     players: {},
     enemys: {},
-    trees: {} //cut trees
+    trees: {}, //cut trees
+    foundations: {}
 };
 
 

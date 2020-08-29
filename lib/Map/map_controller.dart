@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../entity/entity.dart';
 import '../entity/player/player.dart';
 import '../game_controller.dart';
+import '../hud/build/build_foundation.dart';
 import 'ground.dart';
 import 'tile.dart';
 import 'tree.dart';
@@ -38,6 +39,8 @@ class MapController {
 
   int _loopsPerCycle = 0;
   int _maxLoopsPerCycle = 200; //first loop
+
+  BuildFoundation buildFoundation;
 
   SimplexNoise terrainNoise = SimplexNoise(
     frequency: 0.003, //0.004

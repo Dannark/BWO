@@ -1,11 +1,11 @@
 import '../../../entity/player/player.dart';
 import '../../../map/map_controller.dart';
-import '../../../map/tree.dart';
 import '../../external/datasources/socket_io_datasource.dart';
-import '../../utils/server_utils.dart';
 import '../repositories/server_repository.dart';
 import 'entities/enemy_data_controller.dart';
+import 'entities/foundation_data_controller.dart';
 import 'entities/player_data_controller.dart';
+import 'entities/tree_data_controller.dart';
 
 class ServerController {
   MapController map;
@@ -14,6 +14,8 @@ class ServerController {
   ServerRepository _repo;
   PlayerDataController _pControl;
   EnemyDataController _eControl;
+  TreeDataController _tControl;
+  FoundationDataController _fControl;
 
   ServerController(this.map) {
     // Choose Repository, Socket IO, Firebase etc...
@@ -29,6 +31,8 @@ class ServerController {
 
     _pControl = PlayerDataController(player, map);
     _eControl = EnemyDataController(map);
+    _tControl = TreeDataController(map);
+    _fControl = FoundationDataController(map);
 
     _repo.setListener("onPlayerEnterScreen", _pControl.onPlayerEnterScreen);
     _repo.setListener("add-player", _pControl.onAddPlayer);
@@ -40,7 +44,8 @@ class ServerController {
     _repo.setListener("onEnemysEnterScreen", _eControl.onEnemysEnterScreen);
     _repo.setListener(
         "onEnemyTargetingPlayer", _eControl.onEnemyTargetingPlayer);
-    _repo.setListener("onTreeUpdate", onTreeUpdate);
+    _repo.setListener("onTreeUpdate", _tControl.onTreeUpdate);
+    _repo.setListener("onAddFoundation", _fControl.onFoundationEnterScreen);
   }
 
   void sendMessage(String tag, dynamic jsonData) {
@@ -73,43 +78,7 @@ class ServerController {
     _repo.sendMessage("onAttackEnemy", jsonData);
   }
 
-  void onTreeUpdate(dynamic data) {
-    print('onTreeUpdate: $data');
-
-    data.forEach((treeId, value) {
-      var x = double.parse(value['x'].toString());
-      var y = double.parse(value['y'].toString());
-      var playerId = value['playerId'].toString();
-      var deadTime =
-          int.parse(value['dead_time'].toString(), onError: (source) => null);
-      var hp = int.parse(value['hp'].toString(), onError: (source) => null);
-      var damage =
-          int.parse(value['damage'].toString(), onError: (source) => null);
-
-      //Make the hit attack player animation
-      var foundEntity = map.entityList
-          .firstWhere((element) => element.id == playerId, orElse: () => null);
-      if (foundEntity != null && foundEntity is Player) {
-        foundEntity.playerNetwork.hitTreeAnimation(x, y);
-      }
-
-      //Set the tree health
-      var foundTree = map.entitysOnViewport
-          .firstWhere((element) => element.id == treeId, orElse: () => null);
-      if (foundTree != null && foundTree is Tree) {
-        if (hp != null) {
-          if (damage != null) {
-            //take damage
-            foundTree.setHealth(hp);
-          } else if (hp <= 0 && deadTime > 5) {
-            //immediately dies (cancel die animation)
-            foundTree.disable(respawnSecTimeout: 190 - deadTime);
-          } else if (hp > 0 && damage == null) {
-            //respawn
-            foundTree.resetTree();
-          }
-        }
-      }
-    });
+  void placeFoundation(dynamic jsonData) async {
+    _repo.sendMessage("onAttackEnemy", jsonData);
   }
 }

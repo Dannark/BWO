@@ -15,5 +15,5 @@ if (config.environment == 'production' || config.environment == 'development') {
     }, 1000)
 }
 else{
-    startServer(config);   
+    startServer(config);
 }

@@ -104,8 +104,8 @@ abstract class Entity extends PhysicsEntity {
   }
 
   void updatePhysics() {
-    posX = x ~/ worldSize;
-    posY = y ~/ worldSize;
+    posX = (x / worldSize).floor();
+    posY = (y / worldSize).floor();
 
     collisionBox = Rect.fromLTWH(x - (width / 2), y - height, width, height);
 

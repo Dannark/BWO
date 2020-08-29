@@ -8,7 +8,8 @@ let defaulState = {
     },
     players: {},
     enemys: {},
-    trees: {} //cut trees
+    trees: {}, //cut trees
+    foundations: {}
 };
 var defaultLogState = {
     createdAt: moment().tz("America/Sao_Paulo").format('DD/MM/YYYY'),

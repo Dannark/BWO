@@ -2,14 +2,14 @@ import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
-import '../entity/player/player.dart';
-import '../entity/wall/foundation.dart';
-import '../entity/wall/wall.dart';
-import '../game_controller.dart';
-import '../map/map_controller.dart';
-import '../ui/hud.dart';
-import '../ui/ui_element.dart';
-import '../utils/tap_state.dart';
+import '../../entity/player/player.dart';
+import '../../entity/wall/wall.dart';
+import '../../game_controller.dart';
+import '../../map/map_controller.dart';
+import '../../ui/hud.dart';
+import '../../ui/ui_element.dart';
+import '../../utils/tap_state.dart';
+import 'build_tools_bar.dart';
 
 class BuildHUD extends UIElement {
   final Player _player;
@@ -27,12 +27,14 @@ class BuildHUD extends UIElement {
 
   BuildButtonState _buildBtState = BuildButtonState.none;
 
+  BuildToolsBar _buildToolsBar;
+
   final MapController _map;
-  Foundation foundation;
 
   BuildHUD(this._player, this._map, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
     loadSprite();
+    _buildToolsBar = BuildToolsBar(hudRef);
   }
 
   void loadSprite() async {
@@ -64,18 +66,20 @@ class BuildHUD extends UIElement {
 
     if (_buildBtState == BuildButtonState.build ||
         _buildBtState == BuildButtonState.delete) {
-      foundation?.drawArea(c);
+      _map.buildFoundation.myFoundation?.drawArea(c);
     }
 
     // Switch level button
-    if (foundation != null) {
+    if (_map.buildFoundation.myFoundation != null) {
       sPos = Position(10, GameController.screenSize.height - 224);
       var sRect = Rect.fromLTWH(sPos.x, sPos.y, 32, 32);
       if (TapState.clickedAt(sRect)) {
         _handlerWallLevelButtonClick();
       }
-      _switchLevelButtonSprite.renderScaled(c, sPos, scale: 2);
-      foundation?.switchWallHeight();
+      _switchLevelButtonSprite?.renderScaled(c, sPos, scale: 2);
+      var isBuildingMode = _buildBtState != BuildButtonState.none;
+      _map.buildFoundation.myFoundation
+          ?.switchWallHeight(isBuildingMode: isBuildingMode);
     }
   }
 
@@ -83,75 +87,60 @@ class BuildHUD extends UIElement {
     var bRect = Rect.fromLTWH(bPos.x, bPos.y, 32, 32);
     if (TapState.clickedAt(bRect)) {
       if (_buildBtState == BuildButtonState.none) {
-        _buildBtState = BuildButtonState.build;
-        _player.canWalk = false;
+        dynamic foundationData = {
+          'owner': _player.name,
+          'name': 'Home sweet home',
+          'x': _player.posX - 7,
+          'y': _player.posY - 8,
+          'w': 16,
+          'h': 16,
+          'walls': []
+        };
+        var wasCreated =
+            _map.buildFoundation.createFoundationIfDoesntExists(foundationData);
+        if (wasCreated) {
+          _buildBtState = BuildButtonState.build;
+          _player.canWalk = false;
+          _buildToolsBar.setActive(true);
+        }
       } else if (_buildBtState == BuildButtonState.build) {
         _buildBtState = BuildButtonState.delete;
         _player.canWalk = false;
+        _buildToolsBar.setActive(false);
       } else {
+        //finish building
         _buildBtState = BuildButtonState.none;
         _player.canWalk = true;
+        _buildToolsBar.setActive(false);
+
+        _map.buildFoundation.myFoundation.save();
       }
-
-      createFoundationIfDoesntExists();
     }
 
-    if (_buildBtState == BuildButtonState.build) {
-      //clicking anywhere on the map
-      if (GameController.tapState == TapState.pressing &&
-          TapState.currentClickingAtInside(bRect) == false) {
-        addBuilding();
+    if (GameController.tapState == TapState.pressing) {
+      if (_buildBtState == BuildButtonState.build) {
+        //clicking anywhere on the map
+        if (TapState.currentClickingAtInside(bRect) == false) {
+          _map.buildFoundation.placeWall();
+        }
+      } else if (_buildBtState == BuildButtonState.delete) {
+        _map.buildFoundation.deleteWall();
       }
-    } else if (_buildBtState == BuildButtonState.delete) {
-      deleteWall();
     }
-  }
-
-  void createFoundationIfDoesntExists() {
-    if (foundation == null) {
-      /*var tap =
-          TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;*/
-
-      dynamic foundationData = [
-        {
-          'owner': 'Someone',
-          'name': 'Home sweet home',
-          'x': _player.posX - 8, //tap.dx.floor() - 8,
-          'y': _player.posY - 8, //tap.dy.ceil() - 8,
-          'w': 16,
-          'h': 16
-        },
-        []
-      ];
-      foundation = Foundation(foundationData, _map, _player);
-    }
-  }
-
-  void addBuilding() {
-    if (_buildBtState != BuildButtonState.build || foundation == null) return;
-
-    var selectedWall = 3;
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
-    foundation.addWall(tap.dx, tap.dy, selectedWall);
-  }
-
-  void deleteWall() {
-    if (_buildBtState != BuildButtonState.delete || foundation == null) return;
-
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
-    foundation.deleteWall(tap.dx, tap.dy);
   }
 
   void _handlerWallLevelButtonClick() {
-    if (foundation != null) {
-      if (foundation.showWallLevel == WallLevel.auto) {
-        foundation.showWallLevel = WallLevel.hight;
+    if (_map.buildFoundation.myFoundation != null) {
+      if (_map.buildFoundation.myFoundation.showWallLevel == WallLevel.auto) {
+        _map.buildFoundation.myFoundation.showWallLevel = WallLevel.hight;
         _switchLevelButtonSprite = _fullWallSprite;
-      } else if (foundation.showWallLevel == WallLevel.hight) {
-        foundation.showWallLevel = WallLevel.low;
+      } else if (_map.buildFoundation.myFoundation.showWallLevel ==
+          WallLevel.hight) {
+        _map.buildFoundation.myFoundation.showWallLevel = WallLevel.low;
         _switchLevelButtonSprite = _lowWallSprite;
-      } else if (foundation.showWallLevel == WallLevel.low) {
-        foundation.showWallLevel = WallLevel.auto;
+      } else if (_map.buildFoundation.myFoundation.showWallLevel ==
+          WallLevel.low) {
+        _map.buildFoundation.myFoundation.showWallLevel = WallLevel.auto;
         _switchLevelButtonSprite = _upstairSprite;
       }
     }
