@@ -1,16 +1,19 @@
+import 'package:BWO/utils/tap_state.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/player/player.dart';
+import '../../../game_controller.dart';
 import '../../../map/map_controller.dart';
 import '../../../ui/hud.dart';
 import '../build_subtools_bar.dart';
 import '../tool_item.dart';
 
 class BuildToolsOptions extends BuildSubToolsBar {
-  Player _player;
   MapController _map;
 
-  BuildToolsOptions(this._player, this._map, HUD hudRef) {
+  String btSelected;
+
+  BuildToolsOptions(this._map, HUD hudRef) {
     buttonList = [
       ToolItem("handsaw", "Delete Wall", hudRef, onDeleteWall),
       ToolItem("cancel", "Cancel", hudRef, onCancelPress),
@@ -21,15 +24,29 @@ class BuildToolsOptions extends BuildSubToolsBar {
   @override
   void draw(Canvas c) {
     super.draw(c);
+
+    if (GameController.tapState == TapState.pressing &&
+        btSelected == 'Delete Wall') {
+      deleteWall();
+    }
   }
 
-  void delete() {
+  void deleteWall() {
     _map.buildFoundation.deleteWall();
   }
 
-  void onDeleteWall(dynamic bt) {}
+  void onDeleteWall(dynamic bt) {
+    selectButtonHighlight(bt);
+    btSelected = bt.name;
+  }
 
-  void onCancelPress(dynamic bt) {}
+  void onCancelPress(dynamic bt) {
+    selectButtonHighlight(bt);
+  }
 
-  void onAccept(dynamic bt) {}
+  void onAccept(dynamic bt) {
+    selectButtonHighlight(bt);
+
+    _map.buildFoundation.myFoundation.save();
+  }
 }

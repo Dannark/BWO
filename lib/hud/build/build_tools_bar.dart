@@ -75,6 +75,7 @@ class BuildToolsBar extends UIElement {
     } else {
       _heightTarget = -15;
       _boxHeight = 72;
+      _subtoolsSelected?.setActive(false);
     }
   }
 
@@ -96,7 +97,7 @@ class BuildToolsBar extends UIElement {
 
   void onWallButtonPressed(ToolItem bt) {
     _selectButtonHightlight(bt);
-    _subtoolsSelected = BuildToolsWall(_player, _map, hudRef);
+    _subtoolsSelected = BuildToolsWall(_map, hudRef);
   }
 
   void onTileFloorPressed(ToolItem bt) {
@@ -111,7 +112,7 @@ class BuildToolsBar extends UIElement {
 
   void onConfigPressed(ToolItem bt) {
     _selectButtonHightlight(bt);
-    _subtoolsSelected = BuildToolsOptions(_player, _map, hudRef);
+    _subtoolsSelected = BuildToolsOptions(_map, hudRef);
   }
 
   void _selectButtonHightlight(ToolItem bt) {

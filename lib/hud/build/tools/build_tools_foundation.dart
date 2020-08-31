@@ -41,7 +41,7 @@ class BuildToolsFoundation extends BuildSubToolsBar {
   }
 
   void onFoundationPress(dynamic bt) {
-    selectButtonHightlight(bt);
+    selectButtonHighlight(bt);
 
     width = 16;
     height = 16;

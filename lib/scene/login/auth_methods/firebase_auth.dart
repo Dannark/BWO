@@ -30,21 +30,20 @@ class FirebaseAuth implements AuthService {
 
       _getVersionNumber();
     });
-    _googleSignIn.signInSilently();
+    //_googleSignIn.signInSilently(); //auto login
+    _handleSignOut();
   }
 
   Future<void> _handleSignIn() async {
     _googleSignIn.isSignedIn().then((isLogged) {
-      if (isLogged == false) {
-        try {
-          _googleSignIn.signIn();
-        } on Exception catch (error) {
-          print(error);
-        }
-      } else {
-        print('You are already logged in, welcome ${mAccount.displayName}');
-        _getVersionNumber();
+      try {
+        _googleSignIn.signIn();
+      } on Exception catch (error) {
+        print(error);
       }
+
+      // print('You are already logged in, welcome ${mAccount?.displayName}');
+      // _getVersionNumber();
     });
   }
 

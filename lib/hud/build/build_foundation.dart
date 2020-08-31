@@ -122,9 +122,8 @@ class BuildFoundation {
     replaceWalls(tmpFoundation, foundationData['walls']);
   }
 
-  void placeWall() {
+  void placeWall(int selectedWall) {
     if (myFoundation == null) return;
-    var selectedWall = 9;
     var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
     myFoundation.addWall(tap.dx, tap.dy, selectedWall);
   }

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../entity/player/player.dart';
+import '../../../game_controller.dart';
 import '../../../map/map_controller.dart';
 import '../../../ui/hud.dart';
+import '../../../utils/tap_state.dart';
 import '../build_subtools_bar.dart';
 import '../tool_item.dart';
 
 class BuildToolsWall extends BuildSubToolsBar {
-  Player _player;
   MapController _map;
 
-  BuildToolsWall(this._player, this._map, HUD hudRef) {
+  int selectedWall = -1;
+
+  BuildToolsWall(this._map, HUD hudRef) {
     buttonList = [
       ToolItem("wall1", "Wall 1", hudRef, onWallPress),
       ToolItem("wall2", "Wall 2", hudRef, onWallPress),
@@ -27,11 +29,30 @@ class BuildToolsWall extends BuildSubToolsBar {
   @override
   void draw(Canvas c) {
     super.draw(c);
+
+    if (GameController.tapState == TapState.pressing) {
+      var tapOnScreen = TapState.currentPosition;
+
+      if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
+          tapOnScreen.dx > 48) {
+        placeWall();
+      }
+    }
   }
 
   void delete() {
     _map.buildFoundation.deleteWall();
   }
 
-  void onWallPress(dynamic bt) {}
+  void onWallPress(dynamic bt) {
+    selectButtonHighlight(bt);
+
+    String idName = bt.spriteName;
+    var id = int.parse(idName.replaceAll("wall", ""));
+    selectedWall = id;
+  }
+
+  void placeWall() {
+    if (selectedWall != -1) _map.buildFoundation.placeWall(selectedWall);
+  }
 }

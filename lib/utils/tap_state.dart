@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -83,6 +84,8 @@ class TapState {
   }
 
   static Offset deltaPosition() {
+    lastPosition = Offset.lerp(
+        lastPosition, currentPosition, GameController.deltaTime * 4);
     return lastPosition - currentPosition;
   }
 

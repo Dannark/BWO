@@ -5,8 +5,7 @@
 An infinity procedural online game using Flutter and flames with NodeJS and Firebase for the back-end.
 
 ![gameplay1](https://user-images.githubusercontent.com/7622553/90344825-b0887000-dff3-11ea-9d1e-eca2ec55af6f.gif)
-![export](https://user-images.githubusercontent.com/7622553/88120935-99906280-cb9a-11ea-9f4a-05c6b5d9ab61.gif)
-![bulding tools](https://user-images.githubusercontent.com/7622553/90987921-239a6500-e565-11ea-92c9-133f4e4f58fd.gif)
+![showcase1](https://user-images.githubusercontent.com/7622553/91732240-59030c00-eb7e-11ea-96e5-2e854e10e597.gif)
 
 ### On the Table
 The world isn't stored in anywhere, it uses some conecpts and rules (`Perlin Noise` and `Simplex Noise`) to generate it equaly in all devices only the changes made by player are actually stored on the server side.
@@ -24,17 +23,17 @@ Hopefully at some point later this year.
     - Navigate to the folder `bwo-server` and run on the console the command `npm install` to install and update all the dependences
 
 2. Launch your own server :
-    2.1 Setup the database if you want to run it Online:
+    - 2.1 Setup the database if you want to run it Online:
         - Create a project and setup your Firebase database and Cloud Firestore on [Google console](console.firebase.google.com)
             - Save the `google-services.json` file in `android\app\`
         - Edit the enviroment variables in `resources/config.js` or set them in your system so the server can connects to your database.
 
-    2.2. Run the Node Server:
+    - 2.2. Run the Node Server:
         - Navigate to the folder `bwo-server` and run on the console the command `npm start` or `node server.js`
             - To specify an environment use `--env=development` or `--env=production` in both case you need to be authenticated in firebase. For localhost use `--env=localhost`
             - To Run test on the Server side run `npm test` (still in development)
 
-    2.3 For the client-side (Android App), Adjust the Server URL in `lib\server\utils\server_utils.dart`
+    - 2.3 For the client-side (Android App), Adjust the Server URL in `lib\server\utils\server_utils.dart`
         - Set your database name `development`, `production`, `localhost`
         - Tip: You can host in gitpod or heroku to launch it alive for free
 

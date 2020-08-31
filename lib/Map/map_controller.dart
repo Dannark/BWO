@@ -235,9 +235,6 @@ class MapController {
   void _findEntitysOnViewport() {
     entitysOnViewport.clear();
 
-    for (var e in entityList) {
-      if (e.marketToBeRemoved) print("deleting ${e.id}");
-    }
     entityList.removeWhere((element) => element.marketToBeRemoved);
 
     //add entities in queuee

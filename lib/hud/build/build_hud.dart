@@ -90,28 +90,11 @@ class BuildHUD extends UIElement {
         _buildToolsBar.setActive(true);
         _buildBtState = BuildButtonState.build;
         _player.canWalk = false;
-      } else if (_buildBtState == BuildButtonState.build) {
-        _buildBtState = BuildButtonState.delete;
-        _player.canWalk = false;
-        _buildToolsBar.setActive(false);
       } else {
         //finish building
         _buildBtState = BuildButtonState.none;
         _player.canWalk = true;
         _buildToolsBar.setActive(false);
-
-        _map.buildFoundation.myFoundation.save();
-      }
-    }
-
-    if (GameController.tapState == TapState.pressing) {
-      if (_buildBtState == BuildButtonState.build) {
-        //clicking anywhere on the map
-        if (TapState.currentClickingAtInside(bRect) == false) {
-          //_map.buildFoundation.placeWall();
-        }
-      } else if (_buildBtState == BuildButtonState.delete) {
-        _map.buildFoundation.deleteWall();
       }
     }
   }
