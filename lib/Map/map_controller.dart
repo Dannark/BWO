@@ -208,14 +208,16 @@ class MapController {
     }
   }
 
-  void addEntity(Entity newEntity) {
+  bool addEntity(Entity newEntity) {
     var foundEntity = _tmpEntitysToBeAdded.firstWhere(
         (element) => element.id == newEntity.id,
         orElse: () => null);
 
     if (foundEntity == null) {
       _tmpEntitysToBeAdded.add(newEntity);
+      return true;
     }
+    return false; //was added
   }
 
   void addPlayerRef(Player player) {
@@ -233,6 +235,9 @@ class MapController {
   void _findEntitysOnViewport() {
     entitysOnViewport.clear();
 
+    for (var e in entityList) {
+      if (e.marketToBeRemoved) print("deleting ${e.id}");
+    }
     entityList.removeWhere((element) => element.marketToBeRemoved);
 
     //add entities in queuee

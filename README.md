@@ -126,8 +126,11 @@ Usecases:
 - [Missing] Code refactoring Server-side and Client-side
 - [Missing] Game Diagram and comments
 
-### Focusing on / Doing Now
-- UI object selection interface
+### 30/08
+* Added Wall windows selector
+* Added Foundation Windows selector, placement area indicator drag, Color indicator when it is safe or not to move
+* Server validations for Foundations
+* UI Build System
 
 ## 28/08
 * Added Wall Placement synchronization over the server. *Finally!:O* (Not saving data yet)

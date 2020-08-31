@@ -4,8 +4,10 @@ import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 
+import 'scene/character_creation/character_creation.dart';
 import 'scene/login/login.dart';
 import 'scene/scene_object.dart';
+import 'server/utils/server_utils.dart';
 import 'ui/keyboard/keyboard_ui.dart';
 import 'utils/preload_assets.dart';
 import 'utils/tap_state.dart';
@@ -29,8 +31,11 @@ class GameController extends Game with PanDetector {
   void _safeStart() {
     if (currentScene == null) {
       KeyboardUI.build();
-      //currentScene = CharacterCreation();
-      currentScene = Login();
+      if (ServerUtils.isOffline) {
+        currentScene = CharacterCreation(null);
+      } else {
+        currentScene = Login();
+      }
     }
   }
 

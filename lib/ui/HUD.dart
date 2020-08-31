@@ -5,6 +5,7 @@ import 'ui_element.dart';
 class HUD {
   bool isActive = true;
   List<UIElement> uiElelements = [];
+  List<UIElement> uiElelementToBeAdded = [];
 
   HUD();
 
@@ -18,10 +19,20 @@ class HUD {
         ui.draw(c);
       }
     }
+
+    _addNewElementsOnSafity();
   }
 
   void addElement(UIElement newUi) {
     newUi.hudRef = this;
-    uiElelements.add(newUi);
+    uiElelementToBeAdded.add(newUi);
+  }
+
+  /// Only add elements after all elements on has been drawn
+  _addNewElementsOnSafity() {
+    for (var newUI in uiElelementToBeAdded) {
+      uiElelements.add(newUI);
+    }
+    uiElelementToBeAdded.clear();
   }
 }

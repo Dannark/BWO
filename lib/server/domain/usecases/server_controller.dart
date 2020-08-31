@@ -48,7 +48,7 @@ class ServerController {
     _repo.setListener("onAddFoundation", _fControl.onFoundationEnterScreen);
   }
 
-  void sendMessage(String tag, dynamic jsonData) {
+  void sendMessage(String tag, dynamic jsonData) async {
     _repo.sendMessage(tag, jsonData);
   }
 

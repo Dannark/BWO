@@ -34,7 +34,7 @@ class BuildHUD extends UIElement {
   BuildHUD(this._player, this._map, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
     loadSprite();
-    _buildToolsBar = BuildToolsBar(hudRef);
+    _buildToolsBar = BuildToolsBar(_player, _map, hudRef);
   }
 
   void loadSprite() async {
@@ -87,22 +87,9 @@ class BuildHUD extends UIElement {
     var bRect = Rect.fromLTWH(bPos.x, bPos.y, 32, 32);
     if (TapState.clickedAt(bRect)) {
       if (_buildBtState == BuildButtonState.none) {
-        dynamic foundationData = {
-          'owner': _player.name,
-          'name': 'Home sweet home',
-          'x': _player.posX - 7,
-          'y': _player.posY - 8,
-          'w': 16,
-          'h': 16,
-          'walls': []
-        };
-        var wasCreated =
-            _map.buildFoundation.createFoundationIfDoesntExists(foundationData);
-        if (wasCreated) {
-          _buildBtState = BuildButtonState.build;
-          _player.canWalk = false;
-          _buildToolsBar.setActive(true);
-        }
+        _buildToolsBar.setActive(true);
+        _buildBtState = BuildButtonState.build;
+        _player.canWalk = false;
       } else if (_buildBtState == BuildButtonState.build) {
         _buildBtState = BuildButtonState.delete;
         _player.canWalk = false;
@@ -121,7 +108,7 @@ class BuildHUD extends UIElement {
       if (_buildBtState == BuildButtonState.build) {
         //clicking anywhere on the map
         if (TapState.currentClickingAtInside(bRect) == false) {
-          _map.buildFoundation.placeWall();
+          //_map.buildFoundation.placeWall();
         }
       } else if (_buildBtState == BuildButtonState.delete) {
         _map.buildFoundation.deleteWall();

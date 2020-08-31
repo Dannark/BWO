@@ -1,37 +1,47 @@
 import 'dart:ui';
 
+import 'package:BWO/hud/build/tools/build_tools_options.dart';
 import 'package:flutter/material.dart';
 
+import '../../entity/player/player.dart';
 import '../../game_controller.dart';
+import '../../map/map_controller.dart';
 import '../../ui/hud.dart';
 import '../../ui/ui_element.dart';
+import 'build_subtools_bar.dart';
 import 'tool_item.dart';
+import 'tools/build_tools_foundation.dart';
+import 'tools/build_tools_walls.dart';
 
 class BuildToolsBar extends UIElement {
   final Paint _p = Paint();
+  final Player _player;
+  final MapController _map;
 
-  double _boxHeight = -64;
-  double _heightTarget = -64;
+  double _boxHeight = -72;
+  double _heightTarget = -72;
 
   bool _isActive = false;
 
   List<ToolItem> buttonList = [];
 
-  BuildToolsBar(HUD hudRef) : super(hudRef) {
+  BuildSubToolsBar _subtoolsSelected;
+
+  BuildToolsBar(this._player, this._map, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
 
-    buttonList.add(ToolItem(
-        "foundation", Offset(-32, -32), hudRef, onFoundationBtPressed,
-        isBtSelected: true));
+    buttonList.add(
+        ToolItem("foundation", "Foundation", hudRef, onFoundationBtPressed));
+    buttonList.add(ToolItem("wall", "Wall", hudRef, onWallButtonPressed));
+    buttonList.add(ToolItem("floor_icon", "Floor", hudRef, onTileFloorPressed));
     buttonList
-        .add(ToolItem("wall", Offset(-32, -32), hudRef, onWallButtonPressed));
-    buttonList.add(
-        ToolItem("floor_icon", Offset(-32, -32), hudRef, onTileFloorPressed));
-    buttonList.add(
-        ToolItem("furniture", Offset(-32, -32), hudRef, onFurniturePressed));
+        .add(ToolItem("furniture", "Furniture", hudRef, onFurniturePressed));
+    buttonList.add(ToolItem("config", "Config", hudRef, onConfigPressed));
   }
 
   void draw(Canvas c) {
+    _subtoolsSelected?.draw(c);
+
     _p.color = Color.fromRGBO(244, 223, 168, 1);
     bounds = Rect.fromLTRB(
       45,
@@ -60,9 +70,11 @@ class BuildToolsBar extends UIElement {
     _isActive = isActive;
 
     if (_isActive) {
-      _heightTarget = 64;
+      _heightTarget = 72;
+      _boxHeight = -15;
     } else {
       _heightTarget = -15;
+      _boxHeight = 72;
     }
   }
 
@@ -78,26 +90,31 @@ class BuildToolsBar extends UIElement {
   }
 
   void onFoundationBtPressed(ToolItem bt) {
-    bt.isSelected = true;
-
-    for (var button in buttonList) {
-      button.isSelected = button == bt;
-    }
+    _selectButtonHightlight(bt);
+    _subtoolsSelected = BuildToolsFoundation(_player, _map, hudRef);
   }
 
   void onWallButtonPressed(ToolItem bt) {
-    for (var button in buttonList) {
-      button.isSelected = button == bt;
-    }
+    _selectButtonHightlight(bt);
+    _subtoolsSelected = BuildToolsWall(_player, _map, hudRef);
   }
 
   void onTileFloorPressed(ToolItem bt) {
-    for (var button in buttonList) {
-      button.isSelected = button == bt;
-    }
+    _selectButtonHightlight(bt);
+    _subtoolsSelected = null;
   }
 
   void onFurniturePressed(ToolItem bt) {
+    _selectButtonHightlight(bt);
+    _subtoolsSelected = null;
+  }
+
+  void onConfigPressed(ToolItem bt) {
+    _selectButtonHightlight(bt);
+    _subtoolsSelected = BuildToolsOptions(_player, _map, hudRef);
+  }
+
+  void _selectButtonHightlight(ToolItem bt) {
     for (var button in buttonList) {
       button.isSelected = button == bt;
     }

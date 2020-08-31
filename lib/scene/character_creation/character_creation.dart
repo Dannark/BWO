@@ -68,6 +68,10 @@ class CharacterCreation extends SceneObject {
   void createCharacter(AuthService auth) {
     var charName = _inputTextUI.getText();
     if (charName.length >= 3) {
+      if (auth == null) {
+        //in locahost mode
+        startGame();
+      }
       auth.isNameAvailable(charName).then((isAvailable) {
         if (isAvailable) {
           auth.createCharacterForUser(charName).then((value) {

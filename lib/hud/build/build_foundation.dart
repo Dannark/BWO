@@ -1,9 +1,13 @@
 import 'dart:math';
 
+import 'package:BWO/map/ground.dart';
+import 'package:http/http.dart' as http;
+
 import '../../entity/player/player.dart';
 import '../../entity/wall/foundation.dart';
 import '../../map/map_controller.dart';
-import '../../scene/game_scene.dart';
+import '../../map/tree.dart';
+import '../../server/utils/server_utils.dart';
 import '../../utils/tap_state.dart';
 
 class BuildFoundation {
@@ -15,8 +19,7 @@ class BuildFoundation {
 
   BuildFoundation(this._player, this._map);
 
-  bool createFoundationIfDoesntExists(dynamic foundationData) {
-    var created = false;
+  void createFoundation(dynamic foundationData, Function(bool) callback) {
     var x = double.parse(foundationData['x'].toString());
     var y = double.parse(foundationData['y'].toString());
     var w = double.parse(foundationData['w'].toString());
@@ -25,30 +28,83 @@ class BuildFoundation {
     var newArea = Rectangle(x, y, w, h);
     var initialArea = Rectangle(-16, -16, 32, 32);
 
-    if (isInsideArea(newArea, initialArea)) {
+    if (isInsideSpecialArea(newArea, initialArea)) {
       print("You can't place your foundation in this location.");
-      return created;
+      callback(false);
+      return;
     }
 
-    //checks if this area is free to be placed
+    //checks if there are any other too close or inside, if not proceed
+    getAllFoundationAround(x.floor(), y.floor(), w.toInt(), h.toInt())
+        .then((isAvailable) {
+      if (isAvailable.body == 'true') {
+        var isValid = checkIfTerrainLocationIsValid(
+            x.floor(), y.floor(), w.toInt(), h.toInt());
+        if (!isValid) return;
 
-    //instantiate
-    instantiateFoundation(foundationData);
-    if (myFoundation != null) {
-      GameScene.serverController.sendMessage('onFoundationAdd', foundationData);
+        instantiateFoundation(foundationData);
+        callback(true);
+      }
+    });
+  }
+
+  bool checkIfTerrainLocationIsValid(int x, int y, int w, int h) {
+    var trees = getAmountOfTreesAround(x, y, w, h);
+
+    if (trees.length > 0) {
+      print("This place if blocked by a Tree. You should remove it first.");
+      return false;
     }
 
+    if (isAboveWater(x, y, w, h)) {
+      print("You can't place foundations above water");
+      return false;
+    }
     return true;
   }
 
-  bool isInsideArea(Rectangle r1, Rectangle r2) {
+  Future<http.Response> getAllFoundationAround(int x, int y, int w, int h) {
+    return http.get('${ServerUtils.server}/foundations/at/$x/$y/$w/$h');
+  }
+
+  bool isInsideSpecialArea(Rectangle r1, Rectangle r2) {
     return r1.intersects(r2);
+  }
+
+  List<dynamic> getAmountOfTreesAround(int left, int top, int w, int h) {
+    var treeList = [];
+    for (var entity in _map.entitysOnViewport) {
+      if (entity is Tree) {
+        if (entity.posX >= left &&
+            entity.posY >= top &&
+            entity.posX <= left + w &&
+            entity.posY <= top + h) {
+          treeList.add(entity);
+        }
+      }
+    }
+
+    return treeList;
+  }
+
+  bool isAboveWater(int left, int top, int w, int h) {
+    var right = left + w;
+    var bottom = top + h;
+    for (var y = top; y < bottom; y++) {
+      for (var x = left; x < right; x++) {
+        if (_map.map[y][x][0].height < Ground.lowWater) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   void updateOrInstantiateFoundation(dynamic foundationData) {
     var foundationExists = checkIfFoundationExists(foundationData);
 
     if (foundationExists != null) {
+      updateBounds(foundationExists, foundationData);
       replaceWalls(foundationExists, foundationData['walls']);
     } else {
       instantiateFoundation(foundationData);
@@ -89,31 +145,24 @@ class BuildFoundation {
     return null;
   }
 
+  void updateBounds(Foundation currentFoundation, dynamic newData) {
+    if (currentFoundation == null) return;
+    currentFoundation.setup(newData);
+  }
+
   void replaceWalls(Foundation currentFoundation, dynamic newWalls) {
     if (currentFoundation == null) return;
 
     for (var wall in currentFoundation.wallList) {
-      var foundWall = newWalls.firstWhere(
-          (element) => (element['x'] == wall.posX && element['y'] == wall.posY),
-          orElse: () => null);
-
-      if (foundWall == null) {
-        wall.destroy();
-      }
+      wall.destroy();
     }
 
     for (var wall in newWalls) {
-      var foundWall = currentFoundation.wallList.firstWhere(
-          (element) => element.posX == wall['x'] && element.posY == wall['y'],
-          orElse: () => null);
+      var x = double.parse(wall['x'].toString());
+      var y = double.parse(wall['y'].toString());
+      var id = int.parse(wall['id'].toString());
 
-      if (foundWall == null) {
-        var x = double.parse(wall['x'].toString());
-        var y = double.parse(wall['y'].toString());
-        var id = int.parse(wall['id'].toString());
-
-        currentFoundation.addWall(x, y, id);
-      }
+      currentFoundation.addWall(x, y, id);
     }
   }
 }

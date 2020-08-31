@@ -12,8 +12,9 @@ class Foundation {
   final MapController _map;
   final Player _player;
   double left, top, width, height;
-  final dynamic foundationData;
+  dynamic foundationData;
   final List<Wall> wallList = [];
+  bool isValidTerrain = true;
 
   Rect bounds = Rect.zero;
 
@@ -24,6 +25,17 @@ class Foundation {
       fontSize: 10.0, color: Colors.blueGrey[700], fontFamily: "Blocktopia");
 
   Foundation(this.foundationData, this._map, this._player) {
+    setup(foundationData);
+  }
+
+  void setup(dynamic mFoundationData) {
+    foundationData = mFoundationData;
+
+    for (var wall in wallList) {
+      wall.destroy();
+    }
+    wallList.clear();
+
     left = double.parse(foundationData['x'].toString());
     top = double.parse(foundationData['y'].toString());
     width = double.parse(foundationData['w'].toString());
@@ -52,15 +64,19 @@ class Foundation {
           orElse: () => null);
 
       if (foundWall == null) {
-        wallList.add(wall);
-        _map.addEntity(wall);
+        if (_map.addEntity(wall)) {
+          //if was added
+          wallList.add(wall);
+        }
+      } else {
+        foundWall.marketToBeRemoved = wall.marketToBeRemoved;
+        foundWall.imageId = wall.imageId;
       }
     }
   }
 
   void save() {
     var foundationObject = fromListToObject();
-    print('saving foundationObject: $foundationObject');
     GameScene.serverController.sendMessage('onFoundationAdd', foundationObject);
   }
 
@@ -96,8 +112,12 @@ class Foundation {
 
   void drawArea(Canvas c) {
     bounds = getBuildingArea();
+    if (isValidTerrain) {
+      p.color = Color.fromRGBO(55, 59, 150, .2);
+    } else {
+      p.color = Color.fromRGBO(203, 43, 49, .2);
+    }
 
-    p.color = Color.fromRGBO(55, 59, 150, .2);
     c.drawRect(bounds, p);
 
     _drawLineGrid(c);
@@ -111,7 +131,7 @@ class Foundation {
       for (var x = 0; x < width; x++) {
         p.strokeWidth = 0.5;
         if (x % 4 == 0 && y % 4 == 0) {
-          p.strokeWidth = 2;
+          p.strokeWidth = 2.5;
         }
         //vertical line
         c.drawLine(
@@ -146,7 +166,7 @@ class Foundation {
     return posX >= left &&
         posX < (left + width) &&
         posY >= top &&
-        posY < (top + height);
+        posY <= (top + height);
   }
 
   void switchWallHeight({bool isBuildingMode = false}) {

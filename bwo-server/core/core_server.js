@@ -38,7 +38,7 @@ export default function startServer (config) {
             socket.emit('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
             sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
-            socket.emit('onAddFoundation', game.foundationController.getAllFoundationsAround(playerId))
+            socket.emit('onAddFoundation', game.foundationController.getAllFoundationsAroundPlayer(playerId))
         })
 
         socket.on('onMove', (command) => {
@@ -52,7 +52,7 @@ export default function startServer (config) {
             if(isReadyToUpdate(lastMoveUpdateTime, 1000)){//send update with limited time
                 lastMoveUpdateTime = moment().format();
                 sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
-                socket.emit('onAddFoundation', game.foundationController.getAllFoundationsAround(playerId))
+                socket.emit('onAddFoundation', game.foundationController.getAllFoundationsAroundPlayer(playerId))
             }
         })
 
@@ -133,6 +133,15 @@ export default function startServer (config) {
         return response.json({
             ...loadLog()
         })
+    })
+    
+    app.get('/foundations/at/:x/:y/:w/:h', (request, response) => {
+        const params = request.params;
+        
+        var founds = game.foundationController.getAllFoundationsAroundPoint(params)
+        var isEmpty = Object.keys(founds).length === 0 && founds.constructor === Object
+
+        return response.send(isEmpty);
     })
 
     server.listen(config.port, () => {
