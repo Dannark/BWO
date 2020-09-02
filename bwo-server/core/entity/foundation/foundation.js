@@ -10,7 +10,7 @@ export function setup(mState, mNotifyAllOnRangeOfPlayer, mNotifyAllOnRangeOfArea
 }
 
 export function addFoundation(command){
-    console.log(`Foundation Added to owner ${command.owner}`);
+    console.log(`Saving Foundation of owner: ${command.owner}`);
     state.foundations[command.owner] = {
         ...command
     }

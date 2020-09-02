@@ -60,7 +60,7 @@ class BuildToolsFoundation extends BuildSubToolsBar {
 
   //create foundation
   void previewFoundation(int posX, int posY) {
-    var x = posX - (width / 2.0).floor() - 1;
+    var x = posX - (width / 2.0).floor();
     var y = posY - (height / 2.0).floor();
 
     dynamic foundationData = {
@@ -70,7 +70,9 @@ class BuildToolsFoundation extends BuildSubToolsBar {
       'y': y,
       'w': width,
       'h': height,
-      'walls': []
+      'walls': [],
+      'floors': [],
+      'furnitures': []
     };
     // _map.buildFoundation.createFoundationIfDoesntExists(foundationData,
     //     (wasCreated) {

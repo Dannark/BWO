@@ -106,6 +106,7 @@ class BuildFoundation {
     if (foundationExists != null) {
       updateBounds(foundationExists, foundationData);
       replaceWalls(foundationExists, foundationData['walls']);
+      replaceFloors(foundationExists, foundationData['floors']);
     } else {
       instantiateFoundation(foundationData);
     }
@@ -120,6 +121,7 @@ class BuildFoundation {
     }
     foundationList.add(tmpFoundation);
     replaceWalls(tmpFoundation, foundationData['walls']);
+    replaceFloors(tmpFoundation, foundationData['floors']);
   }
 
   void placeWall(int selectedWall) {
@@ -162,6 +164,29 @@ class BuildFoundation {
       var id = int.parse(wall['id'].toString());
 
       currentFoundation.addWall(x, y, id);
+    }
+  }
+
+  // ------------------ floors -------------------------------
+  void placeFloor(int selectedFloor) {
+    if (myFoundation == null) return;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    myFoundation.addFloor(tap.dx, tap.dy, selectedFloor);
+  }
+
+  void replaceFloors(Foundation currentFoundation, dynamic newFloors) {
+    if (currentFoundation == null) return;
+
+    currentFoundation.tileList.forEach((key, tile) {
+      tile = null;
+    });
+
+    for (var tile in newFloors) {
+      var x = double.parse(tile['x'].toString());
+      var y = double.parse(tile['y'].toString());
+      var id = int.parse(tile['id'].toString());
+
+      currentFoundation.addFloor(x, y, id);
     }
   }
 }

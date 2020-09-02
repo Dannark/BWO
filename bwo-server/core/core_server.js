@@ -49,7 +49,7 @@ export default function startServer (config) {
             sendMessageIfNotEmpty('onPlayerEnterScreen', game.getAllPlayersAround(playerId))
             socket.emit('onEnemysEnterScreen', game.getAllEnemysAround(playerId))
 
-            if(isReadyToUpdate(lastMoveUpdateTime, 1000)){//send update with limited time
+            if(isReadyToUpdate(lastMoveUpdateTime, 2000)){//send update with limited time
                 lastMoveUpdateTime = moment().format();
                 sendMessageIfNotEmpty('onTreeUpdate', game.treeController.getAllTreesAround(playerId))
                 socket.emit('onAddFoundation', game.foundationController.getAllFoundationsAroundPlayer(playerId))

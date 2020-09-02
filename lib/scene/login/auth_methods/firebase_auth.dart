@@ -31,7 +31,6 @@ class FirebaseAuth implements AuthService {
       _getVersionNumber();
     });
     //_googleSignIn.signInSilently(); //auto login
-    _handleSignOut();
   }
 
   Future<void> _handleSignIn() async {
@@ -45,6 +44,7 @@ class FirebaseAuth implements AuthService {
       // print('You are already logged in, welcome ${mAccount?.displayName}');
       // _getVersionNumber();
     });
+    logout();
   }
 
   Future<void> _handleSignOut() => _googleSignIn.disconnect();

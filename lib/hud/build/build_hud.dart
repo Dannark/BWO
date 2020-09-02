@@ -66,7 +66,7 @@ class BuildHUD extends UIElement {
 
     if (_buildBtState == BuildButtonState.build ||
         _buildBtState == BuildButtonState.delete) {
-      _map.buildFoundation.myFoundation?.drawArea(c);
+      _map.buildFoundation.myFoundation?.drawBuildArea(c);
     }
 
     // Switch level button
@@ -96,6 +96,7 @@ class BuildHUD extends UIElement {
         _player.canWalk = true;
         _buildToolsBar.setActive(false);
       }
+      _map.buildFoundation.myFoundation?.save();
     }
   }
 

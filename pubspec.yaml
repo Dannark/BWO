@@ -120,6 +120,9 @@ flutter:
 
       # walls
       - assets/images/walls/
+      
+      # floors
+      - assets/images/floors/
 
       # sounds
       - assets/audio/

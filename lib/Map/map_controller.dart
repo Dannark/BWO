@@ -170,7 +170,7 @@ class MapController {
       entity.drawEffects(c);
     }
     for (var entity in entitysOnViewport) {
-      entity.draw(c);
+      if (!entity.marketToBeRemoved) entity.draw(c);
     }
 
     c.restore();

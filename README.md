@@ -37,8 +37,9 @@ Hopefully at some point later this year.
         - Set your database name `development`, `production`, `localhost`
         - Tip: You can host in gitpod or heroku to launch it alive for free
 
-3. If you do not want to configure your own server and just want to run the game:
+3. If you do not want to configure your own server and just want to run the game: (Localhost)
     - Make sure to adjust the `server` variable URL in `lib\server\utils\server_utils.dart` to `https://borderless-world.herokuapp.com`
+    - Make sure to adjust the `isOffline` variable in `lib\server\utils\server_utils.dart` to `true`
 
 4. Launch the app on your device
     - Left tap on screen = walk
@@ -102,12 +103,16 @@ Usecases:
     - [x] Wall placements
     - [x] Auto/Toggle wall tall level
     - [x] Delete Foundations
-    - [ ] UI object selection interface
-    - [ ] Ground Tiles
+    - [x] UI object selection interface
+    - [x] Ground Tiles
     - [ ] Animated Doors
     - [ ] Static objects like Windows, furnitures and so on
-    - [ ] Craft or buying system
+    - [x] Craft or buying system
     - [ ] Sync building to the server
+        - [x] Walls
+        - [x] floors
+        - [ ] furnitures
+    - [ ] Save/backup Foundation/House from server to firebase
 * [-] Interfaces
     * [ ] Create Account UI
     * [x] Character Creation UI
@@ -124,6 +129,11 @@ Usecases:
 - [Missing] life time to enemies so they will die normally (to not overpopulate the server)
 - [Missing] Code refactoring Server-side and Client-side
 - [Missing] Game Diagram and comments
+
+* For the next releases, i will be focusing on performance `improvements`
+
+### 01/09
+* Added Floor to build system
 
 ### 30/08
 * Added Wall windows selector

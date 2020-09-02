@@ -53,7 +53,7 @@ abstract class Entity extends PhysicsEntity {
   }
 
   void update() {
-    if (!isActive) {
+    if (!isActive || marketToBeRemoved) {
       return;
     }
     var walkSpeed = max(inputSpeed.dx.abs(), inputSpeed.dy.abs());

@@ -1,3 +1,5 @@
+import 'package:BWO/map/ground.dart';
+import 'package:BWO/map/tile.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ class Foundation {
   double left, top, width, height;
   dynamic foundationData;
   final List<Wall> wallList = [];
+  final Map<String, Tile> tileList = {};
   bool isValidTerrain = true;
 
   Rect bounds = Rect.zero;
@@ -73,6 +76,8 @@ class Foundation {
         foundWall.imageId = wall.imageId;
       }
     }
+
+    switchWallHeight();
   }
 
   void save() {
@@ -88,12 +93,18 @@ class Foundation {
       'y': foundationData['y'],
       'w': foundationData['w'],
       'h': foundationData['h'],
-      'walls': []
+      'walls': [],
+      'floors': [],
+      'furnitures': []
     };
 
     for (var item in wallList) {
       finalObject["walls"] = [...finalObject["walls"], item.toObject()];
     }
+    tileList.forEach((key, value) {
+      finalObject["floors"] = [...finalObject["floors"], value.toObject()];
+    });
+
     return finalObject;
   }
 
@@ -110,7 +121,20 @@ class Foundation {
     }
   }
 
-  void drawArea(Canvas c) {
+  void addFloor(double x, double y, int imgId) {
+    if (isInsideFoundation(x, y)) {
+      var posX = x.floor();
+      var posY = y.floor();
+
+      var t = Tile(posX, posY, Ground.lowGrass, 16, null,
+          tileSpritePath: 'floors/floor$imgId.png', idImg: imgId);
+      tileList['_${posX}_$posY'] = t;
+
+      _map.map[posY][posX][0] = t;
+    }
+  }
+
+  void drawBuildArea(Canvas c) {
     bounds = getBuildingArea();
     if (isValidTerrain) {
       p.color = Color.fromRGBO(55, 59, 150, .2);

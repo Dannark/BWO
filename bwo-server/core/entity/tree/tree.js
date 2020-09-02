@@ -41,8 +41,8 @@ export function hitTree(command) {
 
 export function getAllTreesAround(playerId) {
     var mPlayer = state.players[playerId]
-    var width = 400
-    var height = 600
+    var width = 500
+    var height = 700
 
     var treesArray = Object.entries(state.trees).filter((tree) => {
         var previousTime = tree[1].last_damage_stamp;

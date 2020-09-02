@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:BWO/hud/build/tools/build_tools_floors.dart';
 import 'package:BWO/hud/build/tools/build_tools_options.dart';
 import 'package:flutter/material.dart';
 
@@ -76,6 +77,11 @@ class BuildToolsBar extends UIElement {
       _heightTarget = -15;
       _boxHeight = 72;
       _subtoolsSelected?.setActive(false);
+      _subtoolsSelected = null;
+
+      for (var button in buttonList) {
+        button.isSelected = false;
+      }
     }
   }
 
@@ -102,7 +108,7 @@ class BuildToolsBar extends UIElement {
 
   void onTileFloorPressed(ToolItem bt) {
     _selectButtonHightlight(bt);
-    _subtoolsSelected = null;
+    _subtoolsSelected = BuildToolsFloors(_map, hudRef);
   }
 
   void onFurniturePressed(ToolItem bt) {
