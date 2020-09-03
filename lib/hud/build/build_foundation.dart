@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:BWO/map/ground.dart';
+import 'package:BWO/utils/timer_helper.dart';
 import 'package:http/http.dart' as http;
 
 import '../../entity/player/player.dart';
@@ -100,7 +101,7 @@ class BuildFoundation {
     return false;
   }
 
-  void updateOrInstantiateFoundation(dynamic foundationData) {
+  void updateOrInstantiateFoundation(dynamic foundationData) async {
     var foundationExists = checkIfFoundationExists(foundationData);
 
     if (foundationExists != null) {
@@ -147,12 +148,16 @@ class BuildFoundation {
   }
 
   void updateBounds(Foundation currentFoundation, dynamic newData) {
+    TimerHelper.register();
     if (currentFoundation == null) return;
     currentFoundation.setup(newData);
+    TimerHelper.logDelayPassed('updateBounds:');
   }
 
   void replaceWalls(Foundation currentFoundation, dynamic newWalls) {
     if (currentFoundation == null) return;
+
+    TimerHelper.register();
 
     for (var wall in currentFoundation.wallList) {
       wall.destroy();
@@ -165,6 +170,8 @@ class BuildFoundation {
 
       currentFoundation.addWall(x, y, id);
     }
+
+    TimerHelper.logDelayPassed('replaceWalls:[2]');
   }
 
   // ------------------ floors -------------------------------

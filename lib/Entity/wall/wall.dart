@@ -1,3 +1,4 @@
+import 'package:BWO/utils/preload_assets.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ class Wall extends Entity {
   }
 
   void loadSprite() async {
+    //sprite = PreloadAssets.getWallSprite(_imgPath);
+    //lowSprite = PreloadAssets.getWallSprite(_imgPath);
     sprite = await Sprite.loadSprite('walls/$_imgPath');
     lowSprite = await Sprite.loadSprite('walls/low_$_imgPath');
   }

@@ -167,7 +167,7 @@ class MapController {
 
     //drawShadowns behind all elements
     for (var entity in entitysOnViewport) {
-      entity.drawEffects(c);
+      if (!entity.marketToBeRemoved) entity.drawEffects(c);
     }
     for (var entity in entitysOnViewport) {
       if (!entity.marketToBeRemoved) entity.draw(c);

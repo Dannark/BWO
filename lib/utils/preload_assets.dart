@@ -26,6 +26,17 @@ class PreloadAssets {
 
   static final Map<String, SpriteBatch> _trees = {};
 
+  static final Map<String, Sprite> _wallSpriteList = {
+    "wall1": Sprite("walls/wall1.png"),
+    "wall2": Sprite("walls/wall2.png"),
+    "wall3": Sprite("walls/wall3.png"),
+    "wall4": Sprite("walls/wall4.png"),
+    "wall5": Sprite("walls/wall5.png"),
+    "wall6": Sprite("walls/wall6.png"),
+    "wall7": Sprite("walls/wall7.png"),
+    "wall8": Sprite("walls/wall8.png"),
+  };
+
   PreloadAssets() {
     loadSprites();
   }
@@ -48,5 +59,9 @@ class PreloadAssets {
 
   static SpriteBatch getTreeSprite(String tree) {
     return _trees[tree];
+  }
+
+  static Sprite getWallSprite(String floor) {
+    return _wallSpriteList[floor];
   }
 }

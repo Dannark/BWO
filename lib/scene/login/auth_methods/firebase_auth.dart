@@ -30,7 +30,8 @@ class FirebaseAuth implements AuthService {
 
       _getVersionNumber();
     });
-    //_googleSignIn.signInSilently(); //auto login
+    _googleSignIn.signInSilently(); //auto login
+    //logout(); // force login
   }
 
   Future<void> _handleSignIn() async {
@@ -44,7 +45,6 @@ class FirebaseAuth implements AuthService {
       // print('You are already logged in, welcome ${mAccount?.displayName}');
       // _getVersionNumber();
     });
-    logout();
   }
 
   Future<void> _handleSignOut() => _googleSignIn.disconnect();
@@ -66,6 +66,7 @@ class FirebaseAuth implements AuthService {
       } else {
         print(
             """Sorry App is out of date. App Version is: $appVersion server version is: ${snapshot.value}""");
+        logout();
       }
     });
   }
