@@ -5,6 +5,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
+import '../utils/preload_assets.dart';
 
 class RippleWaterEffect {
   double animSpeed = 1;
@@ -39,10 +40,11 @@ class Ripple {
 
   Paint p = Paint();
 
-  Sprite ripple = Sprite("effects/ripple.png");
+  Sprite ripple;
 
   Ripple(this.x, this.y) {
     lifeTime = GameController.time + 4;
+    ripple = PreloadAssets.getEffectSprite('ripple');
   }
 
   void draw(Canvas c, double animSpeed) {

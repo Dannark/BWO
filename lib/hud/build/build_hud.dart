@@ -79,7 +79,7 @@ class BuildHUD extends UIElement {
       _switchLevelButtonSprite?.renderScaled(c, sPos, scale: 2);
       var isBuildingMode = _buildBtState != BuildButtonState.none;
       _map.buildFoundation.myFoundation
-          ?.switchWallHeight(isBuildingMode: isBuildingMode);
+          ?.switchWallHeightAll(isBuildingMode: isBuildingMode);
     }
   }
 

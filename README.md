@@ -132,6 +132,9 @@ Usecases:
 
 * For the next releases, i will be focusing on performance `improvements`
 
+### 03/09
+* Fixed some performances issues when updating walls
+
 ### 01/09
 * Added Floor to build system
 

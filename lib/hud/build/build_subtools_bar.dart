@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:BWO/utils/tap_state.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
+import '../../utils/tap_state.dart';
 import 'tool_item.dart';
 
 class BuildSubToolsBar {

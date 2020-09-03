@@ -208,16 +208,8 @@ class MapController {
     }
   }
 
-  bool addEntity(Entity newEntity) {
-    var foundEntity = _tmpEntitysToBeAdded.firstWhere(
-        (element) => element.id == newEntity.id,
-        orElse: () => null);
-
-    if (foundEntity == null) {
-      _tmpEntitysToBeAdded.add(newEntity);
-      return true;
-    }
-    return false; //was added
+  void addEntity(Entity newEntity) {
+    _tmpEntitysToBeAdded.add(newEntity);
   }
 
   void addPlayerRef(Player player) {

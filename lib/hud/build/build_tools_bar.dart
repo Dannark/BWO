@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:BWO/hud/build/tools/build_tools_floors.dart';
-import 'package:BWO/hud/build/tools/build_tools_options.dart';
 import 'package:flutter/material.dart';
 
 import '../../entity/player/player.dart';
@@ -11,7 +9,9 @@ import '../../ui/hud.dart';
 import '../../ui/ui_element.dart';
 import 'build_subtools_bar.dart';
 import 'tool_item.dart';
+import 'tools/build_tools_floors.dart';
 import 'tools/build_tools_foundation.dart';
+import 'tools/build_tools_options.dart';
 import 'tools/build_tools_walls.dart';
 
 class BuildToolsBar extends UIElement {

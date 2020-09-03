@@ -1,8 +1,8 @@
-import 'package:BWO/utils/preload_assets.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/preload_assets.dart';
 import '../entity.dart';
 
 class Wall extends Entity {
@@ -21,18 +21,19 @@ class Wall extends Entity {
     loadSprite();
 
     shadownSize = 1;
-    shadownLarge = Sprite("shadown_square.png");
+    shadownLarge = PreloadAssets.getEffectSprite('shadown_square');
+    //shadownLarge = Sprite("shadown_square.png");
     shadownOffset = Offset(0, 14);
 
     height = (zoom * 16) * 5;
     id = '_${newPosX.floor()}_${posY.ceil()}';
   }
 
-  void loadSprite() async {
-    //sprite = PreloadAssets.getWallSprite(_imgPath);
-    //lowSprite = PreloadAssets.getWallSprite(_imgPath);
-    sprite = await Sprite.loadSprite('walls/$_imgPath');
-    lowSprite = await Sprite.loadSprite('walls/low_$_imgPath');
+  void loadSprite() {
+    sprite = PreloadAssets.getWallSprite(_imgPath);
+    lowSprite = PreloadAssets.getWallSprite('low_$_imgPath');
+    //sprite = await Sprite.loadSprite('walls/$_imgPath');
+    //lowSprite = await Sprite.loadSprite('walls/low_$_imgPath');
   }
 
   void draw(Canvas c) {
@@ -51,7 +52,7 @@ class Wall extends Entity {
   }
 
   String getImageId(int imageId) {
-    return 'wall$imageId.png';
+    return 'wall$imageId'; //'wall$imageId.png';
   }
 
   @override

@@ -8,6 +8,7 @@ import '../effects/damage_effect.dart';
 import '../effects/ripple_water_effect.dart';
 import '../effects/walk_effect.dart';
 import '../scene/game_scene.dart';
+import '../utils/preload_assets.dart';
 import 'physics_entity.dart';
 import 'player/player.dart';
 import 'status.dart';
@@ -36,7 +37,7 @@ abstract class Entity extends PhysicsEntity {
   Paint p = Paint();
 
   double shadownSize = 2;
-  Sprite shadownLarge = Sprite("shadown_large.png");
+  Sprite shadownLarge;
   Offset shadownOffset = Offset.zero;
   final RippleWaterEffect _rippleWaterEffect = RippleWaterEffect();
   final WalkEffect _walkEffect = WalkEffect();
@@ -45,6 +46,7 @@ abstract class Entity extends PhysicsEntity {
   Entity(double x, double y) : super(x, y) {
     worldSize = GameScene.worldSize.toDouble();
 
+    shadownLarge = PreloadAssets.getEffectSprite('shadown_large');
     updatePhysics();
   }
 

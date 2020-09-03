@@ -35,6 +35,20 @@ class PreloadAssets {
     "wall6": Sprite("walls/wall6.png"),
     "wall7": Sprite("walls/wall7.png"),
     "wall8": Sprite("walls/wall8.png"),
+    "low_wall1": Sprite("walls/low_wall1.png"),
+    "low_wall2": Sprite("walls/low_wall2.png"),
+    "low_wall3": Sprite("walls/low_wall3.png"),
+    "low_wall4": Sprite("walls/low_wall4.png"),
+    "low_wall5": Sprite("walls/low_wall5.png"),
+    "low_wall6": Sprite("walls/low_wall6.png"),
+    "low_wall7": Sprite("walls/low_wall7.png"),
+    "low_wall8": Sprite("walls/low_wall8.png"),
+  };
+
+  static final Map<String, Sprite> _effects = {
+    "shadown_large": Sprite("shadown_large.png"),
+    "shadown_square": Sprite("shadown_square.png"),
+    "ripple": Sprite("effects/ripple.png"),
   };
 
   PreloadAssets() {
@@ -63,5 +77,9 @@ class PreloadAssets {
 
   static Sprite getWallSprite(String floor) {
     return _wallSpriteList[floor];
+  }
+
+  static Sprite getEffectSprite(String effect) {
+    return _effects[effect];
   }
 }

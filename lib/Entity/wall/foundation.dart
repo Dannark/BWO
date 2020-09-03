@@ -1,10 +1,10 @@
-import 'package:BWO/map/ground.dart';
-import 'package:BWO/map/tile.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
+import '../../map/ground.dart';
 import '../../map/map_controller.dart';
+import '../../map/tile.dart';
 import '../../scene/game_scene.dart';
 import '../../utils/tap_state.dart';
 import '../player/player.dart';
@@ -15,7 +15,8 @@ class Foundation {
   final Player _player;
   double left, top, width, height;
   dynamic foundationData;
-  final List<Wall> wallList = [];
+  //final List<Wall> wallList = [];
+  final Map<String, Wall> wallList = {};
   final Map<String, Tile> tileList = {};
   bool isValidTerrain = true;
 
@@ -34,25 +35,25 @@ class Foundation {
   void setup(dynamic mFoundationData) {
     foundationData = mFoundationData;
 
-    for (var wall in wallList) {
-      wall.destroy();
-    }
+    wallList.forEach((key, value) {
+      value.destroy();
+    });
     wallList.clear();
 
-    left = double.parse(foundationData['x'].toString());
-    top = double.parse(foundationData['y'].toString());
-    width = double.parse(foundationData['w'].toString());
-    height = double.parse(foundationData['h'].toString());
+    left = foundationData['x'].toDouble();
+    top = foundationData['y'].toDouble();
+    width = foundationData['w'].toDouble();
+    height = foundationData['h'].toDouble();
 
     var wallDataList = foundationData['walls'];
 
     for (var data in wallDataList) {
-      var x = double.parse(data['x'].toString());
-      var y = double.parse(data['y'].toString());
-      var imgId = int.parse(data['id'].toString());
+      var x = data['x'].toDouble();
+      var y = data['y'].toDouble();
+      var imgId = data['id'];
 
       var wall = Wall(x, y, imgId);
-      wallList.add(wall);
+      wallList['_${wall.posX}_${wall.posY}'] = wall;
       _map.addEntity(wall);
     }
 
@@ -62,22 +63,18 @@ class Foundation {
   void addWall(double x, double y, int imgId) {
     if (isInsideFoundation(x, y)) {
       var wall = Wall(x, y, imgId);
+      switchWallHeight(wall);
 
-      var foundWall = wallList.firstWhere((element) => element.id == wall.id,
-          orElse: () => null);
+      var foundWall = wallList[wall.id];
 
       if (foundWall == null) {
-        if (_map.addEntity(wall)) {
-          //if was added
-          wallList.add(wall);
-        }
+        _map.addEntity(wall);
+        wallList['_${wall.posX}_${wall.posY}'] = wall;
       } else {
         foundWall.marketToBeRemoved = wall.marketToBeRemoved;
         foundWall.imageId = wall.imageId;
       }
     }
-
-    switchWallHeight();
   }
 
   void save() {
@@ -98,9 +95,10 @@ class Foundation {
       'furnitures': []
     };
 
-    for (var item in wallList) {
+    wallList.forEach((key, item) {
       finalObject["walls"] = [...finalObject["walls"], item.toObject()];
-    }
+    });
+
     tileList.forEach((key, value) {
       finalObject["floors"] = [...finalObject["floors"], value.toObject()];
     });
@@ -111,8 +109,8 @@ class Foundation {
   void deleteWall(double x, double y) {
     if (isInsideFoundation(x, y)) {
       var wall = Wall(x, y, 1);
-      var foundWall = wallList.firstWhere((element) => element.id == wall.id,
-          orElse: () => null);
+
+      var foundWall = wallList[wall.id];
 
       if (foundWall != null) {
         wallList.remove(foundWall);
@@ -193,30 +191,34 @@ class Foundation {
         posY <= (top + height);
   }
 
-  void switchWallHeight({bool isBuildingMode = false}) {
-    for (var wall in wallList) {
-      if (showWallLevel == WallLevel.auto) {
-        if (isInsideFoundation(
-            _player.posX.toDouble(), _player.posY.toDouble())) {
-          var leftRow = left.floor() == wall.posX;
-          var rightRow = (left.ceil() + width - 1) == wall.posX;
-          var topLine = (top + 1).floor() == wall.posY;
+  void switchWallHeightAll({bool isBuildingMode = false}) {
+    wallList.forEach((key, wall) {
+      switchWallHeight(wall);
+    });
+  }
 
-          if (leftRow || rightRow || topLine) {
-            wall.showLow = false;
-          } else {
-            wall.showLow = true;
-          }
-        } else {
+  void switchWallHeight(Wall wall, {bool isBuildingMode = false}) {
+    if (showWallLevel == WallLevel.auto) {
+      if (isInsideFoundation(
+          _player.posX.toDouble(), _player.posY.toDouble())) {
+        var leftRow = left.floor() == wall.posX;
+        var rightRow = (left.ceil() + width - 1) == wall.posX;
+        var topLine = (top + 1).floor() == wall.posY;
+
+        if (leftRow || rightRow || topLine) {
           wall.showLow = false;
+        } else {
+          wall.showLow = true;
         }
-      } else if (showWallLevel == WallLevel.hight) {
-        wall.showLow = false;
       } else {
-        wall.showLow = true;
+        wall.showLow = false;
       }
-
-      wall.showCollisionBox = isBuildingMode;
+    } else if (showWallLevel == WallLevel.hight) {
+      wall.showLow = false;
+    } else {
+      wall.showLow = true;
     }
+
+    wall.showCollisionBox = isBuildingMode;
   }
 }

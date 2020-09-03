@@ -1,15 +1,15 @@
 import 'dart:math';
 
-import 'package:BWO/map/ground.dart';
-import 'package:BWO/utils/timer_helper.dart';
 import 'package:http/http.dart' as http;
 
 import '../../entity/player/player.dart';
 import '../../entity/wall/foundation.dart';
+import '../../map/ground.dart';
 import '../../map/map_controller.dart';
 import '../../map/tree.dart';
 import '../../server/utils/server_utils.dart';
 import '../../utils/tap_state.dart';
+import '../../utils/timer_helper.dart';
 
 class BuildFoundation {
   final Player _player;
@@ -101,7 +101,8 @@ class BuildFoundation {
     return false;
   }
 
-  void updateOrInstantiateFoundation(dynamic foundationData) async {
+  void updateOrInstantiateFoundation(dynamic foundationData) {
+    print('updateOrInstantiateFoundation');
     var foundationExists = checkIfFoundationExists(foundationData);
 
     if (foundationExists != null) {
@@ -114,6 +115,7 @@ class BuildFoundation {
   }
 
   void instantiateFoundation(dynamic foundationData) {
+    print('instantiateFoundation');
     var tmpFoundation = Foundation(foundationData, _map, _player);
     if (myFoundation == null) {
       if (foundationData['owner'] == _player.name) {
@@ -148,30 +150,51 @@ class BuildFoundation {
   }
 
   void updateBounds(Foundation currentFoundation, dynamic newData) {
-    TimerHelper.register();
     if (currentFoundation == null) return;
-    currentFoundation.setup(newData);
-    TimerHelper.logDelayPassed('updateBounds:');
+    var t = TimerHelper();
+    var x = currentFoundation.foundationData['x'];
+    var y = currentFoundation.foundationData['y'];
+    var w = currentFoundation.foundationData['w'];
+    var h = currentFoundation.foundationData['h'];
+    if (x != newData['x'] ||
+        y != newData['y'] ||
+        w != newData['w'] ||
+        h != newData['h']) {
+      currentFoundation.setup(newData);
+    } else {
+      print('no need to update bounds');
+    }
+    t.logDelayPassed('updateBounds:');
   }
 
-  void replaceWalls(Foundation currentFoundation, dynamic newWalls) {
+  void replaceWalls(Foundation currentFoundation, dynamic newWalls) async {
     if (currentFoundation == null) return;
+    var t = TimerHelper();
 
-    TimerHelper.register();
-
-    for (var wall in currentFoundation.wallList) {
+    currentFoundation.wallList.forEach((key, wall) {
       wall.destroy();
-    }
+    });
 
     for (var wall in newWalls) {
-      var x = double.parse(wall['x'].toString());
-      var y = double.parse(wall['y'].toString());
-      var id = int.parse(wall['id'].toString());
+      var x = wall['x'].toDouble();
+      var y = wall['y'].toDouble();
+      var id = wall['id'];
 
       currentFoundation.addWall(x, y, id);
     }
+    //print(currentFoundation.wallList);
 
-    TimerHelper.logDelayPassed('replaceWalls:[2]');
+    // for (var wall in newWalls) {
+    //   var objId = '_${wall['x']}_${wall['y']}';
+    //   var wallAlreadyOnMap = currentFoundation.wallList[objId];
+
+    //   if (wallAlreadyOnMap != null) {
+    //     wallAlreadyOnMap.updateWith(wall);
+    //   } else {
+    //     wall.destroy();
+    //   }
+    // }
+    t.logDelayPassed('replaceWalls:', ifGreaterThan: 0);
   }
 
   // ------------------ floors -------------------------------

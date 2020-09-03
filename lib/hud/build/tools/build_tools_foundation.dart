@@ -1,16 +1,16 @@
-import 'package:BWO/utils/tap_state.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/player/player.dart';
 import '../../../game_controller.dart';
 import '../../../map/map_controller.dart';
 import '../../../ui/hud.dart';
+import '../../../utils/tap_state.dart';
 import '../build_subtools_bar.dart';
 import '../tool_item.dart';
 
 class BuildToolsFoundation extends BuildSubToolsBar {
-  Player _player;
-  MapController _map;
+  final Player _player;
+  final MapController _map;
 
   int width = 16;
   int height = 16;

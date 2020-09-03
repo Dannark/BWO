@@ -8,7 +8,7 @@ import '../build_subtools_bar.dart';
 import '../tool_item.dart';
 
 class BuildToolsOptions extends BuildSubToolsBar {
-  MapController _map;
+  final MapController _map;
 
   String btSelected;
 
