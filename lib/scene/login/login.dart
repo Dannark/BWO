@@ -67,19 +67,15 @@ class Login extends SceneObject {
       c,
       """Hello Adventures!\n
 It's a pleasure to finnaly announce
-this beta test release. v$_versionName!
+this pre-before-alpha test release. v$_versionName!
 
-BWO is more than just a mini project 
-to me, in my eyes it is like a young 
-kid that constantly needs our support 
-to grow up. It not only taught me a 
-lot about infrastructure CI/CD, 
-performance, sockets, serverless etc, 
-But also gave me the strongness to 
-never give up of our dreams. If we 
-can reach our goal in the time given 
-than i feel like nothing is impossible
-with focus and persistence.
+Blah blah blah.. lorem ipsum...
+I don't know yet how i'm going
+to Make this screen, So until
+then, it will show updates notes
+:). Oh BTW I know this Text
+is not Correctly positioned 
+on your screen yet. hehe.
 
 I thanks you all for the support.
 By Dannark""",

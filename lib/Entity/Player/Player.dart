@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:BWO/utils/preload_assets.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
@@ -31,7 +32,7 @@ class Player extends Entity implements OnAnimationEnd {
   SpriteController walkSprites;
   SpriteController attackSprites;
   SpriteController currentSprite;
-  final Sprite _deathSprite = Sprite("effects/rip.png");
+  Sprite _deathSprite;
   double _timeToRespawn = 0;
 
   PlayerActions playerActions;
@@ -122,7 +123,7 @@ class Player extends Entity implements OnAnimationEnd {
   void die(Canvas c) {
     if (status.isAlive() == false) {
       isActive = false;
-      _deathSprite.renderScaled(c, Position(x - 16, y - 32), scale: 2);
+      _deathSprite?.renderScaled(c, Position(x - 16, y - 32), scale: 2);
 
       if (!isMine) return;
 
@@ -174,6 +175,7 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   void _loadSprites() {
+    _deathSprite = PreloadAssets.getEffectSprite('rip');
     var _viewPort = Rect.fromLTWH(0, 0, 16, 16);
     var _pivot = Offset(8, 16);
     var _scale = 3.0;

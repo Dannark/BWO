@@ -1,3 +1,4 @@
+import 'package:BWO/utils/preload_assets.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class Tile {
   }
 
   void loadSprite(String path) async {
-    if (path != null) tileSprite = Sprite(path);
+    if (path != null) tileSprite = PreloadAssets.getFloorSprite(path);
   }
 
   void draw(Canvas c) {

@@ -17,6 +17,10 @@ This project is still in development and it doesnt have many features yet.
 ### Release Date?
 Hopefully at some point later this year.
 
+## Game Diagram, Structure and Comments
+[![BWO](https://user-images.githubusercontent.com/7622553/92182369-f3cf4500-ee21-11ea-96e5-08a1735f96d8.png)](https://whimsical.com/CkYzWZKNNz5is2GY4Y2yDY@2Ux7TurymMxHuu3kArnA)
+For more detail access [Whimsical Diagram Page](https://whimsical.com/CkYzWZKNNz5is2GY4Y2yDY@2Ux7TurymMxHuu3kArnA) to see the comments in each node.
+
 ## Instructions:
 1. Requirements
     - The [NPM and NodeJS](https://www.npmjs.com/get-npm) installed on your system
@@ -114,23 +118,26 @@ Usecases:
         - [ ] furnitures
     - [ ] Save/backup Foundation/House from server to firebase
 * [-] Interfaces
-    * [ ] Create Account UI
+    * [x] Create Account UI
     * [x] Character Creation UI
-    * [ ] Login UI
+    * [x] Login UI
     * [ ] Equipments UI
 * [ ] Change background music Volume dynamic
-* [ ] Add NoSQL database
+* [x] Firebase to backup server state
+* [x] Handle users login on database
 * [ ] Biomes
 * [ ] Dynamic bundle and CI/CD for playstore
 * [ ] Global Chat System
+* [x] UML Diagram for Development
 
-### Know Problems / Missing
+### Know Problems
 - Sometimes slipping a too much when receiving walks updates
-- [Missing] life time to enemies so they will die normally (to not overpopulate the server)
-- [Missing] Code refactoring Server-side and Client-side
-- [Missing] Game Diagram and comments
 
-* For the next releases, i will be focusing on performance `improvements`
+### Doing now
+* Focusing on performance `improvements`
+* Build systems tests
+
+## 04/09
 
 ### 03/09
 * Fixed some performances issues when updating walls

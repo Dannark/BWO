@@ -194,7 +194,7 @@ class BuildFoundation {
     //     wall.destroy();
     //   }
     // }
-    t.logDelayPassed('replaceWalls:', ifGreaterThan: 0);
+    t.logDelayPassed('replaceWalls:');
   }
 
   // ------------------ floors -------------------------------

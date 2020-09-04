@@ -125,7 +125,7 @@ class Foundation {
       var posY = y.floor();
 
       var t = Tile(posX, posY, Ground.lowGrass, 16, null,
-          tileSpritePath: 'floors/floor$imgId.png', idImg: imgId);
+          tileSpritePath: 'floor$imgId', idImg: imgId);
       tileList['_${posX}_$posY'] = t;
 
       _map.map[posY][posX][0] = t;

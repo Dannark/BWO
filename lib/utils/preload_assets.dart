@@ -45,10 +45,16 @@ class PreloadAssets {
     "low_wall8": Sprite("walls/low_wall8.png"),
   };
 
+  static final Map<String, Sprite> _floorSpriteList = {
+    "floor1": Sprite("floors/floor1.png"),
+    "floor2": Sprite("floors/floor2.png"),
+  };
+
   static final Map<String, Sprite> _effects = {
     "shadown_large": Sprite("shadown_large.png"),
     "shadown_square": Sprite("shadown_square.png"),
     "ripple": Sprite("effects/ripple.png"),
+    "rip": Sprite("effects/rip.png"),
   };
 
   PreloadAssets() {
@@ -75,8 +81,12 @@ class PreloadAssets {
     return _trees[tree];
   }
 
-  static Sprite getWallSprite(String floor) {
-    return _wallSpriteList[floor];
+  static Sprite getWallSprite(String wall) {
+    return _wallSpriteList[wall];
+  }
+
+  static Sprite getFloorSprite(String floor) {
+    return _floorSpriteList[floor];
   }
 
   static Sprite getEffectSprite(String effect) {
