@@ -21,6 +21,7 @@ class BuildToolsFoundation extends BuildSubToolsBar {
       ToolItem("foundation", "16x8", hudRef, onFoundationPress),
       ToolItem("foundation", "16x16", hudRef, onFoundationPress),
       ToolItem("foundation", "24x16", hudRef, onFoundationPress),
+      ToolItem("foundation", "24x24", hudRef, onFoundationPress),
     ];
   }
 
@@ -33,8 +34,11 @@ class BuildToolsFoundation extends BuildSubToolsBar {
           TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
       var tapOnScreen = TapState.currentPosition;
 
+      var verticalBarButtons =
+          Rect.fromLTWH(0, GameController.screenSize.height - 235, 48, 235);
+
       if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
-          tapOnScreen.dx > 48) {
+          TapState.currentClickingAtInside(verticalBarButtons) == false) {
         previewFoundation(tapOnWorld.dx.floor() + 1, tapOnWorld.dy.floor());
       }
     }
@@ -50,11 +54,13 @@ class BuildToolsFoundation extends BuildSubToolsBar {
     width = bt.name == '16x8' ? 16 : width;
     width = bt.name == '16x16' ? 16 : width;
     width = bt.name == '24x16' ? 24 : width;
+    width = bt.name == '24x24' ? 24 : width;
 
     height = bt.name == '8x8' ? 8 : height;
     height = bt.name == '16x8' ? 8 : height;
     height = bt.name == '16x16' ? 16 : height;
     height = bt.name == '24x16' ? 16 : height;
+    height = bt.name == '24x24' ? 24 : height;
     previewFoundation(_player.posX, _player.posY);
   }
 

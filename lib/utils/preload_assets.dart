@@ -48,6 +48,8 @@ class PreloadAssets {
   static final Map<String, Sprite> _floorSpriteList = {
     "floor1": Sprite("floors/floor1.png"),
     "floor2": Sprite("floors/floor2.png"),
+    "floor3": Sprite("floors/floor3.png"),
+    "floor4": Sprite("floors/floor4.png"),
   };
 
   static final Map<String, Sprite> _effects = {
@@ -55,6 +57,32 @@ class PreloadAssets {
     "shadown_square": Sprite("shadown_square.png"),
     "ripple": Sprite("effects/ripple.png"),
     "rip": Sprite("effects/rip.png"),
+  };
+
+  static final Map<String, Sprite> _uiSpriteList = {
+    "foundation": Sprite("ui/foundation.png"),
+    "wall": Sprite("ui/wall.png"),
+    "floor_icon": Sprite("ui/floor_icon.png"),
+    "furniture": Sprite("ui/furniture.png"),
+    "config": Sprite("ui/config.png"),
+    "handsaw": Sprite("ui/handsaw.png"),
+    "accept": Sprite("ui/accept.png"),
+    "cancel": Sprite("ui/cancel.png"),
+    "floor1": Sprite("ui/floor1.png"),
+    "floor2": Sprite("ui/floor2.png"),
+    "floor3": Sprite("ui/floor3.png"),
+    "floor4": Sprite("ui/floor4.png"),
+    "floor5": Sprite("ui/floor5.png"),
+    "floor6": Sprite("ui/floor6.png"),
+    "floor7": Sprite("ui/floor7.png"),
+    "wall1": Sprite("ui/wall1.png"),
+    "wall2": Sprite("ui/wall2.png"),
+    "wall3": Sprite("ui/wall3.png"),
+    "wall4": Sprite("ui/wall4.png"),
+    "wall5": Sprite("ui/wall5.png"),
+    "wall6": Sprite("ui/wall6.png"),
+    "wall7": Sprite("ui/wall7.png"),
+    "wall8": Sprite("ui/wall8.png"),
   };
 
   PreloadAssets() {
@@ -91,5 +119,9 @@ class PreloadAssets {
 
   static Sprite getEffectSprite(String effect) {
     return _effects[effect];
+  }
+
+  static Sprite getUiSprite(String ui) {
+    return _uiSpriteList[ui];
   }
 }

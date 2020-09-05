@@ -10,7 +10,7 @@ class FoundationDataController {
   }
 
   void onFoundationEnterScreen(dynamic data) {
-    print('onFoundationEnterScreen');
+    //print('onFoundationEnterScreen');
     data.forEach((key, value) {
       _buildFoundation.updateOrInstantiateFoundation(value);
     });

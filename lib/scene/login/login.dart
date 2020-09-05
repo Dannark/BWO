@@ -45,7 +45,6 @@ class Login extends SceneObject {
         icon: Sprite('ui/google_sign_in.png'));
 
     _loginButton.onPressedListener = () {
-      print('pressed');
       _auth?.login();
     };
 
@@ -60,14 +59,14 @@ class Login extends SceneObject {
 
     _backPaper.renderRect(c, GameController.screenSize);
 
-    _version.render(c, "Version: $_versionName", Position(60, 50));
+    _version.render(c, "Version: $_versionName", Position(50, 50));
 
-    _title.render(c, "> A letter from the Team of 1", Position(60, 80));
+    _title.render(c, "> A letter from the Team of 1", Position(50, 80));
     _text.render(
       c,
       """Hello Adventures!\n
 It's a pleasure to finnaly announce
-this pre-before-alpha test release. v$_versionName!
+this pre-alpha test release: v$_versionName!
 
 Blah blah blah.. lorem ipsum...
 I don't know yet how i'm going

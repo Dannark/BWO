@@ -47,6 +47,11 @@ export function saveState(state) {
         mergedData[`statistics/${msg[0]}`] = msg[1];
     })
     
+    Object.entries(state.foundations).forEach((fondation) => {
+        var f = {...fondation[1]};
+        
+        mergedData[`foundations/${f.owner}`] = {...f};
+    })
     firebase.writeState(mergedData);
 }
 

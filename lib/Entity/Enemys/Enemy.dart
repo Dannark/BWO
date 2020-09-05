@@ -55,7 +55,7 @@ class Enemy extends Entity implements OnAnimationEnd {
     }
     //debugDraw(c);
     TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia")
-        .render(c, id, Position(x, y - 32), anchor: Anchor.bottomCenter);
+        .render(c, name, Position(x, y - 32), anchor: Anchor.bottomCenter);
   }
 
   @override

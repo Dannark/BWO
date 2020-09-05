@@ -11,6 +11,7 @@ import 'server/utils/server_utils.dart';
 import 'ui/keyboard/keyboard_ui.dart';
 import 'utils/preload_assets.dart';
 import 'utils/tap_state.dart';
+import 'utils/toast_message.dart';
 
 class GameController extends Game with PanDetector {
   static Rect screenSize;
@@ -48,6 +49,7 @@ class GameController extends Game with PanDetector {
 
     currentScene.draw(c);
     KeyboardUI.draw(c);
+    Toast.draw(c);
 
     if (tapState == TapState.down) {
       tapState = TapState.pressing;

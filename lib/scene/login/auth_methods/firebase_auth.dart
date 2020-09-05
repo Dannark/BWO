@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../game_controller.dart';
 import '../../../server/utils/server_utils.dart';
+import '../../../utils/toast_message.dart';
 import '../../character_creation/character_creation.dart';
 import '../../game_scene.dart';
 import '../auth.dart';
@@ -64,8 +65,7 @@ class FirebaseAuth implements AuthService {
       if (snapshot.value == appVersion) {
         _createOrReplaceAndLogUser();
       } else {
-        print(
-            """Sorry App is out of date. App Version is: $appVersion server version is: ${snapshot.value}""");
+        Toast.add("You are out of date. The new version is: ${snapshot.value}");
         logout();
       }
     });
@@ -92,7 +92,8 @@ class FirebaseAuth implements AuthService {
       if (charName != null) {
         retriveCharacterData(charName);
       } else {
-        print('No characters found, moving to character creation windows.');
+        print('No characters found, moving to '
+            'character creation windows.');
         GameController.currentScene = CharacterCreation(this);
       }
     });
@@ -137,7 +138,7 @@ class FirebaseAuth implements AuthService {
       if (snapshot.value == null) {
         isAvaiable = true;
       } else {
-        print('Character name already taken: ${snapshot.value}');
+        Toast.add('Character name already taken: ${snapshot.value}');
       }
     });
     return isAvaiable;

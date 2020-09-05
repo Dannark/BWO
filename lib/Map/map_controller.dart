@@ -209,7 +209,13 @@ class MapController {
   }
 
   void addEntity(Entity newEntity) {
-    _tmpEntitysToBeAdded.add(newEntity);
+    var foundEntity = _tmpEntitysToBeAdded.firstWhere(
+        (element) => element.id == newEntity.id,
+        orElse: () => null);
+
+    if (foundEntity == null) {
+      _tmpEntitysToBeAdded.add(newEntity);
+    }
   }
 
   void addPlayerRef(Player player) {

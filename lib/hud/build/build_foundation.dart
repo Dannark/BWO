@@ -10,6 +10,7 @@ import '../../map/tree.dart';
 import '../../server/utils/server_utils.dart';
 import '../../utils/tap_state.dart';
 import '../../utils/timer_helper.dart';
+import '../../utils/toast_message.dart';
 
 class BuildFoundation {
   final Player _player;
@@ -30,7 +31,7 @@ class BuildFoundation {
     var initialArea = Rectangle(-16, -16, 32, 32);
 
     if (isInsideSpecialArea(newArea, initialArea)) {
-      print("You can't place your foundation in this location.");
+      Toast.add("You can't place foundations inside initial area.");
       callback(false);
       return;
     }
@@ -45,6 +46,8 @@ class BuildFoundation {
 
         instantiateFoundation(foundationData);
         callback(true);
+      } else {
+        Toast.add('This area is now available to place your foundation');
       }
     });
   }
@@ -53,18 +56,26 @@ class BuildFoundation {
     var trees = getAmountOfTreesAround(x, y, w, h);
 
     if (trees.length > 0) {
-      print("This place if blocked by a Tree. You should remove it first.");
+      Toast.add("This place if blocked by a Tree. You should remove it first.");
       return false;
     }
 
     if (isAboveWater(x, y, w, h)) {
-      print("You can't place foundations above water");
+      Toast.add("You can't place foundations above water");
+      return false;
+    }
+
+    var newArea = Rectangle(x, y, w, h);
+    var initialArea = Rectangle(-16, -16, 32, 32);
+    if (isInsideSpecialArea(newArea, initialArea)) {
+      Toast.add("You can't place foundations inside initial aera.");
       return false;
     }
     return true;
   }
 
   Future<http.Response> getAllFoundationAround(int x, int y, int w, int h) {
+    print('requesting foundation location avaiablity');
     return http.get('${ServerUtils.server}/foundations/at/$x/$y/$w/$h');
   }
 
@@ -102,7 +113,6 @@ class BuildFoundation {
   }
 
   void updateOrInstantiateFoundation(dynamic foundationData) {
-    print('updateOrInstantiateFoundation');
     var foundationExists = checkIfFoundationExists(foundationData);
 
     if (foundationExists != null) {
@@ -115,7 +125,6 @@ class BuildFoundation {
   }
 
   void instantiateFoundation(dynamic foundationData) {
-    print('instantiateFoundation');
     var tmpFoundation = Foundation(foundationData, _map, _player);
     if (myFoundation == null) {
       if (foundationData['owner'] == _player.name) {
@@ -161,8 +170,6 @@ class BuildFoundation {
         w != newData['w'] ||
         h != newData['h']) {
       currentFoundation.setup(newData);
-    } else {
-      print('no need to update bounds');
     }
     t.logDelayPassed('updateBounds:');
   }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../ui/hud.dart';
 import '../../ui/ui_element.dart';
+import '../../utils/preload_assets.dart';
 import '../../utils/tap_state.dart';
 
 class ToolItem extends UIElement {
@@ -32,7 +33,7 @@ class ToolItem extends UIElement {
   }
 
   void loadSprite() async {
-    sprite = await Sprite.loadSprite("ui/$spriteName.png");
+    sprite = PreloadAssets.getUiSprite(spriteName);
   }
 
   void draw(Canvas c) {

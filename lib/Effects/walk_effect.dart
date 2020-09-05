@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
 import '../map/ground.dart';
+import '../server/utils/server_utils.dart';
 
 class WalkEffect {
   double animSpeed = 1;
@@ -90,7 +91,9 @@ class WalkEffect {
       var delay = interval + ((1 - (velocity / 3)) * 0.6);
 
       timeInFutureForSoundSteps = GameController.time + delay;
-      //Flame.audio.play(audioName, volume: volume);
+      if (ServerUtils.database == 'production') {
+        //Flame.audio.play(audioName, volume: volume);
+      }
     }
   }
 }

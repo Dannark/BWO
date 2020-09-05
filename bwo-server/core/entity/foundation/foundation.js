@@ -28,11 +28,10 @@ export function getAllFoundationsAroundPlayer(playerId) {
     var height = 700
 
     var foundationArray = Object.entries(state.foundations).filter((foundation) => {
-
-        return foundation[1].x > mPlayer.x - width
-            && foundation[1].y > mPlayer.y - height
-            && foundation[1].x < mPlayer.x + width
-            && foundation[1].y < mPlayer.y + height;
+        return foundation[1].x > mPlayer.x/16 - width
+            && foundation[1].y > mPlayer.y/16 - height
+            && foundation[1].x < mPlayer.x/16 + width
+            && foundation[1].y < mPlayer.y/16 + height;
     });
 
     var foundationObject = Object.fromEntries(foundationArray);

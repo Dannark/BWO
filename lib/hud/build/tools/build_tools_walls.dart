@@ -33,8 +33,11 @@ class BuildToolsWall extends BuildSubToolsBar {
     if (GameController.tapState == TapState.pressing) {
       var tapOnScreen = TapState.currentPosition;
 
+      var verticalBarButtons =
+          Rect.fromLTWH(0, GameController.screenSize.height - 235, 48, 235);
+
       if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
-          tapOnScreen.dx > 48) {
+          TapState.currentClickingAtInside(verticalBarButtons) == false) {
         placeWall();
       }
     }

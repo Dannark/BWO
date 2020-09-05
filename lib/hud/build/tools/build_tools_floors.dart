@@ -16,6 +16,11 @@ class BuildToolsFloors extends BuildSubToolsBar {
     buttonList = [
       ToolItem("floor1", "Floor 1", hudRef, onFloorSelect),
       ToolItem("floor2", "Floor 2", hudRef, onFloorSelect),
+      ToolItem("floor3", "Floor 3", hudRef, onFloorSelect),
+      ToolItem("floor4", "Floor 4", hudRef, onFloorSelect),
+      ToolItem("floor5", "Floor 5", hudRef, onFloorSelect),
+      ToolItem("floor6", "Floor 6", hudRef, onFloorSelect),
+      ToolItem("floor7", "Floor 7", hudRef, onFloorSelect),
     ];
   }
 

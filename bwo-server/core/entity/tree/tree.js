@@ -88,5 +88,14 @@ setInterval(() => {
                 delete state.trees[tree[0]];
             }
         }
+        else if(tree[1].hp < 20){
+            var previousTime = tree[1].last_damage_stamp;
+            var secondsPassed = moment(moment.format).diff(previousTime, 'seconds');
+
+            tree[1].hp ++;
+        }
+        else if(tree[1].hp == 20){
+            delete state.trees[tree[0]];
+        }
     });
 }, 5000)
