@@ -95,8 +95,8 @@ class BuildHUD extends UIElement {
         _buildBtState = BuildButtonState.none;
         _player.canWalk = true;
         _buildToolsBar.setActive(false);
+        _map.buildFoundation.myFoundation?.save();
       }
-      _map.buildFoundation.myFoundation?.save();
     }
   }
 

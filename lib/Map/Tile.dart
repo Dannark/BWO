@@ -1,7 +1,8 @@
-import 'package:BWO/utils/preload_assets.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/preload_assets.dart';
 
 class Tile {
   int posX;

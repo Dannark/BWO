@@ -35,6 +35,8 @@ class PreloadAssets {
     "wall6": Sprite("walls/wall6.png"),
     "wall7": Sprite("walls/wall7.png"),
     "wall8": Sprite("walls/wall8.png"),
+    "wall9": Sprite("walls/wall9.png"),
+    "wall10": Sprite("walls/wall10.png"),
     "low_wall1": Sprite("walls/low_wall1.png"),
     "low_wall2": Sprite("walls/low_wall2.png"),
     "low_wall3": Sprite("walls/low_wall3.png"),
@@ -43,6 +45,8 @@ class PreloadAssets {
     "low_wall6": Sprite("walls/low_wall6.png"),
     "low_wall7": Sprite("walls/low_wall7.png"),
     "low_wall8": Sprite("walls/low_wall8.png"),
+    "low_wall9": Sprite("walls/low_wall9.png"),
+    "low_wall10": Sprite("walls/low_wall10.png"),
   };
 
   static final Map<String, Sprite> _floorSpriteList = {
@@ -50,6 +54,17 @@ class PreloadAssets {
     "floor2": Sprite("floors/floor2.png"),
     "floor3": Sprite("floors/floor3.png"),
     "floor4": Sprite("floors/floor4.png"),
+    "floor5": Sprite("floors/floor5.png"),
+    "floor6": Sprite("floors/floor6.png"),
+    "floor7": Sprite("floors/floor7.png"),
+    "floor8": Sprite("floors/floor8.png"),
+    "floor9": Sprite("floors/floor9.png"),
+    "floor10": Sprite("floors/floor10.png"),
+    "floor11": Sprite("floors/floor11.png"),
+    "floor12": Sprite("floors/floor12.png"),
+    "floor13": Sprite("floors/floor13.png"),
+    "floor14": Sprite("floors/floor14.png"),
+    "floor15": Sprite("floors/floor15.png"),
   };
 
   static final Map<String, Sprite> _effects = {
@@ -57,6 +72,11 @@ class PreloadAssets {
     "shadown_square": Sprite("shadown_square.png"),
     "ripple": Sprite("effects/ripple.png"),
     "rip": Sprite("effects/rip.png"),
+  };
+
+  static final Map<String, Sprite> _furnitureList = {
+    "bed1": Sprite("furnitures/bed1.png"),
+    "refrigerator": Sprite("furnitures/refrigerator.png"),
   };
 
   static final Map<String, Sprite> _uiSpriteList = {
@@ -75,6 +95,14 @@ class PreloadAssets {
     "floor5": Sprite("ui/floor5.png"),
     "floor6": Sprite("ui/floor6.png"),
     "floor7": Sprite("ui/floor7.png"),
+    "floor8": Sprite("ui/floor8.png"),
+    "floor9": Sprite("ui/floor9.png"),
+    "floor10": Sprite("ui/floor10.png"),
+    "floor11": Sprite("ui/floor11.png"),
+    "floor12": Sprite("ui/floor12.png"),
+    "floor13": Sprite("ui/floor13.png"),
+    "floor14": Sprite("ui/floor14.png"),
+    "floor15": Sprite("ui/floor15.png"),
     "wall1": Sprite("ui/wall1.png"),
     "wall2": Sprite("ui/wall2.png"),
     "wall3": Sprite("ui/wall3.png"),
@@ -83,6 +111,10 @@ class PreloadAssets {
     "wall6": Sprite("ui/wall6.png"),
     "wall7": Sprite("ui/wall7.png"),
     "wall8": Sprite("ui/wall8.png"),
+    "wall9": Sprite("ui/wall9.png"),
+    "wall10": Sprite("ui/wall10.png"),
+    "bed1": Sprite("ui/bed1.png"),
+    "refrigerator": Sprite("ui/refrigerator.png"),
   };
 
   PreloadAssets() {
@@ -119,6 +151,10 @@ class PreloadAssets {
 
   static Sprite getEffectSprite(String effect) {
     return _effects[effect];
+  }
+
+  static Sprite getFurnitureSprite(String furniture) {
+    return _furnitureList[furniture];
   }
 
   static Sprite getUiSprite(String ui) {

@@ -1,4 +1,3 @@
-import 'package:BWO/server/utils/server_utils.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
@@ -10,6 +9,7 @@ import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../map/map_controller.dart';
 import '../server/domain/usecases/server_controller.dart';
+import '../server/utils/server_utils.dart';
 import '../utils/physics_controller.dart';
 import 'scene_object.dart';
 
@@ -51,7 +51,9 @@ class GameScene extends SceneObject {
     Flame.bgm.dispose();
     Flame.bgm.initialize();
     if (ServerUtils.database == 'production') {
-      Flame.bgm.play('recovery.mp3', volume: .2);
+      if (!Flame.bgm.isPlaying) {
+        Flame.bgm.play('recovery.mp3', volume: .2);
+      }
     }
     Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }

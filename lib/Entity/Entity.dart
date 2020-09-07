@@ -94,7 +94,7 @@ abstract class Entity extends PhysicsEntity {
     var sizeX = 16 * shadownSize / 2;
     var sizeY = (16 - 3) * shadownSize;
 
-    shadownLarge.renderScaled(
+    shadownLarge?.renderScaled(
       c,
       Position(
         x - sizeX * distanceToGround + shadownOffset.dx,

@@ -11,6 +11,7 @@ import 'build_subtools_bar.dart';
 import 'tool_item.dart';
 import 'tools/build_tools_floors.dart';
 import 'tools/build_tools_foundation.dart';
+import 'tools/build_tools_furniture.dart';
 import 'tools/build_tools_options.dart';
 import 'tools/build_tools_walls.dart';
 
@@ -113,7 +114,7 @@ class BuildToolsBar extends UIElement {
 
   void onFurniturePressed(ToolItem bt) {
     _selectButtonHightlight(bt);
-    _subtoolsSelected = null;
+    _subtoolsSelected = BuildToolsFurniture(_map, this, hudRef);
   }
 
   void onConfigPressed(ToolItem bt) {

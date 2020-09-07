@@ -130,6 +130,9 @@ flutter:
       
       # floors
       - assets/images/floors/
+      
+      # furnitures
+      - assets/images/furnitures/
 
       # sounds
       - assets/audio/

@@ -21,6 +21,14 @@ class BuildToolsFloors extends BuildSubToolsBar {
       ToolItem("floor5", "Floor 5", hudRef, onFloorSelect),
       ToolItem("floor6", "Floor 6", hudRef, onFloorSelect),
       ToolItem("floor7", "Floor 7", hudRef, onFloorSelect),
+      ToolItem("floor8", "Floor 8", hudRef, onFloorSelect),
+      ToolItem("floor9", "Floor 9", hudRef, onFloorSelect),
+      ToolItem("floor10", "Floor 10", hudRef, onFloorSelect),
+      ToolItem("floor11", "Floor 11", hudRef, onFloorSelect),
+      ToolItem("floor12", "Floor 12", hudRef, onFloorSelect),
+      ToolItem("floor13", "Floor 13", hudRef, onFloorSelect),
+      ToolItem("floor14", "Floor 14", hudRef, onFloorSelect),
+      ToolItem("floor15", "Floor 15", hudRef, onFloorSelect),
     ];
   }
 

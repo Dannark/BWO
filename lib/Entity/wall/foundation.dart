@@ -8,6 +8,7 @@ import '../../map/tile.dart';
 import '../../scene/game_scene.dart';
 import '../../utils/tap_state.dart';
 import '../player/player.dart';
+import 'furniture.dart';
 import 'wall.dart';
 
 class Foundation {
@@ -18,6 +19,7 @@ class Foundation {
   //final List<Wall> wallList = [];
   final Map<String, Wall> wallList = {};
   final Map<String, Tile> tileList = {};
+  final Map<String, Furniture> furnitureList = {};
   bool isValidTerrain = true;
 
   Rect bounds = Rect.zero;
@@ -113,7 +115,7 @@ class Foundation {
       var foundWall = wallList[wall.id];
 
       if (foundWall != null) {
-        wallList.remove(foundWall);
+        wallList.remove(wall.id);
         foundWall.destroy();
       }
     }
@@ -128,7 +130,24 @@ class Foundation {
           tileSpritePath: 'floor$imgId', idImg: imgId);
       tileList['_${posX}_$posY'] = t;
 
+      if (_map.map[posY] == null) {
+        _map.map[posY] = {posX: null}; //initialize line
+      }
+      if (_map.map[posY][posX] == null) {
+        _map.map[posY][posX] = {0: null}; //initialize line
+      }
       _map.map[posY][posX][0] = t;
+    }
+  }
+
+  void addFurniture(final Furniture f) {
+    furnitureList[f.id] = f;
+
+    var found = _map.entityList
+        .firstWhere((element) => element.id == f.id, orElse: () => null);
+    if (found == null && f.imageId != null) {
+      print('adding Furniture $f');
+      _map.addEntity(f);
     }
   }
 
@@ -184,11 +203,12 @@ class Foundation {
     return area;
   }
 
-  bool isInsideFoundation(double posX, double posY) {
+  bool isInsideFoundation(double posX, double posY,
+      {double wPoint = 0, double hPoint = 0}) {
     return posX >= left &&
-        posX < (left + width) &&
+        posX + wPoint < (left + width) &&
         posY >= top &&
-        posY <= (top + height);
+        posY + hPoint <= (top + height);
   }
 
   void switchWallHeightAll({bool isBuildingMode = false}) {

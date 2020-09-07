@@ -137,8 +137,15 @@ Usecases:
 - Enemys won't collide with walls. Missing Path Finding
 
 ### Doing now
-* Focusing on performance `improvements`
-* Build systems tests
+* Furniture 
+* New Enemy
+* Enemy Passive Aggressive
+* doors
+
+### 06/09
+* Fixed floors not beeing placed when terrain had not finished to build
+* Added Furniture Select and Placement
+* Added floor and furnitures sprites
 
 ### 04/09
 * Added Toast notification message

@@ -136,6 +136,28 @@ class BuildFoundation {
     replaceFloors(tmpFoundation, foundationData['floors']);
   }
 
+  bool isValidAreaOnFoundation(double x, double y, double w, double h) {
+    if (myFoundation == null) return false;
+
+    var isInside =
+        myFoundation.isInsideFoundation(x, y, wPoint: w - 1, hPoint: h);
+    var isIntersecting = _isAreaIntersectingWalls(x, y, w, h);
+
+    return isInside && !isIntersecting;
+  }
+
+  bool _isAreaIntersectingWalls(double x, double y, double w, double h) {
+    for (var y1 = y.toInt(); y1 < (y + h); y1++) {
+      for (var x1 = x.toInt(); x1 < (x + w); x1++) {
+        var id = '_${x1}_${y1 + 1}';
+        if (myFoundation.wallList[id] != null) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   void placeWall(int selectedWall) {
     if (myFoundation == null) return;
     var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
@@ -189,18 +211,6 @@ class BuildFoundation {
 
       currentFoundation.addWall(x, y, id);
     }
-    //print(currentFoundation.wallList);
-
-    // for (var wall in newWalls) {
-    //   var objId = '_${wall['x']}_${wall['y']}';
-    //   var wallAlreadyOnMap = currentFoundation.wallList[objId];
-
-    //   if (wallAlreadyOnMap != null) {
-    //     wallAlreadyOnMap.updateWith(wall);
-    //   } else {
-    //     wall.destroy();
-    //   }
-    // }
     t.logDelayPassed('replaceWalls:');
   }
 

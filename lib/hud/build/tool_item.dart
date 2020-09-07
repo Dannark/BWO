@@ -23,10 +23,11 @@ class ToolItem extends UIElement {
   Function(ToolItem) callback;
 
   bool isSelected = false;
+  Offset size = Offset.zero;
   String name;
 
   ToolItem(this.spriteName, this.name, HUD hudRef, this.callback,
-      {bool isBtSelected = false})
+      {bool isBtSelected = false, this.size = Offset.zero})
       : super(hudRef) {
     isSelected = isBtSelected;
     loadSprite();

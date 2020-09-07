@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:BWO/utils/preload_assets.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
@@ -17,6 +16,7 @@ import '../../hud/player_hud.dart';
 import '../../map/map_controller.dart';
 import '../../scene/scene_object.dart' '';
 import '../../utils/on_animation_end.dart';
+import '../../utils/preload_assets.dart';
 import '../../utils/sprite_controller.dart' '';
 import '../entity.dart';
 import '../equipment_controller.dart';
