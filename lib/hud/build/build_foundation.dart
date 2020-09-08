@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:BWO/hud/build/build_hud.dart';
 import 'package:http/http.dart' as http;
 
 import '../../entity/player/player.dart';
@@ -116,9 +117,15 @@ class BuildFoundation {
     var foundationExists = checkIfFoundationExists(foundationData);
 
     if (foundationExists != null) {
-      updateBounds(foundationExists, foundationData);
-      replaceWalls(foundationExists, foundationData['walls']);
-      replaceFloors(foundationExists, foundationData['floors']);
+      //do not update self foundation while in build mode
+      if (foundationExists == myFoundation &&
+          BuildHUD.buildBtState != BuildButtonState.build) {
+        updateBounds(foundationExists, foundationData);
+        replaceWalls(foundationExists, foundationData['walls']);
+        replaceFloors(foundationExists, foundationData['floors']);
+      } else {
+        print("ignoring self foundation Update while in building mode");
+      }
     } else {
       instantiateFoundation(foundationData);
     }

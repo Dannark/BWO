@@ -54,7 +54,7 @@ class Foundation {
       var y = data['y'].toDouble();
       var imgId = data['id'];
 
-      var wall = Wall(x, y, imgId);
+      var wall = Wall(x, y, imgId, this);
       wallList['_${wall.posX}_${wall.posY}'] = wall;
       _map.addEntity(wall);
     }
@@ -64,7 +64,7 @@ class Foundation {
 
   void addWall(double x, double y, int imgId) {
     if (isInsideFoundation(x, y)) {
-      var wall = Wall(x, y, imgId);
+      var wall = Wall(x, y, imgId, this);
       switchWallHeight(wall);
 
       var foundWall = wallList[wall.id];
@@ -105,12 +105,19 @@ class Foundation {
       finalObject["floors"] = [...finalObject["floors"], value.toObject()];
     });
 
+    furnitureList.forEach((key, value) {
+      finalObject["furnitures"] = [
+        ...finalObject["furnitures"],
+        value.toObject()
+      ];
+    });
+
     return finalObject;
   }
 
   void deleteWall(double x, double y) {
     if (isInsideFoundation(x, y)) {
-      var wall = Wall(x, y, 1);
+      var wall = Wall(x, y, 1, this);
 
       var foundWall = wallList[wall.id];
 

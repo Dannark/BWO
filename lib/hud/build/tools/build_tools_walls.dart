@@ -24,6 +24,10 @@ class BuildToolsWall extends BuildSubToolsBar {
       ToolItem("wall8", "Wall 8", hudRef, onWallPress),
       ToolItem("wall9", "Wall 9", hudRef, onWallPress),
       ToolItem("wall10", "Wall 10", hudRef, onWallPress),
+      ToolItem("wall11", "Wall 11", hudRef, onWallPress),
+      ToolItem("wall12", "Wall 12", hudRef, onWallPress),
+      ToolItem("wall13", "Wall 13", hudRef, onWallPress),
+      ToolItem("wall14", "Wall 14", hudRef, onWallPress),
     ];
   }
 

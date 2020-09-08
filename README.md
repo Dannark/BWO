@@ -142,6 +142,11 @@ Usecases:
 * Enemy Passive Aggressive
 * doors
 
+### 07/09
+* Added Wall Mutitexture
+![wall_multexture1](https://user-images.githubusercontent.com/7622553/92427748-a6c1da80-f163-11ea-85ca-957ae05ec5f2.gif)
+
+
 ### 06/09
 * Fixed floors not beeing placed when terrain had not finished to build
 * Added Furniture Select and Placement

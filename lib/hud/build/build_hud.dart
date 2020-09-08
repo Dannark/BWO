@@ -25,7 +25,7 @@ class BuildHUD extends UIElement {
   Position bPos = Position.empty();
   Position sPos = Position.empty();
 
-  BuildButtonState _buildBtState = BuildButtonState.none;
+  static BuildButtonState buildBtState = BuildButtonState.none;
 
   BuildToolsBar _buildToolsBar;
 
@@ -55,17 +55,17 @@ class BuildHUD extends UIElement {
         _deleteSprite == null) return;
 
     bPos = Position(10, GameController.screenSize.height - 176);
-    if (_buildBtState == BuildButtonState.build) {
+    if (buildBtState == BuildButtonState.build) {
       _buildSpriteOpen.renderScaled(c, bPos, scale: 2);
-    } else if (_buildBtState == BuildButtonState.delete) {
+    } else if (buildBtState == BuildButtonState.delete) {
       _deleteSprite.renderScaled(c, bPos, scale: 2);
     } else {
       _buildSprite.renderScaled(c, bPos, scale: 2);
     }
     _handlerBuildButtonClick();
 
-    if (_buildBtState == BuildButtonState.build ||
-        _buildBtState == BuildButtonState.delete) {
+    if (buildBtState == BuildButtonState.build ||
+        buildBtState == BuildButtonState.delete) {
       _map.buildFoundation.myFoundation?.drawBuildArea(c);
     }
 
@@ -77,7 +77,7 @@ class BuildHUD extends UIElement {
         _handlerWallLevelButtonClick();
       }
       _switchLevelButtonSprite?.renderScaled(c, sPos, scale: 2);
-      var isBuildingMode = _buildBtState != BuildButtonState.none;
+      var isBuildingMode = buildBtState != BuildButtonState.none;
       _map.buildFoundation.myFoundation
           ?.switchWallHeightAll(isBuildingMode: isBuildingMode);
     }
@@ -86,13 +86,13 @@ class BuildHUD extends UIElement {
   void _handlerBuildButtonClick() {
     var bRect = Rect.fromLTWH(bPos.x, bPos.y, 32, 32);
     if (TapState.clickedAt(bRect)) {
-      if (_buildBtState == BuildButtonState.none) {
+      if (buildBtState == BuildButtonState.none) {
         _buildToolsBar.setActive(true);
-        _buildBtState = BuildButtonState.build;
+        buildBtState = BuildButtonState.build;
         _player.canWalk = false;
       } else {
         //finish building
-        _buildBtState = BuildButtonState.none;
+        buildBtState = BuildButtonState.none;
         _player.canWalk = true;
         _buildToolsBar.setActive(false);
         _map.buildFoundation.myFoundation?.save();
