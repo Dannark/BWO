@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:BWO/entity/wall/furniture.dart';
 import 'package:BWO/hud/build/build_hud.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,6 +13,11 @@ import '../../server/utils/server_utils.dart';
 import '../../utils/tap_state.dart';
 import '../../utils/timer_helper.dart';
 import '../../utils/toast_message.dart';
+
+/*
+ * This Class will receive updates from server and
+ * update the correspondent Foundations and its Elements
+ */
 
 class BuildFoundation {
   final Player _player;
@@ -53,6 +59,7 @@ class BuildFoundation {
     });
   }
 
+  //------------------- VALIDATIONs ------------------------
   bool checkIfTerrainLocationIsValid(int x, int y, int w, int h) {
     var trees = getAmountOfTreesAround(x, y, w, h);
 
@@ -113,36 +120,6 @@ class BuildFoundation {
     return false;
   }
 
-  void updateOrInstantiateFoundation(dynamic foundationData) {
-    var foundationExists = checkIfFoundationExists(foundationData);
-
-    if (foundationExists != null) {
-      //do not update self foundation while in build mode
-      if (foundationExists == myFoundation &&
-          BuildHUD.buildBtState != BuildButtonState.build) {
-        updateBounds(foundationExists, foundationData);
-        replaceWalls(foundationExists, foundationData['walls']);
-        replaceFloors(foundationExists, foundationData['floors']);
-      } else {
-        print("ignoring self foundation Update while in building mode");
-      }
-    } else {
-      instantiateFoundation(foundationData);
-    }
-  }
-
-  void instantiateFoundation(dynamic foundationData) {
-    var tmpFoundation = Foundation(foundationData, _map, _player);
-    if (myFoundation == null) {
-      if (foundationData['owner'] == _player.name) {
-        myFoundation = tmpFoundation;
-      }
-    }
-    foundationList.add(tmpFoundation);
-    replaceWalls(tmpFoundation, foundationData['walls']);
-    replaceFloors(tmpFoundation, foundationData['floors']);
-  }
-
   bool isValidAreaOnFoundation(double x, double y, double w, double h) {
     if (myFoundation == null) return false;
 
@@ -165,17 +142,38 @@ class BuildFoundation {
     return false;
   }
 
-  void placeWall(int selectedWall) {
-    if (myFoundation == null) return;
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
-    myFoundation.addWall(tap.dx, tap.dy, selectedWall);
+  void updateOrInstantiateFoundation(dynamic foundationData) {
+    var foundationExists = checkIfFoundationExists(foundationData);
+
+    if (foundationExists != null) {
+      //do not update self foundation while in build mode
+      if (foundationExists == myFoundation &&
+          BuildHUD.buildBtState != BuildButtonState.build) {
+        updateBounds(foundationExists, foundationData);
+        replaceWalls(foundationExists, foundationData['walls']);
+        replaceFloors(foundationExists, foundationData['floors']);
+        replaceFurniture(foundationExists, foundationData['furnitures']);
+      } else {
+        print("ignoring self foundation Update while in building mode");
+      }
+    } else {
+      instantiateFoundation(foundationData);
+    }
   }
 
-  void deleteWall() {
-    if (myFoundation == null) return;
-
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
-    myFoundation.deleteWall(tap.dx, tap.dy);
+  void instantiateFoundation(dynamic foundationData) {
+    var t = TimerHelper();
+    var tmpFoundation = Foundation(foundationData, _map, _player);
+    if (myFoundation == null) {
+      if (foundationData['owner'] == _player.name) {
+        myFoundation = tmpFoundation;
+      }
+    }
+    foundationList.add(tmpFoundation);
+    replaceWalls(tmpFoundation, foundationData['walls']);
+    replaceFloors(tmpFoundation, foundationData['floors']);
+    replaceFurniture(tmpFoundation, foundationData['furnitures']);
+    t.logDelayPassed('instantiateFoundation:');
   }
 
   Foundation checkIfFoundationExists(dynamic foundationData) {
@@ -201,6 +199,20 @@ class BuildFoundation {
       currentFoundation.setup(newData);
     }
     t.logDelayPassed('updateBounds:');
+  }
+
+  // ------------------ walls -------------------------------
+  void placeWall(int selectedWall) {
+    if (myFoundation == null) return;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    myFoundation.addWall(tap.dx, tap.dy, selectedWall);
+  }
+
+  void deleteWall() {
+    if (myFoundation == null) return;
+
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    myFoundation.deleteWall(tap.dx, tap.dy);
   }
 
   void replaceWalls(Foundation currentFoundation, dynamic newWalls) async {
@@ -230,6 +242,7 @@ class BuildFoundation {
 
   void replaceFloors(Foundation currentFoundation, dynamic newFloors) {
     if (currentFoundation == null) return;
+    var t = TimerHelper();
 
     currentFoundation.tileList.forEach((key, tile) {
       tile = null;
@@ -242,5 +255,34 @@ class BuildFoundation {
 
       currentFoundation.addFloor(x, y, id);
     }
+    t.logDelayPassed('replaceFloors:');
+  }
+
+  // ------------------ furniture -------------------------------
+  void placeFurniture(Furniture furniture) {
+    myFoundation?.addFurniture(furniture);
+  }
+
+  void replaceFurniture(Foundation currentFoundation, dynamic newFurnitures) {
+    if (currentFoundation == null) return;
+    if (newFurnitures == null) return;
+    var t = TimerHelper();
+
+    currentFoundation.furnitureList.forEach((key, furniture) {
+      furniture.destroy();
+    });
+
+    for (var furnitureData in newFurnitures) {
+      var x = furnitureData['x'].toDouble();
+      var y = furnitureData['y'].toDouble();
+      var w = furnitureData['w'].toDouble();
+      var h = furnitureData['h'].toDouble();
+      var id = furnitureData['id'];
+
+      var furniture = Furniture(x, y, w, h, id);
+      currentFoundation.addFurniture(furniture);
+    }
+
+    t.logDelayPassed('replaceFurnitures:');
   }
 }

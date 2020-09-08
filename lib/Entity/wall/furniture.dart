@@ -40,6 +40,7 @@ class Furniture extends Entity {
 
   void draw(Canvas c) {
     if (sprite == null) return;
+    if (sprite.src == null) return;
     var pivot = Offset((zoom * 16) / 2, (sprite.size.y * 2) - height + 16);
 
     showCollisionBox = true;
@@ -54,6 +55,12 @@ class Furniture extends Entity {
   }
 
   dynamic toObject() {
-    return {'id': imageId, 'x': posX, 'y': posY};
+    return {
+      'id': imageId,
+      'x': posX,
+      'y': posY - 1,
+      'w': width / 16,
+      'h': height / 16
+    };
   }
 }

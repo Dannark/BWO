@@ -80,6 +80,7 @@ class Foundation {
   }
 
   void save() {
+    print('saving foundation');
     var foundationObject = fromListToObject();
     GameScene.serverController.sendMessage('onFoundationAdd', foundationObject);
   }
@@ -148,13 +149,13 @@ class Foundation {
   }
 
   void addFurniture(final Furniture f) {
-    furnitureList[f.id] = f;
+    var found = furnitureList[f.id];
 
-    var found = _map.entityList
-        .firstWhere((element) => element.id == f.id, orElse: () => null);
     if (found == null && f.imageId != null) {
-      print('adding Furniture $f');
       _map.addEntity(f);
+      furnitureList[f.id] = f;
+    } else {
+      found.marketToBeRemoved = f.marketToBeRemoved;
     }
   }
 

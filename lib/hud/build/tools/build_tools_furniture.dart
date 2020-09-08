@@ -93,7 +93,7 @@ class BuildToolsFurniture extends BuildSubToolsBar {
   void addFurniture() {
     if (_instatiatedFuniture == null) {
       _instatiatedFuniture = _furnitureBuild.getFurniture();
-      _map.buildFoundation.myFoundation.addFurniture(_instatiatedFuniture);
+      _map.buildFoundation.placeFurniture(_instatiatedFuniture);
 
       _selectedFurniture = null;
       _instatiatedFuniture = null;

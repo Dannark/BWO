@@ -13,6 +13,7 @@ The world isn't stored in anywhere, it uses some conecpts and rules (`Perlin Noi
 The players will be able to build theirs houses anywhere on the infinity world. That's why i call it borderless world in first place. :)
 
 This project is still in development and it doesnt have many features yet.
+I'm using the `solid principles` as much as i can, make things clear enough easy to read although i'm not an expert on it, if you have any suggestion, please let me know it.
 
 ### Release Date?
 Hopefully at some point later this year.
@@ -142,10 +143,13 @@ Usecases:
 * Enemy Passive Aggressive
 * doors
 
+### 08/09
+* Furniture Synchronization
+
 ### 07/09
 * Added Wall Mutitexture
-![wall_multexture1](https://user-images.githubusercontent.com/7622553/92427748-a6c1da80-f163-11ea-85ca-957ae05ec5f2.gif)
 
+> ![wall_multexture1](https://user-images.githubusercontent.com/7622553/92427748-a6c1da80-f163-11ea-85ca-957ae05ec5f2.gif)
 
 ### 06/09
 * Fixed floors not beeing placed when terrain had not finished to build
