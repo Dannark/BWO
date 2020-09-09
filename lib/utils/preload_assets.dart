@@ -44,6 +44,8 @@ class PreloadAssets {
     "wall13_3": Sprite("walls/wall13_3.png"),
     "wall13_4": Sprite("walls/wall13_4.png"),
     "wall13_5": Sprite("walls/wall13_5.png"),
+    "wall13_left": Sprite("walls/wall13_left.png"),
+    "wall13_right": Sprite("walls/wall13_right.png"),
     "wall14": Sprite("walls/wall14.png"),
     "wall14_2": Sprite("walls/wall14_2.png"),
     "wall14_3": Sprite("walls/wall14_3.png"),
@@ -62,11 +64,23 @@ class PreloadAssets {
     "low_wall11": Sprite("walls/low_wall11.png"),
     "low_wall12": Sprite("walls/low_wall12.png"),
     "low_wall13": Sprite("walls/low_wall13.png"),
+    "low_wall13_2": Sprite("walls/low_wall13_2.png"),
+    "low_wall13_3": Sprite("walls/low_wall13_3.png"),
+    "low_wall13_4": Sprite("walls/low_wall13_4.png"),
+    "low_wall13_5": Sprite("walls/low_wall13_5.png"),
+    "low_wall13_left": Sprite("walls/low_wall13_left.png"),
+    "low_wall13_right": Sprite("walls/low_wall13_right.png"),
     "low_wall14": Sprite("walls/low_wall14.png"),
     "low_wall14_2": Sprite("walls/low_wall14_2.png"),
     "low_wall14_3": Sprite("walls/low_wall14_3.png"),
     "low_wall14_left": Sprite("walls/low_wall14_left.png"),
     "low_wall14_right": Sprite("walls/low_wall14_right.png"),
+  };
+
+  static final Map<String, Sprite> _roofsSpriteList = {
+    "roof1": Sprite("roofs/roof1.png"),
+    "roof2": Sprite("roofs/roof2.png"),
+    "roof3": Sprite("roofs/roof3.png"),
   };
 
   static final Map<String, Sprite> _floorSpriteList = {
@@ -167,6 +181,10 @@ class PreloadAssets {
 
   static Sprite getWallSprite(String wall) {
     return _wallSpriteList[wall];
+  }
+
+  static Sprite getRoofSprite(String roof) {
+    return _roofsSpriteList[roof];
   }
 
   static Sprite getFloorSprite(String floor) {

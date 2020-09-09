@@ -67,7 +67,7 @@ class Wall extends Entity {
     if (sprites.length == 0 || lowSprites.length == 0) return;
     var pivot = Offset((zoom * 16) / 2, height);
 
-    renderLeftRightWall();
+    selectWallSprite();
 
     if (showLow) {
       currentLowSprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
@@ -80,7 +80,7 @@ class Wall extends Entity {
     showCollisionBox ? debugDraw(c) : null;
   }
 
-  void renderLeftRightWall() {
+  void selectWallSprite() {
     spriteIndex = posX % sprites.length;
     //if (spriteIndex >= sprites.length) spriteIndex = 0;
     currentSprite = sprites[spriteIndex];
@@ -97,7 +97,7 @@ class Wall extends Entity {
   }
 
   String getImageId(int imageId) {
-    return 'wall$imageId'; //'wall$imageId.png';
+    return 'wall$imageId';
   }
 
   @override
@@ -110,4 +110,4 @@ class Wall extends Entity {
   }
 }
 
-enum WallLevel { hight, low, auto }
+enum WallLevel { low, mid, hight, upstair }

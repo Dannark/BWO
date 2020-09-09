@@ -1,3 +1,4 @@
+import 'package:BWO/entity/wall/Roof.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +21,13 @@ class Foundation {
   final Map<String, Wall> wallList = {};
   final Map<String, Tile> tileList = {};
   final Map<String, Furniture> furnitureList = {};
+  Roof roof = Roof();
   bool isValidTerrain = true;
 
   Rect bounds = Rect.zero;
 
-  WallLevel showWallLevel = WallLevel.auto;
+  WallLevel showWallLevel = WallLevel.mid;
+  bool _isPreviousInsideFoundation = false;
 
   Paint p = Paint();
   final TextConfig _txt10 = TextConfig(
@@ -80,7 +83,6 @@ class Foundation {
   }
 
   void save() {
-    print('saving foundation');
     var foundationObject = fromListToObject();
     GameScene.serverController.sendMessage('onFoundationAdd', foundationObject);
   }
@@ -223,30 +225,72 @@ class Foundation {
     wallList.forEach((key, wall) {
       switchWallHeight(wall);
     });
+    _isPreviousInsideFoundation =
+        isInsideFoundation(_player.posX.toDouble(), _player.posY.toDouble());
   }
 
   void switchWallHeight(Wall wall, {bool isBuildingMode = false}) {
-    if (showWallLevel == WallLevel.auto) {
-      if (isInsideFoundation(
-          _player.posX.toDouble(), _player.posY.toDouble())) {
-        var leftRow = left.floor() == wall.posX;
-        var rightRow = (left.ceil() + width - 1) == wall.posX;
-        var topLine = (top + 1).floor() == wall.posY;
+    var isCurrentInsideFoundation =
+        isInsideFoundation(_player.posX.toDouble(), _player.posY.toDouble());
 
-        if (leftRow || rightRow || topLine) {
-          wall.showLow = false;
-        } else {
-          wall.showLow = true;
-        }
-      } else {
+    if (isCurrentInsideFoundation != _isPreviousInsideFoundation) {
+      if (isCurrentInsideFoundation) {
+        //enter house
+        showWallLevel = WallLevel.mid;
         wall.showLow = false;
+      } else {
+        //leave house
+        showWallLevel = WallLevel.upstair;
+        wall.showLow = false;
+      }
+    }
+
+    if (showWallLevel == WallLevel.mid) {
+      var leftRow = left.floor() == wall.posX;
+      var rightRow = (left.ceil() + width - 1) == wall.posX;
+      var topLine = (top + 1).floor() == wall.posY;
+
+      if (leftRow || rightRow || topLine) {
+        wall.showLow = false;
+      } else {
+        wall.showLow = true;
       }
     } else if (showWallLevel == WallLevel.hight) {
       wall.showLow = false;
-    } else {
+    } else if (showWallLevel == WallLevel.low) {
       wall.showLow = true;
     }
 
     wall.showCollisionBox = isBuildingMode;
+    roof.show = (showWallLevel == WallLevel.upstair);
+  }
+
+  void drawRoof(Canvas c) {
+    if (!roof.show) return;
+
+    for (var y = top + 4; y < top + height; y++) {
+      var firstWallPos = 0.0;
+      var lastWallPos = 0;
+      var wallsOnLine = 0;
+
+      for (var x = left; x < left + width; x++) {
+        var wall = wallList['_${x.toInt()}_${y.toInt() + 1}'];
+
+        if (wall != null) {
+          wallsOnLine++;
+          if (firstWallPos == 0) firstWallPos = x;
+          lastWallPos = x.toInt();
+        }
+
+        if (x == left + width - 1 && wallsOnLine > 1) {
+          //last pos
+          var lineSize = lastWallPos - firstWallPos;
+
+          for (var i = 0; i <= lineSize; i++) {
+            roof?.draw(c, (firstWallPos + i) * 16, y * 16 - 64);
+          }
+        }
+      }
+    }
   }
 }

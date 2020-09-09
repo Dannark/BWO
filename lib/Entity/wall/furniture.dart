@@ -43,9 +43,9 @@ class Furniture extends Entity {
     if (sprite.src == null) return;
     var pivot = Offset((zoom * 16) / 2, (sprite.size.y * 2) - height + 16);
 
-    showCollisionBox = true;
     sprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z), scale: 2);
 
+    //showCollisionBox = true;
     showCollisionBox ? debugDraw(c) : null;
   }
 

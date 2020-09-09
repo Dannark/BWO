@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:BWO/entity/wall/furniture.dart';
 import 'package:BWO/hud/build/build_hud.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../entity/player/player.dart';
@@ -57,6 +58,14 @@ class BuildFoundation {
         Toast.add('This area is now available to place your foundation');
       }
     });
+  }
+
+  void drawRoofs(Canvas c) {
+    var t = TimerHelper();
+    foundationList.forEach((element) {
+      element.drawRoof(c);
+    });
+    t.logDelayPassed("drawRoofs");
   }
 
   //------------------- VALIDATIONs ------------------------

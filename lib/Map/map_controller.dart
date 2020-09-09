@@ -173,6 +173,8 @@ class MapController {
       if (!entity.marketToBeRemoved) entity.draw(c);
     }
 
+    buildFoundation.drawRoofs(c);
+
     c.restore();
   }
 

@@ -111,13 +111,14 @@ Usecases:
     - [x] Delete Foundations
     - [x] UI object selection interface
     - [x] Ground Tiles
+    - [ ] Roofs
     - [ ] Animated Doors
-    - [ ] Static objects like Windows, furnitures and so on
+    - [ ] Windows
     - [x] Craft or buying system
-    - [ ] Sync building to the server
+    - [x] Sync building to the server
         - [x] Walls
         - [x] floors
-        - [ ] furnitures
+        - [x] furnitures
     - [x] Save/backup Foundation/House from server to firebase
 * [-] Interfaces
     * [x] Create Account UI
@@ -132,19 +133,26 @@ Usecases:
 * [ ] Global Chat System
 * [x] UML Game Diagram
 * [ ] Path Finding
+* [ ] Random Maze dungeon and loots
 
 ### Know Problems
 - Sometimes slipping a too much when receiving walks updates
 - Enemys won't collide with walls. Missing Path Finding
 
 ### Doing now
-* Furniture 
+* doors
+
+### Next
 * New Enemy
 * Enemy Passive Aggressive
-* doors
+
+### 09/09
+* Added Roofs
+> ![roofs](https://user-images.githubusercontent.com/7622553/92657686-a17f9f80-f2cb-11ea-92b6-34e4395488e2.png)
 
 ### 08/09
 * Furniture Synchronization
+* Added upstairs Wall level layer to respective button (Used to show Roofs in near future)
 
 ### 07/09
 * Added Wall Mutitexture

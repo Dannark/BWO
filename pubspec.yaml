@@ -133,6 +133,9 @@ flutter:
       
       # furnitures
       - assets/images/furnitures/
+      
+      # roofs
+      - assets/images/roofs/
 
       # sounds
       - assets/audio/

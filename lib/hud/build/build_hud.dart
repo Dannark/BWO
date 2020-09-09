@@ -18,6 +18,7 @@ class BuildHUD extends UIElement {
   Sprite _deleteSprite;
 
   Sprite _lowWallSprite;
+  Sprite _midWallSprite;
   Sprite _fullWallSprite;
   Sprite _upstairSprite;
   Sprite _switchLevelButtonSprite;
@@ -43,10 +44,11 @@ class BuildHUD extends UIElement {
     _deleteSprite = await Sprite.loadSprite("ui/handsaw.png");
 
     _lowWallSprite = await Sprite.loadSprite("ui/low_wall.png");
+    _midWallSprite = await Sprite.loadSprite("ui/mid_wall.png");
     _fullWallSprite = await Sprite.loadSprite("ui/full_wall.png");
     _upstairSprite = await Sprite.loadSprite("ui/upstair.png");
 
-    _switchLevelButtonSprite = _upstairSprite;
+    _switchLevelButtonSprite = _midWallSprite;
   }
 
   void draw(Canvas c) {
@@ -81,6 +83,8 @@ class BuildHUD extends UIElement {
       _map.buildFoundation.myFoundation
           ?.switchWallHeightAll(isBuildingMode: isBuildingMode);
     }
+
+    _updateWallLevelSprite();
   }
 
   void _handlerBuildButtonClick() {
@@ -102,17 +106,32 @@ class BuildHUD extends UIElement {
 
   void _handlerWallLevelButtonClick() {
     if (_map.buildFoundation.myFoundation != null) {
-      if (_map.buildFoundation.myFoundation.showWallLevel == WallLevel.auto) {
-        _map.buildFoundation.myFoundation.showWallLevel = WallLevel.hight;
+      var foundation = _map.buildFoundation.myFoundation;
+
+      if (foundation.showWallLevel == WallLevel.mid) {
+        foundation.showWallLevel = WallLevel.hight;
+      } else if (foundation.showWallLevel == WallLevel.hight) {
+        foundation.showWallLevel = WallLevel.upstair;
+      } else if (foundation.showWallLevel == WallLevel.upstair) {
+        foundation.showWallLevel = WallLevel.low;
+      } else if (foundation.showWallLevel == WallLevel.low) {
+        foundation.showWallLevel = WallLevel.mid;
+      }
+    }
+  }
+
+  void _updateWallLevelSprite() {
+    if (_map.buildFoundation.myFoundation != null) {
+      var wallLevel = _map.buildFoundation.myFoundation.showWallLevel;
+
+      if (wallLevel == WallLevel.mid) {
+        _switchLevelButtonSprite = _midWallSprite;
+      } else if (wallLevel == WallLevel.hight) {
         _switchLevelButtonSprite = _fullWallSprite;
-      } else if (_map.buildFoundation.myFoundation.showWallLevel ==
-          WallLevel.hight) {
-        _map.buildFoundation.myFoundation.showWallLevel = WallLevel.low;
-        _switchLevelButtonSprite = _lowWallSprite;
-      } else if (_map.buildFoundation.myFoundation.showWallLevel ==
-          WallLevel.low) {
-        _map.buildFoundation.myFoundation.showWallLevel = WallLevel.auto;
+      } else if (wallLevel == WallLevel.upstair) {
         _switchLevelButtonSprite = _upstairSprite;
+      } else if (wallLevel == WallLevel.low) {
+        _switchLevelButtonSprite = _lowWallSprite;
       }
     }
   }
@@ -122,11 +141,4 @@ enum BuildButtonState {
   none,
   build,
   delete,
-}
-
-/// not implemented yet
-class BuildWindows extends UIElement {
-  BuildWindows(HUD hudRef) : super(hudRef);
-
-  void draw(Canvas c) {}
 }
