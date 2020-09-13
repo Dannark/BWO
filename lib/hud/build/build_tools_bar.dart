@@ -9,6 +9,7 @@ import '../../ui/hud.dart';
 import '../../ui/ui_element.dart';
 import 'build_subtools_bar.dart';
 import 'tool_item.dart';
+import 'tools/build_tools_door.dart';
 import 'tools/build_tools_floors.dart';
 import 'tools/build_tools_foundation.dart';
 import 'tools/build_tools_furniture.dart';
@@ -38,6 +39,7 @@ class BuildToolsBar extends UIElement {
     buttonList.add(ToolItem("floor_icon", "Floor", hudRef, onTileFloorPressed));
     buttonList
         .add(ToolItem("furniture", "Furniture", hudRef, onFurniturePressed));
+    buttonList.add(ToolItem("door1", "Door", hudRef, onDoorPressed));
     buttonList.add(ToolItem("config", "Config", hudRef, onConfigPressed));
   }
 
@@ -46,9 +48,9 @@ class BuildToolsBar extends UIElement {
 
     _p.color = Color.fromRGBO(244, 223, 168, 1);
     bounds = Rect.fromLTRB(
-      45,
+      30,
       GameController.screenSize.height - _boxHeight,
-      GameController.screenSize.width - 45,
+      GameController.screenSize.width - 30,
       GameController.screenSize.height + 15,
     );
     var rBounds = RRect.fromLTRBR(bounds.left, bounds.top, bounds.right,
@@ -120,6 +122,11 @@ class BuildToolsBar extends UIElement {
   void onConfigPressed(ToolItem bt) {
     _selectButtonHightlight(bt);
     _subtoolsSelected = BuildToolsOptions(_map, hudRef);
+  }
+
+  void onDoorPressed(ToolItem bt) {
+    _selectButtonHightlight(bt);
+    _subtoolsSelected = BuildToolsDoor(_map, this, hudRef);
   }
 
   void _selectButtonHightlight(ToolItem bt) {

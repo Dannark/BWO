@@ -111,7 +111,7 @@ Usecases:
     - [x] Delete Foundations
     - [x] UI object selection interface
     - [x] Ground Tiles
-    - [ ] Roofs
+    - [x] Roofs
     - [ ] Animated Doors
     - [ ] Windows
     - [x] Craft or buying system

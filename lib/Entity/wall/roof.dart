@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 import '../../utils/preload_assets.dart';
 
 class Roof {
-  Sprite roofSprite;
+  int selectedIndex = 0;
+  List<Sprite> roofSprite = [];
   bool show = true;
   Roof() {
     loadsprite();
   }
 
   void loadsprite() {
-    roofSprite = PreloadAssets.getRoofSprite('roof1');
+    roofSprite.add(PreloadAssets.getRoofSprite('roof1'));
+    roofSprite.add(PreloadAssets.getRoofSprite('roof2'));
   }
 
   void draw(Canvas c, double x, double y) {
-    roofSprite?.renderScaled(c, Position(x, y - 64), scale: 1);
+    selectedIndex = (x ~/ 16) % roofSprite.length;
+    roofSprite[selectedIndex]?.renderScaled(c, Position(x, y - 64), scale: 1);
   }
 }

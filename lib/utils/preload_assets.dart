@@ -113,6 +113,16 @@ class PreloadAssets {
     "refrigerator": Sprite("furnitures/refrigerator.png"),
   };
 
+  static final Map<String, Sprite> _doorList = {
+    "no_door": Sprite("door/no_door.png"),
+    "door1_open": Sprite("door/door1_open.png"),
+    "door1_closed": Sprite("door/door1_closed.png"),
+    "door2_open": Sprite("door/door2_open.png"),
+    "door2_closed": Sprite("door/door2_closed.png"),
+    "door3_open": Sprite("door/door3_open.png"),
+    "door3_closed": Sprite("door/door3_closed.png"),
+  };
+
   static final Map<String, Sprite> _uiSpriteList = {
     "foundation": Sprite("ui/foundation.png"),
     "wall": Sprite("ui/wall.png"),
@@ -153,6 +163,9 @@ class PreloadAssets {
     "wall14": Sprite("ui/wall14.png"),
     "bed1": Sprite("ui/bed1.png"),
     "refrigerator": Sprite("ui/refrigerator.png"),
+    "door1": Sprite("ui/door1.png"),
+    "door2": Sprite("ui/door2.png"),
+    "door3": Sprite("ui/door3.png"),
   };
 
   PreloadAssets() {
@@ -197,6 +210,10 @@ class PreloadAssets {
 
   static Sprite getFurnitureSprite(String furniture) {
     return _furnitureList[furniture];
+  }
+
+  static Sprite getDoorSprite(String door) {
+    return _doorList[door];
   }
 
   static Sprite getUiSprite(String ui) {
