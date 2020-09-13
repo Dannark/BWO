@@ -9,6 +9,7 @@ import '../../map/tile.dart';
 import '../../scene/game_scene.dart';
 import '../../utils/tap_state.dart';
 import '../player/player.dart';
+import 'door.dart';
 import 'furniture.dart';
 import 'wall.dart';
 
@@ -26,7 +27,7 @@ class Foundation {
 
   Rect bounds = Rect.zero;
 
-  WallLevel showWallLevel = WallLevel.mid;
+  WallLevel showWallLevel = WallLevel.upstair;
   bool _isPreviousInsideFoundation = false;
 
   Paint p = Paint();
@@ -65,23 +66,6 @@ class Foundation {
     bounds = getBuildingArea();
   }
 
-  void addWall(double x, double y, int imgId) {
-    if (isInsideFoundation(x, y)) {
-      var wall = Wall(x, y, imgId, this);
-      switchWallHeight(wall);
-
-      var foundWall = wallList[wall.id];
-
-      if (foundWall == null) {
-        _map.addEntity(wall);
-        wallList['_${wall.posX}_${wall.posY}'] = wall;
-      } else {
-        foundWall.marketToBeRemoved = wall.marketToBeRemoved;
-        foundWall.imageId = wall.imageId;
-      }
-    }
-  }
-
   void save() {
     var foundationObject = fromListToObject();
     GameScene.serverController.sendMessage('onFoundationAdd', foundationObject);
@@ -116,6 +100,23 @@ class Foundation {
     });
 
     return finalObject;
+  }
+
+  void addWall(double x, double y, int imgId) {
+    if (isInsideFoundation(x, y)) {
+      var wall = Wall(x, y, imgId, this);
+      switchWallHeight(wall);
+
+      var foundWall = wallList[wall.id];
+
+      if (foundWall == null) {
+        _map.addEntity(wall);
+        wallList['_${wall.posX}_${wall.posY}'] = wall;
+      } else {
+        foundWall.marketToBeRemoved = wall.marketToBeRemoved;
+        foundWall.imageId = wall.imageId;
+      }
+    }
   }
 
   void deleteWall(double x, double y) {
@@ -158,6 +159,19 @@ class Foundation {
       furnitureList[f.id] = f;
     } else {
       found.marketToBeRemoved = f.marketToBeRemoved;
+    }
+  }
+
+  void deleteFurniture(double x, double y) {
+    Furniture toBeDeleted;
+    furnitureList.forEach((key, furniture) {
+      if (furniture.isInside(x.floor(), y.floor())) {
+        toBeDeleted = furniture;
+      }
+    });
+    if (toBeDeleted != null) {
+      furnitureList.remove(toBeDeleted.id);
+      toBeDeleted.destroy();
     }
   }
 
@@ -219,6 +233,19 @@ class Foundation {
         posX + wPoint < (left + width) &&
         posY >= top &&
         posY + hPoint <= (top + height);
+  }
+
+  void switchDoor({bool isBuildingMode = false}) {
+    furnitureList.forEach((key, furniture) {
+      if (furniture is Door) {
+        var isOpen = _player.posY.toDouble() >= furniture.posY - 2 &&
+            _player.posY.toDouble() <= furniture.posY + 2 &&
+            _player.posX.toDouble() >= furniture.posX - 2 &&
+            _player.posX.toDouble() <= furniture.posX + 2;
+        furniture.isOpen = isOpen;
+        furniture.isOpen = isBuildingMode ? false : furniture.isOpen;
+      }
+    });
   }
 
   void switchWallHeightAll({bool isBuildingMode = false}) {

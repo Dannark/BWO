@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../entity/wall/door.dart';
 import '../../entity/wall/furniture.dart';
 import '../../map/map_controller.dart';
 import '../../utils/tap_state.dart';
@@ -88,5 +89,9 @@ class FurnitureBuild {
 
   Furniture getFurniture() {
     return Furniture(left, top, width, height, furnitureId);
+  }
+
+  Door getDoor() {
+    return Door(left, top, width, height, furnitureId);
   }
 }

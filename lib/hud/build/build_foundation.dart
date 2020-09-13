@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:BWO/entity/wall/furniture.dart';
-import 'package:BWO/hud/build/build_hud.dart';
+import 'package:BWO/entity/wall/door.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../entity/player/player.dart';
 import '../../entity/wall/foundation.dart';
+import '../../entity/wall/furniture.dart';
 import '../../map/ground.dart';
 import '../../map/map_controller.dart';
 import '../../map/tree.dart';
@@ -14,10 +14,10 @@ import '../../server/utils/server_utils.dart';
 import '../../utils/tap_state.dart';
 import '../../utils/timer_helper.dart';
 import '../../utils/toast_message.dart';
+import 'build_hud.dart';
 
 /*
- * This Class will receive updates from server and
- * update the correspondent Foundations and its Elements
+ * This Class will receive updates from server
  */
 
 class BuildFoundation {
@@ -134,9 +134,10 @@ class BuildFoundation {
 
     var isInside =
         myFoundation.isInsideFoundation(x, y, wPoint: w - 1, hPoint: h);
-    var isIntersecting = _isAreaIntersectingWalls(x, y, w, h);
+    var isIntersectingWall = _isAreaIntersectingWalls(x, y, w, h);
+    var isIntersectingFurniture = _isAreaIntersectingFurnitures(x, y, w, h);
 
-    return isInside && !isIntersecting;
+    return isInside && !isIntersectingWall && !isIntersectingFurniture;
   }
 
   bool _isAreaIntersectingWalls(double x, double y, double w, double h) {
@@ -149,6 +150,19 @@ class BuildFoundation {
       }
     }
     return false;
+  }
+
+  bool _isAreaIntersectingFurnitures(double x, double y, double w, double h) {
+    var isInsideObject = false;
+
+    myFoundation.furnitureList.forEach((key, furniture) {
+      var isInside = furniture.isIntersecting(x, y, w, h);
+      if (isInside) {
+        isInsideObject = true;
+      }
+    });
+    print('isInside $isInsideObject $x $y $w $h');
+    return isInsideObject;
   }
 
   void updateOrInstantiateFoundation(dynamic foundationData) {
@@ -214,7 +228,17 @@ class BuildFoundation {
   void placeWall(int selectedWall) {
     if (myFoundation == null) return;
     var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
-    myFoundation.addWall(tap.dx, tap.dy, selectedWall);
+    var isInsideObject = false;
+
+    myFoundation.furnitureList.forEach((key, furniture) {
+      var isInside = furniture.isInside(tap.dx.floor(), tap.dy.floor());
+      if (isInside) {
+        isInsideObject = true;
+      }
+    });
+    if (isInsideObject == false) {
+      myFoundation.addWall(tap.dx, tap.dy, selectedWall);
+    }
   }
 
   void deleteWall() {
@@ -286,12 +310,25 @@ class BuildFoundation {
       var y = furnitureData['y'].toDouble();
       var w = furnitureData['w'].toDouble();
       var h = furnitureData['h'].toDouble();
-      var id = furnitureData['id'];
+      var id = furnitureData['id'].toString();
 
-      var furniture = Furniture(x, y, w, h, id);
+      var furniture;
+      if (id.startsWith('door')) {
+        furniture = Door(x, y, w, h, id);
+      } else {
+        furniture = Furniture(x, y, w, h, id);
+      }
+
       currentFoundation.addFurniture(furniture);
     }
 
     t.logDelayPassed('replaceFurnitures:');
+  }
+
+  void deleteFurniture() {
+    if (myFoundation == null) return;
+
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    myFoundation.deleteFurniture(tap.dx, tap.dy);
   }
 }

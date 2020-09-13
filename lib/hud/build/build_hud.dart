@@ -82,6 +82,8 @@ class BuildHUD extends UIElement {
       var isBuildingMode = buildBtState != BuildButtonState.none;
       _map.buildFoundation.myFoundation
           ?.switchWallHeightAll(isBuildingMode: isBuildingMode);
+      _map.buildFoundation.myFoundation
+          ?.switchDoor(isBuildingMode: isBuildingMode);
     }
 
     _updateWallLevelSprite();

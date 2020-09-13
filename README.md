@@ -17,7 +17,7 @@ I'm using the `solid principles` as much as i can, make things clear enough easy
 
 ### Release Date?
 Hopefully at some point later this year.
-> Current Version: [1.0.2](https://drive.google.com/drive/folders/1lX372_MqHEnUDRCQkkTJY7llI3NmbIsh?usp=sharing)
+> Current Version: [1.0.3](https://drive.google.com/drive/folders/1lX372_MqHEnUDRCQkkTJY7llI3NmbIsh?usp=sharing)
 
 ## Game Diagram, Structure and Comments
 [![BWO](https://user-images.githubusercontent.com/7622553/92182369-f3cf4500-ee21-11ea-96e5-08a1735f96d8.png)](https://whimsical.com/CkYzWZKNNz5is2GY4Y2yDY@2Ux7TurymMxHuu3kArnA)
@@ -140,11 +140,18 @@ Usecases:
 - Enemys won't collide with walls. Missing Path Finding
 
 ### Doing now
-* doors
+* Path finding
 
 ### Next
 * New Enemy
 * Enemy Passive Aggressive
+
+## 13/09
+* Added Doors
+* Auto open/close doors when player is close
+* Added remove furniture functionality to Delete Tool
+* Furniture Colisions checks and validation for placements
+> ![doors](https://user-images.githubusercontent.com/7622553/93029898-24b73300-f5f5-11ea-9704-31fab953bcec.gif)
 
 ### 09/09
 * Added Roofs

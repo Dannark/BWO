@@ -61,7 +61,7 @@ class Login extends SceneObject {
 
     _version.render(c, "Version: $_versionName", Position(50, 50));
 
-    _title.render(c, "> A letter from the Team of 1", Position(50, 80));
+    _title.render(c, "> A letter from the Dev", Position(50, 80));
     _text.render(
       c,
       """Hello Adventures!\n

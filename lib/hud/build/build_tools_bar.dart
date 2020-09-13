@@ -48,9 +48,9 @@ class BuildToolsBar extends UIElement {
 
     _p.color = Color.fromRGBO(244, 223, 168, 1);
     bounds = Rect.fromLTRB(
-      30,
+      20,
       GameController.screenSize.height - _boxHeight,
-      GameController.screenSize.width - 30,
+      GameController.screenSize.width - 20,
       GameController.screenSize.height + 15,
     );
     var rBounds = RRect.fromLTRBR(bounds.left, bounds.top, bounds.right,
@@ -89,10 +89,11 @@ class BuildToolsBar extends UIElement {
   }
 
   void drawButtonsOnPosition(Canvas c) {
+    var padding = 10;
     for (var i = 0; i < buttonList.length; i++) {
-      var spaceBetween = (bounds.width / buttonList.length);
+      var spaceBetween = ((bounds.width - padding) / buttonList.length);
       buttonList[i].pos = Offset(
-        bounds.left + (spaceBetween * i) + spaceBetween / 2,
+        bounds.left + (padding / 2) + (spaceBetween * i) + spaceBetween / 2,
         bounds.top + 30,
       );
       buttonList[i].draw(c);
@@ -127,6 +128,7 @@ class BuildToolsBar extends UIElement {
   void onDoorPressed(ToolItem bt) {
     _selectButtonHightlight(bt);
     _subtoolsSelected = BuildToolsDoor(_map, this, hudRef);
+    //_subtoolsSelected = BuildToolsFurniture(_map, this, hudRef);
   }
 
   void _selectButtonHightlight(ToolItem bt) {

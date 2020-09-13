@@ -3,19 +3,34 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/preload_assets.dart';
+import 'furniture.dart';
 
-class Door {
-  Sprite sprite;
+class Door extends Furniture {
+  Sprite openDoor;
   bool show = true;
-  Door() {
+  bool isOpen = false;
+
+  Door(double newPosX, double newPosY, double width, double height,
+      String imageId)
+      : super(newPosX, newPosY, width, height, imageId) {
     loadsprite();
   }
 
   void loadsprite() {
-    sprite = PreloadAssets.getFurnitureSprite('roof1');
+    openDoor = PreloadAssets.getFurnitureSprite('${imageId}_open');
   }
 
-  void draw(Canvas c, double x, double y) {
-    sprite?.renderScaled(c, Position(x, y), scale: 1);
+  @override
+  void draw(Canvas c) {
+    if (isOpen) {
+      currentSprite = openDoor;
+      isActive = false;
+      print('open');
+    } else {
+      currentSprite = sprite;
+      isActive = true;
+    }
+    super.draw(c);
+    //sprite?.renderScaled(c, Position(x, y), scale: 1);
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../entity/wall/furniture.dart';
+import '../../../entity/wall/door.dart';
 import '../../../game_controller.dart';
 import '../../../map/map_controller.dart';
 import '../../../ui/hud.dart';
 import '../../../utils/tap_state.dart';
 import '../build_subtools_bar.dart';
 import '../build_tools_bar.dart';
-import '../door_build.dart';
+import '../furniture_build.dart';
 import '../tool_item.dart';
 
 class BuildToolsDoor extends BuildSubToolsBar {
@@ -18,9 +18,9 @@ class BuildToolsDoor extends BuildSubToolsBar {
 
   BuildToolsBar toolsBar;
 
-  DoorBuild _doorBuild;
+  FurnitureBuild _furnitureBuild;
   String _selectedDoor;
-  Furniture _instatiatedFuniture;
+  Door _instatiatedDoor;
 
   BuildToolsDoor(this._map, this.toolsBar, HUD hudRef) {
     buttonList = [
@@ -36,7 +36,7 @@ class BuildToolsDoor extends BuildSubToolsBar {
 
     if (_selectedDoor == null) return;
 
-    _doorBuild?.drawCollisionArea(c);
+    _furnitureBuild?.drawCollisionArea(c);
 
     if (GameController.tapState == TapState.pressing) {
       var tapOnWorld =
@@ -52,7 +52,7 @@ class BuildToolsDoor extends BuildSubToolsBar {
       }
     }
     if (GameController.tapState == TapState.up) {
-      if (_doorBuild != null && _doorBuild.isValidTerrain) {
+      if (_furnitureBuild != null && _furnitureBuild.isValidTerrain) {
         addDoor();
       }
     }
@@ -83,25 +83,25 @@ class BuildToolsDoor extends BuildSubToolsBar {
       'w': width,
       'h': height,
     };
-    if (_doorBuild == null) {
-      _doorBuild = DoorBuild(doorData, _map);
+    if (_furnitureBuild == null) {
+      _furnitureBuild = FurnitureBuild(doorData, _map);
     }
-    _doorBuild.isValidTerrain = isValid;
-    _doorBuild.setup(doorData);
+    _furnitureBuild.isValidTerrain = isValid;
+    _furnitureBuild.setup(doorData);
   }
 
   void addDoor() {
-    /*if (_instatiatedFuniture == null) {
-      _instatiatedFuniture = _doorBuild.getFurniture();
-      _map.buildFoundation.placeFurniture(_instatiatedFuniture);
+    if (_instatiatedDoor == null) {
+      _instatiatedDoor = _furnitureBuild.getDoor();
+      _map.buildFoundation.placeFurniture(_instatiatedDoor);
 
       _selectedDoor = null;
-      _instatiatedFuniture = null;
-      _doorBuild = null;
+      _instatiatedDoor = null;
+      _furnitureBuild = null;
 
       selectButtonHighlight(null);
     } else {
       //update
-    }*/
+    }
   }
 }

@@ -37,7 +37,7 @@ class Wall extends Entity {
     shadownSize = 1;
     shadownLarge = PreloadAssets.getEffectSprite('shadown_square');
     //shadownLarge = Sprite("shadown_square.png");
-    shadownOffset = Offset(0, 14);
+    shadownOffset = Offset(0, 13);
 
     height = (zoom * 16) * 5;
     id = '_${newPosX.floor()}_${posY.ceil()}';

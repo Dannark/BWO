@@ -15,7 +15,7 @@ class BuildToolsOptions extends BuildSubToolsBar {
   BuildToolsOptions(this._map, HUD hudRef) {
     buttonList = [
       ToolItem("handsaw", "Delete Wall", hudRef, onDeleteWall),
-      ToolItem("cancel", "Cancel", hudRef, onCancelPress),
+      //ToolItem("cancel", "Cancel", hudRef, onCancelPress),
       ToolItem("accept", "Save", hudRef, onAccept),
     ];
   }
@@ -32,6 +32,7 @@ class BuildToolsOptions extends BuildSubToolsBar {
 
   void deleteWall() {
     _map.buildFoundation.deleteWall();
+    _map.buildFoundation.deleteFurniture();
   }
 
   void onDeleteWall(dynamic bt) {
