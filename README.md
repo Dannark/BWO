@@ -4,7 +4,7 @@
 
 An infinity procedural online game using Flutter and flames with NodeJS and Firebase for the back-end.
 
-![gameplay1](https://user-images.githubusercontent.com/7622553/90344825-b0887000-dff3-11ea-9d1e-eca2ec55af6f.gif)
+![showcase5](https://user-images.githubusercontent.com/7622553/93117099-add17700-f694-11ea-931b-979ea1eb7123.gif)
 ![showcase1](https://user-images.githubusercontent.com/7622553/91732240-59030c00-eb7e-11ea-96e5-2e854e10e597.gif)
 
 ### On the Table
