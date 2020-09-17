@@ -132,7 +132,8 @@ Usecases:
 * [ ] Dynamic bundle and CI/CD for playstore
 * [ ] Global Chat System
 * [x] UML Game Diagram
-* [ ] Path Finding
+~~* [x] Path Finding~~
+* [x] Safe zone to foundations
 * [ ] Random Maze dungeon and loots
 
 ### Know Problems

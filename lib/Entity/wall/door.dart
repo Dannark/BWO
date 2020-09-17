@@ -25,7 +25,6 @@ class Door extends Furniture {
     if (isOpen) {
       currentSprite = openDoor;
       isActive = false;
-      print('open');
     } else {
       currentSprite = sprite;
       isActive = true;
