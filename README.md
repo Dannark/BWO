@@ -17,7 +17,7 @@ I'm using the `solid principles` as much as i can, make things clear enough easy
 
 ### Release Date?
 Hopefully at some point later this year.
-> Current Version: [1.0.3](https://drive.google.com/drive/folders/1lX372_MqHEnUDRCQkkTJY7llI3NmbIsh?usp=sharing)
+> Current Version: [1.0.4](https://drive.google.com/drive/folders/1lX372_MqHEnUDRCQkkTJY7llI3NmbIsh?usp=sharing)
 
 ## Game Diagram, Structure and Comments
 [![BWO](https://user-images.githubusercontent.com/7622553/92182369-f3cf4500-ee21-11ea-96e5-08a1735f96d8.png)](https://whimsical.com/CkYzWZKNNz5is2GY4Y2yDY@2Ux7TurymMxHuu3kArnA)
