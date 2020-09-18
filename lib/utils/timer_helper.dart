@@ -15,7 +15,7 @@ class TimerHelper {
     return diff;
   }
 
-  void logDelayPassed(String text, {int ifGreaterThan = 40}) {
+  void logDelayPassed(String text, {int ifGreaterThan = 50}) {
     var delay = getDelay();
     if (delay >= ifGreaterThan) {
       print("\x1B[38;5;2mMethod '$text' took (${delay}ms)\x1B[0m");

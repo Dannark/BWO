@@ -64,7 +64,6 @@ class BuildToolsFurniture extends BuildSubToolsBar {
     width = bt.size.dx.floor();
     height = bt.size.dy.floor();
 
-    print('onPress ${bt.spriteName}');
     _selectedFurniture = bt.spriteName;
   }
 

@@ -112,8 +112,8 @@ Usecases:
     - [x] UI object selection interface
     - [x] Ground Tiles
     - [x] Roofs
-    - [ ] Animated Doors
-    - [ ] Windows
+    - [x] Animated Doors
+    - [x] Windows
     - [x] Craft or buying system
     - [x] Sync building to the server
         - [x] Walls
@@ -146,6 +146,16 @@ Usecases:
 * Code refactoring
 * New Enemy
 * Enemy Passive Aggressive
+
+## 18/09
+* Fixed bug when dragging foundation area preview outsite of the screen area
+* Fixed but when creating character after flames update
+* Reducing foundation load area from server, it will load only if you are close enough to the edge screen
+* Added option to build foundation over cutted tree spot
+
+## 17/09
+* Server Send Messages big improviments
+* Foundations are now safe zone, this means enemys wont attack you there
 
 ## 13/09
 * Added Doors

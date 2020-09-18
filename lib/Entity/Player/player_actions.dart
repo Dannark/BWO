@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../hud/build/build_hud.dart';
 import '../../map/map_controller.dart';
 import '../../map/tree.dart';
 import '../../utils/tap_state.dart';
@@ -17,6 +18,8 @@ class PlayerActions {
       return;
     }
     isDoingAction = false;
+
+    if (BuildHUD.buildBtState == BuildButtonState.build) return;
 
     if (TapState.isTapingLeft()) {
       for (var entity in map.entitysOnViewport) {

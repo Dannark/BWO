@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/timer_helper.dart';
 import 'ui_element.dart';
 
 class HUD {
@@ -13,6 +14,7 @@ class HUD {
     if (!isActive) {
       return;
     }
+    var t = TimerHelper();
 
     for (var ui in uiElelements) {
       if (ui.drawOnHUD) {
@@ -21,6 +23,7 @@ class HUD {
     }
 
     _addNewElementsOnSafity();
+    t.logDelayPassed('HUD: (${uiElelements.length})');
   }
 
   void addElement(UIElement newUi) {

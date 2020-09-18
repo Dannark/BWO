@@ -84,10 +84,17 @@ class BuildToolsFoundation extends BuildSubToolsBar {
     //     (wasCreated) {
 
     // });
+
     _map.buildFoundation.updateOrInstantiateFoundation(foundationData);
 
     var isValid =
         _map.buildFoundation.checkIfTerrainLocationIsValid(x, y, width, height);
+
     _map.buildFoundation.myFoundation.isValidTerrain = isValid;
+
+    _map.buildFoundation.myFoundation.furnitureList.forEach((key, value) {
+      value.destroy();
+    });
+    _map.buildFoundation.myFoundation.furnitureList.clear();
   }
 }

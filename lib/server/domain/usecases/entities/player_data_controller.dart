@@ -117,7 +117,7 @@ class PlayerDataController {
 
   void onPlayerAttackEnemy(dynamic data) {
     var t = TimerHelper();
-    print('onPlayerAttackEnemy, $data');
+    //print('onPlayerAttackEnemy, $data');
 
     var enemyId = data['enemyId'].toString();
     var playerId = data['playerId'].toString();

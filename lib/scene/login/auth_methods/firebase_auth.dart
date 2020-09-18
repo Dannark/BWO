@@ -138,7 +138,7 @@ class FirebaseAuth implements AuthService {
       if (snapshot.value == null) {
         isAvaiable = true;
       } else {
-        Toast.add('Character name already taken: ${snapshot.value}');
+        Toast.add('Character name already taken: ${snapshot.value["name"]}');
       }
     });
     return isAvaiable;

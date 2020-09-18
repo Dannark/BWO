@@ -76,9 +76,6 @@ class Furniture extends Entity {
       (width / 16),
       (height / 16) - 1,
     );
-    if (imageId == 'bed1') {
-      print('$imageId $r1 $r2');
-    }
 
     return r1.intersects(r2);
   }

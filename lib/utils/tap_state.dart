@@ -30,6 +30,11 @@ class TapState {
         pressedPosition.dx > GameController.screenSize.width / 2;
   }
 
+  static bool isTapingBottom() {
+    return GameController.tapState == pressing &&
+        pressedPosition.dy > GameController.screenSize.height / 2;
+  }
+
   static bool instersect(Rect r) {
     var r1 = Rectangle(r.left, r.top, r.width, r.height);
     var r2 = Rectangle(pressedPosition.dx, pressedPosition.dy, 1, 1);

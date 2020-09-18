@@ -24,8 +24,8 @@ export function addFoundation(command){
 
 export function getAllFoundationsAroundPlayer(playerId) {
     var mPlayer = state.players[playerId]
-    var width = 500
-    var height = 700
+    var width = 40
+    var height = 50
 
     var foundationArray = Object.entries(state.foundations).filter((foundation) => {
         return foundation[1].x > mPlayer.x/16 - width

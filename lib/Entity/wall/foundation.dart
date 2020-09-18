@@ -227,6 +227,7 @@ class Foundation {
     return area;
   }
 
+  /// Using Grid coordinates
   bool isInsideFoundation(double posX, double posY,
       {double wPoint = 0, double hPoint = 0}) {
     return posX >= left &&

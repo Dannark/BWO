@@ -73,8 +73,7 @@ class MapController {
   }
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {int tileSize = 15, int movimentType = MovimentType.move}) {
-    var t = TimerHelper();
+      {int tileSize = 16, int movimentType = MovimentType.move}) {
     var borderSize = (border * tileSize);
 
     widthViewPort =
@@ -116,6 +115,7 @@ class MapController {
     safeX = (viewPort.left).ceil();
     safeXmax = (viewPort.right).ceil();
 
+    var t = TimerHelper();
     for (var y = safeY; y < safeYmax; y++) {
       for (var x = safeX; x < safeXmax; x++) {
         var isSafeLine = map[y] != null ? map[y][x] != null : false;
@@ -134,12 +134,6 @@ class MapController {
                         127)
                     .toInt();
 
-            /*var tileHeight2 =
-                ((terrainNoise2.getPerlin2(x.toDouble(), y.toDouble()) * 128) +
-                        127)
-                    .toInt();
-            tileHeight = ((tileHeight + tileHeight2) ~/ 2);*/
-
             if (map[y] == null) {
               map[y] = {x: null}; //initialize line
             }
@@ -151,7 +145,6 @@ class MapController {
             _loopsPerCycle++;
 
             //TREE
-
             if (tileHeight > 130 && tileHeight < 180) {
               _addTrees(x, y, tileHeight, tileSize);
             }
@@ -161,24 +154,31 @@ class MapController {
     }
     _loopsPerCycle = 0;
     _maxLoopsPerCycle = 50;
+    t.logDelayPassed('draw map:');
 
+    _findEntitysOnViewport();
+
+    var t1 = TimerHelper();
     // Organize List to show Entity elements (Players, Trees)
     // on correct Y-Index order
-    _findEntitysOnViewport();
     entitysOnViewport.sort((a, b) => a.y.compareTo(b.y));
+    t1.logDelayPassed('draw effects:');
 
+    var t2 = TimerHelper();
     //drawShadowns behind all elements
     for (var entity in entitysOnViewport) {
       if (!entity.marketToBeRemoved) entity.drawEffects(c);
     }
+    t2.logDelayPassed('draw effects:');
+    var t3 = TimerHelper();
     for (var entity in entitysOnViewport) {
       if (!entity.marketToBeRemoved) entity.draw(c);
     }
+    t3.logDelayPassed('draw entity:');
 
     buildFoundation.drawRoofs(c);
 
     c.restore();
-    t.logDelayPassed('drawMap:');
   }
 
   int getHeightOnPos(int x, int y) {

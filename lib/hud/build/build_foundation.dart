@@ -73,7 +73,7 @@ class BuildFoundation {
     var trees = getAmountOfTreesAround(x, y, w, h);
 
     if (trees.length > 0) {
-      Toast.add("This place if blocked by a Tree. You should remove it first.");
+      Toast.add("This place is blocked by a Tree. You should remove it first.");
       return false;
     }
 
@@ -107,7 +107,8 @@ class BuildFoundation {
         if (entity.posX >= left &&
             entity.posY >= top &&
             entity.posX <= left + w &&
-            entity.posY <= top + h) {
+            entity.posY <= top + h &&
+            entity.status.getHP() > 0) {
           treeList.add(entity);
         }
       }
@@ -121,6 +122,9 @@ class BuildFoundation {
     var bottom = top + h;
     for (var y = top; y < bottom; y++) {
       for (var x = left; x < right; x++) {
+        var isValidTile = _map.map[y] != null ? _map.map[y][x] != null : false;
+        if (!isValidTile) return false;
+
         if (_map.map[y][x][0].height < Ground.lowWater) {
           return true;
         }
@@ -171,11 +175,14 @@ class BuildFoundation {
     if (foundationExists != null) {
       //do not update self foundation while in build mode
       if (foundationExists == myFoundation &&
-          BuildHUD.buildBtState != BuildButtonState.build) {
+          BuildHUD.buildBtState == BuildButtonState.build) {
         updateBounds(foundationExists, foundationData);
         replaceWalls(foundationExists, foundationData['walls']);
         replaceFloors(foundationExists, foundationData['floors']);
         replaceFurniture(foundationExists, foundationData['furnitures']);
+      } else {
+        print(
+            'ignore update while in build mode ${BuildHUD.buildBtState != BuildButtonState.build}');
       }
     } else {
       instantiateFoundation(foundationData);
