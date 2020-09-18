@@ -132,7 +132,6 @@ Usecases:
 * [ ] Dynamic bundle and CI/CD for playstore
 * [ ] Global Chat System
 * [x] UML Game Diagram
-~~* [x] Path Finding~~
 * [x] Safe zone to foundations
 * [ ] Random Maze dungeon and loots
 
@@ -141,9 +140,10 @@ Usecases:
 - Enemys won't collide with walls. Missing Path Finding
 
 ### Doing now
-* Path finding
+* Performance improviments
 
 ### Next
+* Code refactoring
 * New Enemy
 * Enemy Passive Aggressive
 

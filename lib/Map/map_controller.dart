@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 
+import 'package:BWO/utils/timer_helper.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
 
@@ -73,6 +74,7 @@ class MapController {
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
       {int tileSize = 15, int movimentType = MovimentType.move}) {
+    var t = TimerHelper();
     var borderSize = (border * tileSize);
 
     widthViewPort =
@@ -176,6 +178,7 @@ class MapController {
     buildFoundation.drawRoofs(c);
 
     c.restore();
+    t.logDelayPassed('drawMap:');
   }
 
   int getHeightOnPos(int x, int y) {
@@ -233,6 +236,7 @@ class MapController {
   }
 
   void _findEntitysOnViewport() {
+    var t = TimerHelper();
     entitysOnViewport.clear();
 
     entityList.removeWhere((element) => element.marketToBeRemoved);
@@ -259,6 +263,7 @@ class MapController {
         entityList[i].marketToBeRemoved = true;
       }
     }
+    t.logDelayPassed('_findEntitysOnViewport:');
   }
 }
 

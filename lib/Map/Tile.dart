@@ -25,8 +25,8 @@ class Tile {
     boxRect = Rect.fromLTWH(
       posX.toDouble() * size.toDouble(),
       posY.toDouble() * size.toDouble(),
-      size.toDouble(),
-      size.toDouble(),
+      size.toDouble() + 1,
+      size.toDouble() + 1,
     );
     boxPaint.color = color != null ? color : Colors.white;
 

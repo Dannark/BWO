@@ -161,11 +161,11 @@ class BuildFoundation {
         isInsideObject = true;
       }
     });
-    print('isInside $isInsideObject $x $y $w $h');
     return isInsideObject;
   }
 
   void updateOrInstantiateFoundation(dynamic foundationData) {
+    var t = TimerHelper();
     var foundationExists = checkIfFoundationExists(foundationData);
 
     if (foundationExists != null) {
@@ -176,12 +176,11 @@ class BuildFoundation {
         replaceWalls(foundationExists, foundationData['walls']);
         replaceFloors(foundationExists, foundationData['floors']);
         replaceFurniture(foundationExists, foundationData['furnitures']);
-      } else {
-        print("ignoring self foundation Update while in building mode");
       }
     } else {
       instantiateFoundation(foundationData);
     }
+    t.logDelayPassed('updateOrInstantiateFoundation:');
   }
 
   void instantiateFoundation(dynamic foundationData) {
