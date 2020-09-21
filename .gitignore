@@ -6,6 +6,8 @@
 /.packages
 /android
 /ios
+/web
+/test
 /pubspec.lock
 /build
 /bwo-server/node_modules

@@ -14,7 +14,7 @@ import '../utils/physics_controller.dart';
 import 'scene_object.dart';
 
 class GameScene extends SceneObject {
-  static const int worldSize = 16;
+  static const int worldSize = 8;
 
   TextConfig config =
       TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
