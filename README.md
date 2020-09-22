@@ -147,6 +147,10 @@ Usecases:
 * New Enemy
 * Enemy Passive Aggressive
 
+# 22/09
+* New Enemy
+> ![forward_right](https://user-images.githubusercontent.com/7622553/93885188-429e2b00-fcba-11ea-9e95-085a4c2a9850.gif)
+
 ## 18/09
 * Fixed bug when dragging foundation area preview outsite of the screen area
 * Fixed but when creating character after flames update

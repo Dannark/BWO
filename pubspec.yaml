@@ -108,6 +108,10 @@ flutter:
       #Enemy - mini-skull
       - assets/images/enemys/miniskull/walk/
       - assets/images/enemys/miniskull/attack/
+      
+      #Enemy - grood
+      - assets/images/enemys/grood/walk/
+      - assets/images/enemys/grood/attack/
 
       # Axe Attack Effect
       - assets/images/equipment/weapons/axe/walk/
