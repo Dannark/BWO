@@ -1,3 +1,4 @@
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/wall/door.dart';
@@ -40,7 +41,7 @@ class BuildToolsDoor extends BuildSubToolsBar {
 
     if (GameController.tapState == TapState.pressing) {
       var tapOnWorld =
-          TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+          TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
       var tapOnScreen = TapState.currentPosition;
 
       var verticalBarButtons =

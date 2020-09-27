@@ -1,3 +1,4 @@
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/wall/furniture.dart';
@@ -40,7 +41,7 @@ class BuildToolsFurniture extends BuildSubToolsBar {
 
     if (GameController.tapState == TapState.pressing) {
       var tapOnWorld =
-          TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+          TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
       var tapOnScreen = TapState.currentPosition;
 
       var verticalBarButtons =
@@ -64,7 +65,6 @@ class BuildToolsFurniture extends BuildSubToolsBar {
     width = bt.size.dx.floor();
     height = bt.size.dy.floor();
 
-    print('onPress ${bt.spriteName}');
     _selectedFurniture = bt.spriteName;
   }
 

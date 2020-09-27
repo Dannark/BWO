@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/sprite_batch.dart';
 import 'package:flutter/material.dart';
 
@@ -116,6 +117,7 @@ class SpriteController {
     var y =
         ((_currentFrameId * _viewPort.width) / maxImageWidth).floorToDouble() *
             _viewPort.height;
+    double scale = 3.0*GameScene.pixelsPerTile/16;
 
     var sink = ((105 - height) * 0.15).clamp(0, 5);
     var offsetToPlayerFeet = 0;
@@ -132,7 +134,7 @@ class SpriteController {
       rect: frame,
       offset: newPosition, //Offset(moveX, moveY),
       anchor: Offset(_pivot.dx, _pivot.dy - sink),
-      scale: _scale,
+      scale: scale,
     );
   }
 

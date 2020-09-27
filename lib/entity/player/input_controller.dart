@@ -41,7 +41,7 @@ class InputController {
         eventY = eventY * -1;
       }
 
-      if (TapState.isTapingRight()) {
+      if (TapState.isTapingRight() && TapState.isTapingBottom()) {
         player.xSpeed =
             (eventX * accelerationSpeed).clamp(-maxAngle, maxAngle).toDouble() *
                 speedMultiplier;

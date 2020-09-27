@@ -17,7 +17,7 @@ I'm using the `solid principles` as much as i can, make things clear enough easy
 
 ### Release Date?
 Hopefully at some point later this year.
-> Current Version: [1.0.3](https://drive.google.com/drive/folders/1lX372_MqHEnUDRCQkkTJY7llI3NmbIsh?usp=sharing)
+> Current Version: [1.0.4](https://drive.google.com/drive/folders/1lX372_MqHEnUDRCQkkTJY7llI3NmbIsh?usp=sharing)
 
 ## Game Diagram, Structure and Comments
 [![BWO](https://user-images.githubusercontent.com/7622553/92182369-f3cf4500-ee21-11ea-96e5-08a1735f96d8.png)](https://whimsical.com/CkYzWZKNNz5is2GY4Y2yDY@2Ux7TurymMxHuu3kArnA)
@@ -112,8 +112,8 @@ Usecases:
     - [x] UI object selection interface
     - [x] Ground Tiles
     - [x] Roofs
-    - [ ] Animated Doors
-    - [ ] Windows
+    - [x] Animated Doors
+    - [x] Windows
     - [x] Craft or buying system
     - [x] Sync building to the server
         - [x] Walls
@@ -132,7 +132,7 @@ Usecases:
 * [ ] Dynamic bundle and CI/CD for playstore
 * [ ] Global Chat System
 * [x] UML Game Diagram
-* [ ] Path Finding
+* [x] Safe zone to foundations
 * [ ] Random Maze dungeon and loots
 
 ### Know Problems
@@ -140,11 +140,22 @@ Usecases:
 - Enemys won't collide with walls. Missing Path Finding
 
 ### Doing now
-* Path finding
+* Performance improviments
 
 ### Next
+* Code refactoring
 * New Enemy
 * Enemy Passive Aggressive
+
+## 18/09
+* Fixed bug when dragging foundation area preview outsite of the screen area
+* Fixed but when creating character after flames update
+* Reducing foundation load area from server, it will load only if you are close enough to the edge screen
+* Added option to build foundation over cutted tree spot
+
+## 17/09
+* Server Send Messages big improviments
+* Foundations are now safe zone, this means enemys wont attack you there
 
 ## 13/09
 * Added Doors

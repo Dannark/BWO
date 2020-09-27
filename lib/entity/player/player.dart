@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
@@ -96,14 +97,14 @@ class Player extends Entity implements OnAnimationEnd {
         animSpeed = 0.07;
       }
 
-      currentSprite.draw(c, x, y, xSpeed, ySpeed, animSpeed, mapHeight,
-          stopAnimWhenIdle: stopAnimWhenIdle); //0.125 = 12fps
+      currentSprite.draw(c, x*_map.scale, y*_map.scale, xSpeed, ySpeed,
+              animSpeed, mapHeight, stopAnimWhenIdle: stopAnimWhenIdle); //0.125 = 12fps
 
       equipmentController?.draw(c, animSpeed,
           stopAnimWhenIdle: stopAnimWhenIdle);
     }
     //debugDraw(c);
-    _text.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
+    _text.render(c, name, Position(x*_map.scale, y*_map.scale - 45*_map.scale), anchor: Anchor.bottomCenter);
   }
 
   @override
@@ -123,7 +124,7 @@ class Player extends Entity implements OnAnimationEnd {
   void die(Canvas c) {
     if (status.isAlive() == false) {
       isActive = false;
-      _deathSprite?.renderScaled(c, Position(x - 16, y - 32), scale: 2);
+      _deathSprite?.renderScaled(c, Position(x*_map.scale - 16*_map.scale, y*_map.scale - 32*_map.scale), scale: 2*_map.scale);
 
       if (!isMine) return;
 

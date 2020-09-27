@@ -1,3 +1,4 @@
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,6 @@ class Door extends Furniture {
     if (isOpen) {
       currentSprite = openDoor;
       isActive = false;
-      print('open');
     } else {
       currentSprite = sprite;
       isActive = true;

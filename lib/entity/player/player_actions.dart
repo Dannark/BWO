@@ -1,5 +1,7 @@
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
+import '../../hud/build/build_hud.dart';
 import '../../map/map_controller.dart';
 import '../../map/tree.dart';
 import '../../utils/tap_state.dart';
@@ -18,12 +20,14 @@ class PlayerActions {
     }
     isDoingAction = false;
 
+    if (BuildHUD.buildBtState == BuildButtonState.build) return;
+
     if (TapState.isTapingLeft()) {
       for (var entity in map.entitysOnViewport) {
         var target = Offset(entity.x, entity.y);
         var distance = (Offset(player.x, player.y) - target).distance;
 
-        if (distance <= 3.0 * player.worldSize && isDoingAction == false) {
+        if (distance <= 4.0 * 16 && isDoingAction == false) {
           if (entity is Tree && entity.status.isAlive()) {
             isDoingAction = true;
 

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'utils/preload_assets.dart';
 import 'utils/tap_state.dart';
 import 'utils/toast_message.dart';
 
-class GameController extends Game with PanDetector {
+class GameController extends Game with ScaleDetector {
   static Rect screenSize;
   static double fps = 0;
 
@@ -21,6 +22,7 @@ class GameController extends Game with PanDetector {
   static double time = 0;
   static int tapState = TapState.up;
   static int preTapState = TapState.up;
+  static double pinchScale = 1;
 
   static SceneObject currentScene;
 
@@ -111,5 +113,34 @@ class GameController extends Game with PanDetector {
   @override
   void onPanEnd(DragEndDetails details) {
     tapState = TapState.up;
+  }
+  @override
+  void onScaleStart (ScaleStartDetails details) {
+    preTapState = TapState.down;
+    TapState.pressedPosition = details.focalPoint;
+    TapState.currentPosition = details.focalPoint;
+    TapState.lastPosition = details.focalPoint;
+  }
+  @override
+  void onScaleUpdate(ScaleUpdateDetails details) {
+    if (tapState == TapState.pressing) {
+      TapState.lastPosition = TapState.currentPosition;
+      TapState.currentPosition = details.focalPoint;
+    }
+    pinchScale = details.scale;
+  }
+  @override
+  void onScaleEnd(ScaleEndDetails details) {
+    tapState = TapState.up;
+    if (currentScene is GameScene) {
+      GameScene gameScene = currentScene;
+      if (pinchScale > 1.5) {
+        gameScene.zoom(-1);
+      }
+      else if (pinchScale < 0.7) {
+        gameScene.zoom(1);
+      }
+      pinchScale = 1;
+    }
   }
 }

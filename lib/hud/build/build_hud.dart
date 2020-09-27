@@ -1,3 +1,4 @@
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -96,12 +97,16 @@ class BuildHUD extends UIElement {
         _buildToolsBar.setActive(true);
         buildBtState = BuildButtonState.build;
         _player.canWalk = false;
+        _map.setZoom(0); // closest zoom level for building
+
       } else {
         //finish building
         buildBtState = BuildButtonState.none;
         _player.canWalk = true;
         _buildToolsBar.setActive(false);
         _map.buildFoundation.myFoundation?.save();
+        _map.setZoom(2); // Zoom out
+
       }
     }
   }

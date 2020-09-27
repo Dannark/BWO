@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:BWO/entity/wall/door.dart';
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -73,7 +74,7 @@ class BuildFoundation {
     var trees = getAmountOfTreesAround(x, y, w, h);
 
     if (trees.length > 0) {
-      Toast.add("This place if blocked by a Tree. You should remove it first.");
+      Toast.add("This place is blocked by a Tree. You should remove it first.");
       return false;
     }
 
@@ -107,7 +108,8 @@ class BuildFoundation {
         if (entity.posX >= left &&
             entity.posY >= top &&
             entity.posX <= left + w &&
-            entity.posY <= top + h) {
+            entity.posY <= top + h &&
+            entity.status.getHP() > 0) {
           treeList.add(entity);
         }
       }
@@ -121,6 +123,9 @@ class BuildFoundation {
     var bottom = top + h;
     for (var y = top; y < bottom; y++) {
       for (var x = left; x < right; x++) {
+        var isValidTile = _map.map[y] != null ? _map.map[y][x] != null : false;
+        if (!isValidTile) return false;
+
         if (_map.map[y][x][0].height < Ground.lowWater) {
           return true;
         }
@@ -161,27 +166,29 @@ class BuildFoundation {
         isInsideObject = true;
       }
     });
-    print('isInside $isInsideObject $x $y $w $h');
     return isInsideObject;
   }
 
   void updateOrInstantiateFoundation(dynamic foundationData) {
+    var t = TimerHelper();
     var foundationExists = checkIfFoundationExists(foundationData);
 
     if (foundationExists != null) {
       //do not update self foundation while in build mode
       if (foundationExists == myFoundation &&
-          BuildHUD.buildBtState != BuildButtonState.build) {
+          BuildHUD.buildBtState == BuildButtonState.build) {
         updateBounds(foundationExists, foundationData);
         replaceWalls(foundationExists, foundationData['walls']);
         replaceFloors(foundationExists, foundationData['floors']);
         replaceFurniture(foundationExists, foundationData['furnitures']);
       } else {
-        print("ignoring self foundation Update while in building mode");
+        print(
+            'ignore update while in build mode ${BuildHUD.buildBtState != BuildButtonState.build}');
       }
     } else {
       instantiateFoundation(foundationData);
     }
+    t.logDelayPassed('updateOrInstantiateFoundation:');
   }
 
   void instantiateFoundation(dynamic foundationData) {
@@ -227,7 +234,7 @@ class BuildFoundation {
   // ------------------ walls -------------------------------
   void placeWall(int selectedWall) {
     if (myFoundation == null) return;
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
     var isInsideObject = false;
 
     myFoundation.furnitureList.forEach((key, furniture) {
@@ -244,7 +251,7 @@ class BuildFoundation {
   void deleteWall() {
     if (myFoundation == null) return;
 
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
     myFoundation.deleteWall(tap.dx, tap.dy);
   }
 
@@ -269,7 +276,7 @@ class BuildFoundation {
   // ------------------ floors -------------------------------
   void placeFloor(int selectedFloor) {
     if (myFoundation == null) return;
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
     myFoundation.addFloor(tap.dx, tap.dy, selectedFloor);
   }
 
@@ -328,7 +335,7 @@ class BuildFoundation {
   void deleteFurniture() {
     if (myFoundation == null) return;
 
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
     myFoundation.deleteFurniture(tap.dx, tap.dy);
   }
 }

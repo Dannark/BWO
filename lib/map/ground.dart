@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class Ground extends Tile {
   FoamWaterEffect foamWaterEffect;
   Sprite grass;
 
+
   static const water = 95;
   static const lowWater = 110;
   static const lowSand = 112;
@@ -25,27 +27,52 @@ class Ground extends Tile {
       : super(posX, posY, height, size, color) {
     var tileColor = getTileDetailsBasedOnHight(this.height);
     boxPaint.color = color != null ? color : tileColor;
+    if (size == 1){
+      boxPaint.strokeWidth = 2;
+    }
 
-    if (height < 107) {
+    if (height < 107 && size >= 8) {
       waterStarsEffect = WaterStarsEffect(boxRect);
     }
-    if (height >= 108 && height <= 110) {
+    if (height >= 108 && height <= 110 && size >= 8) {
       foamWaterEffect = FoamWaterEffect();
     }
   }
 
   void draw(Canvas c) {
-    if (height >= 108 && height <= 110) {
+    if (size != GameScene.tilePixels) {
+      size = GameScene.tilePixels;
+      if (size > 1) {
+        boxRect = Rect.fromLTWH(
+          posX.toDouble() * size.toDouble(),
+          posY.toDouble() * size.toDouble(),
+          size.toDouble() + 1,
+          size.toDouble() + 1,
+        );
+      } else {
+        // called every 2nd pixel on furthest zoom level
+        boxPaint.strokeWidth = 2;
+        points = [Offset(posX.toDouble(), posY.toDouble())];
+      }
+    }
+    double scale = GameScene.pixelsPerTile/16;
+    if (height >= 108 && height <= 110 && size >= 8) {
+      foamWaterEffect = foamWaterEffect ?? FoamWaterEffect();
       boxPaint.color =
           foamWaterEffect.getFoamColor(height, posX, posY); //Colors.blue[200];
     }
-    c.drawRect(boxRect, boxPaint);
-
-    if (grass != null) {
-      grass.renderScaled(c, Position(boxRect.left, boxRect.top), scale: 1);
+    if (size > 1) {
+      c.drawRect(boxRect, boxPaint);
+    } else {
+      c.drawPoints(PointMode.points, points, boxPaint);
     }
 
-    if (height < 107) {
+    if (grass != null && size >= 8) {
+      grass.renderScaled(c, Position(boxRect.left, boxRect.top), scale: scale);
+    }
+
+    if (height < 107 && size >= 8) {
+      waterStarsEffect = waterStarsEffect ?? WaterStarsEffect(boxRect);
       waterStarsEffect.blinkWaterEffect(c);
     }
   }

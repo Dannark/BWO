@@ -11,6 +11,9 @@ class CharacterPreviewWindows {
   Map<int, List<SpriteSheet>> sprites = {};
   List<SpriteSheet> _currentSprite;
 
+  List<String> spriteFolder = [];
+  String currentSpriteFolder;
+
   Sprite shadown = Sprite('shadown.png');
 
   Position myPos;
@@ -83,6 +86,7 @@ class CharacterPreviewWindows {
     });
     c.restore();
     _currentSprite = sprites[indexSpriteSheet];
+    currentSpriteFolder = spriteFolder[indexSpriteSheet];
 
     if (GameController.time > delay) {
       delay = GameController.time + .3;
@@ -95,6 +99,7 @@ class CharacterPreviewWindows {
   }
 
   List<SpriteSheet> loadSprite(String folderName) {
+    spriteFolder.add(folderName);
     // ignore: omit_local_variable_types
     List<SpriteSheet> sprites = [];
     var images = [
@@ -119,6 +124,6 @@ class CharacterPreviewWindows {
   }
 
   String getSpriteSelected() {
-    return _currentSprite[0].imageName.replaceFirst("/walk/forward.png", "");
+    return currentSpriteFolder;
   }
 }

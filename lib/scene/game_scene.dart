@@ -14,7 +14,9 @@ import '../utils/physics_controller.dart';
 import 'scene_object.dart';
 
 class GameScene extends SceneObject {
-  static const int worldSize = 8;
+  static int tilePixels = 8;
+  static double pixelsPerTile = 8;
+  static const int maxZoom = 4;
 
   TextConfig config =
       TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
@@ -62,14 +64,15 @@ class GameScene extends SceneObject {
   void draw(Canvas c) {
     var bgRect = Rect.fromLTWH(0, 0, GameController.screenSize.width,
         GameController.screenSize.height);
+    double scale = pixelsPerTile/16;
 
     if (player.id == null) return; //wait player log it
 
-    mapController.drawMap(c, player.x, player.y, bgRect,
-        movimentType: MovimentType.follow, tileSize: worldSize);
+    mapController.drawMap(c, player.x*scale, player.y*scale, bgRect,
+        movimentType: MovimentType.follow, tileSize: tilePixels);
 
     config.render(
-        c, "FPS: ${getFps()}", Position(GameController.screenSize.width, 0),
+        c, "FPS: ${getFps()}", Position(GameController.screenSize.width-6, 0),
         anchor: Anchor.topRight);
 
     hud.draw(c);
@@ -83,6 +86,12 @@ class GameScene extends SceneObject {
 
   @override
   void update() {
+    double scale = pixelsPerTile/16;
+    var bgRect = Rect.fromLTWH(0, 0, GameController.screenSize.width,
+        GameController.screenSize.height);
+    mapController.updateMap(player.x*scale, player.y*scale, bgRect,
+        movimentType: MovimentType.follow, tileSize: tilePixels);
+
     for (var entity in mapController.entitysOnViewport) {
       if (entity is Player || entity is Enemy) {
         entity.update();
@@ -90,5 +99,10 @@ class GameScene extends SceneObject {
     }
 
     physicsController.update();
+  }
+
+  void zoom (zoom) {
+    if (mapController.zoom + zoom <= maxZoom && mapController.zoom + zoom >= 0)
+      mapController.setZoom (mapController.zoom + zoom);
   }
 }

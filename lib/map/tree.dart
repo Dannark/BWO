@@ -34,8 +34,8 @@ class Tree extends Entity {
   double _deleteTime = double.infinity;
 
   Tree(this._map, int posX, int posY, this._tileSize, this._spriteImage)
-      : super((posX.toDouble() * GameScene.worldSize),
-            (posY.toDouble() * GameScene.worldSize)) {
+      : super((posX.toDouble() * 16),
+            (posY.toDouble() * 16)) {
     id = '_${x.toInt()}_${y.toInt()}';
 
     width = 2.0 * _tileSize;
@@ -55,9 +55,9 @@ class Tree extends Entity {
     _tree.add(
         rect: Rect.fromLTWH(0, 0, 16, 16),
         offset: Offset(
-            posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
+            posX.toDouble() * _tileSize*_map.scale, (posY.toDouble() - 1) * _tileSize*_map.scale),
         anchor: Offset(8, 14),
-        scale: _tileSize.toDouble(),
+        scale: _tileSize.toDouble()*_map.scale,
         rotation: 0 //-0.05
         );
   }
@@ -135,9 +135,9 @@ class Tree extends Entity {
     _tree.add(
         rect: Rect.fromLTWH(0, 0, 16, 16),
         offset: Offset(
-            posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
+            posX.toDouble() * _tileSize*_map.scale, (posY.toDouble() - 1) * _tileSize*_map.scale),
         anchor: Offset(8, 14),
-        scale: _tileSize.toDouble(),
+        scale: _tileSize.toDouble()*_map.scale,
         rotation: rot //-0.05
         );
   }

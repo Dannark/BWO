@@ -90,7 +90,7 @@ class CharacterCreation extends SceneObject {
     print('Starting game...');
     GameController.currentScene = GameScene(
         _inputTextUI.getText(),
-        -_mapPreviewWindows.targetPos * GameScene.worldSize.toDouble(),
+        -_mapPreviewWindows.targetPos * GameScene.tilePixels.toDouble(),
         _characterPreviewWindows.getSpriteSelected(),
         10,
         0,

@@ -1,6 +1,7 @@
 import '../../../../entity/enemys/enemy.dart';
 import '../../../../entity/player/player.dart';
 import '../../../../map/map_controller.dart';
+import '../../../../utils/timer_helper.dart';
 import '../../../utils/server_utils.dart';
 
 class PlayerDataController {
@@ -12,6 +13,7 @@ class PlayerDataController {
   PlayerDataController(this._player, this._map);
 
   void onPlayerEnterScreen(dynamic data) {
+    var t = TimerHelper();
     Map<String, dynamic> user = data;
 
     user.forEach((key, value) {
@@ -34,9 +36,11 @@ class PlayerDataController {
                 spriteFolder: sprite, isMine: false));
       }
     });
+    t.logDelayPassed('onPlayerEnterScreen:');
   }
 
   void onAddPlayer(dynamic data) {
+    var t = TimerHelper();
     Map<String, dynamic> user = data;
     var newX = double.parse(user['x'].toString());
     var newY = double.parse(user['y'].toString());
@@ -49,6 +53,7 @@ class PlayerDataController {
         spriteFolder: sprite, isMine: false);
 
     ServerUtils.addEntityIfNotExist(_map, e);
+    t.logDelayPassed('onAddPlayer:');
   }
 
   void onRemovePlayer(dynamic data) {
@@ -58,6 +63,7 @@ class PlayerDataController {
   }
 
   void onPlayerUpdate(dynamic data) {
+    var t = TimerHelper();
     //print("onPlayerUpdate: $data");
     var hp = int.parse(data['hp'].toString(), onError: (source) => null);
     var xp = int.parse(data['xp'].toString(), onError: (source) => null);
@@ -86,9 +92,11 @@ class PlayerDataController {
         //foundEntity.spriteFolder = sprite;
       }
     }
+    t.logDelayPassed('onPlayerUpdate:');
   }
 
   void onMove(dynamic data) {
+    var t = TimerHelper();
     var newX = double.parse(data['x'].toString());
     var newY = double.parse(data['y'].toString());
     var xSpeed = double.parse(data['xSpeed'].toString());
@@ -104,10 +112,12 @@ class PlayerDataController {
     p.ySpeed = ySpeed;
 
     ServerUtils.addEntityIfNotExist(_map, p, updateIfExist: true);
+    t.logDelayPassed('onMove:');
   }
 
   void onPlayerAttackEnemy(dynamic data) {
-    print('onPlayerAttackEnemy, $data');
+    var t = TimerHelper();
+    //print('onPlayerAttackEnemy, $data');
 
     var enemyId = data['enemyId'].toString();
     var playerId = data['playerId'].toString();
@@ -125,5 +135,6 @@ class PlayerDataController {
       enemyEntity.getHut(damage, playerEntity);
       enemyEntity.status.setLife(enemyHp);
     }
+    t.logDelayPassed('onPlayerAttackEnemy:');
   }
 }

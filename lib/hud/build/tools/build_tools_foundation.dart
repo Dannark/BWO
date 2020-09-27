@@ -1,3 +1,4 @@
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/player/player.dart';
@@ -31,7 +32,7 @@ class BuildToolsFoundation extends BuildSubToolsBar {
 
     if (GameController.tapState == TapState.pressing) {
       var tapOnWorld =
-          TapState.screenToWorldPoint(TapState.currentPosition, _map) / 16;
+          TapState.screenToWorldPoint(TapState.currentPosition, _map)/GameScene.pixelsPerTile;
       var tapOnScreen = TapState.currentPosition;
 
       var verticalBarButtons =
@@ -39,7 +40,7 @@ class BuildToolsFoundation extends BuildSubToolsBar {
 
       if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
           TapState.currentClickingAtInside(verticalBarButtons) == false) {
-        previewFoundation(tapOnWorld.dx.floor() + 1, tapOnWorld.dy.floor());
+        previewFoundation((tapOnWorld.dx).floor() + 1, (tapOnWorld.dy).floor());
       }
     }
   }
@@ -84,10 +85,17 @@ class BuildToolsFoundation extends BuildSubToolsBar {
     //     (wasCreated) {
 
     // });
+
     _map.buildFoundation.updateOrInstantiateFoundation(foundationData);
 
     var isValid =
         _map.buildFoundation.checkIfTerrainLocationIsValid(x, y, width, height);
+
     _map.buildFoundation.myFoundation.isValidTerrain = isValid;
+
+    _map.buildFoundation.myFoundation.furnitureList.forEach((key, value) {
+      value.destroy();
+    });
+    _map.buildFoundation.myFoundation.furnitureList.clear();
   }
 }

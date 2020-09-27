@@ -200,14 +200,14 @@ class Foundation {
         }
         //vertical line
         c.drawLine(
-          Offset(bounds.left + (x * 16), bounds.top),
-          Offset(bounds.left + (x * 16), bounds.bottom),
+          Offset(bounds.left + (x * _map.tilePix), bounds.top),
+          Offset(bounds.left + (x * _map.tilePix), bounds.bottom),
           p,
         );
         //horizontal line
         c.drawLine(
-          Offset(bounds.left, bounds.top + (y * 16)),
-          Offset(bounds.right, bounds.top + (y * 16)),
+          Offset(bounds.left, bounds.top + (y * _map.tilePix)),
+          Offset(bounds.right, bounds.top + (y * _map.tilePix)),
           p,
         );
       }
@@ -218,15 +218,16 @@ class Foundation {
     var offset = TapState.worldToScreenPoint(_map);
 
     var area = Rect.fromLTWH(
-      (left * 16) + offset.dx,
-      (top * 16) + offset.dy,
-      width * 16,
-      height * 16,
+      (left * _map.tilePix) + offset.dx,
+      (top * _map.tilePix) + offset.dy,
+      width * _map.tilePix,
+      height * _map.tilePix,
     );
 
     return area;
   }
 
+  /// Using Grid coordinates
   bool isInsideFoundation(double posX, double posY,
       {double wPoint = 0, double hPoint = 0}) {
     return posX >= left &&
@@ -299,6 +300,7 @@ class Foundation {
       var firstWallPos = 0.0;
       var lastWallPos = 0;
       var wallsOnLine = 0;
+      double scale = GameScene.pixelsPerTile/16;
 
       for (var x = left; x < left + width; x++) {
         var wall = wallList['_${x.toInt()}_${y.toInt() + 1}'];
@@ -314,7 +316,7 @@ class Foundation {
           var lineSize = lastWallPos - firstWallPos;
 
           for (var i = 0; i <= lineSize; i++) {
-            roof?.draw(c, (firstWallPos + i) * 16, y * 16 - 64);
+            roof?.draw(c, (firstWallPos + i) * 16*scale, y * 16*scale - 64*scale);
           }
         }
       }

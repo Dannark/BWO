@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
@@ -28,6 +29,11 @@ class TapState {
   static bool isTapingRight() {
     return GameController.tapState == pressing &&
         pressedPosition.dx > GameController.screenSize.width / 2;
+  }
+
+  static bool isTapingBottom() {
+    return GameController.tapState == pressing &&
+        pressedPosition.dy > GameController.screenSize.height / 2;
   }
 
   static bool instersect(Rect r) {
@@ -90,7 +96,7 @@ class TapState {
   }
 
   static Offset screenToWorldPoint(Offset point, MapController map) {
-    var midBorder = (map.border) * 16;
+    var midBorder = (map.border) * GameScene.pixelsPerTile;
     var mapPos = Offset(map.posX - midBorder, map.posY - midBorder);
 
     var tap = (point - mapPos);
@@ -98,7 +104,7 @@ class TapState {
   }
 
   static Offset worldToScreenPoint(MapController map) {
-    var midBorder = (map.border) * 16;
+    var midBorder = (map.border) * GameScene.pixelsPerTile;
     var tap = Offset(map.posX - midBorder, map.posY - midBorder);
 
     return tap;

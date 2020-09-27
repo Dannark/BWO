@@ -32,7 +32,7 @@ abstract class Entity extends PhysicsEntity {
   Rect collisionBox;
   bool isCollisionTrigger = false;
 
-  double worldSize;
+  //double worldSize;
 
   Paint p = Paint();
 
@@ -44,7 +44,7 @@ abstract class Entity extends PhysicsEntity {
   final DamageEffect _damageEffect = DamageEffect();
 
   Entity(double x, double y) : super(x, y) {
-    worldSize = GameScene.worldSize.toDouble();
+    //worldSize = GameScene.tilePixels.toDouble();
 
     shadownLarge = PreloadAssets.getEffectSprite('shadown_large');
     updatePhysics();
@@ -78,15 +78,17 @@ abstract class Entity extends PhysicsEntity {
     if (!isActive) {
       return;
     }
+    double scale = GameScene.pixelsPerTile/16;
     _drawShadown(c);
     if (this is Player) {
-      _rippleWaterEffect.draw(c, x, y, mapHeight);
-      _walkEffect.draw(c, x, y, mapHeight, inputSpeed);
+      _rippleWaterEffect.draw(c, x*scale, y*scale, mapHeight);
+      _walkEffect.draw(c, x*scale, y*scale, mapHeight, inputSpeed);
     }
-    _damageEffect.draw(c, x, y);
+    _damageEffect.draw(c, x*scale, y*scale);
   }
 
   void _drawShadown(Canvas c) {
+    double scale = GameScene.pixelsPerTile/16;
     var distanceToGround = 1 - (z.abs().clamp(0, 100) / 100);
     var p = Paint();
     p.color = Color.fromRGBO(255, 255, 255, distanceToGround);
@@ -97,17 +99,17 @@ abstract class Entity extends PhysicsEntity {
     shadownLarge?.renderScaled(
       c,
       Position(
-        x - sizeX * distanceToGround + shadownOffset.dx,
-        y - sizeY * distanceToGround + shadownOffset.dy,
+        x * scale - sizeX * distanceToGround * scale + shadownOffset.dx * scale,
+        y * scale - sizeY * distanceToGround * scale + shadownOffset.dy * scale,
       ),
-      scale: shadownSize * distanceToGround,
+      scale: shadownSize * distanceToGround * scale,
       overridePaint: p,
     );
   }
 
   void updatePhysics() {
-    posX = (x / worldSize).floor();
-    posY = (y / worldSize).floor();
+    posX = (x / 16).floor();
+    posY = (y / 16).floor();
 
     collisionBox = Rect.fromLTWH(x - (width / 2), y - height, width, height);
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../entity/enemys/enemy.dart';
 import '../../../../entity/enemys/skull.dart';
 import '../../../../map/map_controller.dart';
+import '../../../../utils/timer_helper.dart';
 import '../../../utils/server_utils.dart';
 
 class EnemyDataController {
@@ -12,6 +13,7 @@ class EnemyDataController {
   EnemyDataController(this._map);
 
   void onEnemysWalk(dynamic data) {
+    var t = TimerHelper();
     //print('onEnemysWalk $data');
     /**
      * Fire when enemy walk by him self
@@ -42,9 +44,11 @@ class EnemyDataController {
         });
       }
     });
+    t.logDelayPassed('onEnemysWalk:');
   }
 
   void onEnemysEnterScreen(dynamic data) {
+    var t = TimerHelper();
     //print('onEnemysEnterScreen $data');
     /**
      * Fired when the player walks
@@ -76,9 +80,11 @@ class EnemyDataController {
     });
 
     deleteEnemyFromList(_map, spawnedEntitys);
+    t.logDelayPassed('onEnemysEnterScreen:');
   }
 
   void onEnemyTargetingPlayer(dynamic data) {
+    var t = TimerHelper();
     //print('onEnemyTargetingPlayer, $data');
     var enemys = data['enemys'];
 
@@ -106,9 +112,11 @@ class EnemyDataController {
             .attackTarget(playerFound, damage: damage, targetHp: targetHp);
       }
     });
+    t.logDelayPassed('onEnemyTargetingPlayer:');
   }
 
   void deleteEnemyFromList(MapController _map, List<dynamic> spawnedEntitys) {
+    var t = TimerHelper();
     for (var entityOnMap in _map.entitysOnViewport) {
       if (entityOnMap is Enemy) {
         var foundEntity = spawnedEntitys.firstWhere(
@@ -122,5 +130,6 @@ class EnemyDataController {
         }
       }
     }
+    t.logDelayPassed('deleteEnemyFromList:');
   }
 }

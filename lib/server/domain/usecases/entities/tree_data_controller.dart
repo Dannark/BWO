@@ -1,3 +1,5 @@
+import 'package:BWO/scene/game_scene.dart';
+
 import '../../../../entity/player/player.dart';
 import '../../../../map/map_controller.dart';
 import '../../../../map/tree.dart';
@@ -44,10 +46,21 @@ class TreeDataController {
             foundTree.disable(respawnSecTimeout: 190 - deadTime);
           } else if (hp > 0 && damage == null) {
             //respawn
+            if (isInsideFoundation(
+                foundEntity.x.toDouble() / 16, foundEntity.y.toDouble() / 16)) ;
             foundTree.resetTree();
           }
         }
       }
     });
+  }
+
+  bool isInsideFoundation(double posX, double posY) {
+    map.buildFoundation.foundationList.forEach((foundation) {
+      if (foundation.isInsideFoundation(posX, posY)) {
+        return true;
+      }
+    });
+    return false;
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:ui' as ui;
 
+import 'package:BWO/scene/game_scene.dart';
+import 'package:BWO/utils/timer_helper.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +43,9 @@ class MapController {
   int _maxLoopsPerCycle = 200; //first loop
 
   BuildFoundation buildFoundation;
+  double tilePix;
+  double scale;
+  int zoom = 2;
 
   SimplexNoise terrainNoise = SimplexNoise(
     frequency: 0.003, //0.004
@@ -72,23 +77,27 @@ class MapController {
   }
 
   void drawMap(Canvas c, double moveX, double moveY, Rect screenSize,
-      {int tileSize = 15, int movimentType = MovimentType.move}) {
+      {int tileSize = 16, int movimentType = MovimentType.move}) {
     var borderSize = (border * tileSize);
-
+    scale = tileSize/16;
+    tilePix = tileSize.toDouble();
     widthViewPort =
         (screenSize.width / tileSize).roundToDouble() + (border * 2);
     heightViewPort =
         (screenSize.height / tileSize).roundToDouble() + (border * 2);
 
+    targetPos = Offset(
+        (-moveX.roundToDouble() + screenSize.width / 2) + border * tileSize,
+        (-moveY.roundToDouble() + screenSize.height / 2) + border * tileSize);
+    if ((posY - targetPos.dy).abs() > 100) {
+      posX = targetPos.dx;
+      posY = targetPos.dy;
+    }
     // move camera
-    if (movimentType == MovimentType.move) {
+    else if (movimentType == MovimentType.move) {
       posX += moveX.roundToDouble();
       posY += moveY.roundToDouble();
     } else if (movimentType == MovimentType.follow) {
-      targetPos = Offset(
-          (-moveX.roundToDouble() + screenSize.width / 2) + border * tileSize,
-          (-moveY.roundToDouble() + screenSize.height / 2) + border * tileSize);
-
       posX = ui
           .lerpDouble(
               posX, targetPos.dx, GameController.deltaTime * cameraSpeed)
@@ -114,29 +123,101 @@ class MapController {
     safeX = (viewPort.left).ceil();
     safeXmax = (viewPort.right).ceil();
 
-    for (var y = safeY; y < safeYmax; y++) {
-      for (var x = safeX; x < safeXmax; x++) {
-        var isSafeLine = map[y] != null ? map[y][x] != null : false;
+    var t = TimerHelper();
+    int skip = tileSize > 1 ? 1 : 2;
+    var x,y,z;
+    bool isSafeLine;
+    int safeZmax;
+    for (y = safeY; y < safeYmax; y+=skip) {
+      for (x = safeX; x < safeXmax; x+=skip) {
+        isSafeLine = map[y] != null ?
+            (map[y][x] != null) : false;
 
         if (isSafeLine) {
           //check if tile already exist, if yes, draw, otherwise create it
-          var safeZmax = map[y][x].length;
-          for (var z = 0; z < safeZmax; z++) {
+          safeZmax = map[y][x].length;
+          for (z = 0; z < safeZmax; z++) {
             map[y][x][z].draw(c);
           }
         } else {
-          if (_loopsPerCycle < _maxLoopsPerCycle) {
-            var tileHeight =
-                ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
-                            128) +
-                        127)
-                    .toInt();
+          // tile creation moved to updateMap
+        }
+      }
+    }
+    _loopsPerCycle = 0;
+    _maxLoopsPerCycle = 50;
+    t.logDelayPassed('draw map:');
 
-            /*var tileHeight2 =
-                ((terrainNoise2.getPerlin2(x.toDouble(), y.toDouble()) * 128) +
-                        127)
-                    .toInt();
-            tileHeight = ((tileHeight + tileHeight2) ~/ 2);*/
+    _findEntitysOnViewport();
+
+    var t1 = TimerHelper();
+    // Organize List to show Entity elements (Players, Trees)
+    // on correct Y-Index order
+    entitysOnViewport.sort((a, b) => a.y.compareTo(b.y));
+    t1.logDelayPassed('draw effects:');
+
+    var t2 = TimerHelper();
+    //drawShadowns behind all elements
+    for (var entity in entitysOnViewport) {
+      if (!entity.marketToBeRemoved) entity.drawEffects(c);
+    }
+    t2.logDelayPassed('draw effects:');
+    var t3 = TimerHelper();
+    for (var entity in entitysOnViewport) {
+      if (!entity.marketToBeRemoved) entity.draw(c);
+    }
+    t3.logDelayPassed('draw entity:');
+
+    buildFoundation.drawRoofs(c);
+
+    c.restore();
+  }
+
+  void updateMap(double cx, double cy, Rect screenSize,
+      {int tileSize = 16, int movimentType = MovimentType.move}) {
+
+    widthViewPort =
+        (screenSize.width / tileSize).roundToDouble() + (border * 2);
+    heightViewPort =
+        (screenSize.height / tileSize).roundToDouble() + (border * 2);
+
+    targetPos = Offset(
+        (-cx.roundToDouble() + screenSize.width / 2) + border * tileSize,
+        (-cy.roundToDouble() + screenSize.height / 2) + border * tileSize);
+    posX = targetPos.dx;
+    posY = targetPos.dy;
+
+    var viewPort = Rect.fromLTWH(
+      -posX / tileSize,
+      -posY / tileSize,
+      widthViewPort,
+      heightViewPort,
+    );
+
+    safeY = (viewPort.top).ceil();
+    safeYmax = (viewPort.bottom).ceil() + 6;
+    safeX = (viewPort.left).ceil();
+    safeXmax = (viewPort.right).ceil();
+    int updatesPerCycle = 0;
+    int maxUpdatesPerCycle = 50000;
+
+    var t = TimerHelper();
+    int skip = tileSize > 1 ? 1 : 2;
+    var x,y,z;
+    bool isSafeLine;
+    int safeZmax;
+    for (y = safeY; y < safeYmax; y += skip) {
+      for (x = safeX; x < safeXmax; x += skip) {
+        isSafeLine = map[y] != null ?
+        (map[y][x] != null) : false;
+
+        if (!isSafeLine) {
+          if (updatesPerCycle < maxUpdatesPerCycle) {
+            var tileHeight =
+            ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
+                128) +
+                127)
+                .toInt();
 
             if (map[y] == null) {
               map[y] = {x: null}; //initialize line
@@ -144,38 +225,22 @@ class MapController {
             if (map[y][x] == null) {
               map[y][x] = {0: null}; //initialize line
             }
+
             map[y][x][0] = Ground(x, y, tileHeight, tileSize, null);
             tilesGenerated++;
-            _loopsPerCycle++;
+            updatesPerCycle++;
 
             //TREE
-
             if (tileHeight > 130 && tileHeight < 180) {
-              _addTrees(x, y, tileHeight, tileSize);
+              _addTrees(x, y, tileHeight, 16); // tileSize);
             }
           }
         }
       }
     }
-    _loopsPerCycle = 0;
-    _maxLoopsPerCycle = 50;
+    updatesPerCycle = 0;
+    maxUpdatesPerCycle = 50;
 
-    // Organize List to show Entity elements (Players, Trees)
-    // on correct Y-Index order
-    _findEntitysOnViewport();
-    entitysOnViewport.sort((a, b) => a.y.compareTo(b.y));
-
-    //drawShadowns behind all elements
-    for (var entity in entitysOnViewport) {
-      if (!entity.marketToBeRemoved) entity.drawEffects(c);
-    }
-    for (var entity in entitysOnViewport) {
-      if (!entity.marketToBeRemoved) entity.draw(c);
-    }
-
-    buildFoundation.drawRoofs(c);
-
-    c.restore();
   }
 
   int getHeightOnPos(int x, int y) {
@@ -233,6 +298,7 @@ class MapController {
   }
 
   void _findEntitysOnViewport() {
+    var t = TimerHelper();
     entitysOnViewport.clear();
 
     entityList.removeWhere((element) => element.marketToBeRemoved);
@@ -259,6 +325,22 @@ class MapController {
         entityList[i].marketToBeRemoved = true;
       }
     }
+    t.logDelayPassed('_findEntitysOnViewport:');
+  }
+
+  /// Zoom levels change the pixels per tile used for the draw() functions
+  /// (but world units per tile stays as 16 units/tile)
+  void setZoom (int zoom) {
+    /// zoom 0 -> 24 pixels per tile, 1 -> 16, 2 -> 8, 3 -> 4, 4 -> 1;
+    this.zoom = zoom;
+    GameScene.tilePixels = 24 - zoom * 8;
+    if (zoom == 3)
+      GameScene.tilePixels = 4;
+    if (zoom == 4)
+      GameScene.tilePixels = 1;
+
+    GameScene.pixelsPerTile = GameScene.tilePixels.toDouble();
+    scale = GameScene.pixelsPerTile;
   }
 }
 
