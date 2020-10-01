@@ -1,8 +1,8 @@
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
+import '../../scene/game_scene.dart';
 import '../../utils/preload_assets.dart';
 import '../entity.dart';
 import 'foundation.dart';
@@ -67,16 +67,16 @@ class Wall extends Entity {
   void draw(Canvas c) {
     if (sprites.length == 0 || lowSprites.length == 0) return;
     var pivot = Offset((zoom * 16) / 2, height);
-    double scale = GameScene.pixelsPerTile/16;
+    var scale = GameScene.pixelsPerTile/16;
 
     selectWallSprite();
 
     if (showLow) {
-      currentLowSprite.renderScaled(c, Position((x - pivot.dx)*scale, (y - pivot.dy - z)*scale),
-          scale: scale);
+      currentLowSprite.renderScaled(c, Position((x - pivot.dx)*scale,
+          (y - pivot.dy - z)*scale), scale: scale);
     } else {
-      currentSprite.renderScaled(c, Position((x - pivot.dx)*scale, (y - pivot.dy - z)*scale),
-          scale: scale);
+      currentSprite.renderScaled(c, Position((x - pivot.dx)*scale,
+          (y - pivot.dy - z)*scale), scale: scale);
     }
 
     showCollisionBox ? debugDraw(c) : null;

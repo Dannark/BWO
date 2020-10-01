@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
+import '../../scene/game_scene.dart';
 import '../../utils/preload_assets.dart';
 import '../entity.dart';
 
@@ -46,12 +46,12 @@ class Furniture extends Entity {
   void draw(Canvas c) {
     if (currentSprite == null) return;
     if (currentSprite.src == null) return;
-    double scale = GameScene.pixelsPerTile/16;
+    var scale = GameScene.pixelsPerTile/16;
     var pivot =
         Offset((zoom * 16) / 2, (currentSprite.size.y * 2) - height + 16);
 
-    currentSprite.renderScaled(c, Position((x - pivot.dx)*scale, (y - pivot.dy - z)*scale),
-        scale: scale*2);
+    currentSprite.renderScaled(c, Position((x - pivot.dx)*scale,
+        (y - pivot.dy - z)*scale), scale: scale*2);
 
     //showCollisionBox = true;
     showCollisionBox ? debugDraw(c) : null;

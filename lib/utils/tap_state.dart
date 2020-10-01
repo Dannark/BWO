@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
 import '../map/map_controller.dart';
+import '../scene/game_scene.dart';
 import '../ui/keyboard/keyboard_ui.dart';
 import '../ui/ui_element.dart';
 

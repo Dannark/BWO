@@ -78,7 +78,7 @@ abstract class Entity extends PhysicsEntity {
     if (!isActive) {
       return;
     }
-    double scale = GameScene.pixelsPerTile/16;
+    var scale = GameScene.pixelsPerTile/16;
     _drawShadown(c);
     if (this is Player) {
       _rippleWaterEffect.draw(c, x*scale, y*scale, mapHeight);
@@ -88,7 +88,7 @@ abstract class Entity extends PhysicsEntity {
   }
 
   void _drawShadown(Canvas c) {
-    double scale = GameScene.pixelsPerTile/16;
+    var scale = GameScene.pixelsPerTile/16;
     var distanceToGround = 1 - (z.abs().clamp(0, 100) / 100);
     var p = Paint();
     p.color = Color.fromRGBO(255, 255, 255, distanceToGround);

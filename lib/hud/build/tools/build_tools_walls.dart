@@ -43,6 +43,7 @@ class BuildToolsWall extends BuildSubToolsBar {
 
       if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
           TapState.currentClickingAtInside(verticalBarButtons) == false) {
+        //GameScene.draggingObject = true;
         placeWall();
       }
     }

@@ -1,5 +1,3 @@
-import 'package:BWO/scene/game_scene.dart';
-
 import '../../../../entity/player/player.dart';
 import '../../../../map/map_controller.dart';
 import '../../../../map/tree.dart';

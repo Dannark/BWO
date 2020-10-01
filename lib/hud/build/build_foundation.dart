@@ -1,16 +1,16 @@
 import 'dart:math';
 
-import 'package:BWO/entity/wall/door.dart';
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../entity/player/player.dart';
+import '../../entity/wall/door.dart';
 import '../../entity/wall/foundation.dart';
 import '../../entity/wall/furniture.dart';
 import '../../map/ground.dart';
 import '../../map/map_controller.dart';
 import '../../map/tree.dart';
+import '../../scene/game_scene.dart';
 import '../../server/utils/server_utils.dart';
 import '../../utils/tap_state.dart';
 import '../../utils/timer_helper.dart';
@@ -141,6 +141,9 @@ class BuildFoundation {
         myFoundation.isInsideFoundation(x, y, wPoint: w - 1, hPoint: h);
     var isIntersectingWall = _isAreaIntersectingWalls(x, y, w, h);
     var isIntersectingFurniture = _isAreaIntersectingFurnitures(x, y, w, h);
+    if (isInside) {
+      _map.gameScene.allowMapPan = false;
+    }
 
     return isInside && !isIntersectingWall && !isIntersectingFurniture;
   }
@@ -234,12 +237,14 @@ class BuildFoundation {
   // ------------------ walls -------------------------------
   void placeWall(int selectedWall) {
     if (myFoundation == null) return;
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map)
+              / GameScene.pixelsPerTile;
     var isInsideObject = false;
 
     myFoundation.furnitureList.forEach((key, furniture) {
       var isInside = furniture.isInside(tap.dx.floor(), tap.dy.floor());
       if (isInside) {
+        _map.gameScene.allowMapPan = false;
         isInsideObject = true;
       }
     });
@@ -251,7 +256,8 @@ class BuildFoundation {
   void deleteWall() {
     if (myFoundation == null) return;
 
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map)
+            / GameScene.pixelsPerTile;
     myFoundation.deleteWall(tap.dx, tap.dy);
   }
 
@@ -276,7 +282,8 @@ class BuildFoundation {
   // ------------------ floors -------------------------------
   void placeFloor(int selectedFloor) {
     if (myFoundation == null) return;
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map)
+              / GameScene.pixelsPerTile;
     myFoundation.addFloor(tap.dx, tap.dy, selectedFloor);
   }
 
@@ -335,7 +342,8 @@ class BuildFoundation {
   void deleteFurniture() {
     if (myFoundation == null) return;
 
-    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
+    var tap = TapState.screenToWorldPoint(TapState.currentPosition, _map)
+              / GameScene.pixelsPerTile;
     myFoundation.deleteFurniture(tap.dx, tap.dy);
   }
 }

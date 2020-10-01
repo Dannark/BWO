@@ -1,9 +1,9 @@
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/player/player.dart';
 import '../../../game_controller.dart';
 import '../../../map/map_controller.dart';
+import '../../../scene/game_scene.dart';
 import '../../../ui/hud.dart';
 import '../../../utils/tap_state.dart';
 import '../build_subtools_bar.dart';
@@ -32,7 +32,8 @@ class BuildToolsFoundation extends BuildSubToolsBar {
 
     if (GameController.tapState == TapState.pressing) {
       var tapOnWorld =
-          TapState.screenToWorldPoint(TapState.currentPosition, _map)/GameScene.pixelsPerTile;
+          TapState.screenToWorldPoint(TapState.currentPosition, _map)
+                / GameScene.pixelsPerTile;
       var tapOnScreen = TapState.currentPosition;
 
       var verticalBarButtons =
@@ -40,8 +41,11 @@ class BuildToolsFoundation extends BuildSubToolsBar {
 
       if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
           TapState.currentClickingAtInside(verticalBarButtons) == false) {
+        //GameScene.draggingObject = true;
         previewFoundation((tapOnWorld.dx).floor() + 1, (tapOnWorld.dy).floor());
-      }
+      } else {
+        _map.gameScene.allowMapPan = false;
+      }  // touch in bottom tools bar
     }
   }
 

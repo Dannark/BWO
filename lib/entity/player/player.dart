@@ -1,7 +1,5 @@
 import 'dart:math';
 import 'dart:ui';
-
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
@@ -49,7 +47,6 @@ class Player extends Entity implements OnAnimationEnd {
   String spriteFolder;
 
   EquipmentController equipmentController;
-
   bool canWalk = true;
 
   Player(double x, double y, this._map, String myName, String myId,
@@ -98,13 +95,14 @@ class Player extends Entity implements OnAnimationEnd {
       }
 
       currentSprite.draw(c, x*_map.scale, y*_map.scale, xSpeed, ySpeed,
-              animSpeed, mapHeight, stopAnimWhenIdle: stopAnimWhenIdle); //0.125 = 12fps
+              animSpeed, mapHeight, stopAnimWhenIdle: stopAnimWhenIdle);
 
       equipmentController?.draw(c, animSpeed,
           stopAnimWhenIdle: stopAnimWhenIdle);
     }
     //debugDraw(c);
-    _text.render(c, name, Position(x*_map.scale, y*_map.scale - 45*_map.scale), anchor: Anchor.bottomCenter);
+    _text.render(c, name, Position(x*_map.scale, y*_map.scale - 45*_map.scale),
+        anchor: Anchor.bottomCenter);
   }
 
   @override
@@ -124,7 +122,8 @@ class Player extends Entity implements OnAnimationEnd {
   void die(Canvas c) {
     if (status.isAlive() == false) {
       isActive = false;
-      _deathSprite?.renderScaled(c, Position(x*_map.scale - 16*_map.scale, y*_map.scale - 32*_map.scale), scale: 2*_map.scale);
+      _deathSprite?.renderScaled(c, Position(x*_map.scale - 16*_map.scale,
+          y*_map.scale - 32*_map.scale), scale: 2*_map.scale);
 
       if (!isMine) return;
 

@@ -1,7 +1,6 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:BWO/scene/game_scene.dart';
-import 'package:BWO/utils/timer_helper.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +8,8 @@ import '../entity/entity.dart';
 import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../hud/build/build_foundation.dart';
+import '../scene/game_scene.dart';
+import '../utils/timer_helper.dart';
 import 'ground.dart';
 import 'tile.dart';
 import 'tree.dart';
@@ -38,14 +39,12 @@ class MapController {
   int safeXmax = 0;
 
   double cameraSpeed = 5;
-
-  int _loopsPerCycle = 0;
-  int _maxLoopsPerCycle = 200; //first loop
-
   BuildFoundation buildFoundation;
   double tilePix;
   double scale;
   int zoom = 2;
+  int stripLength = 64;
+  GameScene gameScene;
 
   SimplexNoise terrainNoise = SimplexNoise(
     frequency: 0.003, //0.004
@@ -70,7 +69,7 @@ class MapController {
     fractalType: FractalType.FBM,
   );
 
-  MapController(Offset startPosition) {
+  MapController(Offset startPosition, this.gameScene) {
     posX = startPosition.dx;
     posY = startPosition.dy;
     targetPos = Offset(posX, posY);
@@ -81,30 +80,32 @@ class MapController {
     var borderSize = (border * tileSize);
     scale = tileSize/16;
     tilePix = tileSize.toDouble();
+    // account for 64px wide triangle strips in map overview zoom level
+    var strip = tileSize > 1 ? 0 : stripLength;
     widthViewPort =
-        (screenSize.width / tileSize).roundToDouble() + (border * 2);
+        (screenSize.width / tileSize).roundToDouble() + (border * 2) + strip;
     heightViewPort =
         (screenSize.height / tileSize).roundToDouble() + (border * 2);
 
     targetPos = Offset(
         (-moveX.roundToDouble() + screenSize.width / 2) + border * tileSize,
         (-moveY.roundToDouble() + screenSize.height / 2) + border * tileSize);
-    if ((posY - targetPos.dy).abs() > 100) {
-      posX = targetPos.dx;
-      posY = targetPos.dy;
+    if ((posY - targetPos.dy).abs() > 50 || (posX - targetPos.dx).abs() > 50) {
+      movimentType = MovimentType.move; // keeps camera centered after zooms
     }
     // move camera
-    else if (movimentType == MovimentType.move) {
-      posX += moveX.roundToDouble();
-      posY += moveY.roundToDouble();
+    if (movimentType == MovimentType.move) {
+      posX = targetPos.dx;
+      posY = targetPos.dy;
     } else if (movimentType == MovimentType.follow) {
+      double delta = min (GameController.deltaTime, 0.05);
       posX = ui
           .lerpDouble(
-              posX, targetPos.dx, GameController.deltaTime * cameraSpeed)
+              posX, targetPos.dx, delta * cameraSpeed)
           .roundToDouble();
       posY = ui
           .lerpDouble(
-              posY, targetPos.dy, GameController.deltaTime * cameraSpeed)
+              posY, targetPos.dy, delta * cameraSpeed)
           .roundToDouble();
     }
 
@@ -124,16 +125,19 @@ class MapController {
     safeXmax = (viewPort.right).ceil();
 
     var t = TimerHelper();
-    int skip = tileSize > 1 ? 1 : 2;
     var x,y,z;
     bool isSafeLine;
     int safeZmax;
-    for (y = safeY; y < safeYmax; y+=skip) {
-      for (x = safeX; x < safeXmax; x+=skip) {
+    for (y = safeY; y < safeYmax; y++) {
+      for (x = safeX; x < safeXmax; x++) {
+        if (tileSize == 1 && (y%2 != 0 || x%stripLength != 0)) {
+          continue;
+        }
         isSafeLine = map[y] != null ?
             (map[y][x] != null) : false;
 
         if (isSafeLine) {
+
           //check if tile already exist, if yes, draw, otherwise create it
           safeZmax = map[y][x].length;
           for (z = 0; z < safeZmax; z++) {
@@ -144,8 +148,6 @@ class MapController {
         }
       }
     }
-    _loopsPerCycle = 0;
-    _maxLoopsPerCycle = 50;
     t.logDelayPassed('draw map:');
 
     _findEntitysOnViewport();
@@ -173,51 +175,82 @@ class MapController {
     c.restore();
   }
 
+  int updateFrames = 0;
   void updateMap(double cx, double cy, Rect screenSize,
       {int tileSize = 16, int movimentType = MovimentType.move}) {
+    // tile can be generated on every 4th frame, speeds it up a little
+    // especially on min zoom level where it iterates every pixel on screen
+    if (updateFrames++ % 4 != 0) {
+      return;
+    }
+    scale = tileSize/16;  // min zoom level has tileSize = 1 pixel per tile
 
-    widthViewPort =
-        (screenSize.width / tileSize).roundToDouble() + (border * 2);
-    heightViewPort =
+    // account for 64px wide triangle strips in map overview zoom level
+    var strip = tileSize > 1 ? 0 : stripLength;
+    double widthViewPort =
+        (screenSize.width / tileSize).roundToDouble() + (border * 2) + strip*2;
+    double heightViewPort =
         (screenSize.height / tileSize).roundToDouble() + (border * 2);
 
-    targetPos = Offset(
+    var pos = Offset(
         (-cx.roundToDouble() + screenSize.width / 2) + border * tileSize,
         (-cy.roundToDouble() + screenSize.height / 2) + border * tileSize);
-    posX = targetPos.dx;
-    posY = targetPos.dy;
 
     var viewPort = Rect.fromLTWH(
-      -posX / tileSize,
-      -posY / tileSize,
+      -pos.dx / tileSize,
+      -pos.dy / tileSize,
       widthViewPort,
       heightViewPort,
     );
 
-    safeY = (viewPort.top).ceil();
-    safeYmax = (viewPort.bottom).ceil() + 6;
-    safeX = (viewPort.left).ceil();
-    safeXmax = (viewPort.right).ceil();
-    int updatesPerCycle = 0;
-    int maxUpdatesPerCycle = 50000;
+    int safeY = (viewPort.top).ceil();
+    int safeYmax = (viewPort.bottom).ceil() + 6;
+    int safeX = (viewPort.left).ceil();
+    int safeXmax = (viewPort.right).ceil();
 
-    var t = TimerHelper();
-    int skip = tileSize > 1 ? 1 : 2;
+    // min zoom level uses triangle strips 2x64px, way faster than rects
+    if (tileSize == 1) {
+      // start on 2x64 line boundaries
+      safeY = ((safeY-1) / 2).floor() * 2;
+      safeX = ((safeX-1) / stripLength).floor() * stripLength;
+    }
+    var updatesPerCycle = 0;
+    var maxUpdatesPerCycle = 40000;
+
     var x,y,z;
-    bool isSafeLine;
-    int safeZmax;
-    for (y = safeY; y < safeYmax; y += skip) {
-      for (x = safeX; x < safeXmax; x += skip) {
-        isSafeLine = map[y] != null ?
-        (map[y][x] != null) : false;
+    var isSafeLine = true;
 
+    for (y = safeY; y < safeYmax; y ++) {
+      // min zoom: quick check if triangle strips are filled
+      if (tileSize == 1) {
+        var lineStrip = true;
+        int startY = (y / 2).ceil() * 2;
+        if (map[startY] == null) {
+          lineStrip = false;
+        } else {
+          for (x = safeX+stripLength; x < safeXmax - stripLength;
+                                                x += stripLength) {
+            if (map[startY][x] == null || map[startY][x][0].vertices == null || map[startY][x][0].shade == 0) {
+              if (y > safeY+2) {
+                lineStrip = false;
+                break;
+              }
+            }
+          }
+        }
+        if (lineStrip == true) {
+          continue;
+        } // avoid slow inner loop
+      }
+      for (x = safeX; x < safeXmax; x ++) {
+        isSafeLine = map[y] != null ? (map[y][x] != null) : false;
+
+        // new tile needed
         if (!isSafeLine) {
           if (updatesPerCycle < maxUpdatesPerCycle) {
             var tileHeight =
             ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
-                128) +
-                127)
-                .toInt();
+                128) + 127).toInt();
 
             if (map[y] == null) {
               map[y] = {x: null}; //initialize line
@@ -226,7 +259,7 @@ class MapController {
               map[y][x] = {0: null}; //initialize line
             }
 
-            map[y][x][0] = Ground(x, y, tileHeight, tileSize, null);
+            map[y][x][0] = Ground(x, y, this, tileHeight, tileSize, null);
             tilesGenerated++;
             updatesPerCycle++;
 
@@ -235,12 +268,11 @@ class MapController {
               _addTrees(x, y, tileHeight, 16); // tileSize);
             }
           }
+        } else {
+          map[y][x][0].update();
         }
       }
     }
-    updatesPerCycle = 0;
-    maxUpdatesPerCycle = 50;
-
   }
 
   int getHeightOnPos(int x, int y) {
@@ -262,14 +294,14 @@ class MapController {
       if (treeHeight > 165) {
         treesGenerated++;
 
-        if (y % 5 == 0) {
-          entityList.add(Tree(this, x, y, tileSize, "tree04"));
-        } else if (y % 6 == 0) {
-          entityList.add(Tree(this, x, y, tileSize, "tree02"));
-        } else if (y % 7 == 0) {
-          entityList.add(Tree(this, x, y, tileSize, "tree03"));
+        if (treeHeight % 5 == 0) {
+          entityList.add(Tree(this, x, y, tileSize, "tree_4"));
+        } else if (treeHeight % 6 == 0) {
+          entityList.add(Tree(this, x, y, tileSize, "tree_3"));
+        } else if (treeHeight % 7 == 0) {
+          entityList.add(Tree(this, x, y, tileSize, "tree_2"));
         } else {
-          entityList.add(Tree(this, x, y, tileSize, "tree01"));
+          entityList.add(Tree(this, x, y, tileSize, "tree_1"));
         }
       }
     }
@@ -331,17 +363,9 @@ class MapController {
   /// Zoom levels change the pixels per tile used for the draw() functions
   /// (but world units per tile stays as 16 units/tile)
   void setZoom (int zoom) {
-    /// zoom 0 -> 24 pixels per tile, 1 -> 16, 2 -> 8, 3 -> 4, 4 -> 1;
-    this.zoom = zoom;
-    GameScene.tilePixels = 24 - zoom * 8;
-    if (zoom == 3)
-      GameScene.tilePixels = 4;
-    if (zoom == 4)
-      GameScene.tilePixels = 1;
-
-    GameScene.pixelsPerTile = GameScene.tilePixels.toDouble();
-    scale = GameScene.pixelsPerTile;
+    gameScene.setZoom(zoom);
   }
+
 }
 
 class MovimentType {

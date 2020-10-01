@@ -1,4 +1,3 @@
-import 'package:BWO/entity/wall/Roof.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import '../../map/tile.dart';
 import '../../scene/game_scene.dart';
 import '../../utils/tap_state.dart';
 import '../player/player.dart';
+import 'Roof.dart';
 import 'door.dart';
 import 'furniture.dart';
 import 'wall.dart';
@@ -52,15 +52,16 @@ class Foundation {
     height = foundationData['h'].toDouble();
 
     var wallDataList = foundationData['walls'];
+    if (wallDataList != null) {
+      for (var data in wallDataList) {
+        var x = data['x'].toDouble();
+        var y = data['y'].toDouble();
+        var imgId = data['id'];
 
-    for (var data in wallDataList) {
-      var x = data['x'].toDouble();
-      var y = data['y'].toDouble();
-      var imgId = data['id'];
-
-      var wall = Wall(x, y, imgId, this);
-      wallList['_${wall.posX}_${wall.posY}'] = wall;
-      _map.addEntity(wall);
+        var wall = Wall(x, y, imgId, this);
+        wallList['_${wall.posX}_${wall.posY}'] = wall;
+        _map.addEntity(wall);
+      }
     }
 
     bounds = getBuildingArea();
@@ -137,7 +138,7 @@ class Foundation {
       var posX = x.floor();
       var posY = y.floor();
 
-      var t = Tile(posX, posY, Ground.lowGrass, 16, null,
+      var t = Tile(posX, posY, _map, Ground.lowGrass, 16, null,
           tileSpritePath: 'floor$imgId', idImg: imgId);
       tileList['_${posX}_$posY'] = t;
 
@@ -300,7 +301,7 @@ class Foundation {
       var firstWallPos = 0.0;
       var lastWallPos = 0;
       var wallsOnLine = 0;
-      double scale = GameScene.pixelsPerTile/16;
+      var scale = GameScene.pixelsPerTile/16;
 
       for (var x = left; x < left + width; x++) {
         var wall = wallList['_${x.toInt()}_${y.toInt() + 1}'];
@@ -316,7 +317,8 @@ class Foundation {
           var lineSize = lastWallPos - firstWallPos;
 
           for (var i = 0; i <= lineSize; i++) {
-            roof?.draw(c, (firstWallPos + i) * 16*scale, y * 16*scale - 64*scale);
+            roof?.draw(c, (firstWallPos + i) * 16*scale,
+                          y * 16*scale - 64*scale);
           }
         }
       }

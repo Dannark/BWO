@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'scene/character_creation/character_creation.dart';
+import 'scene/game_scene.dart';
 import 'scene/login/login.dart';
 import 'scene/scene_object.dart';
 import 'server/utils/server_utils.dart';
@@ -94,26 +94,6 @@ class GameController extends Game with ScaleDetector {
     _safeStart();
   }
 
-  @override
-  void onPanDown(DragDownDetails details) {
-    preTapState = TapState.down;
-    TapState.pressedPosition = details.localPosition;
-    TapState.currentPosition = details.localPosition;
-    TapState.lastPosition = details.localPosition;
-  }
-
-  @override
-  void onPanUpdate(DragUpdateDetails details) {
-    if (tapState == TapState.pressing) {
-      TapState.lastPosition = TapState.currentPosition;
-      TapState.currentPosition = details.localPosition;
-    }
-  }
-
-  @override
-  void onPanEnd(DragEndDetails details) {
-    tapState = TapState.up;
-  }
   @override
   void onScaleStart (ScaleStartDetails details) {
     preTapState = TapState.down;

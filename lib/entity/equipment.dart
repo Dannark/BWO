@@ -1,4 +1,3 @@
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/on_animation_end.dart';

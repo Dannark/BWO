@@ -1,9 +1,9 @@
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/wall/door.dart';
 import '../../../game_controller.dart';
 import '../../../map/map_controller.dart';
+import '../../../scene/game_scene.dart';
 import '../../../ui/hud.dart';
 import '../../../utils/tap_state.dart';
 import '../build_subtools_bar.dart';
@@ -41,7 +41,8 @@ class BuildToolsDoor extends BuildSubToolsBar {
 
     if (GameController.tapState == TapState.pressing) {
       var tapOnWorld =
-          TapState.screenToWorldPoint(TapState.currentPosition, _map) / GameScene.pixelsPerTile;
+          TapState.screenToWorldPoint(TapState.currentPosition, _map)
+                  / GameScene.pixelsPerTile;
       var tapOnScreen = TapState.currentPosition;
 
       var verticalBarButtons =
@@ -49,6 +50,7 @@ class BuildToolsDoor extends BuildSubToolsBar {
 
       if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
           TapState.currentClickingAtInside(verticalBarButtons) == false) {
+        _map.gameScene.allowMapPan = false;
         previewFurniture(tapOnWorld.dx.floor(), tapOnWorld.dy.floor());
       }
     }

@@ -1,10 +1,10 @@
-import 'package:BWO/scene/game_scene.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
+import '../../scene/game_scene.dart';
 import '../entity.dart';
 import '../player/player.dart';
 import 'item_database.dart';
@@ -43,12 +43,13 @@ class Item extends Entity {
       } else if (GameController.time > lifeTime - 6) {
         blink(.2);
       }
-      double scale = GameScene.pixelsPerTile/16;
+      var scale = GameScene.pixelsPerTile/16;
       p.color = Color.fromRGBO(255, 255, 255, alphaBlink);
 
       var pivot = Offset((proprieties.zoom * 16) / 2, (proprieties.zoom * 16));
-      sprite.renderScaled(c, Position((x - pivot.dx)*scale, (y - pivot.dy - z)*scale),
-          scale: proprieties.zoom*scale, overridePaint: p);
+      sprite.renderScaled(c, Position((x - pivot.dx)*scale,
+          (y - pivot.dy - z)*scale), scale: proprieties.zoom*scale,
+          overridePaint: p);
       updatePhysics();
 
       if (GameController.time > lifeTime) {
