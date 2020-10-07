@@ -9,7 +9,6 @@ import '../entity/entity.dart';
 import '../entity/items/item_database.dart';
 import '../entity/items/items.dart';
 import '../game_controller.dart';
-import '../scene/game_scene.dart';
 import '../utils/preload_assets.dart';
 import 'map_controller.dart';
 
@@ -34,8 +33,8 @@ class Tree extends Entity {
   double _deleteTime = double.infinity;
 
   Tree(this._map, int posX, int posY, this._tileSize, this._spriteImage)
-      : super((posX.toDouble() * GameScene.worldSize),
-            (posY.toDouble() * GameScene.worldSize)) {
+      : super((posX.toDouble() * 16),
+            (posY.toDouble() * 16)) {
     id = '_${x.toInt()}_${y.toInt()}';
 
     width = 2.0 * _tileSize;
@@ -52,18 +51,25 @@ class Tree extends Entity {
   void loadSprite() async {
     //_tree = await SpriteBatch.withAsset('trees/${_spriteImage}.png');
     _tree = PreloadAssets.getTreeSprite(_spriteImage);
+    if (posX == null || posY == null || _tileSize == null) {
+      return;
+    }
     _tree.add(
-        rect: Rect.fromLTWH(0, 0, 16, 16),
+        rect: Rect.fromLTWH(0, 0, _tree.width.toDouble(), _tree.height.toDouble()),  // (0, 0, 16, 16),
         offset: Offset(
-            posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
-        anchor: Offset(8, 14),
-        scale: _tileSize.toDouble(),
+            posX.toDouble() * _tileSize*_map.scale, (posY.toDouble() - 1)
+                          * _tileSize*_map.scale),
+        anchor: Offset(_tree.width/2, _tree.height.toDouble()-2),
+        scale: _tileSize.toDouble()*_map.scale*16/_tree.height,
         rotation: 0 //-0.05
         );
   }
 
   @override
   void draw(Canvas c) {
+    if (_map.tilePix == 1) {
+      return;
+    }
     if (_tree != null) {
       if (status.isAlive()) {
         hitted();
@@ -133,11 +139,12 @@ class Tree extends Entity {
   void _updateFrame(double rot) {
     _tree.clear();
     _tree.add(
-        rect: Rect.fromLTWH(0, 0, 16, 16),
+        rect: Rect.fromLTWH(0, 0, _tree.width.toDouble(), _tree.height.toDouble()),
         offset: Offset(
-            posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
-        anchor: Offset(8, 14),
-        scale: _tileSize.toDouble(),
+            posX.toDouble() * _tileSize*_map.scale, (posY.toDouble() - 1)
+                        * _tileSize*_map.scale),
+        anchor: Offset(_tree.width/2, _tree.height.toDouble()-2),
+        scale: _tileSize.toDouble()*_map.scale*16/_tree.height,
         rotation: rot //-0.05
         );
   }

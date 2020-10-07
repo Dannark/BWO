@@ -54,10 +54,10 @@ class FurnitureBuild {
     var offset = TapState.worldToScreenPoint(_map);
 
     var area = Rect.fromLTWH(
-      (left * 16) + offset.dx,
-      (top * 16) + offset.dy,
-      width * 16,
-      height * 16,
+      (left * 16 * _map.scale) + offset.dx,
+      (top * 16 * _map.scale) + offset.dy,
+      width * 16 * _map.scale,
+      height * 16 * _map.scale,
     );
 
     return area;
@@ -73,14 +73,14 @@ class FurnitureBuild {
         }
         //vertical line
         c.drawLine(
-          Offset(bounds.left + (x * 16), bounds.top),
-          Offset(bounds.left + (x * 16), bounds.bottom),
+          Offset(bounds.left + (x * 16 * _map.scale), bounds.top),
+          Offset(bounds.left + (x * 16 * _map.scale), bounds.bottom),
           _p,
         );
         //horizontal line
         c.drawLine(
-          Offset(bounds.left, bounds.top + (y * 16)),
-          Offset(bounds.right, bounds.top + (y * 16)),
+          Offset(bounds.left, bounds.top + (y * 16 * _map.scale)),
+          Offset(bounds.right, bounds.top + (y * 16 * _map.scale)),
           _p,
         );
       }

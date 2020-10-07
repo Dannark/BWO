@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
 import '../map/map_controller.dart';
+import '../scene/game_scene.dart';
 import '../ui/keyboard/keyboard_ui.dart';
 import '../ui/ui_element.dart';
 
@@ -95,7 +96,7 @@ class TapState {
   }
 
   static Offset screenToWorldPoint(Offset point, MapController map) {
-    var midBorder = (map.border) * 16;
+    var midBorder = (map.border) * GameScene.pixelsPerTile;
     var mapPos = Offset(map.posX - midBorder, map.posY - midBorder);
 
     var tap = (point - mapPos);
@@ -103,7 +104,7 @@ class TapState {
   }
 
   static Offset worldToScreenPoint(MapController map) {
-    var midBorder = (map.border) * 16;
+    var midBorder = (map.border) * GameScene.pixelsPerTile;
     var tap = Offset(map.posX - midBorder, map.posY - midBorder);
 
     return tap;

@@ -26,7 +26,7 @@ class PlayerActions {
         var target = Offset(entity.x, entity.y);
         var distance = (Offset(player.x, player.y) - target).distance;
 
-        if (distance <= 3.0 * player.worldSize && isDoingAction == false) {
+        if (distance <= 4.0 * 16 && isDoingAction == false) {
           if (entity is Tree && entity.status.isAlive()) {
             isDoingAction = true;
 

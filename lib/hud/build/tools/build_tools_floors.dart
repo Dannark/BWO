@@ -41,6 +41,7 @@ class BuildToolsFloors extends BuildSubToolsBar {
 
       if (tapOnScreen.dy < GameController.screenSize.height - 200 &&
           tapOnScreen.dx > 48) {
+        _map.gameScene.allowMapPan = false;
         placeFloor();
       }
     }

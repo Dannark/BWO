@@ -178,6 +178,15 @@ class PreloadAssets {
         .then((value) => _trees['tree03'] = value);
     SpriteBatch.withAsset('trees/tree04.png')
         .then((value) => _trees['tree04'] = value);
+
+    SpriteBatch.withAsset('trees/tree_1.png')
+        .then((value) => _trees['tree_1'] = value);
+    SpriteBatch.withAsset('trees/tree_2.png')
+        .then((value) => _trees['tree_2'] = value);
+    SpriteBatch.withAsset('trees/tree_3.png')
+        .then((value) => _trees['tree_3'] = value);
+    SpriteBatch.withAsset('trees/tree_4.png')
+        .then((value) => _trees['tree_4'] = value);
   }
 
   static Sprite getEnviromentSprite(String grass) {

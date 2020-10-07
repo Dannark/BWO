@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
 import '../game_controller.dart';
 
 abstract class PhysicsEntity {

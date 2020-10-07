@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../scene/game_scene.dart';
 import 'equipment.dart';
 import 'items/items.dart';
 import 'player/player.dart';
@@ -17,8 +18,9 @@ class EquipmentController {
   }
 
   void draw(Canvas c, double animSpeed, {bool stopAnimWhenIdle = true}) {
-    _weapon?.currentSprite?.draw(c, player.x, player.y, player.xSpeed,
-        player.ySpeed, animSpeed, player.mapHeight,
+    var scale = GameScene.pixelsPerTile/16;
+    _weapon?.currentSprite?.draw(c, player.x*scale, player.y*scale,
+        player.xSpeed*scale, player.ySpeed*scale, animSpeed, player.mapHeight,
         stopAnimWhenIdle: stopAnimWhenIdle);
   }
 
