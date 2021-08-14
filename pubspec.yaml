@@ -111,7 +111,6 @@ flutter:
       
       #Enemy - grood
       - assets/images/enemys/grood/walk/
-      - assets/images/enemys/grood/attack/
 
       # Axe Attack Effect
       - assets/images/equipment/weapons/axe/walk/
