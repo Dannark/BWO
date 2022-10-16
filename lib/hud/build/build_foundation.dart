@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../Entity/wall/door.dart';
+import '../../entity/wall/door.dart';
 import '../../entity/player/player.dart';
 import '../../entity/wall/foundation.dart';
 import '../../entity/wall/furniture.dart';
