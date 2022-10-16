@@ -1,4 +1,3 @@
-import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';

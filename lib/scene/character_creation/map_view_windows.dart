@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:flame/anchor.dart';
 import 'package:flame/game.dart' as flame;
 import 'package:flame/position.dart';
 

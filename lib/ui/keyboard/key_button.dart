@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flame/anchor.dart';
 import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/cupertino.dart';
