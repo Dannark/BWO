@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import '../entity/enemys/enemy.dart';
 import '../entity/player/player.dart';
@@ -48,15 +49,16 @@ class GameScene extends SceneObject {
     serverController.setPlayer(player);
     mapController.addPlayerRef(player);
 
-    Flame.audio.disableLog();
-    Flame.bgm.dispose();
-    Flame.bgm.initialize();
+    // FlameAudio.audioCache.disableLog();
+    FlameAudio.bgm.dispose();
+    FlameAudio.bgm.initialize();
     if (ServerUtils.database == 'production') {
-      if (!Flame.bgm.isPlaying) {
-        Flame.bgm.play('recovery.mp3', volume: .2);
+      if (!FlameAudio.bgm.isPlaying) {
+        FlameAudio.bgm.play('recovery.mp3', volume: .2);
       }
     }
-    Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
+    FlameAudio.audioCache
+        .loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }
 
   @override

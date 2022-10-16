@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/flame.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import '../../game_controller.dart';
 import '../../scene/game_scene.dart';
@@ -86,14 +87,14 @@ class PlayerNetwork {
 
   /// Attack Enemy Entity, the damage is not calculated on the server-side.
   void attackEnemy(String enemyId, int damage) {
-    Flame.audio.play('punch.mp3', volume: 0.4);
+    FlameAudio.play('punch.mp3', volume: 0.4);
     var jsonData = {"enemyId": enemyId, "damage": damage};
     GameScene.serverController.sendMessage("onPlayerAttackEnemy", jsonData);
   }
 
   void hitTreeAnimation(double targetX, double targetY) {
     player.currentSprite = player.attackSprites;
-    Flame.audio.play("punch.mp3", volume: 0.5);
+    FlameAudio.play("punch.mp3", volume: 0.5);
     player.status.consumeHungriness(0.3);
 
     var targetPos = Offset(targetX, targetY);

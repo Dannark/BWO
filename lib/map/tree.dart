@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flame/flame_audio.dart';
 import 'package:flame/sprite_batch.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/entity.dart';
@@ -26,7 +26,6 @@ class Tree extends Entity {
 
   int _applesLeft = 1;
 
-  final FlameAudio _audio = FlameAudio();
   double _deadRotation = 0;
   double _gravityRotation = 0;
 
@@ -181,7 +180,7 @@ class Tree extends Entity {
 
       status.setLife(hp);
 
-      _audio.play('punch.mp3', volume: 0.4);
+      FlameAudio.play('punch.mp3', volume: 0.4);
     }
   }
 

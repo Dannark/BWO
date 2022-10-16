@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
@@ -171,7 +172,7 @@ class Player extends Entity implements OnAnimationEnd {
     if (entity is Item) {
       _inventory.addItem(entity) ? entity.destroy() : null;
 
-      Flame.audio.play("pickup_item1.mp3", volume: 0.9);
+      FlameAudio.play("pickup_item1.mp3", volume: 0.9);
     }
   }
 
