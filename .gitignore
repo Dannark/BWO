@@ -12,3 +12,4 @@
 /bwo-server/resources/data/tmp/
 /bwo-server/resources/data/service-account-file.json
 /.vscode
+.DS_Store
