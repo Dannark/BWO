@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
