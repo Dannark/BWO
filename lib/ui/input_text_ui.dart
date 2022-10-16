@@ -12,7 +12,7 @@ import 'keyboard/keyboard_ui.dart';
 import 'ui_element.dart';
 
 class InputTextUI extends UIElement implements KeyUIListener {
-  Position pos;
+  Vector2 pos;
   String _inputText = "";
   String placeHolder = "Text Example";
   int maxLength = 16;
@@ -73,14 +73,14 @@ class InputTextUI extends UIElement implements KeyUIListener {
       placeHolderText.render(
         c,
         placeHolder,
-        Position(bounds.left + padding, bounds.center.dy),
+        Vector2(bounds.left + padding, bounds.center.dy),
         anchor: Anchor.centerLeft,
       );
     } else {
       normalText.render(
         c,
         _inputText,
-        Position(bounds.left + padding - textOffsetX, bounds.center.dy),
+        Vector2(bounds.left + padding - textOffsetX, bounds.center.dy),
         anchor: Anchor.centerLeft,
       );
     }

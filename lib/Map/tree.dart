@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flame/sprite_batch.dart';
+import 'package:flame/extensions.dart';
+import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
@@ -52,10 +53,10 @@ class Tree extends Entity {
     //_tree = await SpriteBatch.withAsset('trees/${_spriteImage}.png');
     _tree = PreloadAssets.getTreeSprite(_spriteImage);
     _tree.add(
-        rect: Rect.fromLTWH(0, 0, 16, 16),
-        offset: Offset(
+        source: Rect.fromLTWH(0, 0, 16, 16),
+        offset: Vector2(
             posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
-        anchor: Offset(8, 14),
+        anchor: Vector2(8, 14),
         scale: _tileSize.toDouble(),
         rotation: 0 //-0.05
         );
@@ -132,10 +133,10 @@ class Tree extends Entity {
   void _updateFrame(double rot) {
     _tree.clear();
     _tree.add(
-        rect: Rect.fromLTWH(0, 0, 16, 16),
-        offset: Offset(
+        source: Rect.fromLTWH(0, 0, 16, 16),
+        offset: Vector2(
             posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
-        anchor: Offset(8, 14),
+        anchor: Vector2(8, 14),
         scale: _tileSize.toDouble(),
         rotation: rot //-0.05
         );

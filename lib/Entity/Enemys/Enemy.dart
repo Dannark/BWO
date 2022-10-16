@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
-import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
@@ -56,7 +55,7 @@ class Enemy extends Entity implements OnAnimationEnd {
     TextPaint(
             style: TextStyle(
                 fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia"))
-        .render(c, name, Position(x, y - 32), anchor: Anchor.bottomCenter);
+        .render(c, name, Vector2(x, y - 32), anchor: Anchor.bottomCenter);
   }
 
   @override

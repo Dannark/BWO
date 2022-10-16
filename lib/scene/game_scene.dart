@@ -1,6 +1,5 @@
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 import 'package:flame_audio/flame_audio.dart';
 
@@ -71,7 +70,7 @@ class GameScene extends SceneObject {
         movimentType: MovimentType.follow, tileSize: worldSize);
 
     config.render(
-        c, "FPS: ${getFps()}", Position(GameController.screenSize.width, 0),
+        c, "FPS: ${getFps()}", Vector2(GameController.screenSize.width, 0),
         anchor: Anchor.topRight);
 
     hud.draw(c);

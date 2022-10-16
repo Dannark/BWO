@@ -1,5 +1,4 @@
 import 'package:flame/sprite.dart';
-import 'package:flame/sprite_batch.dart';
 
 class PreloadAssets {
   static final Map<String, Sprite> _enviromentSpriteList = {
@@ -170,13 +169,13 @@ class PreloadAssets {
 
   void loadSprites() async {
     print("Loading sprites Trees Assets");
-    SpriteBatch.withAsset('trees/tree01.png')
+    SpriteBatch.load('trees/tree01.png')
         .then((value) => _trees['tree01'] = value);
-    SpriteBatch.withAsset('trees/tree02.png')
+    SpriteBatch.load('trees/tree02.png')
         .then((value) => _trees['tree02'] = value);
-    SpriteBatch.withAsset('trees/tree03.png')
+    SpriteBatch.load('trees/tree03.png')
         .then((value) => _trees['tree03'] = value);
-    SpriteBatch.withAsset('trees/tree04.png')
+    SpriteBatch.load('trees/tree04.png')
         .then((value) => _trees['tree04'] = value);
   }
 

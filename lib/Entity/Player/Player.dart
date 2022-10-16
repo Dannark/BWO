@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +103,7 @@ class Player extends Entity implements OnAnimationEnd {
           stopAnimWhenIdle: stopAnimWhenIdle);
     }
     //debugDraw(c);
-    _text.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
+    _text.render(c, name, Vector2(x, y - 45), anchor: Anchor.bottomCenter);
   }
 
   @override
@@ -124,7 +123,8 @@ class Player extends Entity implements OnAnimationEnd {
   void die(Canvas c) {
     if (status.isAlive() == false) {
       isActive = false;
-      _deathSprite?.renderScaled(c, Position(x - 16, y - 32), scale: 2);
+      _deathSprite?.render(c,
+          position: Vector2(x - 16, y - 32), size: Vector2.all(2));
 
       if (!isMine) return;
 

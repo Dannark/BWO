@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/animation.dart' as anim;
-import 'package:flame/position.dart';
+import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
@@ -113,7 +113,7 @@ class GrassFX {
     grassAnim.update(GameController.deltaTime);
     grassAnim
         .getSprite()
-        .renderPosition(c, Position(x - 7, y - 8), overridePaint: p);
+        .renderPosition(c, Vector2(x - 7, y - 8), overridePaint: p);
   }
 
   bool isAlive() {

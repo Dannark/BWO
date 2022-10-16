@@ -1,4 +1,4 @@
-import 'package:flame/position.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -101,7 +101,7 @@ class KeyboardUI {
         var obj = lineKeys[i];
         xItem += obj.margin;
 
-        _buttons.add(KeyButton(Position(xItem, lineIndex.toDouble()), obj));
+        _buttons.add(KeyButton(Vector2(xItem, lineIndex.toDouble()), obj));
 
         if (obj is KeyModel) {
           xItem += obj.widthOnGrid;

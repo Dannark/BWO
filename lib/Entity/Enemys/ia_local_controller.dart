@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
+import '../entity.dart';
 import '../player/player.dart';
 import 'enemy.dart';
 import 'ia_controller.dart';
@@ -94,12 +95,12 @@ class IALocalController extends IAController {
             (Offset(self.x, self.y) - Offset(entity.x, entity.y)).distance;
 
         if (distance < seeTargetDistanceMin) {
-          target = entity;
+          target = entity as Entity;
         }
         var targetSpeed = (entity.xSpeed + entity.ySpeed).abs();
 
         if (distance < _seeTargetDistanceMax && targetSpeed > 1.5) {
-          target = entity;
+          target = entity as Entity;
         }
       }
     }

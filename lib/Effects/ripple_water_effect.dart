@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flame/position.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -55,8 +55,10 @@ class Ripple {
     var halfwidth = (16 * _scale) / 2;
     var halfheight = (16 * _scale) / 2;
 
-    ripple.renderScaled(c, Position(x - halfwidth, y - halfheight),
-        scale: _scale, overridePaint: p);
+    ripple.render(c,
+        position: Vector2(x - halfwidth, y - halfheight),
+        size: Vector2.all(_scale),
+        overridePaint: p);
   }
 
   bool isAlive() {

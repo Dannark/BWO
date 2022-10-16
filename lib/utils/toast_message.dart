@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -37,9 +36,9 @@ class ToastMessage {
   DateTime startTime;
   String text;
 
-  Position _currentPos;
-  Position _fadeIn;
-  Position _fadeOut;
+  Vector2 _currentPos;
+  Vector2 _fadeIn;
+  Vector2 _fadeOut;
 
   Color cNow = Color.fromRGBO(62, 44, 40, .2);
   Color cIn = Color.fromRGBO(62, 44, 40, 1);
@@ -48,15 +47,15 @@ class ToastMessage {
   final Paint _p = Paint();
 
   ToastMessage(this.text) {
-    _currentPos = Position(
+    _currentPos = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.9,
     );
-    _fadeIn = Position(
+    _fadeIn = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.8,
     );
-    _fadeOut = Position(
+    _fadeOut = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.9,
     );
@@ -66,13 +65,13 @@ class ToastMessage {
     startTime == null ? startTime = DateTime.now() : null;
 
     if (isReadyToFadeOut()) {
-      _currentPos = Position(
+      _currentPos = Vector2(
         lerpDouble(_currentPos.x, _fadeOut.x, GameController.deltaTime * speed),
         lerpDouble(_currentPos.y, _fadeOut.y, GameController.deltaTime * speed),
       );
       cNow = Color.lerp(cNow, cOut, GameController.deltaTime * (speed + 3));
     } else {
-      _currentPos = Position(
+      _currentPos = Vector2(
         lerpDouble(_currentPos.x, _fadeIn.x, GameController.deltaTime * speed),
         lerpDouble(_currentPos.y, _fadeIn.y, GameController.deltaTime * speed),
       );

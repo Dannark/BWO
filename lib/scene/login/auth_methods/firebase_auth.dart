@@ -62,10 +62,11 @@ class FirebaseAuth implements AuthService {
     var data = FirebaseDatabase.instance.reference().child('version');
 
     data.once().then((snapshot) {
-      if (snapshot.value == appVersion) {
+      if (snapshot.snapshot.value == appVersion) {
         _createOrReplaceAndLogUser();
       } else {
-        Toast.add("You are out of date. The new version is: ${snapshot.value}");
+        Toast.add(
+            "You are out of date. The new version is: ${snapshot.snapshot.value}");
         logout();
       }
     });
@@ -105,16 +106,16 @@ class FirebaseAuth implements AuthService {
         .child('${ServerUtils.database}/state/players/$characterName');
 
     data.once().then((snapshot) {
-      if (snapshot.value != null) {
-        print('Retrieved character information: ${snapshot.value}');
+      if (snapshot.snapshot.value != null) {
+        print('Retrieved character information: ${snapshot.snapshot.value}');
 
-        var pName = snapshot.value['name'];
-        var pX = double.parse(snapshot.value['x'].toString());
-        var pY = double.parse(snapshot.value['y'].toString());
-        var pSprite = snapshot.value['sprite'];
-        var pHp = int.parse(snapshot.value['hp'].toString());
-        var pXp = int.parse(snapshot.value['xp'].toString());
-        var pLv = int.parse(snapshot.value['lv'].toString());
+        var pName = snapshot.snapshot.value['name'];
+        var pX = double.parse(snapshot.snapshot.value['x'].toString());
+        var pY = double.parse(snapshot.snapshot.value['y'].toString());
+        var pSprite = snapshot.snapshot.value['sprite'];
+        var pHp = int.parse(snapshot.snapshot.value['hp'].toString());
+        var pXp = int.parse(snapshot.snapshot.value['xp'].toString());
+        var pLv = int.parse(snapshot.snapshot.value['lv'].toString());
 
         print('creating player $pName on position: $pX, $pY');
 
@@ -135,10 +136,11 @@ class FirebaseAuth implements AuthService {
     var isAvaiable = false;
 
     await data.once().then((snapshot) {
-      if (snapshot.value == null) {
+      if (snapshot.snapshot.value == null) {
         isAvaiable = true;
       } else {
-        Toast.add('Character name already taken: ${snapshot.value["name"]}');
+        Toast.add(
+            'Character name already taken: ${snapshot.snapshot.value["name"]}');
       }
     });
     return isAvaiable;

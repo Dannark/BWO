@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -61,9 +60,9 @@ class Login extends SceneObject {
 
     _backPaper.renderRect(c, GameController.screenSize);
 
-    _version.render(c, "Version: $_versionName", Position(50, 50));
+    _version.render(c, "Version: $_versionName", Vector2(50, 50));
 
-    _title.render(c, "> A letter from the Dev", Position(50, 80));
+    _title.render(c, "> A letter from the Dev", Vector2(50, 80));
     _text.render(
       c,
       """Hello Adventures!\n
@@ -80,7 +79,7 @@ on your screen yet. hehe.
 
 I thanks you all for the support.
 By Dannark""",
-      Position(GameController.screenSize.width / 2, 120),
+      Vector2(GameController.screenSize.width / 2, 120),
       anchor: Anchor.topCenter,
     );
 

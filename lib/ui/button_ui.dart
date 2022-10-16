@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,13 +70,13 @@ class ButtonUI extends UIElement {
 
     var iconScale = 0.5;
     var iconHeight = 42 * iconScale;
-    icon?.renderScaled(
-        c, Position(bounds.left + 10, bounds.center.dy - iconHeight / 2),
-        scale: iconScale);
+    icon?.render(c,
+        position: Vector2(bounds.left + 10, bounds.center.dy - iconHeight / 2),
+        size: Vector2.all(iconScale));
     _normalText.render(
       c,
       text,
-      Position(bounds.center.dx + padding.left, bounds.center.dy + padding.top),
+      Vector2(bounds.center.dx + padding.left, bounds.center.dy + padding.top),
       anchor: Anchor.center,
     );
   }

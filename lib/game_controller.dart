@@ -1,7 +1,7 @@
 import 'dart:ui';
 
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'scene/character_creation/character_creation.dart';
@@ -93,7 +93,7 @@ class GameController extends Game with PanDetector {
   }
 
   @override
-  void onPanDown(DragDownDetails details) {
+  void onPanDown(DragDownInfo details) {
     preTapState = TapState.down;
     TapState.pressedPosition = details.localPosition;
     TapState.currentPosition = details.localPosition;
@@ -101,7 +101,7 @@ class GameController extends Game with PanDetector {
   }
 
   @override
-  void onPanUpdate(DragUpdateDetails details) {
+  void onPanUpdate(DragUpdateInfo details) {
     if (tapState == TapState.pressing) {
       TapState.lastPosition = TapState.currentPosition;
       TapState.currentPosition = details.localPosition;
@@ -109,7 +109,7 @@ class GameController extends Game with PanDetector {
   }
 
   @override
-  void onPanEnd(DragEndDetails details) {
+  void onPanEnd(DragEndInfo details) {
     tapState = TapState.up;
   }
 }

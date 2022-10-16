@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/position.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../game_controller.dart';
@@ -12,11 +11,11 @@ import 'keyboard_ui.dart';
 class KeyButton {
   Rect bounds;
 
-  Position pos;
+  Vector2 pos;
   double width;
   double height;
 
-  final Position _gridPos;
+  final Vector2 _gridPos;
 
   double padding = 1;
 
@@ -46,7 +45,7 @@ class KeyButton {
     width = viewWidth * (0.1 * widthMultiplier);
     height = KeyboardUI.keyHeight;
 
-    pos = Position(
+    pos = Vector2(
       (_gridPos.x * defaultWidth +
           KeyboardUI.bounds.left +
           KeyboardUI.paddingX / 2),
@@ -61,7 +60,7 @@ class KeyButton {
   }
 
   void draw(Canvas c) {
-    pos = Position(
+    pos = Vector2(
       pos.x,
       _gridPos.y * height + KeyboardUI.bounds.top + KeyboardUI.paddingY / 2,
     );
@@ -76,8 +75,8 @@ class KeyButton {
 
     c.drawRRect(RRect.fromRectAndRadius(bounds, Radius.circular(5)), p);
 
-    var textPosition = Position(pos.x + width / 2, pos.y + height / 2);
-    textPosition += Position(animatePos.dx, animatePos.dy);
+    var textPosition = Vector2(pos.x + width / 2, pos.y + height / 2);
+    textPosition += Vector2(animatePos.dx, animatePos.dy);
 
     valueText.render(c, keyText, textPosition, anchor: Anchor.center);
 

@@ -1,4 +1,4 @@
-import 'package:flame/position.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -70,11 +70,13 @@ class Wall extends Entity {
     selectWallSprite();
 
     if (showLow) {
-      currentLowSprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
-          scale: 1);
+      currentLowSprite.render(c,
+          position: Vector2(x - pivot.dx, y - pivot.dy - z),
+          size: Vector2.all(1));
     } else {
-      currentSprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
-          scale: 1);
+      currentSprite.render(c,
+          position: Vector2(x - pivot.dx, y - pivot.dy - z),
+          size: Vector2.all(1));
     }
 
     showCollisionBox ? debugDraw(c) : null;

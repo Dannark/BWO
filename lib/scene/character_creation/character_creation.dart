@@ -1,5 +1,5 @@
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +36,7 @@ class CharacterCreation extends SceneObject {
 
     _inputTextUI = InputTextUI(
       super.hud,
-      Position(GameController.screenSize.width / 2,
+      Vector2(GameController.screenSize.width / 2,
           GameController.screenSize.height * 0.64),
       "Player Name",
       backGroundColor: Color.fromRGBO(255, 255, 255, 0),
@@ -106,12 +106,12 @@ class CharacterCreation extends SceneObject {
     _backPaper.renderRect(c, GameController.screenSize);
 
     _title.render(c, "Character Creation",
-        Position((GameController.screenSize.width / 2) + 20, 85),
+        Vector2((GameController.screenSize.width / 2) + 20, 85),
         anchor: Anchor.bottomCenter);
 
     _mapPreviewWindows.draw(c);
     _characterPreviewWindows.draw(c);
-    _inputTextUI.pos = Position(
+    _inputTextUI.pos = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.64,
     );
