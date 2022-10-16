@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
@@ -56,7 +55,7 @@ class DamageText {
     driftX += 15 * GameController.deltaTime * xRandomDirection;
     initialFontSize =
         lerpDouble(initialFontSize, 8, GameController.deltaTime * 1);
-    var textConfig = TextConfig(
+    var textConfig = TextStyle(
         fontSize: initialFontSize,
         color: isMine ? Colors.white : Color.fromRGBO(229, 184, 46, 1),
         fontFamily: "Blocktopia");

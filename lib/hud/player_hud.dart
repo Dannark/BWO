@@ -1,7 +1,6 @@
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/player/player.dart';
@@ -14,10 +13,10 @@ class PlayerHUD extends UIElement {
   final Player _player;
   final Paint _p = Paint();
 
-  final TextConfig _txt14 =
-      TextConfig(fontSize: 14.0, color: Colors.white, fontFamily: "Blocktopia");
-  final TextConfig _txt10 =
-      TextConfig(fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia");
+  final TextStyle _txt14 =
+      TextStyle(fontSize: 14.0, color: Colors.white, fontFamily: "Blocktopia");
+  final TextStyle _txt10 =
+      TextStyle(fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia");
 
   final Sprite _stomach = Sprite("ui/stomach.png");
   final Sprite _stomachBack = Sprite("ui/stomach_back.png");

@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -91,7 +90,7 @@ class ToastMessage {
     _p.color = Color.fromRGBO(244, 223, 168, cNow.alpha / 255.0);
     c.drawRRect(RRect.fromRectAndRadius(bounds, Radius.circular(5)), _p);
 
-    var _text = TextConfig(
+    var _text = TextStyle(
       fontSize: 12.0,
       color: cNow,
       fontFamily: "Blocktopia",

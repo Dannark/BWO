@@ -1,7 +1,6 @@
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/hud.dart';
@@ -15,7 +14,7 @@ class ToolItem extends UIElement {
   Sprite sprite;
   Offset pos = Offset.zero;
 
-  final TextConfig _text = TextConfig(
+  final TextStyle _text = TextStyle(
       fontSize: 12.0,
       color: Color.fromRGBO(62, 44, 40, 1),
       fontFamily: "Blocktopia");

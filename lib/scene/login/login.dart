@@ -1,7 +1,6 @@
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
@@ -12,15 +11,15 @@ import 'auth.dart';
 import 'auth_methods/firebase_auth.dart';
 
 class Login extends SceneObject {
-  final TextConfig _version = TextConfig(
+  final TextStyle _version = TextStyle(
       fontSize: 11,
       color: Color.fromRGBO(216, 165, 120, 1),
       fontFamily: "Blocktopia");
-  final TextConfig _title = TextConfig(
+  final TextStyle _title = TextStyle(
       fontSize: 22,
       color: Color.fromRGBO(216, 165, 120, 1),
       fontFamily: "Blocktopia");
-  final TextConfig _text = TextConfig(
+  final TextStyle _text = TextStyle(
       fontSize: 16,
       color: Color.fromRGBO(216, 165, 120, 1),
       fontFamily: "Blocktopia");

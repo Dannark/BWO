@@ -1,7 +1,6 @@
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
@@ -18,7 +17,7 @@ class CharacterCreation extends SceneObject {
 
   InputTextUI _inputTextUI;
 
-  final TextConfig _title = TextConfig(
+  final TextStyle _title = TextStyle(
       fontSize: 22.0,
       color: Color.fromRGBO(216, 165, 120, 1),
       fontFamily: "Blocktopia");

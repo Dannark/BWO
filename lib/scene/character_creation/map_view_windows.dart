@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
 
 import '../../game_controller.dart';
 import '../../ui/button_list_ui.dart';
@@ -12,7 +11,7 @@ import '../../utils/tap_state.dart';
 
 class MapPreviewWindows {
   Paint p = Paint();
-  TextConfig location = TextConfig(
+  TextStyle location = TextStyle(
       fontSize: 10.0,
       color: Color.fromRGBO(216, 165, 120, 1),
       fontFamily: "Blocktopia");

@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../game_controller.dart';
@@ -55,7 +54,7 @@ class KeyButton {
     );
 
     valueText =
-        TextConfig(fontSize: 16.0, color: txtColor, fontFamily: "Blocktopia");
+        TextStyle(fontSize: 16.0, color: txtColor, fontFamily: "Blocktopia");
 
     initializeAnimation(AnimationType.roll3dCenter);
   }

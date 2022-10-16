@@ -1,5 +1,4 @@
 import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../entity/wall/Roof.dart';
@@ -31,7 +30,7 @@ class Foundation {
   bool _isPreviousInsideFoundation = false;
 
   Paint p = Paint();
-  final TextConfig _txt10 = TextConfig(
+  final TextStyle _txt10 = TextStyle(
       fontSize: 10.0, color: Colors.blueGrey[700], fontFamily: "Blocktopia");
 
   Foundation(this.foundationData, this._map, this._player) {
