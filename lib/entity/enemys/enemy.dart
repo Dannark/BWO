@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +54,9 @@ class Enemy extends Entity implements OnAnimationEnd {
           stopAnimWhenIdle: stopAnimWhenIdle);
     }
     //debugDraw(c);
-    TextStyle(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia")
+    TextPaint(
+            style: TextStyle(
+                fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia"))
         .render(c, name, Position(x, y - 32), anchor: Anchor.bottomCenter);
   }
 

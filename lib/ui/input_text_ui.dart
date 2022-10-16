@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -27,8 +28,8 @@ class InputTextUI extends UIElement implements KeyUIListener {
   Function(String) onConfirmListener;
   Function(String) onPressedListener;
 
-  TextConfig normalText;
-  TextConfig placeHolderText;
+  TextPaint normalText;
+  TextPaint placeHolderText;
 
   double rotation = 0;
 
@@ -42,17 +43,19 @@ class InputTextUI extends UIElement implements KeyUIListener {
       : super(hudRef) {
     p.color = backGroundColor != null ? backGroundColor : Colors.blueGrey[50];
 
-    normalText = TextStyle(
+    normalText = TextPaint(
+        style: TextStyle(
       fontSize: fontSize,
       color: normalColor != null ? normalColor : Colors.grey[800],
       fontFamily: "Blocktopia",
-    );
+    ));
 
-    placeHolderText = TextStyle(
+    placeHolderText = TextPaint(
+        style: TextStyle(
       fontSize: fontSize,
       color: placeholderColor != null ? placeholderColor : Colors.grey[600],
       fontFamily: "Blocktopia",
-    );
+    ));
   }
 
   void draw(Canvas c) {

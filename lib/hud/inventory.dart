@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,9 @@ class Inventory extends UIElement {
   final int _maxHorizontalSlots = 2;
   final double _spaceBetweenSlots = 2;
 
-  final TextStyle _config =
-      TextStyle(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia");
+  final TextPaint _config = TextPaint(
+      style: TextStyle(
+          fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia"));
   final Player _player;
 
   Sprite _bagSprite;

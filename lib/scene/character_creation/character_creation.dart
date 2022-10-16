@@ -1,4 +1,5 @@
 import 'package:flame/anchor.dart';
+import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,11 @@ class CharacterCreation extends SceneObject {
 
   InputTextUI _inputTextUI;
 
-  final TextStyle _title = TextStyle(
-      fontSize: 22.0,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
+  final TextPaint _title = TextPaint(
+      style: TextStyle(
+          fontSize: 22.0,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
 
   final Sprite _backPaper = Sprite("ui/backpaper.png");
 

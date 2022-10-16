@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
 
@@ -30,8 +31,11 @@ class Foundation {
   bool _isPreviousInsideFoundation = false;
 
   Paint p = Paint();
-  final TextStyle _txt10 = TextStyle(
-      fontSize: 10.0, color: Colors.blueGrey[700], fontFamily: "Blocktopia");
+  final TextPaint _txt10 = TextPaint(
+      style: TextStyle(
+          fontSize: 10.0,
+          color: Colors.blueGrey[700],
+          fontFamily: "Blocktopia"));
 
   Foundation(this.foundationData, this._map, this._player) {
     setup(foundationData);

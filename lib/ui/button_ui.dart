@@ -1,4 +1,5 @@
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,7 @@ import 'ui_element.dart';
 class ButtonUI extends UIElement {
   final Paint _p = Paint();
 
-  TextConfig _normalText;
+  TextPaint _normalText;
   String text;
 
   Color _normalColor;
@@ -43,11 +44,12 @@ class ButtonUI extends UIElement {
     _pressedColor =
         pressedColor != null ? pressedColor : Color.fromRGBO(50, 143, 249, 1);
 
-    _normalText = TextStyle(
+    _normalText = TextPaint(
+        style: TextStyle(
       fontSize: fontSize,
       color: fontColor != null ? fontColor : Color.fromRGBO(224, 223, 168, 1),
       fontFamily: "Blocktopia",
-    );
+    ));
   }
 
   void draw(Canvas c) {

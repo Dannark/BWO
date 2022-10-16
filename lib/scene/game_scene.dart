@@ -1,4 +1,5 @@
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,9 @@ import 'scene_object.dart';
 class GameScene extends SceneObject {
   static const int worldSize = 16;
 
-  TextStyle config =
-      TextStyle(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
+  TextPaint config = TextPaint(
+      style: TextStyle(
+          fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia"));
 
   Player player;
   MapController mapController;

@@ -1,20 +1,26 @@
 import 'dart:math';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flame/anchor.dart';
+import 'package:flame/game.dart' as flame;
 import 'package:flame/position.dart';
 
 import '../../game_controller.dart';
 import '../../ui/button_list_ui.dart';
 import '../../ui/hud.dart';
 import '../../utils/tap_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flame/game.dart';
 
 class MapPreviewWindows {
   Paint p = Paint();
-  TextStyle location = TextStyle(
-      fontSize: 10.0,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
+  TextPaint location = TextPaint(
+      style: TextStyle(
+          fontSize: 10.0,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
 
   Offset targetPos = Offset.zero;
   Offset newTarget = Offset.zero;

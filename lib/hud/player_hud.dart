@@ -1,4 +1,5 @@
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,12 @@ class PlayerHUD extends UIElement {
   final Player _player;
   final Paint _p = Paint();
 
-  final TextStyle _txt14 =
-      TextStyle(fontSize: 14.0, color: Colors.white, fontFamily: "Blocktopia");
-  final TextStyle _txt10 =
-      TextStyle(fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia");
+  final TextPaint _txt14 = TextPaint(
+      style: TextStyle(
+          fontSize: 14.0, color: Colors.white, fontFamily: "Blocktopia"));
+  final TextPaint _txt10 = TextPaint(
+      style: TextStyle(
+          fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia"));
 
   final Sprite _stomach = Sprite("ui/stomach.png");
   final Sprite _stomachBack = Sprite("ui/stomach_back.png");
@@ -78,7 +81,7 @@ class PlayerHUD extends UIElement {
   }
 
   Rect drawBar(Canvas c, Rect barRect, Color barColor, double currentVal,
-      double maxVal, String textValue, TextConfig txt) {
+      double maxVal, String textValue, TextPaint txt) {
     var bar2 = Rect.fromLTWH(barRect.left + 2, barRect.top - 2,
         barRect.width - 4, barRect.height + 4);
 

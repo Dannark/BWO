@@ -1,4 +1,5 @@
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -11,18 +12,21 @@ import 'auth.dart';
 import 'auth_methods/firebase_auth.dart';
 
 class Login extends SceneObject {
-  final TextStyle _version = TextStyle(
-      fontSize: 11,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
-  final TextStyle _title = TextStyle(
-      fontSize: 22,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
-  final TextStyle _text = TextStyle(
-      fontSize: 16,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
+  final TextPaint _version = TextPaint(
+      style: TextStyle(
+          fontSize: 11,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
+  final TextPaint _title = TextPaint(
+      style: TextStyle(
+          fontSize: 22,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
+  final TextPaint _text = TextPaint(
+      style: TextStyle(
+          fontSize: 16,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
   String _versionName = "-";
 
   final Sprite _backPaper = Sprite("ui/backpaper1.png");

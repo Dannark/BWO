@@ -1,4 +1,5 @@
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,11 @@ class ToolItem extends UIElement {
   Sprite sprite;
   Offset pos = Offset.zero;
 
-  final TextStyle _text = TextStyle(
-      fontSize: 12.0,
-      color: Color.fromRGBO(62, 44, 40, 1),
-      fontFamily: "Blocktopia");
+  final TextPaint _text = TextPaint(
+      style: TextStyle(
+          fontSize: 12.0,
+          color: Color.fromRGBO(62, 44, 40, 1),
+          fontFamily: "Blocktopia"));
 
   Function(ToolItem) callback;
 

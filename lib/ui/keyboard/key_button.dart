@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/anchor.dart';
+import 'package:flame/components.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -24,7 +25,7 @@ class KeyButton {
 
   String keyText;
 
-  TextConfig valueText;
+  TextPaint valueText;
   double widthMultiplier = 1;
 
   Offset animatePos = Offset(0, 0);
@@ -53,8 +54,9 @@ class KeyButton {
       _gridPos.y * height + KeyboardUI.bounds.top + KeyboardUI.paddingY / 2,
     );
 
-    valueText =
-        TextStyle(fontSize: 16.0, color: txtColor, fontFamily: "Blocktopia");
+    valueText = TextPaint(
+        style: TextStyle(
+            fontSize: 16.0, color: txtColor, fontFamily: "Blocktopia"));
 
     initializeAnimation(AnimationType.roll3dCenter);
   }
