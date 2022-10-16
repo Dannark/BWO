@@ -1,6 +1,5 @@
 import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
 
 import '../../entity/player/player.dart';
 import '../../entity/wall/wall.dart';

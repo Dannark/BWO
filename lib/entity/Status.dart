@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import '../game_controller.dart';
 
 class Status {

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../game_controller.dart';
@@ -14,7 +13,7 @@ class Toast {
   static void draw(Canvas c) {
     if (_toastList == null) return;
 
-    if (_toastList.length > 0) {
+    if (_toastList.isNotEmpty) {
       _toastList[0].draw(c);
       if (!_toastList[0].isAlive()) _toastList.removeAt(0);
     }

@@ -84,10 +84,11 @@ class GameController extends Game with PanDetector {
     currentScene.update();
   }
 
-  void resize(Size size) {
-    super.resize(size);
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
     print('Starting game with $size');
-    screenSize = Rect.fromLTWH(0, 0, size.width, size.height);
+    screenSize = Rect.fromLTWH(0, 0, size[0], size[1]);
 
     _safeStart();
   }
@@ -95,16 +96,16 @@ class GameController extends Game with PanDetector {
   @override
   void onPanDown(DragDownInfo details) {
     preTapState = TapState.down;
-    TapState.pressedPosition = details.localPosition;
-    TapState.currentPosition = details.localPosition;
-    TapState.lastPosition = details.localPosition;
+    TapState.pressedPosition = details.raw.localPosition;
+    TapState.currentPosition = details.raw.localPosition;
+    TapState.lastPosition = details.raw.localPosition;
   }
 
   @override
   void onPanUpdate(DragUpdateInfo details) {
     if (tapState == TapState.pressing) {
       TapState.lastPosition = TapState.currentPosition;
-      TapState.currentPosition = details.localPosition;
+      TapState.currentPosition = details.raw.localPosition;
     }
   }
 

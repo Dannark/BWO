@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:BWO/entity/wall/door.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../Entity/wall/door.dart';
 import '../../entity/player/player.dart';
 import '../../entity/wall/foundation.dart';
 import '../../entity/wall/furniture.dart';
@@ -62,9 +62,9 @@ class BuildFoundation {
 
   void drawRoofs(Canvas c) {
     var t = TimerHelper();
-    foundationList.forEach((element) {
+    for (var element in foundationList) {
       element.drawRoof(c);
-    });
+    }
     t.logDelayPassed("drawRoofs");
   }
 
@@ -72,7 +72,7 @@ class BuildFoundation {
   bool checkIfTerrainLocationIsValid(int x, int y, int w, int h) {
     var trees = getAmountOfTreesAround(x, y, w, h);
 
-    if (trees.length > 0) {
+    if (trees.isNotEmpty) {
       Toast.add("This place is blocked by a Tree. You should remove it first.");
       return false;
     }
@@ -93,7 +93,8 @@ class BuildFoundation {
 
   Future<http.Response> getAllFoundationAround(int x, int y, int w, int h) {
     print('requesting foundation location avaiablity');
-    return http.get('${ServerUtils.server}/foundations/at/$x/$y/$w/$h');
+    return http
+        .get(Uri.parse('${ServerUtils.server}/foundations/at/$x/$y/$w/$h'));
   }
 
   bool isInsideSpecialArea(Rectangle r1, Rectangle r2) {

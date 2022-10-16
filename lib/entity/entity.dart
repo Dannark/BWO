@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/extensions.dart';
+
 import '../effects/damage_effect.dart';
 import '../effects/ripple_water_effect.dart';
 import '../effects/walk_effect.dart';

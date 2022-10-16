@@ -65,9 +65,9 @@ class PlayerDataController {
   void onPlayerUpdate(dynamic data) {
     var t = TimerHelper();
     //print("onPlayerUpdate: $data");
-    var hp = int.parse(data['hp'].toString(), onError: (source) => null);
-    var xp = int.parse(data['xp'].toString(), onError: (source) => null);
-    var lv = int.parse(data['lv'].toString(), onError: (source) => null);
+    var hp = int.tryParse(data['hp'].toString());
+    var xp = int.tryParse(data['xp'].toString());
+    var lv = int.tryParse(data['lv'].toString());
     // var x = double.parse(data['x'].toString());
     // var y = double.parse(data['y'].toString());
     // var xSpeed = double.parse(data['xSpeed'].toString());

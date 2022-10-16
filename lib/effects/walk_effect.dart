@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flame/animation.dart' as anim;
+import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -100,12 +100,19 @@ class WalkEffect {
 
 class GrassFX {
   double x, y;
-  anim.Animation grassAnim;
+  static SpriteAnimation grassAnim;
   Paint p = Paint();
 
   GrassFX(this.x, this.y) {
-    grassAnim = anim.Animation.sequenced('effects/walk_grass.png', 6,
-        textureWidth: 16, textureHeight: 16, loop: false, stepTime: 0.1);
+    grassAnim = SpriteAnimation.load(
+      'effects/walk_grass.png',
+      SpriteAnimationData.sequenced(
+        amount: 6,
+        stepTime: 0.1,
+        loop: false,
+        textureSize: Vector2.all(16),
+      ),
+    );
     p.color = Color.fromRGBO(255, 255, 255, .75);
   }
 
@@ -113,7 +120,7 @@ class GrassFX {
     grassAnim.update(GameController.deltaTime);
     grassAnim
         .getSprite()
-        .renderPosition(c, Vector2(x - 7, y - 8), overridePaint: p);
+        .render(c, position: Vector2(x - 7, y - 8), overridePaint: p);
   }
 
   bool isAlive() {

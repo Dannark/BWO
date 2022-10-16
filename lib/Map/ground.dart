@@ -1,8 +1,6 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../effects/foam_water_effect.dart';

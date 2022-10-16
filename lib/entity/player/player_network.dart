@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flame/flame.dart';
 import 'package:flame_audio/flame_audio.dart';
 
 import '../../game_controller.dart';

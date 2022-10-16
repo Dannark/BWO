@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
 import 'on_animation_end.dart';

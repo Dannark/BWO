@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:BWO/utils/timer_helper.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +7,7 @@ import '../entity/entity.dart';
 import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../hud/build/build_foundation.dart';
+import '../utils/timer_helper.dart';
 import 'ground.dart';
 import 'tile.dart';
 import 'tree.dart';
@@ -129,10 +129,7 @@ class MapController {
         } else {
           if (_loopsPerCycle < _maxLoopsPerCycle) {
             var tileHeight =
-                ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
-                            128) +
-                        127)
-                    .toInt();
+                ((terrainNoise.getSimplexFractal2(x, y) * 128) + 127).toInt();
 
             if (map[y] == null) {
               map[y] = {x: null}; //initialize line

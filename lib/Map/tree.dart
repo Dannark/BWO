@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flutter/material.dart';
 
 import '../entity/entity.dart';
 import '../entity/items/item_database.dart';

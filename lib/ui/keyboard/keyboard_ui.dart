@@ -1,5 +1,4 @@
 import 'package:flame/game.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';

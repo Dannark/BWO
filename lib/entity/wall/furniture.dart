@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/preload_assets.dart';

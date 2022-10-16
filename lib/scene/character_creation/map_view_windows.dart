@@ -1,17 +1,12 @@
 import 'dart:math';
-import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
-import 'package:flame/game.dart' as flame;
+import 'package:flutter/cupertino.dart';
 
 import '../../game_controller.dart';
 import '../../ui/button_list_ui.dart';
 import '../../ui/hud.dart';
 import '../../utils/tap_state.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flame/game.dart';
 
 class MapPreviewWindows {
   Paint p = Paint();
@@ -141,10 +136,11 @@ class MapPreviewWindows {
     c.drawLine(bounds.topCenter, bounds.bottomCenter, p);
 
     location.render(c, " ${-targetPos.dx.toInt()}, ${-targetPos.dy.toInt()}",
-        Position.fromOffset(bounds.center),
+        Vector2(bounds.center.dx, bounds.center.dy),
         anchor: Anchor.bottomLeft);
 
-    location.render(c, " $legend", Position.fromOffset(bounds.bottomLeft),
+    location.render(
+        c, " $legend", Vector2(bounds.bottomLeft.dx, bounds.bottomLeft.dy),
         anchor: Anchor.bottomLeft);
 
     location.render(
@@ -175,7 +171,8 @@ class MapPreviewWindows {
       c.drawRect(safeCityArea, p2);
     }
 
-    location.render(c, rectName, Position.fromOffset(safeCityArea.topLeft),
+    location.render(
+        c, rectName, Vector2(safeCityArea.topLeft.dx, safeCityArea.topLeft.dy),
         anchor: Anchor.bottomLeft);
 
     var r1 = Rectangle(safeCityArea.left, safeCityArea.top, safeCityArea.width,

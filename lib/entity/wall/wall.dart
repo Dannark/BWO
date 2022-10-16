@@ -1,6 +1,5 @@
 import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
 
 import '../../utils/preload_assets.dart';
 import '../entity.dart';
@@ -64,7 +63,7 @@ class Wall extends Entity {
   }
 
   void draw(Canvas c) {
-    if (sprites.length == 0 || lowSprites.length == 0) return;
+    if (sprites.isEmpty || lowSprites.isEmpty) return;
     var pivot = Offset((zoom * 16) / 2, height);
 
     selectWallSprite();

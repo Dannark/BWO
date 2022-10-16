@@ -1,7 +1,6 @@
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
-import 'package:flutter/material.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/material.dart';
 
 import '../entity/enemys/enemy.dart';
 import '../entity/player/player.dart';

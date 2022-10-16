@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -68,7 +66,7 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
     c.clipRect(bounds);
 
-    if (_inputText.length == 0) {
+    if (_inputText.isEmpty) {
       placeHolderText.render(
         c,
         placeHolder,
@@ -131,7 +129,7 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
   @override
   void onBackspacePressed() {
-    if (_inputText.length > 0) {
+    if (_inputText.isNotEmpty) {
       _inputText = _inputText.substring(0, _inputText.length - 1);
     }
   }
