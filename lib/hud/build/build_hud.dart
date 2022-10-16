@@ -1,4 +1,4 @@
-import 'package:flame/position.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +23,8 @@ class BuildHUD extends UIElement {
   Sprite _upstairSprite;
   Sprite _switchLevelButtonSprite;
 
-  Position bPos = Position.empty();
-  Position sPos = Position.empty();
+  Vector2 bPos = Vector2.zero();
+  Vector2 sPos = Vector2.zero();
 
   static BuildButtonState buildBtState = BuildButtonState.none;
 
@@ -39,14 +39,14 @@ class BuildHUD extends UIElement {
   }
 
   void loadSprite() async {
-    _buildSprite = await Sprite.loadSprite("ui/hammer.png");
-    _buildSpriteOpen = await Sprite.loadSprite("ui/hammer_open.png");
-    _deleteSprite = await Sprite.loadSprite("ui/handsaw.png");
+    _buildSprite = await Sprite.load("ui/hammer.png");
+    _buildSpriteOpen = await Sprite.load("ui/hammer_open.png");
+    _deleteSprite = await Sprite.load("ui/handsaw.png");
 
-    _lowWallSprite = await Sprite.loadSprite("ui/low_wall.png");
-    _midWallSprite = await Sprite.loadSprite("ui/mid_wall.png");
-    _fullWallSprite = await Sprite.loadSprite("ui/full_wall.png");
-    _upstairSprite = await Sprite.loadSprite("ui/upstair.png");
+    _lowWallSprite = await Sprite.load("ui/low_wall.png");
+    _midWallSprite = await Sprite.load("ui/mid_wall.png");
+    _fullWallSprite = await Sprite.load("ui/full_wall.png");
+    _upstairSprite = await Sprite.load("ui/upstair.png");
 
     _switchLevelButtonSprite = _midWallSprite;
   }
@@ -56,13 +56,13 @@ class BuildHUD extends UIElement {
         _buildSpriteOpen == null ||
         _deleteSprite == null) return;
 
-    bPos = Position(10, GameController.screenSize.height - 176);
+    bPos = Vector2(10, GameController.screenSize.height - 176);
     if (buildBtState == BuildButtonState.build) {
-      _buildSpriteOpen.renderScaled(c, bPos, scale: 2);
+      _buildSpriteOpen.render(c, position: bPos, size: Vector2.all(2));
     } else if (buildBtState == BuildButtonState.delete) {
-      _deleteSprite.renderScaled(c, bPos, scale: 2);
+      _deleteSprite.render(c, position: bPos, size: Vector2.all(2));
     } else {
-      _buildSprite.renderScaled(c, bPos, scale: 2);
+      _buildSprite.render(c, position: bPos, size: Vector2.all(2));
     }
     _handlerBuildButtonClick();
 
@@ -73,12 +73,12 @@ class BuildHUD extends UIElement {
 
     // Switch level button
     if (_map.buildFoundation.myFoundation != null) {
-      sPos = Position(10, GameController.screenSize.height - 224);
+      sPos = Vector2(10, GameController.screenSize.height - 224);
       var sRect = Rect.fromLTWH(sPos.x, sPos.y, 32, 32);
       if (TapState.clickedAt(sRect)) {
         _handlerWallLevelButtonClick();
       }
-      _switchLevelButtonSprite?.renderScaled(c, sPos, scale: 2);
+      _switchLevelButtonSprite?.render(c, position: sPos, size: Vector2.all(2));
       var isBuildingMode = buildBtState != BuildButtonState.none;
       _map.buildFoundation.myFoundation
           ?.switchWallHeightAll(isBuildingMode: isBuildingMode);

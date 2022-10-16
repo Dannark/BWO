@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -61,12 +60,12 @@ class PlayerHUD extends UIElement {
     _txt14.render(
       c,
       "Lv. ${_player.status.getLevel()}",
-      Position(hp.left, hp.top - 1),
+      Vector2(hp.left, hp.top - 1),
       anchor: Anchor.bottomLeft,
     );
 
     _txt10.render(
-        c, "${_player.posX}, ${_player.posY}", Position(hp.right, hp.top - 1),
+        c, "${_player.posX}, ${_player.posY}", Vector2(hp.right, hp.top - 1),
         anchor: Anchor.bottomRight);
 
     drawIcon(
@@ -102,7 +101,7 @@ class PlayerHUD extends UIElement {
     txt.render(
       c,
       "${textValue == "-0.0" ? 0.0 : textValue}",
-      Position(barRect.left + 5, barRect.center.dy),
+      Vector2(barRect.left + 5, barRect.center.dy),
       anchor: Anchor.centerLeft,
     );
 

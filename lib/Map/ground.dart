@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,8 @@ class Ground extends Tile {
     c.drawRect(boxRect, boxPaint);
 
     if (grass != null) {
-      grass.renderScaled(c, Position(boxRect.left, boxRect.top), scale: 1);
+      grass.render(c,
+          position: Vector2(boxRect.left, boxRect.top), size: Vector2.all(1));
     }
 
     if (height < 107) {

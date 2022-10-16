@@ -189,7 +189,7 @@ class Foundation {
 
     _drawLineGrid(c);
 
-    _txt10.render(c, 'Building area', Position(bounds.left, bounds.bottom));
+    _txt10.render(c, 'Building area', Vector2(bounds.left, bounds.bottom));
   }
 
   void _drawLineGrid(Canvas c) {

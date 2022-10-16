@@ -1,8 +1,7 @@
 import 'dart:ui';
 
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/spritesheet.dart';
 
 import '../../game_controller.dart';
 import '../../utils/tap_state.dart';
@@ -16,7 +15,7 @@ class CharacterPreviewWindows {
 
   Sprite shadown = Sprite('shadown.png');
 
-  Position myPos;
+  Vector2 myPos;
   int indexSpriteSheet = 2;
   int indexFrame = 0;
   double delay = 0;
@@ -36,7 +35,7 @@ class CharacterPreviewWindows {
     _currentSprite = sprites[indexSpriteSheet];
     delay = GameController.time + 2;
 
-    myPos = Position(
+    myPos = Vector2(
       GameController.screenSize.width / 2 + 3,
       GameController.screenSize.height * .5,
     );
@@ -59,29 +58,30 @@ class CharacterPreviewWindows {
     sprites.forEach((key, value) {
       var zoom = .9 - ((key - indexSpriteSheet).abs() * .2);
       var newPos = myPos +
-          Position(
+          Vector2(
             (key * width - (width * indexSpriteSheet)) - (zoom * width),
             ((16 * 4.0) * (1 - zoom)) / 2,
           );
 
       if (indexSpriteSheet == key) {
         //shadown.renderScaled(c, myPos + Position(8, 22), scale: 3);
-        value[indexFrame].getSprite(0, 0).renderScaled(c, newPos, scale: 4);
+        value[indexFrame]
+            .getSprite(0, 0)
+            .render(c, position: newPos, size: Vector2.all(4));
       } else {
         var keyDirection = (key - indexSpriteSheet).abs();
-
-        shadown.renderScaled(
-            c, newPos + Position(16 / 2 * zoom, (16 + 4) * zoom),
-            scale: 3 * zoom);
+        shadown.render(c,
+            position: newPos + Vector2(16 / 2 * zoom, (16 + 4) * zoom),
+            size: Vector2.all(3 * zoom));
 
         var alphaP = Paint();
         alphaP.color = Color.fromRGBO(
             255, 255, 255, (0.9 - (keyDirection * .4)).clamp(0.2, 1.0));
         alphaP.blendMode = BlendMode.luminosity; //luminosity, colorBurn, dstOut
-
-        value[0]
-            .getSprite(0, 0)
-            .renderScaled(c, newPos, scale: 4 * zoom, overridePaint: alphaP);
+        value[0].getSprite(0, 0).render(c,
+            position: newPos,
+            size: Vector2.all(4 * zoom),
+            overridePaint: alphaP);
       }
     });
     c.restore();

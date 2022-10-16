@@ -1,4 +1,4 @@
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +39,7 @@ class Tile {
 
   void draw(Canvas c) {
     //c.drawRect(boxRect, boxPaint);
-    tileSprite?.renderScaled(c, Position(boxRect.left, boxRect.top));
+    tileSprite?.render(c, position: Vector2(boxRect.left, boxRect.top));
   }
 
   dynamic toObject() {

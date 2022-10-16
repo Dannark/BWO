@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:flame/components.dart';
 import 'package:flame/game.dart' as flame;
-import 'package:flame/position.dart';
 
 import '../../game_controller.dart';
 import '../../ui/button_list_ui.dart';
@@ -148,7 +148,7 @@ class MapPreviewWindows {
         anchor: Anchor.bottomLeft);
 
     location.render(
-        c, "Initial Location:", Position(bounds.right + 5, bounds.top + 0),
+        c, "Initial Location:", Vector2(bounds.right + 5, bounds.top + 0),
         anchor: Anchor.topLeft);
 
     /*_bCenterVillage

@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -49,10 +48,11 @@ class ToolItem extends UIElement {
     }
 
     c.drawCircle(pos, 25, _p);
-    sprite.renderScaled(c, Position(pos.dx - 16, pos.dy - 16), scale: 2);
+    sprite.render(c,
+        position: Vector2(pos.dx - 16, pos.dy - 16), size: Vector2.all(2));
 
     _text.render(
-        c, name, Position(bounds.bottomCenter.dx, bounds.bottomCenter.dy + 24),
+        c, name, Vector2(bounds.bottomCenter.dx, bounds.bottomCenter.dy + 24),
         anchor: Anchor.bottomCenter);
 
     checkPress();
