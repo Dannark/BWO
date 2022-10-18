@@ -22,11 +22,13 @@ class GameController extends Game with PanDetector {
   static int tapState = TapState.up;
   static int preTapState = TapState.up;
 
+  PreloadAssets preloadAssets;
+
   static SceneObject currentScene;
 
-  GameController() {
-    PreloadAssets();
-    //_gameScene = GameScene(); //init Game;
+  void init() async {
+    preloadAssets = PreloadAssets();
+    await preloadAssets.loadSprites();
   }
 
   void _safeStart() {
@@ -81,7 +83,7 @@ class GameController extends Game with PanDetector {
       preTapState = TapState.up;
     }
 
-    currentScene.update();
+    currentScene.update(dt);
   }
 
   @override

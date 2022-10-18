@@ -59,17 +59,16 @@ class FirebaseAuth implements AuthService {
   }
 
   void _getVersionNumber() async {
-    var data = FirebaseDatabase.instance.reference().child('version');
+    var data = FirebaseDatabase.instance.ref().child('version');
 
-    data.once().then((snapshot) {
-      if (snapshot.snapshot.value == appVersion) {
+    /*data.once().then((snapshot) {
+      if (snapshot.value == appVersion) {
         _createOrReplaceAndLogUser();
       } else {
-        Toast.add(
-            "You are out of date. The new version is: ${snapshot.snapshot.value}");
+        Toast.add("You are out of date. The new version is: ${snapshot.value}");
         logout();
       }
-    });
+    });*/
   }
 
   //firebase
@@ -102,20 +101,20 @@ class FirebaseAuth implements AuthService {
 
   void retriveCharacterData(String characterName) async {
     var data = FirebaseDatabase.instance
-        .reference()
+        .ref()
         .child('${ServerUtils.database}/state/players/$characterName');
 
-    data.once().then((snapshot) {
-      if (snapshot.snapshot.value != null) {
-        print('Retrieved character information: ${snapshot.snapshot.value}');
+    /*data.once().then((snapshot) {
+      if (snapshot.value != null) {
+        print('Retrieved character information: ${snapshot.value}');
 
-        var pName = snapshot.snapshot.value['name'];
-        var pX = double.parse(snapshot.snapshot.value['x'].toString());
-        var pY = double.parse(snapshot.snapshot.value['y'].toString());
-        var pSprite = snapshot.snapshot.value['sprite'];
-        var pHp = int.parse(snapshot.snapshot.value['hp'].toString());
-        var pXp = int.parse(snapshot.snapshot.value['xp'].toString());
-        var pLv = int.parse(snapshot.snapshot.value['lv'].toString());
+        var pName = snapshot.value['name'];
+        var pX = double.parse(snapshot.value['x'].toString());
+        var pY = double.parse(snapshot.value['y'].toString());
+        var pSprite = snapshot.value['sprite'];
+        var pHp = int.parse(snapshot.value['hp'].toString());
+        var pXp = int.parse(snapshot.value['xp'].toString());
+        var pLv = int.parse(snapshot.value['lv'].toString());
 
         print('creating player $pName on position: $pX, $pY');
 
@@ -125,7 +124,7 @@ class FirebaseAuth implements AuthService {
         print('Character not found, moving to character creation windows.');
         GameController.currentScene = CharacterCreation(this);
       }
-    });
+    });*/
   }
 
   Future<bool> isNameAvailable(String characterName) async {
@@ -135,14 +134,13 @@ class FirebaseAuth implements AuthService {
 
     var isAvaiable = false;
 
-    await data.once().then((snapshot) {
-      if (snapshot.snapshot.value == null) {
+    /*await data.once().then((snapshot) {
+      if (snapshot.value == null) {
         isAvaiable = true;
       } else {
-        Toast.add(
-            'Character name already taken: ${snapshot.snapshot.value["name"]}');
+        Toast.add('Character name already taken: ${snapshot.value["name"]}');
       }
-    });
+    });*/
     return isAvaiable;
   }
 
@@ -161,10 +159,10 @@ class FirebaseAuth implements AuthService {
 
     var charName = await usersCollection.doc(mAccount.id).get().then((value) {
       var data = value.data();
-      if (data.containsKey('characterName')) {
+      /*if (data.containsKey('characterName')) {
         var charName = value.get('characterName');
         return charName;
-      }
+      }*/
       return null;
     });
     return charName;

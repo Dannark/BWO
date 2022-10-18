@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entity/player/player.dart';
@@ -17,11 +18,11 @@ class BuildToolsFoundation extends BuildSubToolsBar {
 
   BuildToolsFoundation(this._player, this._map, HUD hudRef) {
     buttonList = [
-      ToolItem("foundation", "8x8", hudRef, onPress, size: Offset(8, 8)),
-      ToolItem("foundation", "16x8", hudRef, onPress, size: Offset(16, 8)),
-      ToolItem("foundation", "16x16", hudRef, onPress, size: Offset(16, 16)),
-      ToolItem("foundation", "24x16", hudRef, onPress, size: Offset(24, 16)),
-      ToolItem("foundation", "24x24", hudRef, onPress, size: Offset(24, 24)),
+      ToolItem("foundation", "8x8", hudRef, onPress, size: Vector2(8, 8)),
+      ToolItem("foundation", "16x8", hudRef, onPress, size: Vector2(16, 8)),
+      ToolItem("foundation", "16x16", hudRef, onPress, size: Vector2(16, 16)),
+      ToolItem("foundation", "24x16", hudRef, onPress, size: Vector2(24, 16)),
+      ToolItem("foundation", "24x24", hudRef, onPress, size: Vector2(24, 24)),
     ];
   }
 

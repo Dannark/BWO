@@ -1,6 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
-import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
@@ -23,7 +21,7 @@ class CharacterCreation extends SceneObject {
           color: Color.fromRGBO(216, 165, 120, 1),
           fontFamily: "Blocktopia"));
 
-  final Sprite _backPaper = Sprite("ui/backpaper.png");
+  Sprite _backPaper;
 
   MapPreviewWindows _mapPreviewWindows;
   final CharacterPreviewWindows _characterPreviewWindows =
@@ -86,6 +84,13 @@ class CharacterCreation extends SceneObject {
     }
   }
 
+  @override
+  Future<void> onLoad() async {
+    _backPaper = await Sprite.load("ui/backpaper.png");
+
+    return super.onLoad();
+  }
+
   void startGame() {
     print('Starting game...');
     GameController.currentScene = GameScene(
@@ -103,7 +108,7 @@ class CharacterCreation extends SceneObject {
 
     _p.color = Colors.blueGrey[800];
     c.drawRect(GameController.screenSize, _p);
-    _backPaper.renderRect(c, GameController.screenSize);
+    _backPaper?.renderRect(c, GameController.screenSize);
 
     _title.render(c, "Character Creation",
         Vector2((GameController.screenSize.width / 2) + 20, 85),
@@ -129,7 +134,7 @@ class CharacterCreation extends SceneObject {
   }
 
   @override
-  void update() {
-    super.update();
+  void update(double dt) {
+    super.update(dt);
   }
 }

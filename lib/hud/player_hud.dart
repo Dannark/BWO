@@ -18,11 +18,18 @@ class PlayerHUD extends UIElement {
       style: TextStyle(
           fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia"));
 
-  final Sprite _stomach = Sprite("ui/stomach.png");
-  final Sprite _stomachBack = Sprite("ui/stomach_back.png");
+  Sprite _stomach;
+  Sprite _stomachBack;
 
   PlayerHUD(this._player, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
+  }
+
+  @override
+  Future<void> onLoad() async {
+    _stomach = await Sprite.load("ui/stomach.png");
+    _stomachBack = await Sprite.load("ui/stomach_back.png");
+    return super.onLoad();
   }
 
   /// This is called automatically from GameScene that extends HUD class,

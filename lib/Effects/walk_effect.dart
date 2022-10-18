@@ -98,13 +98,15 @@ class WalkEffect {
   }
 }
 
-class GrassFX {
+class GrassFX extends SpriteAnimationGroupComponent {
   double x, y;
   static SpriteAnimation grassAnim;
   Paint p = Paint();
 
-  GrassFX(this.x, this.y) {
-    grassAnim = SpriteAnimation.load(
+  @override
+  Future<void> onLoad() async {
+    size = Vector2.all(50.0);
+    grassAnim = await SpriteAnimation.load(
       'effects/walk_grass.png',
       SpriteAnimationData.sequenced(
         amount: 6,
@@ -113,6 +115,10 @@ class GrassFX {
         textureSize: Vector2.all(16),
       ),
     );
+    return super.onLoad();
+  }
+
+  GrassFX(this.x, this.y) {
     p.color = Color.fromRGBO(255, 255, 255, .75);
   }
 

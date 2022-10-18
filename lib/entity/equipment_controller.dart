@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'equipment.dart';
-import 'items/items.dart';
 import 'player/player.dart';
 import 'player/player_actions.dart';
+import 'equipment.dart';
+import 'items/items.dart';
 
 class EquipmentController {
   Equipment _weapon;

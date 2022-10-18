@@ -59,8 +59,8 @@ class Enemy extends Entity implements OnAnimationEnd {
   }
 
   @override
-  void update() {
-    super.update();
+  void update(double dt) {
+    super.update(dt);
     iaController.update();
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();

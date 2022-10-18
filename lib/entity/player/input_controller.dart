@@ -21,12 +21,12 @@ class InputController {
     joystick = JoystickUI(player, player.sceneObject.hud);
   }
 
-  void update() {
+  void update(double dt) {
     if (!player.isMine) {
       return;
     }
 
-    joystick.update(isEnable: player.canWalk);
+    joystick.update(dt, isEnable: player.canWalk);
   }
 
   void registerAccelerometer() {

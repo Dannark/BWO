@@ -71,7 +71,7 @@ class Item extends Entity {
     } else if (proprieties.itemType == ItemType.weapon) {
       if (playerEntity is Player) {
         amount--; //removes item from inventory
-        playerEntity.equipmentController.equipItem(this);
+        (playerEntity).equipmentController.equipItem(this);
       }
     }
   }

@@ -1,27 +1,25 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
+import '../../entity/player/player_actions.dart';
+import '../../entity/player/player_network.dart';
 import '../../game_controller.dart';
 import '../../hud/build/build_foundation.dart';
 import '../../hud/build/build_hud.dart';
 import '../../hud/inventory.dart';
 import '../../hud/player_hud.dart';
 import '../../map/map_controller.dart';
-import '../../scene/scene_object.dart' '';
+import '../../scene/scene_object.dart';
 import '../../utils/on_animation_end.dart';
 import '../../utils/preload_assets.dart';
-import '../../utils/sprite_controller.dart' '';
+import '../../utils/sprite_controller.dart';
 import '../entity.dart';
 import '../equipment_controller.dart';
 import '../items/items.dart';
 import 'input_controller.dart';
-import 'player_actions.dart';
-import 'player_network.dart';
 
 class Player extends Entity implements OnAnimationEnd {
   final TextPaint _text = TextPaint(
@@ -106,12 +104,12 @@ class Player extends Entity implements OnAnimationEnd {
   }
 
   @override
-  void update() {
-    super.update();
+  void update(double dt) {
+    super.update(dt);
     if (isActive == false) {
       return;
     }
-    _inputController?.update();
+    _inputController?.update(dt);
 
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();

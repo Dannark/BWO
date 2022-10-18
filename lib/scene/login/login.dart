@@ -27,13 +27,13 @@ class Login extends SceneObject {
           fontFamily: "Blocktopia"));
   String _versionName = "-";
 
-  final Sprite _backPaper = Sprite("ui/backpaper1.png");
+  // final Sprite _backPaper = Sprite("ui/backpaper1.png");
 
   ButtonUI _loginButton;
   AuthService _auth;
 
   Login() {
-    _loginButton = ButtonUI(
+    /*=_loginButton = ButtonUI(
         super.hud,
         Rect.fromLTWH(
           GameController.screenSize.width / 2,
@@ -43,7 +43,7 @@ class Login extends SceneObject {
         ),
         "Sign in with Google",
         padding: Rect.fromLTWH(15, 0, 0, 0),
-        icon: Sprite('ui/google_sign_in.png'));
+        icon: Sprite('ui/google_sign_in.png'));*/
 
     _loginButton.onPressedListener = () {
       _auth?.login();
@@ -58,7 +58,7 @@ class Login extends SceneObject {
   void draw(Canvas c) {
     super.draw(c);
 
-    _backPaper.renderRect(c, GameController.screenSize);
+    //  _backPaper.renderRect(c, GameController.screenSize);
 
     _version.render(c, "Version: $_versionName", Vector2(50, 50));
 

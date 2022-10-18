@@ -54,7 +54,7 @@ abstract class Entity extends PhysicsEntity {
     print("drawning wrongly, this draw method should be overwritten.");
   }
 
-  void update() {
+  void update(double dt) {
     if (!isActive || marketToBeRemoved) {
       return;
     }

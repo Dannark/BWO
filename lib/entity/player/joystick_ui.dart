@@ -19,7 +19,7 @@ class JoystickUI extends UIElement {
     drawOnHUD = true;
   }
 
-  void update({bool isEnable = true}) {
+  void update(double dt, {bool isEnable = true}) {
     this.isEnable = isEnable;
     _player.xSpeed = 0;
     _player.ySpeed = 0;

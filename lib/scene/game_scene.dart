@@ -82,10 +82,10 @@ class GameScene extends SceneObject {
   }
 
   @override
-  void update() {
+  void update(double dt) {
     for (var entity in mapController.entitysOnViewport) {
       if (entity is Player || entity is Enemy) {
-        entity.update();
+        entity.update(dt);
       }
     }
 

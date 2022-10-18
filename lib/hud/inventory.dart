@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import '../entity/Items/items.dart';
+import '../entity/items/items.dart';
 import '../entity/items/item_database.dart';
 import '../entity/player/player.dart';
 import '../game_controller.dart';

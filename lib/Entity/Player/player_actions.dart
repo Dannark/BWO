@@ -7,6 +7,8 @@ import '../../utils/tap_state.dart';
 import '../enemys/enemy.dart';
 import 'player.dart';
 
+// import '../enemys/enemy.dart';
+
 class PlayerActions {
   Player player;
   PlayerActions(this.player);

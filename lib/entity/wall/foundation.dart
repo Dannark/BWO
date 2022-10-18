@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/wall/Roof.dart';
+import 'Roof.dart';
 import '../../map/ground.dart';
 import '../../map/map_controller.dart';
 import '../../map/tile.dart';

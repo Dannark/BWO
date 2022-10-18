@@ -17,7 +17,7 @@ class ButtonUI extends UIElement {
 
   Rect padding = Rect.zero;
 
-  Sprite icon = Sprite("ui/backpaper1.png");
+  Sprite icon;
 
   Function() onPressedListener;
 
@@ -47,6 +47,13 @@ class ButtonUI extends UIElement {
       color: fontColor != null ? fontColor : Color.fromRGBO(224, 223, 168, 1),
       fontFamily: "Blocktopia",
     ));
+  }
+
+  @override
+  Future<void> onLoad() async {
+    icon = await Sprite.load("ui/backpaper1.png");
+
+    return super.onLoad();
   }
 
   void draw(Canvas c) {
