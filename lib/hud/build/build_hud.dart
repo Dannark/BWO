@@ -7,6 +7,7 @@ import '../../game_controller.dart';
 import '../../map/map_controller.dart';
 import '../../ui/hud.dart';
 import '../../ui/ui_element.dart';
+import '../../utils/sprite_controller.dart';
 import '../../utils/tap_state.dart';
 import 'build_tools_bar.dart';
 
@@ -57,11 +58,14 @@ class BuildHUD extends UIElement {
 
     bPos = Vector2(10, GameController.screenSize.height - 176);
     if (buildBtState == BuildButtonState.build) {
-      _buildSpriteOpen.render(c, position: bPos, size: Vector2.all(2));
+      _buildSpriteOpen.render(c,
+          position: bPos, size: Vector2.all(SpriteController.spriteSize * 2));
     } else if (buildBtState == BuildButtonState.delete) {
-      _deleteSprite.render(c, position: bPos, size: Vector2.all(2));
+      _deleteSprite.render(c,
+          position: bPos, size: Vector2.all(SpriteController.spriteSize * 2));
     } else {
-      _buildSprite.render(c, position: bPos, size: Vector2.all(2));
+      _buildSprite.render(c,
+          position: bPos, size: Vector2.all(SpriteController.spriteSize * 2));
     }
     _handlerBuildButtonClick();
 
@@ -77,7 +81,8 @@ class BuildHUD extends UIElement {
       if (TapState.clickedAt(sRect)) {
         _handlerWallLevelButtonClick();
       }
-      _switchLevelButtonSprite?.render(c, position: sPos, size: Vector2.all(2));
+      _switchLevelButtonSprite?.render(c,
+          position: sPos, size: Vector2.all(SpriteController.spriteSize * 2));
       var isBuildingMode = buildBtState != BuildButtonState.none;
       _map.buildFoundation.myFoundation
           ?.switchWallHeightAll(isBuildingMode: isBuildingMode);

@@ -7,11 +7,10 @@ import 'game_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Wakelock.enable();
-  var gameController = await GameController();
-
-  await gameController.init();
-  runApp(GameWidget(game: gameController));
 
   await Flame.device.fullScreen();
   await Flame.device.setPortraitUpOnly();
+  var gameController = await GameController();
+  await gameController.init();
+  runApp(GameWidget(game: gameController));
 }

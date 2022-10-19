@@ -2,13 +2,18 @@ import moment from 'moment';
 import express from 'express'
 import http from 'http'
 import game_server from "./game.js"
-import socketio from 'socket.io'
+import { Server } from "socket.io";
+
 import { loadLog, saveLog } from '../resources/data/state_manager.js'
 
 export default function startServer(config) {
     const app = express()
     const server = http.createServer(app)
-    const sockets = socketio(server)
+    const sockets = new Server(server, {
+        cors: {
+          origin: "*",
+        },
+      });
 
     const game = game_server();
 
@@ -21,7 +26,10 @@ export default function startServer(config) {
 
     sockets.on('connection', (socket) => {
         const playerId = socket.id;
-        //console.log(`Player on lobby: ${playerId}`)
+        console.log(`Player on lobby: ${playerId}`)
+        // sockets.to(playerId).emit('onSetup', playerId)
+        // console.log(`Player on lobby2: ${playerId}`)
+
         game.addSocket(socket)
 
         var lastMoveUpdateTime = moment().format();
@@ -136,6 +144,7 @@ export default function startServer(config) {
     })
 
     //app.use(express.static('public'))
+    app.use(express.json());
 
     app.get('/', (request, response) => {
         saveLog('server-info', `Requested ./ from web.`);
@@ -165,7 +174,7 @@ export default function startServer(config) {
         return response.send(isEmpty);
     })
 
-    server.listen(config.port, () => {
+    server.listen(config.port, "0.0.0.0",() => {
         saveLog('server-status', 'server started successfully');
         console.log(`Server running on port: ${config.port} in [${config.environment}] mode.`)
     })

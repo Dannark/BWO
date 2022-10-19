@@ -9,6 +9,7 @@ import '../effects/ripple_water_effect.dart';
 import '../effects/walk_effect.dart';
 import '../scene/game_scene.dart';
 import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 import 'physics_entity.dart';
 import 'player/player.dart';
 import 'status.dart';
@@ -98,7 +99,8 @@ abstract class Entity extends PhysicsEntity {
       c,
       position: Vector2(x - sizeX * distanceToGround + shadownOffset.dx,
           y - sizeY * distanceToGround + shadownOffset.dy),
-      size: Vector2.all(shadownSize * distanceToGround),
+      size: Vector2.all(
+          SpriteController.spriteSize * shadownSize * distanceToGround),
       overridePaint: p,
     );
   }

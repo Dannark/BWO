@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import '../game_controller.dart';
 import '../map/ground.dart';
 import '../server/utils/server_utils.dart';
+import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 
 class WalkEffect {
   double animSpeed = 1;
@@ -100,37 +102,22 @@ class WalkEffect {
 
 class GrassFX extends SpriteAnimationGroupComponent {
   double x, y;
-  static SpriteAnimation grassAnim;
   Paint p = Paint();
-
-  @override
-  Future<void> onLoad() async {
-    size = Vector2.all(50.0);
-    grassAnim = await SpriteAnimation.load(
-      'effects/walk_grass.png',
-      SpriteAnimationData.sequenced(
-        amount: 6,
-        stepTime: 0.1,
-        loop: false,
-        textureSize: Vector2.all(16),
-      ),
-    );
-    return super.onLoad();
-  }
 
   GrassFX(this.x, this.y) {
     p.color = Color.fromRGBO(255, 255, 255, .75);
   }
 
   void draw(Canvas c) {
-    grassAnim.update(GameController.deltaTime);
-    grassAnim
-        .getSprite()
-        .render(c, position: Vector2(x - 7, y - 8), overridePaint: p);
+    PreloadAssets.getGrassAnim().update(GameController.deltaTime);
+    PreloadAssets.getGrassAnim().getSprite().render(c,
+        position: Vector2(x - 7, y - 8),
+        overridePaint: p,
+        size: Vector2.all(SpriteController.spriteSize));
   }
 
   bool isAlive() {
-    return grassAnim.isLastFrame == false;
+    return PreloadAssets.getGrassAnim().isLastFrame == false;
   }
 }
 

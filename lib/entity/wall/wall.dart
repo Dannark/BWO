@@ -2,6 +2,7 @@ import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 
 import '../../utils/preload_assets.dart';
+import '../../utils/sprite_controller.dart';
 import '../entity.dart';
 import 'foundation.dart';
 
@@ -71,11 +72,11 @@ class Wall extends Entity {
     if (showLow) {
       currentLowSprite.render(c,
           position: Vector2(x - pivot.dx, y - pivot.dy - z),
-          size: Vector2.all(1));
+          size: Vector2(SpriteController.spriteSize, height));
     } else {
       currentSprite.render(c,
           position: Vector2(x - pivot.dx, y - pivot.dy - z),
-          size: Vector2.all(1));
+          size: Vector2(SpriteController.spriteSize, height));
     }
 
     showCollisionBox ? debugDraw(c) : null;

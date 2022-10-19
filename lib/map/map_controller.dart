@@ -129,7 +129,10 @@ class MapController {
         } else {
           if (_loopsPerCycle < _maxLoopsPerCycle) {
             var tileHeight =
-                ((terrainNoise.getSimplexFractal2(x, y) * 128) + 127).toInt();
+                ((terrainNoise.getSimplexFractal2(x.toDouble(), y.toDouble()) *
+                            128) +
+                        127)
+                    .toInt();
 
             if (map[y] == null) {
               map[y] = {x: null}; //initialize line

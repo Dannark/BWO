@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../ui/hud.dart';
 import '../../ui/ui_element.dart';
 import '../../utils/preload_assets.dart';
+import '../../utils/sprite_controller.dart';
 import '../../utils/tap_state.dart';
 
 class ToolItem extends UIElement {
@@ -48,7 +49,8 @@ class ToolItem extends UIElement {
 
     c.drawCircle(pos, 25, _p);
     sprite.render(c,
-        position: Vector2(pos.dx - 16, pos.dy - 16), size: Vector2.all(2));
+        position: Vector2(pos.dx - 16, pos.dy - 16),
+        size: Vector2.all(SpriteController.spriteSize * 2));
 
     _text.render(
         c, name, Vector2(bounds.bottomCenter.dx, bounds.bottomCenter.dy + 24),

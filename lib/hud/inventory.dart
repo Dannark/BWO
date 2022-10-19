@@ -1,12 +1,13 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import '../entity/items/items.dart';
 import '../entity/items/item_database.dart';
+import '../entity/items/items.dart';
 import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../ui/hud.dart';
 import '../ui/ui_element.dart';
+import '../utils/sprite_controller.dart';
 import '../utils/tap_state.dart';
 
 class Inventory extends UIElement {
@@ -100,7 +101,7 @@ class Inventory extends UIElement {
         }
         itemList[i].sprite.render(c,
             position: Vector2(slotRect.left + 4, slotRect.top + 4),
-            size: Vector2.all(1.5));
+            size: Vector2.all(SpriteController.spriteSize * 1.5));
         _config.render(
           c,
           "${itemList[i].amount}",
@@ -129,9 +130,11 @@ class Inventory extends UIElement {
     if (_bagSprite != null && _bagSpriteOpen != null) {
       var bPos = Vector2(10, GameController.screenSize.height - 128);
       if (isOpen) {
-        _bagSpriteOpen.render(c, position: bPos, size: Vector2.all(2));
+        _bagSpriteOpen.render(c,
+            position: bPos, size: Vector2.all(SpriteController.spriteSize * 2));
       } else {
-        _bagSprite.render(c, position: bPos, size: Vector2.all(2));
+        _bagSprite.render(c,
+            position: bPos, size: Vector2.all(SpriteController.spriteSize * 2));
       }
 
       var bRect = Rect.fromLTWH(bPos.x, bPos.y, 32, 32);

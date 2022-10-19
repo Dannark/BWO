@@ -49,7 +49,7 @@ class Tree extends Entity {
   }
 
   void loadSprite() async {
-    //_tree = await SpriteBatch.withAsset('trees/${_spriteImage}.png');
+    // _tree = await SpriteBatch.load('trees/$_spriteImage.png');
     _tree = PreloadAssets.getTreeSprite(_spriteImage);
     _tree.add(
         source: Rect.fromLTWH(0, 0, 16, 16),
@@ -73,7 +73,7 @@ class Tree extends Entity {
       isActive ? _tree.render(c) : null;
     }
 
-    //isActive ? debugDraw(c) : null;
+    // isActive ? debugDraw(c) : null;
   }
 
   void _checksDeath() {

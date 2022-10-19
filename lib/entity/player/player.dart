@@ -121,7 +121,8 @@ class Player extends Entity implements OnAnimationEnd {
     if (status.isAlive() == false) {
       isActive = false;
       _deathSprite?.render(c,
-          position: Vector2(x - 16, y - 32), size: Vector2.all(2));
+          position: Vector2(x - 16, y - 32),
+          size: Vector2.all(SpriteController.spriteSize * 2));
 
       if (!isMine) return;
 

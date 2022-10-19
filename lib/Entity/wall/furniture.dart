@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/preload_assets.dart';
+import '../../utils/sprite_controller.dart';
 import '../entity.dart';
 
 class Furniture extends Entity {
@@ -50,7 +51,7 @@ class Furniture extends Entity {
 
     currentSprite.render(c,
         position: Vector2(x - pivot.dx, y - pivot.dy - z),
-        size: Vector2.all(2));
+        size: Vector2.all(SpriteController.spriteSize * 2));
 
     //showCollisionBox = true;
     showCollisionBox ? debugDraw(c) : null;

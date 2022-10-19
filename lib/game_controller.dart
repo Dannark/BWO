@@ -22,16 +22,16 @@ class GameController extends Game with PanDetector {
   static int tapState = TapState.up;
   static int preTapState = TapState.up;
 
-  PreloadAssets preloadAssets;
+  static PreloadAssets preloadAssets;
 
   static SceneObject currentScene;
 
-  void init() async {
+  Future<void> init() async {
     preloadAssets = PreloadAssets();
     await preloadAssets.loadSprites();
   }
 
-  void _safeStart() {
+  void _safeStart() async {
     if (currentScene == null) {
       KeyboardUI.build();
       if (ServerUtils.isOffline) {
@@ -43,7 +43,7 @@ class GameController extends Game with PanDetector {
   }
 
   void render(Canvas c) {
-    if (screenSize == null) return;
+    if (screenSize == null || currentScene == null) return;
 
     var bgPaint = Paint();
     bgPaint.color = Color(0xff000000);
@@ -61,7 +61,7 @@ class GameController extends Game with PanDetector {
   List<double> fpsList = [];
 
   void update(double dt) {
-    if (screenSize == null) return;
+    if (screenSize == null || currentScene == null) return;
 
     deltaTime = dt;
     time += dt;
@@ -91,7 +91,6 @@ class GameController extends Game with PanDetector {
     super.onGameResize(size);
     print('Starting game with $size');
     screenSize = Rect.fromLTWH(0, 0, size[0], size[1]);
-
     _safeStart();
   }
 

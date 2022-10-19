@@ -1,10 +1,12 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../entity/wall/door.dart';
 import '../../entity/player/player.dart';
+import '../../entity/wall/door.dart';
 import '../../entity/wall/foundation.dart';
 import '../../entity/wall/furniture.dart';
 import '../../map/ground.dart';

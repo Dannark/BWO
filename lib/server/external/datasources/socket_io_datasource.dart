@@ -1,11 +1,13 @@
-import 'package:socket_io_client/socket_io_client.dart';
+import 'dart:developer';
+
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../../entity/player/player.dart';
 import '../../domain/repositories/server_repository.dart';
 import '../../utils/server_utils.dart';
 
 class SocketIoRepository implements ServerRepository {
-  Socket socket;
+  io.Socket socket;
   Player _player;
 
   Function(String) callback;
@@ -15,14 +17,19 @@ class SocketIoRepository implements ServerRepository {
 
     _player = player;
 
-    socket = io(ServerUtils.server, <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': false
-    });
+    socket = io.io(
+        ServerUtils.server,
+        io.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .build());
     socket.connect();
 
-    socket.on('onSetup', onSetup);
-    socket.on('disconnect', (_) => print('disconnected'));
+    socket.onConnect((data) {
+      log("Connected");
+      socket.on('onSetup', onSetup);
+      socket.on('disconnect', (_) => print('disconnected'));
+    });
   }
 
   void setListener(String event, dynamic Function(dynamic) callback) {

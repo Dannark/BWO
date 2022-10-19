@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../entity/player/player.dart';
 import '../ui/hud.dart';
 import '../ui/ui_element.dart';
+import '../utils/preload_assets.dart';
 
 /// SHOWS Players stats on HUD.
 /// This class is added to a list of UIElements on GameScene
@@ -18,18 +19,8 @@ class PlayerHUD extends UIElement {
       style: TextStyle(
           fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia"));
 
-  Sprite _stomach;
-  Sprite _stomachBack;
-
   PlayerHUD(this._player, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
-  }
-
-  @override
-  Future<void> onLoad() async {
-    _stomach = await Sprite.load("ui/stomach.png");
-    _stomachBack = await Sprite.load("ui/stomach_back.png");
-    return super.onLoad();
   }
 
   /// This is called automatically from GameScene that extends HUD class,
@@ -77,8 +68,8 @@ class PlayerHUD extends UIElement {
     drawIcon(
       c,
       Rect.fromLTWH(10, xp.bottom + 5, 16, 16),
-      _stomachBack,
-      _stomach,
+      PreloadAssets.getStomachBack(),
+      PreloadAssets.getStomach(),
       _player.status.getCalories(),
       _player.status.getMaxCalories(),
     );

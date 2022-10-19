@@ -1,49 +1,49 @@
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
-import '../scene/character_creation/character_preview_windows.dart';
-
 class PreloadAssets {
-  static Map<int, List<SpriteSheet>> _charSprites = {};
+  static Sprite _googleIcon;
 
-  static Map<String, SpriteBatch> _trees;
+  static Sprite _stomach;
+  static Sprite _stomachBack;
+  static SpriteAnimation _grassAnim;
 
-  static Map<String, Sprite> _enviromentSpriteList;
+  static Sprite _backPaper;
+  static Sprite _backPaper1;
 
-  static Map<String, Sprite> _wallSpriteList;
+  static final Map<String, SpriteBatch> _trees = {};
 
-  static Map<String, Sprite> _roofsSpriteList;
+  static final Map<String, Sprite> _enviromentSpriteList = {};
 
-  static Map<String, Sprite> _floorSpriteList;
+  static final Map<String, Sprite> _wallSpriteList = {};
 
-  static Map<String, Sprite> _effects;
+  static final Map<String, Sprite> _roofsSpriteList = {};
 
-  static Map<String, Sprite> _furnitureList;
+  static final Map<String, Sprite> _floorSpriteList = {};
 
-  static Map<String, Sprite> _uiSpriteList;
+  static final Map<String, Sprite> _effects = {};
 
-  void loadSprites() async {
+  static final Map<String, Sprite> _furnitureList = {};
+
+  static final Map<String, Sprite> _uiSpriteList = {};
+
+  Future<void> loadSprites() async {
+    _googleIcon = await Sprite.load("ui/google_sign_in.png");
+    _backPaper = await Sprite.load("ui/backpaper.png");
+    _backPaper1 = await Sprite.load("ui/backpaper1.png");
+    _grassAnim = await SpriteAnimation.load(
+      'effects/walk_grass.png',
+      SpriteAnimationData.sequenced(
+        amount: 6,
+        stepTime: 0.1,
+        loop: false,
+        textureSize: Vector2.all(16),
+      ),
+    );
+    _stomach = await Sprite.load("ui/stomach.png");
+    _stomachBack = await Sprite.load("ui/stomach_back.png");
+
     print("Loading sprites Chars Assets");
-
-    // shadown = await Sprite.load('shadown.png');
-
-    _charSprites[0] =
-        (await CharacterPreviewWindows().loadSprite("human/male1"));
-    _charSprites[1] =
-        (await CharacterPreviewWindows().loadSprite("human/male2"));
-    _charSprites[2] =
-        (await CharacterPreviewWindows().loadSprite("human/male3"));
-    _charSprites[3] =
-        (await CharacterPreviewWindows().loadSprite("human/female1"));
-    _charSprites[4] =
-        (await CharacterPreviewWindows().loadSprite("human/female2"));
-    _charSprites[5] =
-        (await CharacterPreviewWindows().loadSprite("human/female3"));
-    _charSprites[6] =
-        (await CharacterPreviewWindows().loadSprite("human/female4"));
-    _charSprites[7] =
-        (await CharacterPreviewWindows().loadSprite("human/female5"));
-    _charSprites[8] =
-        (await CharacterPreviewWindows().loadSprite("human/female6"));
 
     print("Loading sprites Trees Assets");
 
@@ -234,8 +234,28 @@ class PreloadAssets {
     _uiSpriteList["door3"] = await Sprite.load("ui/door3.png");
   }
 
-  static Map<int, List<SpriteSheet>> getChars() {
-    return _charSprites;
+  static Sprite getGoogleIcon() {
+    return _googleIcon;
+  }
+
+  static Sprite getBackPaper() {
+    return _backPaper;
+  }
+
+  static Sprite getBackPaper1() {
+    return _backPaper1;
+  }
+
+  static SpriteAnimation getGrassAnim() {
+    return _grassAnim;
+  }
+
+  static Sprite getStomach() {
+    return _stomach;
+  }
+
+  static Sprite getStomachBack() {
+    return _stomachBack;
   }
 
   static Sprite getEnviromentSprite(String grass) {

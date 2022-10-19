@@ -61,7 +61,7 @@ export function loadState() {
     if (loadedState != undefined && loadedState != '') {
         defaulState = loadedState;
     }
-    //console.log('defaulState',defaulState);
+    console.log('defaulState',defaulState);
     return defaulState;
 }
 

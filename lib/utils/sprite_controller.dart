@@ -7,6 +7,7 @@ import '../game_controller.dart';
 import 'on_animation_end.dart';
 
 class SpriteController {
+  static final double spriteSize = 16;
   int direcion = -3;
   bool _spritesLoaded = false;
   String folder;

@@ -4,6 +4,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
+import '../../utils/sprite_controller.dart';
 import '../entity.dart';
 import '../player/player.dart';
 import 'item_database.dart';
@@ -48,7 +49,7 @@ class Item extends Entity {
       var pivot = Offset((proprieties.zoom * 16) / 2, (proprieties.zoom * 16));
       sprite.render(c,
           position: Vector2(x - pivot.dx, y - pivot.dy - z),
-          size: Vector2.all(proprieties.zoom),
+          size: Vector2.all(SpriteController.spriteSize * proprieties.zoom),
           overridePaint: p);
       updatePhysics();
 

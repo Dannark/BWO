@@ -11,11 +11,14 @@ class FoundationDataController {
   }
 
   void onFoundationEnterScreen(dynamic data) {
-    var t = TimerHelper();
-    print('onFoundationEnterScreen');
-    data.forEach((key, value) {
-      _buildFoundation.updateOrInstantiateFoundation(value);
-    });
-    t.logDelayPassed('onFoundationEnterScreen:');
+    try {
+      var t = TimerHelper();
+      print('onFoundationEnterScreen');
+      data.forEach((key, value) {
+        _buildFoundation.updateOrInstantiateFoundation(value);
+      });
+      t.logDelayPassed('onFoundationEnterScreen:');
+      // ignore: avoid_catches_without_on_clauses
+    } catch (_) {}
   }
 }

@@ -5,6 +5,7 @@ import 'package:flame/sprite.dart';
 
 import '../game_controller.dart';
 import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 
 class RippleWaterEffect {
   double animSpeed = 1;
@@ -56,7 +57,7 @@ class Ripple {
 
     ripple.render(c,
         position: Vector2(x - halfwidth, y - halfheight),
-        size: Vector2.all(_scale),
+        size: Vector2.all(SpriteController.spriteSize * _scale),
         overridePaint: p);
   }
 

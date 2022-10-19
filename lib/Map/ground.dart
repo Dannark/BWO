@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../effects/foam_water_effect.dart';
 import '../effects/water_stars_effect.dart';
 import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 import 'tile.dart';
 
 class Ground extends Tile {
@@ -37,11 +38,13 @@ class Ground extends Tile {
       boxPaint.color =
           foamWaterEffect.getFoamColor(height, posX, posY); //Colors.blue[200];
     }
+
     c.drawRect(boxRect, boxPaint);
 
     if (grass != null) {
       grass.render(c,
-          position: Vector2(boxRect.left, boxRect.top), size: Vector2.all(1));
+          position: Vector2(boxRect.left, boxRect.top),
+          size: Vector2.all(SpriteController.spriteSize * 1));
     }
 
     if (height < 107) {
@@ -53,8 +56,8 @@ class Ground extends Tile {
     height = heightLvl;
     var green = 255 - heightLvl;
 
-    if (heightLvl > 142 && heightLvl < 152 && Random().nextInt(100) > 98) {
-      var id = Random().nextInt(5) + 1;
+    if (heightLvl > 142 && heightLvl < 152 && math.Random().nextInt(100) > 98) {
+      var id = math.Random().nextInt(5) + 1;
       grass = PreloadAssets.getEnviromentSprite("floor$id");
       /*grass = Sprite("enviroment/floor${id}.png",
           width: size.toDouble(), height: size.toDouble());*/
@@ -73,24 +76,24 @@ class Ground extends Tile {
     } else if (heightLvl < sand) {
       return Colors.amber[200];
     } else if (heightLvl < lowGrass) {
-      if (Random().nextInt(100) > 95) {
-        var id = Random().nextInt(4) + 7;
+      if (math.Random().nextInt(100) > 95) {
+        var id = math.Random().nextInt(4) + 7;
         grass = PreloadAssets.getEnviromentSprite("grass$id");
         /*grass = Sprite("enviroment/grass$id.png",
             width: size.toDouble(), height: size.toDouble());*/
       }
       return Color.fromRGBO(116, green + 50, 54, 1);
     } else if (heightLvl < 160) {
-      if (Random().nextInt(100) > 96) {
-        var id = Random().nextInt(2) + 11;
+      if (math.Random().nextInt(100) > 96) {
+        var id = math.Random().nextInt(2) + 11;
         grass = PreloadAssets.getEnviromentSprite("grass$id");
         /*grass = Sprite("enviroment/grass$id.png",
             width: size.toDouble(), height: size.toDouble());*/
       }
       return Color.fromRGBO(82, green + 40, 46, 1);
     } else if (heightLvl < 185) {
-      if (Random().nextInt(100) > 98) {
-        var id = Random().nextInt(2) + 13;
+      if (math.Random().nextInt(100) > 98) {
+        var id = math.Random().nextInt(2) + 13;
         grass = PreloadAssets.getEnviromentSprite("grass$id");
         /*grass = Sprite("enviroment/grass${id}.png",
             width: size.toDouble(), height: size.toDouble());*/

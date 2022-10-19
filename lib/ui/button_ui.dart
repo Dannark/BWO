@@ -2,6 +2,8 @@ import 'package:flame/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 import '../utils/tap_state.dart';
 import 'hud.dart';
 import 'ui_element.dart';
@@ -49,13 +51,6 @@ class ButtonUI extends UIElement {
     ));
   }
 
-  @override
-  Future<void> onLoad() async {
-    icon = await Sprite.load("ui/backpaper1.png");
-
-    return super.onLoad();
-  }
-
   void draw(Canvas c) {
     if (canBeSelected) {
       _p.color = isSelected ? _pressedColor : _normalColor;
@@ -76,9 +71,9 @@ class ButtonUI extends UIElement {
 
     var iconScale = 0.5;
     var iconHeight = 42 * iconScale;
-    icon?.render(c,
+    PreloadAssets.getBackPaper1()?.render(c,
         position: Vector2(bounds.left + 10, bounds.center.dy - iconHeight / 2),
-        size: Vector2.all(iconScale));
+        size: Vector2.all(SpriteController.spriteSize * iconScale));
     _normalText.render(
       c,
       text,
