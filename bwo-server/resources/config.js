@@ -3,7 +3,7 @@ import extend from 'extend';
 
 const args = minimist(process.argv.slice(2));
 
-var environment = args.env || 'development'
+var environment = process.argv[4].split("=")[1] || 'development'
 var reset_state = args.resetstate || false
 
 var common_conf = {
