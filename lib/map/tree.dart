@@ -5,7 +5,7 @@ import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
 
-import '../entity/entity.dart';
+import '../entity/Entity.dart';
 import '../entity/items/item_database.dart';
 import '../entity/items/items.dart';
 import '../game_controller.dart';

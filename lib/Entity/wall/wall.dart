@@ -3,7 +3,7 @@ import 'package:flame/sprite.dart';
 
 import '../../utils/preload_assets.dart';
 import '../../utils/sprite_controller.dart';
-import '../entity.dart';
+import '../Entity.dart';
 import 'foundation.dart';
 
 class Wall extends Entity {

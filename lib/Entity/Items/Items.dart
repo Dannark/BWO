@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
 import '../../utils/sprite_controller.dart';
-import '../entity.dart';
+import '../Entity.dart';
 import '../player/player.dart';
 import 'item_database.dart';
 

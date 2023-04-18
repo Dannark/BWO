@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/preload_assets.dart';
 import '../../utils/sprite_controller.dart';
-import '../entity.dart';
+import '../Entity.dart';
 
 class Furniture extends Entity {
   Sprite sprite;

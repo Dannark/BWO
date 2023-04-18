@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/material.dart';
 
-import '../entity/entity.dart';
+import '../entity/Entity.dart';
 import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../hud/build/build_foundation.dart';

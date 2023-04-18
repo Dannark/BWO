@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../entity/Entity.dart';
 import '../../entity/enemys/enemy.dart';
-import '../../entity/entity.dart';
 import '../../entity/player/player.dart';
 import '../../map/map_controller.dart';
 

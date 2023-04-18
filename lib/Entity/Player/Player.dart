@@ -16,7 +16,7 @@ import '../../scene/scene_object.dart';
 import '../../utils/on_animation_end.dart';
 import '../../utils/preload_assets.dart';
 import '../../utils/sprite_controller.dart';
-import '../entity.dart';
+import '../Entity.dart';
 import '../equipment_controller.dart';
 import '../items/items.dart';
 import 'input_controller.dart';

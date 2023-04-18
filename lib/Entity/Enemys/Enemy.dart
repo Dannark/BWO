@@ -7,7 +7,7 @@ import '../../game_controller.dart';
 import '../../map/map_controller.dart';
 import '../../utils/on_animation_end.dart';
 import '../../utils/sprite_controller.dart';
-import '../entity.dart';
+import '../Entity.dart';
 import 'ia_controller.dart';
 import 'ia_network_controller.dart';
 
