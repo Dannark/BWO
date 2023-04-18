@@ -1,8 +1,10 @@
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
+// ignore_for_file: file_names
+
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 
 class Tile {
   int posX;
@@ -38,8 +40,10 @@ class Tile {
   }
 
   void draw(Canvas c) {
-    //c.drawRect(boxRect, boxPaint);
-    tileSprite?.renderScaled(c, Position(boxRect.left, boxRect.top));
+    c.drawRect(boxRect, boxPaint);
+    tileSprite?.render(c,
+        position: Vector2(boxRect.left, boxRect.top),
+        size: Vector2.all(SpriteController.spriteSize));
   }
 
   dynamic toObject() {

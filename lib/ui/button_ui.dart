@@ -1,10 +1,9 @@
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 import '../utils/tap_state.dart';
 import 'hud.dart';
 import 'ui_element.dart';
@@ -12,7 +11,7 @@ import 'ui_element.dart';
 class ButtonUI extends UIElement {
   final Paint _p = Paint();
 
-  TextConfig _normalText;
+  TextPaint _normalText;
   String text;
 
   Color _normalColor;
@@ -20,7 +19,7 @@ class ButtonUI extends UIElement {
 
   Rect padding = Rect.zero;
 
-  Sprite icon = Sprite("ui/backpaper1.png");
+  Sprite icon;
 
   Function() onPressedListener;
 
@@ -44,11 +43,12 @@ class ButtonUI extends UIElement {
     _pressedColor =
         pressedColor != null ? pressedColor : Color.fromRGBO(50, 143, 249, 1);
 
-    _normalText = TextConfig(
+    _normalText = TextPaint(
+        style: TextStyle(
       fontSize: fontSize,
       color: fontColor != null ? fontColor : Color.fromRGBO(224, 223, 168, 1),
       fontFamily: "Blocktopia",
-    );
+    ));
   }
 
   void draw(Canvas c) {
@@ -71,13 +71,13 @@ class ButtonUI extends UIElement {
 
     var iconScale = 0.5;
     var iconHeight = 42 * iconScale;
-    icon?.renderScaled(
-        c, Position(bounds.left + 10, bounds.center.dy - iconHeight / 2),
-        scale: iconScale);
+    PreloadAssets.getBackPaper1()?.render(c,
+        position: Vector2(bounds.left + 10, bounds.center.dy - iconHeight / 2),
+        size: Vector2.all(SpriteController.spriteSize * iconScale));
     _normalText.render(
       c,
       text,
-      Position(bounds.center.dx + padding.left, bounds.center.dy + padding.top),
+      Vector2(bounds.center.dx + padding.left, bounds.center.dy + padding.top),
       anchor: Anchor.center,
     );
   }

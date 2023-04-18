@@ -1,6 +1,4 @@
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/items/item_database.dart';
@@ -9,6 +7,7 @@ import '../entity/player/player.dart';
 import '../game_controller.dart';
 import '../ui/hud.dart';
 import '../ui/ui_element.dart';
+import '../utils/sprite_controller.dart';
 import '../utils/tap_state.dart';
 
 class Inventory extends UIElement {
@@ -20,8 +19,9 @@ class Inventory extends UIElement {
   final int _maxHorizontalSlots = 2;
   final double _spaceBetweenSlots = 2;
 
-  final TextConfig _config =
-      TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia");
+  final TextPaint _config = TextPaint(
+      style: TextStyle(
+          fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia"));
   final Player _player;
 
   Sprite _bagSprite;
@@ -37,11 +37,11 @@ class Inventory extends UIElement {
   void loadSprite() async {
     print("player : ${_player.spriteFolder}");
     if (_player.spriteFolder.contains("female")) {
-      _bagSprite = await Sprite.loadSprite("ui/bag2.png");
-      _bagSpriteOpen = await Sprite.loadSprite("ui/bag2_open.png");
+      _bagSprite = await Sprite.load("ui/bag2.png");
+      _bagSpriteOpen = await Sprite.load("ui/bag2_open.png");
     } else {
-      _bagSprite = await Sprite.loadSprite("ui/bag.png");
-      _bagSpriteOpen = await Sprite.loadSprite("ui/bag_open.png");
+      _bagSprite = await Sprite.load("ui/bag.png");
+      _bagSpriteOpen = await Sprite.load("ui/bag_open.png");
     }
   }
 
@@ -99,13 +99,13 @@ class Inventory extends UIElement {
         if (itemList[i].sprite == null) {
           return; //image not ready yet
         }
-        itemList[i].sprite.renderScaled(
-            c, Position(slotRect.left + 4, slotRect.top + 4),
-            scale: 1.5);
+        itemList[i].sprite.render(c,
+            position: Vector2(slotRect.left + 4, slotRect.top + 4),
+            size: Vector2.all(SpriteController.spriteSize * 1.5));
         _config.render(
           c,
           "${itemList[i].amount}",
-          Position(slotRect.left + 2, slotRect.top + 1),
+          Vector2(slotRect.left + 2, slotRect.top + 1),
         );
 
         if (GameController.tapState == TapState.down &&
@@ -128,11 +128,13 @@ class Inventory extends UIElement {
 
   void drawBagButton(Canvas c) {
     if (_bagSprite != null && _bagSpriteOpen != null) {
-      var bPos = Position(10, GameController.screenSize.height - 128);
+      var bPos = Vector2(10, GameController.screenSize.height - 128);
       if (isOpen) {
-        _bagSpriteOpen.renderScaled(c, bPos, scale: 2);
+        _bagSpriteOpen.render(c,
+            position: bPos, size: Vector2.all(SpriteController.spriteSize * 2));
       } else {
-        _bagSprite.renderScaled(c, bPos, scale: 2);
+        _bagSprite.render(c,
+            position: bPos, size: Vector2.all(SpriteController.spriteSize * 2));
       }
 
       var bRect = Rect.fromLTWH(bPos.x, bPos.y, 32, 32);

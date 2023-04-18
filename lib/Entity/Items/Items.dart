@@ -1,10 +1,11 @@
-import 'package:flame/flame.dart';
-import 'package:flame/position.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
-import '../entity.dart';
+import '../../utils/sprite_controller.dart';
+import '../Entity.dart';
 import '../player/player.dart';
 import 'item_database.dart';
 
@@ -31,7 +32,7 @@ class Item extends Entity {
   }
 
   void loadSprite() async {
-    sprite = await Sprite.loadSprite(proprieties.imgPath);
+    sprite = await Sprite.load(proprieties.imgPath);
   }
 
   @override
@@ -46,8 +47,10 @@ class Item extends Entity {
       p.color = Color.fromRGBO(255, 255, 255, alphaBlink);
 
       var pivot = Offset((proprieties.zoom * 16) / 2, (proprieties.zoom * 16));
-      sprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
-          scale: proprieties.zoom, overridePaint: p);
+      sprite.render(c,
+          position: Vector2(x - pivot.dx, y - pivot.dy - z),
+          size: Vector2.all(SpriteController.spriteSize * proprieties.zoom),
+          overridePaint: p);
       updatePhysics();
 
       if (GameController.time > lifeTime) {
@@ -65,11 +68,11 @@ class Item extends Entity {
       playerEntity.status.addEnergy(proprieties.energy);
       playerEntity.status.addHungriness(proprieties.hungriness);
 
-      Flame.audio.play("items/eating_apple.mp3", volume: 0.3);
+      FlameAudio.play("items/eating_apple.mp3", volume: 0.3);
     } else if (proprieties.itemType == ItemType.weapon) {
       if (playerEntity is Player) {
         amount--; //removes item from inventory
-        playerEntity.equipmentController.equipItem(this);
+        (playerEntity).equipmentController.equipItem(this);
       }
     }
   }

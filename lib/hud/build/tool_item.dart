@@ -1,12 +1,10 @@
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/hud.dart';
 import '../../ui/ui_element.dart';
 import '../../utils/preload_assets.dart';
+import '../../utils/sprite_controller.dart';
 import '../../utils/tap_state.dart';
 
 class ToolItem extends UIElement {
@@ -15,19 +13,20 @@ class ToolItem extends UIElement {
   Sprite sprite;
   Offset pos = Offset.zero;
 
-  final TextConfig _text = TextConfig(
-      fontSize: 12.0,
-      color: Color.fromRGBO(62, 44, 40, 1),
-      fontFamily: "Blocktopia");
+  final TextPaint _text = TextPaint(
+      style: TextStyle(
+          fontSize: 12.0,
+          color: Color.fromRGBO(62, 44, 40, 1),
+          fontFamily: "Blocktopia"));
 
   Function(ToolItem) callback;
 
   bool isSelected = false;
-  Offset size = Offset.zero;
+
   String name;
 
   ToolItem(this.spriteName, this.name, HUD hudRef, this.callback,
-      {bool isBtSelected = false, this.size = Offset.zero})
+      {bool isBtSelected = false, Vector2 size})
       : super(hudRef) {
     isSelected = isBtSelected;
     loadSprite();
@@ -49,10 +48,12 @@ class ToolItem extends UIElement {
     }
 
     c.drawCircle(pos, 25, _p);
-    sprite.renderScaled(c, Position(pos.dx - 16, pos.dy - 16), scale: 2);
+    sprite.render(c,
+        position: Vector2(pos.dx - 16, pos.dy - 16),
+        size: Vector2.all(SpriteController.spriteSize * 2));
 
     _text.render(
-        c, name, Position(bounds.bottomCenter.dx, bounds.bottomCenter.dy + 24),
+        c, name, Vector2(bounds.bottomCenter.dx, bounds.bottomCenter.dy + 24),
         anchor: Anchor.bottomCenter);
 
     checkPress();

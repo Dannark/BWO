@@ -1,12 +1,10 @@
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/player/player.dart';
 import '../ui/hud.dart';
 import '../ui/ui_element.dart';
+import '../utils/preload_assets.dart';
 
 /// SHOWS Players stats on HUD.
 /// This class is added to a list of UIElements on GameScene
@@ -14,13 +12,12 @@ class PlayerHUD extends UIElement {
   final Player _player;
   final Paint _p = Paint();
 
-  final TextConfig _txt14 =
-      TextConfig(fontSize: 14.0, color: Colors.white, fontFamily: "Blocktopia");
-  final TextConfig _txt10 =
-      TextConfig(fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia");
-
-  final Sprite _stomach = Sprite("ui/stomach.png");
-  final Sprite _stomachBack = Sprite("ui/stomach_back.png");
+  final TextPaint _txt14 = TextPaint(
+      style: TextStyle(
+          fontSize: 14.0, color: Colors.white, fontFamily: "Blocktopia"));
+  final TextPaint _txt10 = TextPaint(
+      style: TextStyle(
+          fontSize: 10.0, color: Colors.white, fontFamily: "Blocktopia"));
 
   PlayerHUD(this._player, HUD hudRef) : super(hudRef) {
     drawOnHUD = true;
@@ -60,26 +57,26 @@ class PlayerHUD extends UIElement {
     _txt14.render(
       c,
       "Lv. ${_player.status.getLevel()}",
-      Position(hp.left, hp.top - 1),
+      Vector2(hp.left, hp.top - 1),
       anchor: Anchor.bottomLeft,
     );
 
     _txt10.render(
-        c, "${_player.posX}, ${_player.posY}", Position(hp.right, hp.top - 1),
+        c, "${_player.posX}, ${_player.posY}", Vector2(hp.right, hp.top - 1),
         anchor: Anchor.bottomRight);
 
     drawIcon(
       c,
       Rect.fromLTWH(10, xp.bottom + 5, 16, 16),
-      _stomachBack,
-      _stomach,
+      PreloadAssets.getStomachBack(),
+      PreloadAssets.getStomach(),
       _player.status.getCalories(),
       _player.status.getMaxCalories(),
     );
   }
 
   Rect drawBar(Canvas c, Rect barRect, Color barColor, double currentVal,
-      double maxVal, String textValue, TextConfig txt) {
+      double maxVal, String textValue, TextPaint txt) {
     var bar2 = Rect.fromLTWH(barRect.left + 2, barRect.top - 2,
         barRect.width - 4, barRect.height + 4);
 
@@ -101,7 +98,7 @@ class PlayerHUD extends UIElement {
     txt.render(
       c,
       "${textValue == "-0.0" ? 0.0 : textValue}",
-      Position(barRect.left + 5, barRect.center.dy),
+      Vector2(barRect.left + 5, barRect.center.dy),
       anchor: Anchor.centerLeft,
     );
 

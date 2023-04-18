@@ -1,7 +1,5 @@
-import 'package:flame/anchor.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/enemys/enemy.dart';
@@ -16,8 +14,9 @@ import 'scene_object.dart';
 class GameScene extends SceneObject {
   static const int worldSize = 16;
 
-  TextConfig config =
-      TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
+  TextPaint config = TextPaint(
+      style: TextStyle(
+          fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia"));
 
   Player player;
   MapController mapController;
@@ -47,15 +46,16 @@ class GameScene extends SceneObject {
     serverController.setPlayer(player);
     mapController.addPlayerRef(player);
 
-    Flame.audio.disableLog();
-    Flame.bgm.dispose();
-    Flame.bgm.initialize();
+    // FlameAudio.audioCache.disableLog();
+    FlameAudio.bgm.dispose();
+    FlameAudio.bgm.initialize();
     if (ServerUtils.database == 'production') {
-      if (!Flame.bgm.isPlaying) {
-        Flame.bgm.play('recovery.mp3', volume: .2);
+      if (!FlameAudio.bgm.isPlaying) {
+        FlameAudio.bgm.play('recovery.mp3', volume: .2);
       }
     }
-    Flame.audio.loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
+    FlameAudio.audioCache
+        .loadAll(['footstep_grass1.mp3', 'footstep_grass2.mp3']);
   }
 
   @override
@@ -69,7 +69,7 @@ class GameScene extends SceneObject {
         movimentType: MovimentType.follow, tileSize: worldSize);
 
     config.render(
-        c, "FPS: ${getFps()}", Position(GameController.screenSize.width, 0),
+        c, "FPS: ${getFps()}", Vector2(GameController.screenSize.width, 0),
         anchor: Anchor.topRight);
 
     hud.draw(c);
@@ -82,10 +82,10 @@ class GameScene extends SceneObject {
   }
 
   @override
-  void update() {
+  void update(double dt) {
     for (var entity in mapController.entitysOnViewport) {
       if (entity is Player || entity is Enemy) {
-        entity.update();
+        entity.update(dt);
       }
     }
 

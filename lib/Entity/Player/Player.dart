@@ -1,33 +1,30 @@
 import 'dart:math';
-import 'dart:ui';
 
-import 'package:flame/anchor.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
+import '../../entity/player/player_actions.dart';
+import '../../entity/player/player_network.dart';
 import '../../game_controller.dart';
 import '../../hud/build/build_foundation.dart';
 import '../../hud/build/build_hud.dart';
 import '../../hud/inventory.dart';
 import '../../hud/player_hud.dart';
 import '../../map/map_controller.dart';
-import '../../scene/scene_object.dart' '';
+import '../../scene/scene_object.dart';
 import '../../utils/on_animation_end.dart';
 import '../../utils/preload_assets.dart';
-import '../../utils/sprite_controller.dart' '';
-import '../entity.dart';
+import '../../utils/sprite_controller.dart';
+import '../Entity.dart';
 import '../equipment_controller.dart';
 import '../items/items.dart';
 import 'input_controller.dart';
-import 'player_actions.dart';
-import 'player_network.dart';
 
 class Player extends Entity implements OnAnimationEnd {
-  final TextConfig _text =
-      TextConfig(fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia");
+  final TextPaint _text = TextPaint(
+      style: TextStyle(
+          fontSize: 12.0, color: Colors.white, fontFamily: "Blocktopia"));
 
   SpriteController walkSprites;
   SpriteController attackSprites;
@@ -103,16 +100,16 @@ class Player extends Entity implements OnAnimationEnd {
           stopAnimWhenIdle: stopAnimWhenIdle);
     }
     //debugDraw(c);
-    _text.render(c, name, Position(x, y - 45), anchor: Anchor.bottomCenter);
+    _text.render(c, name, Vector2(x, y - 45), anchor: Anchor.bottomCenter);
   }
 
   @override
-  void update() {
-    super.update();
+  void update(double dt) {
+    super.update(dt);
     if (isActive == false) {
       return;
     }
-    _inputController?.update();
+    _inputController?.update(dt);
 
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();
@@ -123,7 +120,9 @@ class Player extends Entity implements OnAnimationEnd {
   void die(Canvas c) {
     if (status.isAlive() == false) {
       isActive = false;
-      _deathSprite?.renderScaled(c, Position(x - 16, y - 32), scale: 2);
+      _deathSprite?.render(c,
+          position: Vector2(x - 16, y - 32),
+          size: Vector2.all(SpriteController.spriteSize * 2));
 
       if (!isMine) return;
 
@@ -170,7 +169,7 @@ class Player extends Entity implements OnAnimationEnd {
     if (entity is Item) {
       _inventory.addItem(entity) ? entity.destroy() : null;
 
-      Flame.audio.play("pickup_item1.mp3", volume: 0.9);
+      FlameAudio.play("pickup_item1.mp3", volume: 0.9);
     }
   }
 

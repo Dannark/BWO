@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flame/flame_audio.dart';
-import 'package:flame/sprite_batch.dart';
-import 'package:flutter/material.dart';
+import 'package:flame/extensions.dart';
+import 'package:flame/sprite.dart';
+import 'package:flame_audio/flame_audio.dart';
 
-import '../entity/entity.dart';
+import '../entity/Entity.dart';
 import '../entity/items/item_database.dart';
 import '../entity/items/items.dart';
 import '../game_controller.dart';
@@ -26,7 +26,6 @@ class Tree extends Entity {
 
   int _applesLeft = 1;
 
-  final FlameAudio _audio = FlameAudio();
   double _deadRotation = 0;
   double _gravityRotation = 0;
 
@@ -50,13 +49,13 @@ class Tree extends Entity {
   }
 
   void loadSprite() async {
-    //_tree = await SpriteBatch.withAsset('trees/${_spriteImage}.png');
+    // _tree = await SpriteBatch.load('trees/$_spriteImage.png');
     _tree = PreloadAssets.getTreeSprite(_spriteImage);
     _tree.add(
-        rect: Rect.fromLTWH(0, 0, 16, 16),
-        offset: Offset(
+        source: Rect.fromLTWH(0, 0, 16, 16),
+        offset: Vector2(
             posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
-        anchor: Offset(8, 14),
+        anchor: Vector2(8, 14),
         scale: _tileSize.toDouble(),
         rotation: 0 //-0.05
         );
@@ -74,7 +73,7 @@ class Tree extends Entity {
       isActive ? _tree.render(c) : null;
     }
 
-    //isActive ? debugDraw(c) : null;
+    // isActive ? debugDraw(c) : null;
   }
 
   void _checksDeath() {
@@ -133,10 +132,10 @@ class Tree extends Entity {
   void _updateFrame(double rot) {
     _tree.clear();
     _tree.add(
-        rect: Rect.fromLTWH(0, 0, 16, 16),
-        offset: Offset(
+        source: Rect.fromLTWH(0, 0, 16, 16),
+        offset: Vector2(
             posX.toDouble() * _tileSize, (posY.toDouble() - 1) * _tileSize),
-        anchor: Offset(8, 14),
+        anchor: Vector2(8, 14),
         scale: _tileSize.toDouble(),
         rotation: rot //-0.05
         );
@@ -181,7 +180,7 @@ class Tree extends Entity {
 
       status.setLife(hp);
 
-      _audio.play('punch.mp3', volume: 0.4);
+      FlameAudio.play('punch.mp3', volume: 0.4);
     }
   }
 

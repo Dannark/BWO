@@ -1,15 +1,13 @@
 import 'dart:math';
 
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
 import '../../map/map_controller.dart';
 import '../../utils/on_animation_end.dart';
 import '../../utils/sprite_controller.dart';
-import '../entity.dart';
+import '../Entity.dart';
 import 'ia_controller.dart';
 import 'ia_network_controller.dart';
 
@@ -54,13 +52,15 @@ class Enemy extends Entity implements OnAnimationEnd {
           stopAnimWhenIdle: stopAnimWhenIdle);
     }
     //debugDraw(c);
-    TextConfig(fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia")
-        .render(c, name, Position(x, y - 32), anchor: Anchor.bottomCenter);
+    TextPaint(
+            style: TextStyle(
+                fontSize: 11.0, color: Colors.white, fontFamily: "Blocktopia"))
+        .render(c, name, Vector2(x, y - 32), anchor: Anchor.bottomCenter);
   }
 
   @override
-  void update() {
-    super.update();
+  void update(double dt) {
+    super.update(dt);
     iaController.update();
     slowSpeedWhenItSinks(mapHeight);
     moveWithPhysics();

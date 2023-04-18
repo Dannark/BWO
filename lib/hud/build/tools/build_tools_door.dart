@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flame/extensions.dart';
 
 import '../../../entity/wall/door.dart';
 import '../../../game_controller.dart';
@@ -24,9 +24,9 @@ class BuildToolsDoor extends BuildSubToolsBar {
 
   BuildToolsDoor(this._map, this.toolsBar, HUD hudRef) {
     buttonList = [
-      ToolItem("door1", "Door 1", hudRef, onPress, size: Offset(2, 1)),
-      ToolItem("door2", "Door 2", hudRef, onPress, size: Offset(2, 1)),
-      ToolItem("door3", "Door 3", hudRef, onPress, size: Offset(2, 1)),
+      ToolItem("door1", "Door 1", hudRef, onPress, size: Vector2(2, 1)),
+      ToolItem("door2", "Door 2", hudRef, onPress, size: Vector2(2, 1)),
+      ToolItem("door3", "Door 3", hudRef, onPress, size: Vector2(2, 1)),
     ];
   }
 
@@ -61,8 +61,8 @@ class BuildToolsDoor extends BuildSubToolsBar {
   void onPress(ToolItem bt) {
     selectButtonHighlight(bt);
 
-    width = bt.size.dx.floor();
-    height = bt.size.dy.floor();
+    width = bt.size[0].floor();
+    height = bt.size[1].floor();
 
     print('onPress ${bt.spriteName}');
     _selectedDoor = bt.spriteName;

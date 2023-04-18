@@ -1,12 +1,10 @@
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_controller.dart';
 import '../../ui/button_ui.dart';
 import '../../ui/input_text_ui.dart';
+import '../../utils/preload_assets.dart';
 import '../game_scene.dart';
 import '../login/auth.dart';
 import '../scene_object.dart';
@@ -18,12 +16,11 @@ class CharacterCreation extends SceneObject {
 
   InputTextUI _inputTextUI;
 
-  final TextConfig _title = TextConfig(
-      fontSize: 22.0,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
-
-  final Sprite _backPaper = Sprite("ui/backpaper.png");
+  final TextPaint _title = TextPaint(
+      style: TextStyle(
+          fontSize: 22.0,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
 
   MapPreviewWindows _mapPreviewWindows;
   final CharacterPreviewWindows _characterPreviewWindows =
@@ -36,7 +33,7 @@ class CharacterCreation extends SceneObject {
 
     _inputTextUI = InputTextUI(
       super.hud,
-      Position(GameController.screenSize.width / 2,
+      Vector2(GameController.screenSize.width / 2,
           GameController.screenSize.height * 0.64),
       "Player Name",
       backGroundColor: Color.fromRGBO(255, 255, 255, 0),
@@ -103,15 +100,15 @@ class CharacterCreation extends SceneObject {
 
     _p.color = Colors.blueGrey[800];
     c.drawRect(GameController.screenSize, _p);
-    _backPaper.renderRect(c, GameController.screenSize);
+    PreloadAssets.getBackPaper()?.renderRect(c, GameController.screenSize);
 
     _title.render(c, "Character Creation",
-        Position((GameController.screenSize.width / 2) + 20, 85),
+        Vector2((GameController.screenSize.width / 2) + 20, 85),
         anchor: Anchor.bottomCenter);
 
     _mapPreviewWindows.draw(c);
     _characterPreviewWindows.draw(c);
-    _inputTextUI.pos = Position(
+    _inputTextUI.pos = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.64,
     );
@@ -129,7 +126,7 @@ class CharacterCreation extends SceneObject {
   }
 
   @override
-  void update() {
-    super.update();
+  void update(double dt) {
+    super.update(dt);
   }
 }

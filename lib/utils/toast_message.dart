@@ -1,9 +1,6 @@
 import 'dart:ui';
 
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
-import 'package:flutter/material.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/rendering.dart';
 
 import '../game_controller.dart';
@@ -16,7 +13,7 @@ class Toast {
   static void draw(Canvas c) {
     if (_toastList == null) return;
 
-    if (_toastList.length > 0) {
+    if (_toastList.isNotEmpty) {
       _toastList[0].draw(c);
       if (!_toastList[0].isAlive()) _toastList.removeAt(0);
     }
@@ -38,9 +35,9 @@ class ToastMessage {
   DateTime startTime;
   String text;
 
-  Position _currentPos;
-  Position _fadeIn;
-  Position _fadeOut;
+  Vector2 _currentPos;
+  Vector2 _fadeIn;
+  Vector2 _fadeOut;
 
   Color cNow = Color.fromRGBO(62, 44, 40, .2);
   Color cIn = Color.fromRGBO(62, 44, 40, 1);
@@ -49,15 +46,15 @@ class ToastMessage {
   final Paint _p = Paint();
 
   ToastMessage(this.text) {
-    _currentPos = Position(
+    _currentPos = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.9,
     );
-    _fadeIn = Position(
+    _fadeIn = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.8,
     );
-    _fadeOut = Position(
+    _fadeOut = Vector2(
       GameController.screenSize.width / 2,
       GameController.screenSize.height * 0.9,
     );
@@ -67,13 +64,13 @@ class ToastMessage {
     startTime == null ? startTime = DateTime.now() : null;
 
     if (isReadyToFadeOut()) {
-      _currentPos = Position(
+      _currentPos = Vector2(
         lerpDouble(_currentPos.x, _fadeOut.x, GameController.deltaTime * speed),
         lerpDouble(_currentPos.y, _fadeOut.y, GameController.deltaTime * speed),
       );
       cNow = Color.lerp(cNow, cOut, GameController.deltaTime * (speed + 3));
     } else {
-      _currentPos = Position(
+      _currentPos = Vector2(
         lerpDouble(_currentPos.x, _fadeIn.x, GameController.deltaTime * speed),
         lerpDouble(_currentPos.y, _fadeIn.y, GameController.deltaTime * speed),
       );
@@ -91,11 +88,12 @@ class ToastMessage {
     _p.color = Color.fromRGBO(244, 223, 168, cNow.alpha / 255.0);
     c.drawRRect(RRect.fromRectAndRadius(bounds, Radius.circular(5)), _p);
 
-    var _text = TextConfig(
+    var _text = TextPaint(
+        style: TextStyle(
       fontSize: 12.0,
       color: cNow,
       fontFamily: "Blocktopia",
-    );
+    ));
     _text.render(c, text, _currentPos, anchor: Anchor.bottomCenter);
   }
 

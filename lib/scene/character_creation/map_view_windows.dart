@@ -1,9 +1,7 @@
 import 'dart:math';
-import 'dart:ui';
 
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../game_controller.dart';
 import '../../ui/button_list_ui.dart';
@@ -12,10 +10,11 @@ import '../../utils/tap_state.dart';
 
 class MapPreviewWindows {
   Paint p = Paint();
-  TextConfig location = TextConfig(
-      fontSize: 10.0,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
+  TextPaint location = TextPaint(
+      style: TextStyle(
+          fontSize: 10.0,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
 
   Offset targetPos = Offset.zero;
   Offset newTarget = Offset.zero;
@@ -137,14 +136,15 @@ class MapPreviewWindows {
     c.drawLine(bounds.topCenter, bounds.bottomCenter, p);
 
     location.render(c, " ${-targetPos.dx.toInt()}, ${-targetPos.dy.toInt()}",
-        Position.fromOffset(bounds.center),
-        anchor: Anchor.bottomLeft);
-
-    location.render(c, " $legend", Position.fromOffset(bounds.bottomLeft),
+        Vector2(bounds.center.dx, bounds.center.dy),
         anchor: Anchor.bottomLeft);
 
     location.render(
-        c, "Initial Location:", Position(bounds.right + 5, bounds.top + 0),
+        c, " $legend", Vector2(bounds.bottomLeft.dx, bounds.bottomLeft.dy),
+        anchor: Anchor.bottomLeft);
+
+    location.render(
+        c, "Initial Location:", Vector2(bounds.right + 5, bounds.top + 0),
         anchor: Anchor.topLeft);
 
     /*_bCenterVillage
@@ -171,7 +171,8 @@ class MapPreviewWindows {
       c.drawRect(safeCityArea, p2);
     }
 
-    location.render(c, rectName, Position.fromOffset(safeCityArea.topLeft),
+    location.render(
+        c, rectName, Vector2(safeCityArea.topLeft.dx, safeCityArea.topLeft.dy),
         anchor: Anchor.bottomLeft);
 
     var r1 = Rectangle(safeCityArea.left, safeCityArea.top, safeCityArea.width,

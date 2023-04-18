@@ -1,14 +1,13 @@
-import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/wall/Roof.dart';
 import '../../map/ground.dart';
 import '../../map/map_controller.dart';
 import '../../map/tile.dart';
 import '../../scene/game_scene.dart';
 import '../../utils/tap_state.dart';
 import '../player/player.dart';
+import 'Roof.dart';
 import 'door.dart';
 import 'furniture.dart';
 import 'wall.dart';
@@ -31,8 +30,11 @@ class Foundation {
   bool _isPreviousInsideFoundation = false;
 
   Paint p = Paint();
-  final TextConfig _txt10 = TextConfig(
-      fontSize: 10.0, color: Colors.blueGrey[700], fontFamily: "Blocktopia");
+  final TextPaint _txt10 = TextPaint(
+      style: TextStyle(
+          fontSize: 10.0,
+          color: Colors.blueGrey[700],
+          fontFamily: "Blocktopia"));
 
   Foundation(this.foundationData, this._map, this._player) {
     setup(foundationData);
@@ -187,7 +189,7 @@ class Foundation {
 
     _drawLineGrid(c);
 
-    _txt10.render(c, 'Building area', Position(bounds.left, bounds.bottom));
+    _txt10.render(c, 'Building area', Vector2(bounds.left, bounds.bottom));
   }
 
   void _drawLineGrid(Canvas c) {

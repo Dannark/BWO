@@ -1,9 +1,9 @@
-import 'package:flame/position.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
 
 import '../../utils/preload_assets.dart';
-import '../entity.dart';
+import '../../utils/sprite_controller.dart';
+import '../Entity.dart';
 import 'foundation.dart';
 
 class Wall extends Entity {
@@ -64,17 +64,19 @@ class Wall extends Entity {
   }
 
   void draw(Canvas c) {
-    if (sprites.length == 0 || lowSprites.length == 0) return;
+    if (sprites.isEmpty || lowSprites.isEmpty) return;
     var pivot = Offset((zoom * 16) / 2, height);
 
     selectWallSprite();
 
     if (showLow) {
-      currentLowSprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
-          scale: 1);
+      currentLowSprite.render(c,
+          position: Vector2(x - pivot.dx, y - pivot.dy - z),
+          size: Vector2(SpriteController.spriteSize, height));
     } else {
-      currentSprite.renderScaled(c, Position(x - pivot.dx, y - pivot.dy - z),
-          scale: 1);
+      currentSprite.render(c,
+          position: Vector2(x - pivot.dx, y - pivot.dy - z),
+          size: Vector2(SpriteController.spriteSize, height));
     }
 
     showCollisionBox ? debugDraw(c) : null;

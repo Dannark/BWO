@@ -18,11 +18,9 @@ class TreeDataController {
       var x = double.parse(value['x'].toString());
       var y = double.parse(value['y'].toString());
       var playerId = value['playerId'].toString();
-      var deadTime =
-          int.parse(value['dead_time'].toString(), onError: (source) => null);
-      var hp = int.parse(value['hp'].toString(), onError: (source) => null);
-      var damage =
-          int.parse(value['damage'].toString(), onError: (source) => null);
+      var deadTime = int.tryParse(value['dead_time'].toString());
+      var hp = int.tryParse(value['hp'].toString());
+      var damage = int.tryParse(value['damage'].toString());
 
       //Make the hit attack player animation
       var foundEntity = map.entityList
@@ -54,11 +52,11 @@ class TreeDataController {
   }
 
   bool isInsideFoundation(double posX, double posY) {
-    map.buildFoundation.foundationList.forEach((foundation) {
+    for (var foundation in map.buildFoundation.foundationList) {
       if (foundation.isInsideFoundation(posX, posY)) {
-        return true;
+        continue;
       }
-    });
+    }
     return false;
   }
 }

@@ -269,12 +269,13 @@ export function simulateMove(state, callback) {
 
 function isInsideFoundation(state, player) {
     var isInside = false;
+    if (state.foundations == null) return false;
     Object.entries(state.foundations).forEach(foundation => {
         //console.log(foundation[1].walls)
         var pX = player.x / 16;
         var pY = player.y / 16;
-        if (pX >= foundation[1].x-1 && pX <= foundation[1].x + foundation[1].w+1 &&
-            pY >= foundation[1].y-1 && pY <= foundation[1].y + foundation[1].h+1) {
+        if (pX >= foundation[1].x - 1 && pX <= foundation[1].x + foundation[1].w + 1 &&
+            pY >= foundation[1].y - 1 && pY <= foundation[1].y + foundation[1].h + 1) {
             isInside = true;
             return isInside;
         }

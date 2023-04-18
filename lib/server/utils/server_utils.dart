@@ -1,16 +1,18 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
 import 'package:flutter/material.dart';
 
+import '../../entity/Entity.dart';
 import '../../entity/enemys/enemy.dart';
-import '../../entity/entity.dart';
 import '../../entity/player/player.dart';
 import '../../map/map_controller.dart';
 
 class ServerUtils {
   //static const String server = "https://3000-e92204fd-e411-4285-8fd3-cf3515d1c358.ws-us02.gitpod.io";
-  //static const String server = "http://192.168.1.111:3000";
-  static const String server = "https://borderless-world.herokuapp.com";
-  static const String database = 'production'; // production | development
-  static const bool isOffline = false;
+  static const String server = "http://192.168.1.7:3000";
+  // static const String server = "https://borderless-world.herokuapp.com";
+  static const String database = 'development'; // production | development
+  static const bool isOffline = true;
 
   static void addEntityIfNotExist(MapController map, Entity newEntity,
       {bool updateIfExist = true}) {

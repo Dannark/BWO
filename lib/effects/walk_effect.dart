@@ -1,13 +1,15 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flame/animation.dart' as anim;
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../game_controller.dart';
 import '../map/ground.dart';
 import '../server/utils/server_utils.dart';
+import '../utils/preload_assets.dart';
+import '../utils/sprite_controller.dart';
 
 class WalkEffect {
   double animSpeed = 1;
@@ -92,32 +94,30 @@ class WalkEffect {
 
       timeInFutureForSoundSteps = GameController.time + delay;
       if (ServerUtils.database == 'production') {
-        //Flame.audio.play(audioName, volume: volume);
+        // FlameAudio.play(audioName, volume: volume);
       }
     }
   }
 }
 
-class GrassFX {
+class GrassFX extends SpriteAnimationGroupComponent {
   double x, y;
-  anim.Animation grassAnim;
   Paint p = Paint();
 
   GrassFX(this.x, this.y) {
-    grassAnim = anim.Animation.sequenced('effects/walk_grass.png', 6,
-        textureWidth: 16, textureHeight: 16, loop: false, stepTime: 0.1);
     p.color = Color.fromRGBO(255, 255, 255, .75);
   }
 
   void draw(Canvas c) {
-    grassAnim.update(GameController.deltaTime);
-    grassAnim
-        .getSprite()
-        .renderPosition(c, Position(x - 7, y - 8), overridePaint: p);
+    PreloadAssets.getGrassAnim().update(GameController.deltaTime);
+    PreloadAssets.getGrassAnim().getSprite().render(c,
+        position: Vector2(x - 7, y - 8),
+        overridePaint: p,
+        size: Vector2.all(SpriteController.spriteSize));
   }
 
   bool isAlive() {
-    return grassAnim.isLastFrame == false;
+    return PreloadAssets.getGrassAnim().isLastFrame == false;
   }
 }
 

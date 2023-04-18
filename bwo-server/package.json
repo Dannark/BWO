@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "start": "node server.js --env=development --resetstate ",
+    "dev": "nodemon server.js --env=localhost --resetstate ",
     "test": "jasmine"
   },
   "author": "Dannark",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "extend": "^3.0.2",
     "firebase": "^7.20.0",
     "firebase-admin": "^9.1.1",
@@ -19,7 +20,7 @@
     "minimist": "^1.2.5",
     "moment": "^2.28.0",
     "moment-timezone": "^0.5.31",
-    "socket.io": "^2.4.0"
+    "socket.io": "^4.5.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

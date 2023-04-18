@@ -1,37 +1,39 @@
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../game_controller.dart';
 import '../../ui/button_ui.dart';
+import '../../utils/preload_assets.dart';
 import '../scene_object.dart';
 import 'auth.dart';
 import 'auth_methods/firebase_auth.dart';
 
 class Login extends SceneObject {
-  final TextConfig _version = TextConfig(
-      fontSize: 11,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
-  final TextConfig _title = TextConfig(
-      fontSize: 22,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
-  final TextConfig _text = TextConfig(
-      fontSize: 16,
-      color: Color.fromRGBO(216, 165, 120, 1),
-      fontFamily: "Blocktopia");
+  final TextPaint _version = TextPaint(
+      style: TextStyle(
+          fontSize: 11,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
+  final TextPaint _title = TextPaint(
+      style: TextStyle(
+          fontSize: 22,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
+  final TextPaint _text = TextPaint(
+      style: TextStyle(
+          fontSize: 16,
+          color: Color.fromRGBO(216, 165, 120, 1),
+          fontFamily: "Blocktopia"));
   String _versionName = "-";
 
-  final Sprite _backPaper = Sprite("ui/backpaper1.png");
+  Sprite _backPaper;
 
   ButtonUI _loginButton;
   AuthService _auth;
 
   Login() {
+    _backPaper = PreloadAssets.getBackPaper1();
     _loginButton = ButtonUI(
         super.hud,
         Rect.fromLTWH(
@@ -42,7 +44,7 @@ class Login extends SceneObject {
         ),
         "Sign in with Google",
         padding: Rect.fromLTWH(15, 0, 0, 0),
-        icon: Sprite('ui/google_sign_in.png'));
+        icon: PreloadAssets.getGoogleIcon());
 
     _loginButton.onPressedListener = () {
       _auth?.login();
@@ -55,13 +57,14 @@ class Login extends SceneObject {
   }
 
   void draw(Canvas c) {
+    if (_loginButton == null) return;
     super.draw(c);
 
     _backPaper.renderRect(c, GameController.screenSize);
 
-    _version.render(c, "Version: $_versionName", Position(50, 50));
+    _version.render(c, "Version: $_versionName", Vector2(50, 50));
 
-    _title.render(c, "> A letter from the Dev", Position(50, 80));
+    _title.render(c, "> A letter from the Dev", Vector2(50, 80));
     _text.render(
       c,
       """Hello Adventures!\n
@@ -78,7 +81,7 @@ on your screen yet. hehe.
 
 I thanks you all for the support.
 By Dannark""",
-      Position(GameController.screenSize.width / 2, 120),
+      Vector2(GameController.screenSize.width / 2, 120),
       anchor: Anchor.topCenter,
     );
 
@@ -91,9 +94,14 @@ By Dannark""",
     }
   }
 
-  Future loadVersion() async {
-    var packageInfo = await PackageInfo.fromPlatform();
-    var version = packageInfo.version;
-    return version;
+  Future<String> loadVersion() async {
+    try {
+      var packageInfo = await PackageInfo.fromPlatform();
+      var version = packageInfo.version;
+      return version;
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      return '1.0.0';
+    }
   }
 }

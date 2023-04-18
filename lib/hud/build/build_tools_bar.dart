@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
-
 import '../../entity/player/player.dart';
 import '../../game_controller.dart';
 import '../../map/map_controller.dart';

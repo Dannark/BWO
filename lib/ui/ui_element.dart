@@ -1,8 +1,9 @@
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import 'hud.dart';
 
-abstract class UIElement {
+abstract class UIElement extends SpriteComponent {
   Rect bounds = Rect.zero;
   HUD hudRef;
   bool drawOnHUD = false;

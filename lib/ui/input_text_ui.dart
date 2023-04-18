@@ -1,8 +1,4 @@
-import 'dart:ui';
-
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -13,7 +9,7 @@ import 'keyboard/keyboard_ui.dart';
 import 'ui_element.dart';
 
 class InputTextUI extends UIElement implements KeyUIListener {
-  Position pos;
+  Vector2 pos;
   String _inputText = "";
   String placeHolder = "Text Example";
   int maxLength = 16;
@@ -28,8 +24,8 @@ class InputTextUI extends UIElement implements KeyUIListener {
   Function(String) onConfirmListener;
   Function(String) onPressedListener;
 
-  TextConfig normalText;
-  TextConfig placeHolderText;
+  TextPaint normalText;
+  TextPaint placeHolderText;
 
   double rotation = 0;
 
@@ -43,17 +39,19 @@ class InputTextUI extends UIElement implements KeyUIListener {
       : super(hudRef) {
     p.color = backGroundColor != null ? backGroundColor : Colors.blueGrey[50];
 
-    normalText = TextConfig(
+    normalText = TextPaint(
+        style: TextStyle(
       fontSize: fontSize,
       color: normalColor != null ? normalColor : Colors.grey[800],
       fontFamily: "Blocktopia",
-    );
+    ));
 
-    placeHolderText = TextConfig(
+    placeHolderText = TextPaint(
+        style: TextStyle(
       fontSize: fontSize,
       color: placeholderColor != null ? placeholderColor : Colors.grey[600],
       fontFamily: "Blocktopia",
-    );
+    ));
   }
 
   void draw(Canvas c) {
@@ -68,18 +66,18 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
     c.clipRect(bounds);
 
-    if (_inputText.length == 0) {
+    if (_inputText.isEmpty) {
       placeHolderText.render(
         c,
         placeHolder,
-        Position(bounds.left + padding, bounds.center.dy),
+        Vector2(bounds.left + padding, bounds.center.dy),
         anchor: Anchor.centerLeft,
       );
     } else {
       normalText.render(
         c,
         _inputText,
-        Position(bounds.left + padding - textOffsetX, bounds.center.dy),
+        Vector2(bounds.left + padding - textOffsetX, bounds.center.dy),
         anchor: Anchor.centerLeft,
       );
     }
@@ -131,7 +129,7 @@ class InputTextUI extends UIElement implements KeyUIListener {
 
   @override
   void onBackspacePressed() {
-    if (_inputText.length > 0) {
+    if (_inputText.isNotEmpty) {
       _inputText = _inputText.substring(0, _inputText.length - 1);
     }
   }
